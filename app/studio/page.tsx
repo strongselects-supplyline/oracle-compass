@@ -4,25 +4,35 @@ import { useEffect, useState } from "react";
 import { SINGLES, ALBUM_RELEASE } from "@/lib/releases";
 import { getStoreValue, setStoreValue } from "@/lib/db";
 
+// Returns ISO week key like "2026-W10" — resets counter automatically each week
+function getWeekKey(): string {
+    const now = new Date();
+    const d = new Date(Date.UTC(now.getFullYear(), now.getMonth(), now.getDate()));
+    d.setUTCDate(d.getUTCDate() + 4 - (d.getUTCDay() || 7));
+    const year = d.getUTCFullYear();
+    const week = Math.ceil(((d.getTime() - Date.UTC(year, 0, 1)) / 86400000 + 1) / 7);
+    return `${year}-W${String(week).padStart(2, '0')}`;
+}
+
 export default function StudioPage() {
     const [daysUntil, setDaysUntil] = useState(0);
     const [sessions, setSessions] = useState(0);
+    const weekKey = `weekly_sessions:${getWeekKey()}`;
 
     useEffect(() => {
         const now = new Date();
-        // Neutralize time to avoid timezone drift
         const utcAlbum = Date.UTC(ALBUM_RELEASE.getFullYear(), ALBUM_RELEASE.getMonth(), ALBUM_RELEASE.getDate());
         const utcNow = Date.UTC(now.getFullYear(), now.getMonth(), now.getDate());
         const diff = Math.ceil((utcAlbum - utcNow) / (1000 * 60 * 60 * 24));
         setDaysUntil(diff);
 
-        getStoreValue<number>('weekly_sessions').then(v => setSessions(v || 0));
-    }, []);
+        getStoreValue<number>(weekKey).then(v => setSessions(v || 0));
+    }, [weekKey]);
 
     const logSession = async () => {
         const next = sessions + 1;
         setSessions(next);
-        await setStoreValue('weekly_sessions', next);
+        await setStoreValue(weekKey, next);
     };
 
     return (

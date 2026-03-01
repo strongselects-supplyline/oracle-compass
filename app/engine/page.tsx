@@ -1,7 +1,7 @@
 "use client";
 
 import { useEffect, useState, useRef } from "react";
-import { getDayType, isBizDay } from "@/lib/dayType";
+import { getDayType, isBizDay, isSacredDay } from "@/lib/dayType";
 import { getStoreValue, setStoreValue } from "@/lib/db";
 
 type Account = { name: string; days: number };
@@ -12,23 +12,39 @@ const DEFAULT_ACCOUNTS: Account[] = [
   { name: "Account 3", days: 0 },
 ];
 
+// ISO week key — same pattern as Studio, resets touches each week
+function getWeekKey(): string {
+  const now = new Date();
+  const d = new Date(Date.UTC(now.getFullYear(), now.getMonth(), now.getDate()));
+  d.setUTCDate(d.getUTCDate() + 4 - (d.getUTCDay() || 7));
+  const year = d.getUTCFullYear();
+  const week = Math.ceil(((d.getTime() - Date.UTC(year, 0, 1)) / 86400000 + 1) / 7);
+  return `${year}-W${String(week).padStart(2, '0')}`;
+}
+
 export default function EnginePage() {
-  const [bizDay, setBizDay] = useState(true);
+  // null = not yet determined (prevents flash)
+  const [dayState, setDayState] = useState<"biz" | "studio" | "sacred" | null>(null);
   const [override, setOverride] = useState(false);
   const [dailyMove, setDailyMove] = useState("");
   const [touches, setTouches] = useState(0);
   const [accounts, setAccounts] = useState<Account[]>(DEFAULT_ACCOUNTS);
   const [editingAccount, setEditingAccount] = useState<number | null>(null);
   const timerRef = useRef<ReturnType<typeof setTimeout> | null>(null);
+  const touchKey = `engine_touches:${getWeekKey()}`;
 
   useEffect(() => {
-    setBizDay(isBizDay(getDayType()));
+    const dt = getDayType();
+    if (isSacredDay(dt)) setDayState("sacred");
+    else if (isBizDay(dt)) setDayState("biz");
+    else setDayState("studio");
+
     getStoreValue<string>("engine_daily_move").then(v => setDailyMove(v || ""));
-    getStoreValue<number>("engine_touches").then(v => setTouches(v || 0));
+    getStoreValue<number>(touchKey).then(v => setTouches(v || 0));
     getStoreValue<Account[]>("engine_accounts").then(v => {
       if (v && v.length === 3) setAccounts(v);
     });
-  }, []);
+  }, [touchKey]);
 
   const handleSaveMove = async (val: string) => {
     setDailyMove(val);
@@ -38,7 +54,7 @@ export default function EnginePage() {
   const logTouch = async () => {
     const next = touches + 1;
     setTouches(next);
-    await setStoreValue("engine_touches", next);
+    await setStoreValue(touchKey, next);
   };
 
   const updateAccount = async (idx: number, patch: Partial<Account>) => {
@@ -48,14 +64,32 @@ export default function EnginePage() {
   };
 
   const startPress = () => {
+    // Long-press override disabled on sacred days
+    if (dayState === "sacred") return;
     timerRef.current = setTimeout(() => setOverride(true), 500);
   };
   const endPress = () => {
     if (timerRef.current) clearTimeout(timerRef.current);
   };
 
-  // Studio day gate
-  if (!bizDay && !override) {
+  // Null state — day type not yet determined, render nothing to prevent flash
+  if (dayState === null) return null;
+
+  // Sacred day — no override, no access
+  if (dayState === "sacred") {
+    return (
+      <main className="page flex flex-col items-center justify-center text-center animate-fade-in">
+        <div className="px-8 py-16 select-none">
+          <div className="text-6xl mb-8 opacity-20">🛑</div>
+          <h2 className="text-xl font-black tracking-tight mb-3">Sunday is sacred.</h2>
+          <p className="text-[#555] text-sm">Rest. Zero building. No override.</p>
+        </div>
+      </main>
+    );
+  }
+
+  // Studio day — long-press override available
+  if (dayState === "studio" && !override) {
     return (
       <main className="page flex flex-col items-center justify-center text-center animate-fade-in">
         <div

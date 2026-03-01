@@ -22,15 +22,6 @@ function getProtocolCopy(dayType: string): string {
   return "";
 }
 
-// Cycle status labels
-const CYCLE_STATUS_LABELS: Record<string, string> = {
-  recording: "REC",
-  mixing: "MIX",
-  resting: "REST",
-  done: "DONE",
-  add: "–",
-};
-
 const CYCLE_TRACKS = [
   { label: "RECONNECT", key: "cycle_reconnect" },
   { label: "WANT U 2",  key: "cycle_wantu2" },
