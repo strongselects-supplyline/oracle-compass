@@ -8,10 +8,10 @@ function getMakeModeWeek(): number {
   return Math.min(Math.max(Math.ceil(days / 7), 1), 5);
 }
 
-// Phase progress: Make = weeks 1-5, Ship = after Mar 23, Push = after Apr 3
+// Phase progress: Make = Mar 1 – Apr 1, Ship = Apr 1–10, Push = Apr 10–28
 function getPhasePercent(): number {
-  const makeStart  = Date.UTC(2026, 1, 20);  // Feb 20
-  const makeEnd    = Date.UTC(2026, 2, 23);  // Mar 23
+  const makeStart  = Date.UTC(2026, 2, 1);   // Mar 1
+  const makeEnd    = Date.UTC(2026, 3, 1);   // Apr 1
   const pushEnd    = Date.UTC(2026, 3, 28);  // Apr 28
   const now = Date.UTC(new Date().getFullYear(), new Date().getMonth(), new Date().getDate());
   const total = pushEnd - makeStart;
@@ -38,7 +38,7 @@ export default function BrainPage() {
           <h1 className="text-5xl font-black tracking-tight mb-2 leading-none">MAKE MODE</h1>
           <p className="text-[#666] text-sm leading-relaxed font-medium">
             Studio is primary. Everything else is Track 2.<br />
-            Feb 28 → Mar 23
+            Mar 1 → Apr 1
           </p>
         </div>
 
