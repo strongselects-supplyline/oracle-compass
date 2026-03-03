@@ -1,10 +1,9 @@
 "use client";
 
 import { useEffect, useState } from "react";
-import { SINGLES, ALBUM_RELEASE } from "@/lib/releases";
+import { getDynamicReleases, Release, ALBUM_RELEASE_DATE } from "@/lib/releases";
 import { getStoreValue, setStoreValue } from "@/lib/db";
 
-// Returns ISO week key like "2026-W10" — resets counter automatically each week
 function getWeekKey(): string {
     const now = new Date();
     const d = new Date(Date.UTC(now.getFullYear(), now.getMonth(), now.getDate()));
@@ -17,16 +16,25 @@ function getWeekKey(): string {
 export default function StudioPage() {
     const [daysUntil, setDaysUntil] = useState(0);
     const [sessions, setSessions] = useState(0);
+    const [releases, setReleases] = useState<Release[]>([]);
     const weekKey = `weekly_sessions:${getWeekKey()}`;
 
     useEffect(() => {
-        const now = new Date();
-        const utcAlbum = Date.UTC(ALBUM_RELEASE.getFullYear(), ALBUM_RELEASE.getMonth(), ALBUM_RELEASE.getDate());
-        const utcNow = Date.UTC(now.getFullYear(), now.getMonth(), now.getDate());
-        const diff = Math.ceil((utcAlbum - utcNow) / (1000 * 60 * 60 * 24));
-        setDaysUntil(diff);
+        const init = async () => {
+            // Dynamic album countdown — reads from ALBUM_RELEASE_DATE string
+            const [y, m, d] = ALBUM_RELEASE_DATE.split("-").map(Number);
+            const utcAlbum = Date.UTC(y, m - 1, d);
+            const now = new Date();
+            const utcNow = Date.UTC(now.getFullYear(), now.getMonth(), now.getDate());
+            setDaysUntil(Math.max(Math.ceil((utcAlbum - utcNow) / (1000 * 60 * 60 * 24)), 0));
 
-        getStoreValue<number>(weekKey).then(v => setSessions(v || 0));
+            // Dynamic releases — reflect any Oracle realignments
+            const r = await getDynamicReleases();
+            setReleases(r);
+
+            getStoreValue<number>(weekKey).then(v => setSessions(v || 0));
+        };
+        init();
     }, [weekKey]);
 
     const logSession = async () => {
@@ -50,7 +58,7 @@ export default function StudioPage() {
 
                 <h3 className="text-xs font-bold tracking-widest text-[#888] uppercase mb-4">Release Waterfall</h3>
                 <div className="card mb-8">
-                    {SINGLES.map((s, i) => (
+                    {releases.map((s) => (
                         <div key={s.title} className="mb-5 last:mb-0">
                             <div className="flex justify-between items-end mb-2">
                                 <div>
@@ -65,8 +73,12 @@ export default function StudioPage() {
                             </div>
                             <div className="waterfall-bar">
                                 <div
-                                    className={`waterfall-fill ${s.status === 'live' ? 'bg-green-500 w-full' : (s.status === 'upload_pending' ? 'bg-amber-500 w-1/2' : 'bg-[#2a2a2a] w-0')}`}
-                                ></div>
+                                    className={`waterfall-fill ${
+                                        s.status === 'live' ? 'bg-green-500 w-full' :
+                                        s.status === 'upload_pending' ? 'bg-amber-500 w-1/2' :
+                                        'bg-[#2a2a2a] w-0'
+                                    }`}
+                                />
                             </div>
                         </div>
                     ))}
@@ -74,9 +86,9 @@ export default function StudioPage() {
 
                 <h3 className="text-xs font-bold tracking-widest text-[#888] uppercase mb-4">Cycle Board</h3>
                 <div className="card mb-8">
-                    <CycleRow title="RECONNECT" storageKey="cycle_reconnect" initialStatus="recording" />
-                    <CycleRow title="WANT U 2" storageKey="cycle_wantu2" initialStatus="mixing" />
-                    <CycleRow title="WORTH IT" storageKey="cycle_worthit" initialStatus="resting" />
+                    <CycleRow title="RECONNECT"  storageKey="cycle_reconnect"  initialStatus="recording" />
+                    <CycleRow title="WANT U 2"   storageKey="cycle_wantu2"     initialStatus="mixing" />
+                    <CycleRow title="WORTH IT"   storageKey="cycle_worthit"    initialStatus="resting" />
                     <CycleRow title="JUST SAY SO" storageKey="cycle_justsayso" initialStatus="add" />
                 </div>
 
@@ -96,26 +108,21 @@ export default function StudioPage() {
     );
 }
 
-function CycleRow({ title, initialStatus, storageKey }: { title: string, initialStatus: string, storageKey: string }) {
+function CycleRow({ title, initialStatus, storageKey }: { title: string; initialStatus: string; storageKey: string }) {
     const [status, setStatus] = useState(initialStatus);
 
     useEffect(() => {
-        getStoreValue<string>(storageKey).then(v => {
-            if (v) setStatus(v);
-        });
+        getStoreValue<string>(storageKey).then(v => { if (v) setStatus(v); });
     }, [storageKey]);
 
     const cycle = async () => {
         const map: Record<string, string> = {
-            'add': 'recording',
-            'recording': 'mixing',
-            'mixing': 'resting',
-            'resting': 'done',
-            'done': 'add'
+            'add': 'recording', 'recording': 'mixing',
+            'mixing': 'resting', 'resting': 'done', 'done': 'add'
         };
-        const nextStatus = map[status];
-        setStatus(nextStatus);
-        await setStoreValue(storageKey, nextStatus);
+        const next = map[status];
+        setStatus(next);
+        await setStoreValue(storageKey, next);
     };
 
     return (
@@ -129,5 +136,5 @@ function CycleRow({ title, initialStatus, storageKey }: { title: string, initial
                 {status === 'add' && <span className="text-[#888] px-2 font-bold">+ ADD</span>}
             </button>
         </div>
-    )
+    );
 }

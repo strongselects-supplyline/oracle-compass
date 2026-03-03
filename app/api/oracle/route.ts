@@ -1,0 +1,124 @@
+// app/api/oracle/route.ts
+// The Oracle Engine — receives assembled context, calls Claude, returns a decree.
+// Called once per day by OracleTrigger (client component in layout).
+
+import { NextRequest, NextResponse } from "next/server";
+import type { OracleContext, OracleDecree } from "@/lib/oracle";
+import type { DailyLog } from "@/lib/db";
+
+export const runtime = "edge";
+
+const SYSTEM_PROMPT = `You are the Oracle — a sovereign creative intelligence tracking EP's music empire.
+You receive daily context about his progress: release schedule, sobriety streak, studio sessions, cycle track status, and yesterday's daily log.
+Your job: assess the situation honestly and return a precise decree.
+
+Rules:
+- Be direct, no fluff. EP responds to truth, not comfort.
+- Only shift release dates if genuinely warranted by missed sessions or lack of progress. Don't shift for small setbacks.
+- severity GREEN = on track | AMBER = behind but recoverable | RED = needs urgent intervention
+- oracle_message should be 1-2 sentences max — punchy, direct, motivational without being corny.
+- Only include realignments that are actually necessary. "no_change" is a valid and often correct response.
+
+Respond ONLY with valid JSON matching this exact schema:
+{
+  "assessment": "brief honest assessment of current trajectory",
+  "severity": "GREEN" | "AMBER" | "RED",
+  "oracle_message": "1-2 sentence message for EP",
+  "realignments": [
+    { "type": "shift_release", "target": "<track title>", "days": <number>, "reason": "<why>" },
+    { "type": "update_cycle_status", "track": "<track name>", "new_status": "<recording|mixing|mastered|released>", "reason": "<why>" },
+    { "type": "set_focus_requirement", "hours": <number>, "reason": "<why>" },
+    { "type": "no_change" }
+  ]
+}`;
+
+export async function POST(req: NextRequest) {
+    const apiKey = process.env.ANTHROPIC_API_KEY;
+    if (!apiKey) {
+        return NextResponse.json({ error: "ANTHROPIC_API_KEY not set" }, { status: 500 });
+    }
+
+    let context: OracleContext;
+    try {
+        context = await req.json();
+    } catch {
+        return NextResponse.json({ error: "Invalid request body" }, { status: 400 });
+    }
+
+    const userMessage = buildContextMessage(context);
+
+    try {
+        const res = await fetch("https://api.anthropic.com/v1/messages", {
+            method: "POST",
+            headers: {
+                "x-api-key": apiKey,
+                "anthropic-version": "2023-06-01",
+                "content-type": "application/json",
+            },
+            body: JSON.stringify({
+                model: "claude-3-5-haiku-20241022",
+                max_tokens: 800,
+                system: SYSTEM_PROMPT,
+                messages: [{ role: "user", content: userMessage }],
+            }),
+        });
+
+        if (!res.ok) {
+            const err = await res.text();
+            return NextResponse.json({ error: `Anthropic error: ${err}` }, { status: 502 });
+        }
+
+        const data = await res.json();
+        const raw = data.content[0]?.text ?? "";
+
+        // Strip markdown code fences if present
+        const cleaned = raw.replace(/^```(?:json)?\n?/m, "").replace(/\n?```$/m, "").trim();
+        const decree: OracleDecree = JSON.parse(cleaned);
+
+        return NextResponse.json(decree);
+    } catch (err) {
+        return NextResponse.json({ error: `Oracle engine failed: ${String(err)}` }, { status: 500 });
+    }
+}
+
+function logSummary(l: DailyLog): string {
+    return [
+        `    One Thing: ${l.oneThing || "(not set)"}`,
+        `    Sovereignty Stack: ${l.sovereigntyStack ? "✓" : "✗"}`,
+        `    Movement: ${l.movement ? "✓" : "✗"}`,
+        `    Sauna: ${l.sauna ? "✓" : "✗"}`,
+        `    Sleep: ${l.sleep ?? "unknown"}h`,
+        `    Pushups: ${l.pushups ?? 0}`,
+    ].join("\n");
+}
+
+function buildContextMessage(ctx: OracleContext): string {
+    const tracks = ctx.cycleTracks.map(t => `  - ${t.name}: ${t.status}`).join("\n");
+    const releases = ctx.releases.map(r =>
+        `  - ${r.title} | upload: ${r.uploadDate} | release: ${r.releaseDate} | status: ${r.status}`
+    ).join("\n");
+
+    return `DATE: ${ctx.date}
+MAKE MODE: Week ${ctx.makeModeWeek} of 5
+DAYS UNTIL ALBUM: ${ctx.daysUntilAlbum}
+SOBRIETY STREAK: ${ctx.sobrietyStreak} days
+
+TODAY'S LOG:
+${logSummary(ctx.dailyLog)}
+
+YESTERDAY'S LOG:
+${ctx.previousLog ? logSummary(ctx.previousLog) : "  (none)"}
+
+WEEKLY STUDIO SESSIONS: ${ctx.weeklyStudioSessions}
+
+CYCLE TRACKS:
+${tracks}
+
+RELEASE SCHEDULE:
+${releases}
+
+LAST DECREE SEVERITY: ${ctx.lastDecree?.severity ?? "none"}
+LAST ORACLE MESSAGE: ${ctx.lastDecree?.oracle_message ?? "none"}
+
+Assess and decree.`;
+}

@@ -2,6 +2,7 @@ import type { Metadata } from "next";
 import { Geist } from "next/font/google";
 import "./globals.css";
 import BottomNav from "@/components/BottomNav";
+import OracleTrigger from "@/components/OracleTrigger";
 
 const geist = Geist({
   variable: "--font-geist-sans",
@@ -31,6 +32,7 @@ export default function RootLayout({
         <meta name="viewport" content="width=device-width, initial-scale=1, viewport-fit=cover" />
       </head>
       <body className={`${geist.variable}`}>
+        <OracleTrigger />
         {children}
         <BottomNav />
       </body>
