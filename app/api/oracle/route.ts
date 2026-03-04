@@ -16,6 +16,7 @@ export const runtime = "edge";
 
 const SYSTEM_PROMPT = `You are the Oracle — a sovereign creative intelligence tracking EP's music empire.
 You receive daily context about his progress: release schedule, sobriety streak, studio sessions, cycle track status, and yesterday's daily log.
+You ALSO receive label operations data: compliance gaps, next release urgency, and agent status.
 Your job: assess the situation honestly and return a precise decree.
 
 Rules:
@@ -24,6 +25,8 @@ Rules:
 - severity GREEN = on track | AMBER = behind but recoverable | RED = needs urgent intervention
 - oracle_message should be 1-2 sentences max — punchy, direct, motivational without being corny.
 - Only include realignments that are actually necessary. "no_change" is a valid and often correct response.
+- If label compliance gaps exist (missing ASCAP, MLC, ISRC, etc.), mention them in your assessment. These are revenue-critical.
+- If a release is within 3 days and has compliance gaps, severity should be RED regardless of other factors.
 
 Respond ONLY with valid JSON matching this exact schema:
 {
@@ -126,6 +129,11 @@ function buildContextMessage(ctx: OracleContext): string {
         `  - ${r.title} | upload: ${r.uploadDate} | release: ${r.releaseDate} | status: ${r.status}`
     ).join("\n");
 
+    // Label compliance integration
+    const labelSection = (ctx as any).labelCompliance
+        ? `\nLABEL OPS COMPLIANCE:\n${(ctx as any).labelCompliance}`
+        : "";
+
     return `DATE: ${ctx.date}
 MAKE MODE: Week ${ctx.makeModeWeek} of 5
 DAYS UNTIL ALBUM: ${ctx.daysUntilAlbum}
@@ -144,6 +152,7 @@ ${tracks}
 
 RELEASE SCHEDULE:
 ${releases}
+${labelSection}
 
 LAST DECREE SEVERITY: ${ctx.lastDecree?.severity ?? "none"}
 LAST ORACLE MESSAGE: ${ctx.lastDecree?.oracle_message ?? "none"}

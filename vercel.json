@@ -1,0 +1,12 @@
+{
+  "crons": [
+    {
+      "path": "/api/label/cron/compliance",
+      "schedule": "0 13 * * *"
+    },
+    {
+      "path": "/api/label/cron/briefing",
+      "schedule": "0 12 * * *"
+    }
+  ]
+}

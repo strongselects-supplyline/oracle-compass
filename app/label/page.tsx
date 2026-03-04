@@ -6,11 +6,13 @@ import CopyVault from "@/components/label/CopyVault";
 import RolloutCalendar from "@/components/label/RolloutCalendar";
 import AgentStatus from "@/components/label/AgentStatus";
 import ComplianceBoard from "@/components/label/ComplianceBoard";
+import CreativeDept from "@/components/label/CreativeDept";
+import ANRPanel from "@/components/label/ANRPanel";
 
 export default function LabelPage() {
     const [releases, setReleases] = useState<Release[]>([]);
     const [expandedRelease, setExpandedRelease] = useState<string | null>(null);
-    const [activeTab, setActiveTab] = useState<"rollout" | "vault" | "compliance" | "creative">("vault");
+    const [activeTab, setActiveTab] = useState<"rollout" | "vault" | "compliance" | "creative" | "anr">("vault");
 
     useEffect(() => {
         getDynamicReleases().then(setReleases);
@@ -51,13 +53,13 @@ export default function LabelPage() {
                                     <AgentStatus trackTitle={s.title} />
 
                                     <div className="flex gap-2 mb-6 overflow-x-auto pb-2 hide-scrollbar">
-                                        {(["rollout", "vault", "compliance", "creative"] as const).map(tab => (
+                                        {(["rollout", "vault", "compliance", "creative", "anr"] as const).map(tab => (
                                             <button
                                                 key={tab}
                                                 onClick={() => setActiveTab(tab)}
                                                 className={`px-4 py-2 rounded text-xs font-bold tracking-widest uppercase shrink-0 transition-colors ${activeTab === tab ? 'bg-white text-black' : 'bg-[#1a1a1a] text-[#888] hover:text-white'}`}
                                             >
-                                                {tab.replace('vault', 'copy vault')}
+                                                {tab === 'vault' ? 'copy vault' : tab === 'anr' ? 'a&r' : tab}
                                             </button>
                                         ))}
                                     </div>
@@ -65,12 +67,8 @@ export default function LabelPage() {
                                     {activeTab === "rollout" && <RolloutCalendar trackTitle={s.title} releaseDate={s.releaseDate} />}
                                     {activeTab === "vault" && <CopyVault trackTitle={s.title} />}
                                     {activeTab === "compliance" && <ComplianceBoard />}
-
-                                    {activeTab === "creative" && (
-                                        <div className="text-center py-12 text-[#555] text-sm font-bold tracking-widest uppercase bg-[#0a0a0a] rounded border border-[#1a1a1a]">
-                                            Module not yet built
-                                        </div>
-                                    )}
+                                    {activeTab === "creative" && <CreativeDept trackTitle={s.title} />}
+                                    {activeTab === "anr" && <ANRPanel trackTitle={s.title} />}
                                 </div>
                             )}
                         </div>
