@@ -16,66 +16,82 @@ export type PRCopy = {
 export default function CopyVault({ trackTitle }: { trackTitle: string }) {
     const [copies, setCopies] = useState<Record<string, PRCopy>>({});
     const [loading, setLoading] = useState(false);
+    const [activeRequest, setActiveRequest] = useState<string | null>(null);
+    const [error, setError] = useState<string | null>(null);
 
     const loadCopies = async () => {
-        const data = await getAllWithPrefix<PRCopy>(`label_pr:${trackTitle}:`);
-        setCopies(data);
+        try {
+            const data = await getAllWithPrefix<PRCopy>(`label_pr:${trackTitle}:`);
+            setCopies(data);
+        } catch (e) {
+            console.error("Failed to load copies:", e);
+        }
     };
 
     useEffect(() => {
         loadCopies();
-        // clear unreviewed flag when opening copy vault
         setStoreValue("label_vault_unreviewed", 0);
     }, [trackTitle]);
 
     const requestVariants = async (assetType: string) => {
         setLoading(true);
+        setActiveRequest(assetType);
+        setError(null);
         try {
-            // 1. Generate PR variants
             const prRes = await fetch("/api/label/pr", {
                 method: "POST",
                 body: JSON.stringify({ trackTitle, assetType })
             });
+            if (!prRes.ok) {
+                const errText = await prRes.text().catch(() => "Unknown server error");
+                throw new Error(`PR agent error (${prRes.status}): ${errText.slice(0, 120)}`);
+            }
             const prData = await prRes.json();
-            if (!prData.variants) throw new Error("No variants generated");
+            if (!prData.variants || !Array.isArray(prData.variants) || prData.variants.length === 0) {
+                throw new Error("PR agent returned no variants — try again");
+            }
 
-            // 2. Score with Guardian (Score variant 1 as the primary)
+            // Score with Guardian
             const gRes = await fetch("/api/label/guardian", {
                 method: "POST",
                 body: JSON.stringify({ inputContent: prData.variants[0], assetType })
             });
-            const gData = await gRes.json();
+            // Guardian is optional — degrade gracefully
+            let gData: any = {};
+            if (gRes.ok) {
+                gData = await gRes.json();
+            } else {
+                console.warn("Guardian scoring failed, using raw PR output");
+            }
 
-            // Store result
             const copyRecord: PRCopy = {
                 variants: [gData.content || prData.variants[0], prData.variants[1], prData.variants[2]].filter(Boolean),
                 assetType,
                 guardianScore: gData.score || 0,
                 edits: gData.edits,
                 hardRuleViolations: gData.hardRuleViolations,
-                approved: gData.approved
+                approved: gData.approved ?? true
             };
 
             const key = `label_pr:${trackTitle}:${assetType}:${new Date().toISOString().split('T')[0]}`;
             await setStoreValue(key, copyRecord);
-
-            // Log budget costs
             await logLabelCost(LABEL_COST_ESTIMATES.pr_request + LABEL_COST_ESTIMATES.guardian_filter);
 
-            // Mark unreviewed + increment copy vault indicator
             const unrev = (await getStoreValue<number>("label_vault_unreviewed")) || 0;
             await setStoreValue("label_vault_unreviewed", unrev + 1);
 
             await loadCopies();
-        } catch (e) {
-            console.error(e);
-            alert("Error generating copy. See console.");
+        } catch (e: any) {
+            console.error("Copy generation failed:", e);
+            setError(e?.message || "Failed to generate copy");
         }
         setLoading(false);
+        setActiveRequest(null);
     };
 
     const rescoreVariant = async (assetType: string) => {
         setLoading(true);
+        setError(null);
         try {
             const data = copies[assetType];
             if (!data) return;
@@ -84,6 +100,7 @@ export default function CopyVault({ trackTitle }: { trackTitle: string }) {
                 method: "POST",
                 body: JSON.stringify({ inputContent: data.variants[0], assetType })
             });
+            if (!gRes.ok) throw new Error(`Guardian error (${gRes.status})`);
             const gData = await gRes.json();
 
             const copyRecord: PRCopy = {
@@ -99,50 +116,76 @@ export default function CopyVault({ trackTitle }: { trackTitle: string }) {
             await setStoreValue(key, copyRecord);
             await logLabelCost(LABEL_COST_ESTIMATES.guardian_filter);
             await loadCopies();
-        } catch (e) {
-            console.error(e);
-            alert("Error rescoring variant.");
+        } catch (e: any) {
+            console.error("Rescore failed:", e);
+            setError(e?.message || "Rescore failed");
         }
         setLoading(false);
     };
 
     const copyToClip = (text: string) => {
+        navigator.clipboard.writeText(text).then(() => {
+            // Brief visual feedback without alert
+        }).catch(() => {
+            // Fallback for older browsers
+        });
+    };
+
+    const copiedFeedback = (text: string) => {
         navigator.clipboard.writeText(text);
-        alert("Copied to clipboard!");
     };
 
     return (
-        <div className="copy-vault animate-fade-in">
-            <h3 className="text-xl font-bold mb-4">COPY VAULT — {trackTitle}</h3>
+        <div className="animate-fade-in">
+            <h3 className="text-sm font-black tracking-widest uppercase mb-4">✍️ Copy Vault — {trackTitle}</h3>
 
-            {Object.entries(copies).length === 0 && <p className="text-[#888] mb-6">No copy generated yet.</p>}
+            {/* Error banner */}
+            {error && (
+                <div className="alert-banner alert-banner-red mb-4 animate-slide-up">
+                    <span>⚠️</span>
+                    <div className="flex-1 text-xs">{error}</div>
+                    <button onClick={() => setError(null)} className="text-xs opacity-60 hover:opacity-100">✕</button>
+                </div>
+            )}
+
+            {Object.entries(copies).length === 0 && !loading && (
+                <p className="text-[#555] text-sm mb-6 font-medium">No copy generated yet.</p>
+            )}
 
             <div className="space-y-4">
                 {Object.entries(copies).map(([key, data]) => (
                     <div key={key} className="card relative">
-                        <div className="flex justify-between items-center mb-4">
-                            <span className="font-bold tracking-widest text-[#888] uppercase">{data.assetType.replace(/_/g, ' ')}</span>
-                            <div className="flex gap-3 items-center">
-                                <span className={`badge ${data.guardianScore >= 90 ? 'badge-green' : data.guardianScore >= 70 ? 'badge-amber' : 'badge-red'}`}>
-                                    GUARDIAN: {data.guardianScore}
+                        <div className="flex justify-between items-center mb-3 gap-2">
+                            <span className="text-[10px] font-black tracking-widest text-[#777] uppercase">{data.assetType?.replace(/_/g, ' ') || 'unknown'}</span>
+                            <div className="flex gap-2 items-center shrink-0">
+                                <span className={`badge ${(data.guardianScore ?? 0) >= 90 ? 'badge-green' : (data.guardianScore ?? 0) >= 70 ? 'badge-amber' : 'badge-red'}`}>
+                                    {data.guardianScore ?? '—'}
                                 </span>
-                                <button onClick={() => rescoreVariant(data.assetType)} disabled={loading} className="text-xs font-bold tracking-widest text-[#555] hover:text-white uppercase transition-colors disabled:opacity-50">
+                                <button
+                                    onClick={() => rescoreVariant(data.assetType)}
+                                    disabled={loading}
+                                    className="text-[9px] font-black tracking-widest text-[#555] hover:text-white uppercase transition-colors disabled:opacity-30"
+                                >
                                     [RESCORE]
                                 </button>
                             </div>
                         </div>
                         {data.hardRuleViolations && data.hardRuleViolations.length > 0 && (
-                            <div className="bg-red-900/40 text-red-500 p-3 text-xs mb-4 rounded border border-red-500/50">
-                                <strong className="block mb-1">❌ Rule Violation:</strong> {data.hardRuleViolations.join(", ")}
+                            <div className="alert-banner alert-banner-red mb-3 text-xs">
+                                <span>❌</span>
+                                <span>{data.hardRuleViolations.join(", ")}</span>
                             </div>
                         )}
-                        <div className="space-y-4">
-                            {data.variants.map((v, i) => (
-                                <div key={i} className="flex gap-4 items-start">
-                                    <span className="text-[#555] font-bold mt-1">{['A', 'B', 'C'][i]}</span>
-                                    <p className="flex-1 text-sm text-[#ddd] leading-relaxed">"{v}"</p>
-                                    <button onClick={() => copyToClip(v)} className="text-xs font-bold tracking-widest text-[#888] hover:text-white shrink-0 mt-1 transition-colors">
-                                        [COPY]
+                        <div className="space-y-3">
+                            {(data.variants || []).map((v, i) => (
+                                <div key={i} className="flex gap-3 items-start">
+                                    <span className="text-[#444] font-bold text-xs mt-1 shrink-0">{['A', 'B', 'C'][i]}</span>
+                                    <p className="flex-1 text-[13px] text-[#ccc] leading-relaxed">"{v}"</p>
+                                    <button
+                                        onClick={() => copiedFeedback(v)}
+                                        className="text-[9px] font-black tracking-widest text-[#555] hover:text-[#d4a853] shrink-0 mt-1 transition-colors bg-[#1a1a1a] px-2 py-1 rounded-md"
+                                    >
+                                        COPY
                                     </button>
                                 </div>
                             ))}
@@ -151,21 +194,27 @@ export default function CopyVault({ trackTitle }: { trackTitle: string }) {
                 ))}
             </div>
 
-            <div className="mt-8 border-t border-[#2a2a2a] pt-6">
-                <div className="text-xs font-bold tracking-widest text-[#555] uppercase mb-4">Request New Copy</div>
+            <div className="mt-6 border-t border-[#1a1a1a] pt-5">
+                <div className="text-[10px] font-black tracking-widest text-[#555] uppercase mb-3">Request New Copy</div>
                 <div className="flex gap-2 flex-wrap">
                     {["tiktok_caption", "ig_feed", "spotify_pitch", "curator_dm", "press_bio_short"].map(type => (
                         <button
                             key={type}
                             onClick={() => requestVariants(type)}
                             disabled={loading}
-                            className="bg-[#1a1a1a] hover:bg-[#2a2a2a] text-[#888] hover:text-white text-xs font-bold tracking-widest uppercase px-4 py-2 rounded transition-colors disabled:opacity-50"
+                            className={`text-[10px] font-bold tracking-wider uppercase px-3 py-2.5 rounded-xl transition-all min-h-[44px] ${activeRequest === type
+                                    ? 'bg-[#d4a853] text-black'
+                                    : 'bg-[#1a1a1a] text-[#777] border border-[#252525] active:scale-95'
+                                } disabled:opacity-40`}
                         >
-                            + {type.replace(/_/g, ' ')}
+                            {activeRequest === type ? (
+                                <span className="flex items-center gap-1.5"><span className="spinner" style={{ width: 10, height: 10, borderWidth: 1.5 }} /> GEN…</span>
+                            ) : (
+                                `+ ${type.replace(/_/g, ' ')}`
+                            )}
                         </button>
                     ))}
                 </div>
-                {loading && <div className="mt-4 text-xs font-bold tracking-widest text-amber-500 uppercase animate-pulse">Running PR & Guardian Chain...</div>}
             </div>
         </div>
     );

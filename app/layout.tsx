@@ -3,6 +3,7 @@ import { Geist } from "next/font/google";
 import "./globals.css";
 import BottomNav from "@/components/BottomNav";
 import OracleTrigger from "@/components/OracleTrigger";
+import ErrorBoundary from "@/components/ErrorBoundary";
 
 const geist = Geist({
   variable: "--font-geist-sans",
@@ -28,14 +29,17 @@ export default function RootLayout({
         <link rel="manifest" href="/manifest.json" />
         <meta name="apple-mobile-web-app-capable" content="yes" />
         <meta name="apple-mobile-web-app-status-bar-style" content="black-translucent" />
-        <meta name="theme-color" content="#0a0a0a" />
+        <meta name="theme-color" content="#080808" />
         <meta name="viewport" content="width=device-width, initial-scale=1, viewport-fit=cover" />
       </head>
       <body className={`${geist.variable}`}>
-        <OracleTrigger />
-        {children}
-        <BottomNav />
+        <ErrorBoundary>
+          <OracleTrigger />
+          {children}
+          <BottomNav />
+        </ErrorBoundary>
       </body>
     </html>
   );
 }
+

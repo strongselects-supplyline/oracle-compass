@@ -1,6 +1,6 @@
 "use client";
 
-import { useState } from "react";
+import { useState, useEffect } from "react";
 import { setStoreValue, getStoreValue, logLabelCost } from "@/lib/db";
 import { LABEL_COST_ESTIMATES } from "@/lib/budget";
 
@@ -16,70 +16,99 @@ type SonicReport = {
 export default function ANRPanel({ trackTitle }: { trackTitle: string }) {
     const [loading, setLoading] = useState(false);
     const [report, setReport] = useState<SonicReport | null>(null);
+    const [error, setError] = useState<string | null>(null);
+
+    useEffect(() => {
+        getStoreValue<SonicReport>(`label_anr:${trackTitle}`).then(v => { if (v) setReport(v); });
+    }, [trackTitle]);
 
     const analyze = async () => {
         setLoading(true);
+        setError(null);
         try {
             const res = await fetch("/api/label/anr", {
                 method: "POST",
                 body: JSON.stringify({ trackTitle })
             });
+            if (!res.ok) {
+                const errText = await res.text().catch(() => "Server error");
+                throw new Error(`A&R agent error (${res.status}): ${errText.slice(0, 120)}`);
+            }
             const data = await res.json();
-            if (data.error) { alert(data.error); setLoading(false); return; }
+            if (data.error) throw new Error(data.error);
 
             setReport(data);
             await setStoreValue(`label_anr:${trackTitle}`, data);
             await logLabelCost(LABEL_COST_ESTIMATES.anr_track_analysis);
-        } catch (e) {
-            console.error(e);
-            alert("A&R agent failed.");
+        } catch (e: any) {
+            console.error("A&R agent failed:", e);
+            setError(e?.message || "A&R agent failed");
         }
         setLoading(false);
     };
 
-    useState(() => {
-        getStoreValue<SonicReport>(`label_anr:${trackTitle}`).then(v => { if (v) setReport(v); });
-    });
-
     return (
         <div className="animate-fade-in">
-            <div className="flex justify-between items-center mb-6">
-                <h3 className="text-xl font-bold">A&R / SONIC ANALYST</h3>
-                <button
-                    onClick={analyze}
-                    disabled={loading}
-                    className="text-xs font-bold tracking-widest text-amber-500 hover:text-white uppercase disabled:opacity-50 transition-colors"
-                >
-                    {loading ? "ANALYZING..." : "[RUN SONIC ANALYSIS]"}
-                </button>
+            <div className="flex justify-between items-center mb-5 gap-2">
+                <h3 className="text-sm font-black tracking-widest uppercase">🎧 A&R Analyst</h3>
+                {report ? (
+                    <button onClick={analyze} disabled={loading} className="text-[10px] font-black tracking-widest text-[#555] hover:text-white uppercase disabled:opacity-30 transition-colors">
+                        {loading ? "..." : "[RERUN]"}
+                    </button>
+                ) : null}
             </div>
 
-            {!report && !loading && (
-                <div className="text-center py-12 text-[#555] text-sm font-bold tracking-widest uppercase bg-[#0a0a0a] rounded border border-[#1a1a1a]">
-                    No sonic analysis yet
+            {error && (
+                <div className="alert-banner alert-banner-red mb-4 animate-slide-up">
+                    <span>⚠️</span>
+                    <div className="flex-1 text-xs">{error}</div>
+                    <button onClick={() => setError(null)} className="text-xs opacity-60 hover:opacity-100">✕</button>
+                </div>
+            )}
+
+            {!report && !loading && !error && (
+                <div className="text-center py-8">
+                    <p className="text-[#555] text-sm mb-5 font-medium">No sonic analysis yet.</p>
+                    <button onClick={analyze} className="agent-btn agent-btn-primary w-full">
+                        🎧 RUN SONIC ANALYSIS
+                    </button>
+                </div>
+            )}
+
+            {loading && !report && (
+                <div className="space-y-3">
+                    {[...Array(4)].map((_, i) => (
+                        <div key={i} className="card" style={{ opacity: 1 - i * 0.15 }}>
+                            <div className="skeleton h-3 w-24 mb-3 rounded" />
+                            <div className="skeleton h-8 w-full rounded" />
+                        </div>
+                    ))}
+                    <p className="text-[10px] font-black tracking-widest text-[#555] uppercase text-center mt-4">
+                        A&R is analyzing sonic profile…
+                    </p>
                 </div>
             )}
 
             {report && (
-                <div className="space-y-6">
+                <div className="space-y-4">
                     {/* Sonic Position */}
                     <div className="card">
-                        <div className="flex gap-4 mb-4">
-                            <span className="badge badge-amber">{report.bpmRange} BPM</span>
-                            <span className="badge badge-green">{report.energyLevel.toUpperCase()} ENERGY</span>
+                        <div className="flex gap-2 mb-3 flex-wrap">
+                            <span className="badge badge-amber">{report.bpmRange || '—'} BPM</span>
+                            <span className="badge badge-green">{(report.energyLevel || 'MID').toUpperCase()} ENERGY</span>
                         </div>
-                        <p className="text-sm text-[#ccc] leading-relaxed">{report.sonicPosition}</p>
+                        <p className="text-[13px] text-[#ccc] leading-relaxed">{report.sonicPosition || '—'}</p>
                     </div>
 
                     {/* Reference Tracks */}
                     <div className="card">
-                        <h4 className="text-sm font-bold tracking-widest text-amber-500 uppercase mb-4">🎧 REFERENCE TRACKS</h4>
-                        <div className="space-y-3">
-                            {report.referenceTracks.map((ref, i) => (
-                                <div key={i} className="bg-[#0a0a0a] p-3 rounded border border-[#1a1a1a]">
-                                    <p className="font-bold text-white">{ref.artist} — &ldquo;{ref.title}&rdquo;</p>
-                                    <p className="text-xs text-[#888] mt-1">{ref.similarity}</p>
-                                    <p className="text-xs text-amber-500/80 mt-1">Rollout lesson: {ref.rolloutLesson}</p>
+                        <h4 className="text-[10px] font-black tracking-widest text-[#d4a853] uppercase mb-3">🎧 Reference Tracks</h4>
+                        <div className="space-y-2">
+                            {(report.referenceTracks || []).map((ref, i) => (
+                                <div key={i} className="bg-[#0a0a0a] p-3 rounded-lg border border-[#1a1a1a]">
+                                    <p className="font-bold text-white text-sm">{ref.artist} — &ldquo;{ref.title}&rdquo;</p>
+                                    <p className="text-[11px] text-[#777] mt-1">{ref.similarity}</p>
+                                    <p className="text-[11px] text-[#d4a853]/70 mt-1">Rollout lesson: {ref.rolloutLesson}</p>
                                 </div>
                             ))}
                         </div>
@@ -87,25 +116,25 @@ export default function ANRPanel({ trackTitle }: { trackTitle: string }) {
 
                     {/* Sequencing */}
                     <div className="card">
-                        <h4 className="text-sm font-bold tracking-widest text-amber-500 uppercase mb-4">📋 TRACKLIST POSITION</h4>
-                        <p className="text-sm text-[#ccc] leading-relaxed">{report.sequencingAdvice}</p>
+                        <h4 className="text-[10px] font-black tracking-widest text-[#d4a853] uppercase mb-3">📋 Tracklist Position</h4>
+                        <p className="text-[13px] text-[#ccc] leading-relaxed">{report.sequencingAdvice || '—'}</p>
                     </div>
 
                     {/* Honest Assessment */}
                     <div className="card">
-                        <h4 className="text-sm font-bold tracking-widest text-amber-500 uppercase mb-4">💀 HONEST ASSESSMENT</h4>
-                        <div className="space-y-3">
-                            <div className="bg-green-900/20 p-3 rounded border border-green-500/30">
-                                <span className="text-xs font-bold tracking-widest text-green-500">STRENGTHS</span>
-                                <p className="text-sm text-[#ccc] mt-1">{report.honestAssessment.strengths}</p>
+                        <h4 className="text-[10px] font-black tracking-widest text-[#d4a853] uppercase mb-3">💀 Honest Assessment</h4>
+                        <div className="space-y-2">
+                            <div className="bg-green-900/15 p-3 rounded-lg border border-green-500/20">
+                                <span className="text-[9px] font-black tracking-widest text-green-500">STRENGTHS</span>
+                                <p className="text-[13px] text-[#ccc] mt-1 leading-relaxed">{report.honestAssessment?.strengths || '—'}</p>
                             </div>
-                            <div className="bg-red-900/20 p-3 rounded border border-red-500/30">
-                                <span className="text-xs font-bold tracking-widest text-red-500">WEAKNESSES</span>
-                                <p className="text-sm text-[#ccc] mt-1">{report.honestAssessment.weaknesses}</p>
+                            <div className="bg-red-900/15 p-3 rounded-lg border border-red-500/20">
+                                <span className="text-[9px] font-black tracking-widest text-red-500">WEAKNESSES</span>
+                                <p className="text-[13px] text-[#ccc] mt-1 leading-relaxed">{report.honestAssessment?.weaknesses || '—'}</p>
                             </div>
-                            <div className="bg-amber-900/20 p-3 rounded border border-amber-500/30">
-                                <span className="text-xs font-bold tracking-widest text-amber-500">ACTION ITEMS</span>
-                                <p className="text-sm text-[#ccc] mt-1">{report.honestAssessment.actionItems}</p>
+                            <div className="bg-amber-900/15 p-3 rounded-lg border border-amber-500/20">
+                                <span className="text-[9px] font-black tracking-widest text-amber-500">ACTION ITEMS</span>
+                                <p className="text-[13px] text-[#ccc] mt-1 leading-relaxed">{report.honestAssessment?.actionItems || '—'}</p>
                             </div>
                         </div>
                     </div>

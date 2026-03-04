@@ -52,7 +52,7 @@ export async function POST(req: NextRequest) {
                 "content-type": "application/json",
             },
             body: JSON.stringify({
-                model: "claude-haiku-4-5", // Using haiku for rapid filtering
+                model: "claude-3-5-haiku-20241022", // Using haiku for rapid filtering
                 max_tokens: 500,
                 system: SYSTEM_PROMPT,
                 messages: [{ role: "user", content: userMessage }],
