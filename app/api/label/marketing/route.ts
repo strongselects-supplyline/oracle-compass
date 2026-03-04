@@ -1,7 +1,6 @@
 // app/api/label/marketing/route.ts
 import { NextRequest, NextResponse } from "next/server";
 
-export const runtime = "edge";
 
 const SYSTEM_PROMPT = `You are the Marketing Director of past.El noir Records. You build release rollout
 schedules that eliminate post-paralysis. Every schedule must be specific, day-by-day,

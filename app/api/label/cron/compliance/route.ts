@@ -3,7 +3,6 @@
 import { NextResponse } from "next/server";
 import { REGISTRY, TrackRegistry } from "@/lib/registry";
 
-export const runtime = "edge";
 
 export async function GET() {
     const now = new Date();

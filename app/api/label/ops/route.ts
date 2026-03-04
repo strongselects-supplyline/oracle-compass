@@ -3,7 +3,6 @@ import { NextRequest, NextResponse } from "next/server";
 import { getDynamicReleases } from "@/lib/releases";
 import { REGISTRY, TrackRegistry } from "@/lib/registry";
 
-export const runtime = "edge";
 
 const SYSTEM_PROMPT = `You are the Operations & Distribution Director of past.El noir Records.
 Your ONLY job is to ensure every release is properly coded and registered on time so Ethan gets paid.

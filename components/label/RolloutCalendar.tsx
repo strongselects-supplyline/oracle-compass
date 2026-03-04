@@ -18,9 +18,27 @@ export type RolloutSchedule = {
     schedule: RolloutItem[];
 };
 
+function SkeletonRows() {
+    return (
+        <div className="space-y-3 border-l-2 border-[#1a1a1a] ml-4 pl-6">
+            {[...Array(5)].map((_, i) => (
+                <div key={i} className="card" style={{ opacity: 1 - i * 0.15 }}>
+                    <div className="skeleton h-3 w-24 mb-3 rounded" />
+                    <div className="skeleton h-5 w-3/4 rounded" />
+                    <div className="flex gap-2 mt-4">
+                        <div className="skeleton h-6 w-16 rounded-md" />
+                        <div className="skeleton h-6 w-20 rounded-md" />
+                    </div>
+                </div>
+            ))}
+        </div>
+    );
+}
+
 export default function RolloutCalendar({ trackTitle, releaseDate }: { trackTitle: string, releaseDate: string }) {
     const [rollout, setRollout] = useState<RolloutSchedule | null>(null);
     const [loading, setLoading] = useState(false);
+    const [copyLoading, setCopyLoading] = useState<string | null>(null);
     const key = `label_rollout:${trackTitle}`;
 
     useEffect(() => {
@@ -35,7 +53,7 @@ export default function RolloutCalendar({ trackTitle, releaseDate }: { trackTitl
                 body: JSON.stringify({ trackTitle, releaseDate })
             });
             const data = await res.json();
-
+            if (data.error) throw new Error(data.error);
             if (data.schedule) {
                 await setStoreValue(key, data);
                 await logLabelCost(LABEL_COST_ESTIMATES.marketing_rollout);
@@ -43,14 +61,14 @@ export default function RolloutCalendar({ trackTitle, releaseDate }: { trackTitl
             }
         } catch (e) {
             console.error(e);
-            alert("Error generating rollout.");
+            alert("Error generating rollout. Check console.");
         }
         setLoading(false);
     };
 
     const requestCopy = async (assetType: string) => {
         if (!assetType || assetType === 'manual') return;
-        setLoading(true);
+        setCopyLoading(assetType);
         try {
             const prRes = await fetch("/api/label/pr", { method: "POST", body: JSON.stringify({ trackTitle, assetType }) });
             const prData = await prRes.json();
@@ -67,82 +85,90 @@ export default function RolloutCalendar({ trackTitle, releaseDate }: { trackTitl
                 hardRuleViolations: gData.hardRuleViolations,
                 approved: gData.approved
             };
-
-            const key = `label_pr:${trackTitle}:${assetType}:${new Date().toISOString().split('T')[0]}`;
-            await setStoreValue(key, copyRecord);
+            const copyKey = `label_pr:${trackTitle}:${assetType}:${new Date().toISOString().split('T')[0]}`;
+            await setStoreValue(copyKey, copyRecord);
             await logLabelCost(LABEL_COST_ESTIMATES.pr_request + LABEL_COST_ESTIMATES.guardian_filter);
-
             const unrev = (await getStoreValue<number>("label_vault_unreviewed")) || 0;
             await setStoreValue("label_vault_unreviewed", unrev + 1);
-            alert("Copy generated and sent to Vault!");
+            alert(`✓ Copy for "${assetType}" sent to Copy Vault`);
         } catch (e) {
             console.error(e);
             alert("Error generating copy. See console.");
         }
-        setLoading(false);
+        setCopyLoading(null);
     };
 
     if (!rollout) {
         return (
-            <div className="text-center py-12">
-                <p className="text-[#888] mb-6">No rollout schedule generated yet.</p>
-                <button
-                    onClick={generateRollout}
-                    disabled={loading}
-                    className="bg-white text-black hover:bg-gray-200 text-xs font-bold tracking-widest uppercase px-6 py-3 rounded transition-colors disabled:opacity-50"
-                >
-                    {loading ? "ARCHITECTING ROLLOUT..." : "GENERATE 21-DAY ROLLOUT"}
-                </button>
+            <div className="text-center py-10">
+                {loading ? (
+                    <>
+                        <SkeletonRows />
+                        <p className="text-[10px] font-black tracking-widest text-[#555] uppercase mt-6">
+                            Marketing Director is architecting your rollout…
+                        </p>
+                    </>
+                ) : (
+                    <>
+                        <p className="text-[#666] text-sm mb-6 font-medium">No rollout schedule yet.</p>
+                        <button onClick={generateRollout} className="agent-btn agent-btn-primary w-full">
+                            📅 GENERATE 21-DAY ROLLOUT
+                        </button>
+                    </>
+                )}
             </div>
         );
     }
 
     return (
-        <div className="rollout-calendar animate-fade-in">
-            <div className="flex justify-between items-center mb-6">
-                <h3 className="text-xl font-bold">ROLLOUT — {trackTitle}</h3>
+        <div className="animate-fade-in">
+            <div className="flex justify-between items-center mb-5">
+                <h3 className="text-sm font-black tracking-widest uppercase">📅 {trackTitle} Rollout</h3>
                 <button
                     onClick={generateRollout}
                     disabled={loading}
-                    className="text-xs font-bold tracking-widest text-[#888] hover:text-white uppercase disabled:opacity-50 transition-colors"
+                    className="text-[10px] font-black tracking-widest text-[#555] hover:text-white uppercase disabled:opacity-30 transition-colors"
                 >
-                    {loading ? "REGENERATING..." : "[REGENERATE]"}
+                    {loading ? "..." : "[REGEN]"}
                 </button>
             </div>
 
-            <div className="space-y-4 relative border-l-2 border-[#1a1a1a] ml-4 pl-6">
+            <div className="space-y-3 relative border-l-2 border-[#1a1a1a] ml-3 pl-5">
                 {rollout.schedule.map((item, i) => (
-                    <div key={i} className="card relative">
+                    <div key={i} className={`card relative border ${item.priority === 'must' ? 'border-[#333]' :
+                            item.priority === 'should' ? 'border-[#252525]' : 'border-[#1a1a1a]'
+                        }`}>
                         {/* Timeline node */}
-                        <div className={`absolute -left-[31px] top-6 w-3 h-3 rounded-full border border-[#0a0a0a] ${item.priority === 'must' ? 'bg-white' :
-                            item.priority === 'should' ? 'bg-[#888]' : 'bg-[#333]'
+                        <div className={`absolute -left-[28px] top-5 w-2.5 h-2.5 rounded-full border border-[#080808] ${item.priority === 'must' ? 'bg-[#d4a853]' :
+                                item.priority === 'should' ? 'bg-[#666]' : 'bg-[#333]'
                             }`} />
 
-                        <div className="flex justify-between items-start mb-2">
-                            <div>
-                                <span className={`text-xs font-bold tracking-widest uppercase ${item.daysFromRelease === 0 ? 'text-green-500' : 'text-[#888]'}`}>
-                                    {item.daysFromRelease === 0 ? "DROP DAY" : item.dateDescription}
+                        <div className="flex justify-between items-start gap-2 mb-2">
+                            <div className="flex-1 min-w-0">
+                                <span className={`text-[9px] font-black tracking-widest uppercase ${item.daysFromRelease === 0 ? 'text-green-500' : 'text-[#666]'
+                                    }`}>
+                                    {item.daysFromRelease === 0 ? "🔥 DROP DAY" : item.dateDescription}
                                 </span>
-                                <p className="font-bold text-lg mt-1">{item.action}</p>
+                                <p className="font-bold text-sm mt-1 leading-snug text-[#e0e0e0]">{item.action}</p>
                             </div>
                             {item.assetType && item.assetType !== 'manual' && (
                                 <button
                                     onClick={() => requestCopy(item.assetType)}
-                                    disabled={loading}
-                                    className="text-xs font-bold tracking-widest text-amber-500 hover:text-white uppercase transition-colors shrink-0 disabled:opacity-50"
+                                    disabled={copyLoading === item.assetType}
+                                    className="flex items-center gap-1.5 text-[10px] font-black tracking-widest text-[#d4a853] hover:text-white uppercase transition-colors shrink-0 disabled:opacity-40 bg-[#d4a853]/10 px-2.5 py-1.5 rounded-lg"
                                 >
-                                    [GET COPY]
+                                    {copyLoading === item.assetType ? <><span className="spinner" style={{ width: 10, height: 10, borderWidth: 1.5 }} />GEN</> : "✍️ COPY"}
                                 </button>
                             )}
                         </div>
 
-                        <div className="flex gap-2 flex-wrap mt-4">
+                        <div className="flex gap-1.5 flex-wrap mt-3">
                             {item.platforms.map(p => (
-                                <span key={p} className="badge bg-[#1a1a1a] text-[#888]">{p}</span>
+                                <span key={p} className="text-[9px] font-bold bg-[#1a1a1a] text-[#666] px-2 py-1 rounded-md border border-[#252525]">{p}</span>
                             ))}
-                            <span className="badge border border-[#333] text-[#555] ml-auto">
-                                TOOL: {item.toolRequired.replace('cf_', 'Content Factory ').replace('ss_', 'Sovereign Studio ').toUpperCase()}
-                            </span>
+                            {item.priority === 'must' && (
+                                <span className="text-[9px] font-black text-[#d4a853] bg-[#d4a853]/10 px-2 py-1 rounded-md ml-auto border border-[#d4a853]/20">MUST</span>
+                            )}
                         </div>
                     </div>
                 ))}

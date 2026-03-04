@@ -2,22 +2,28 @@
 
 /* ── Design Tokens ─────────────────────────────────────── */
 :root {
-  --bg:        #0a0a0a;
-  --surface:   #141414;
-  --surface-2: #1c1c1c;
-  --border:    #2a2a2a;
+  --bg:        #080808;
+  --surface:   #111111;
+  --surface-2: #1a1a1a;
+  --surface-3: #222222;
+  --border:    #252525;
+  --border-2:  #333333;
 
-  --text-primary:   #f5f5f5;
-  --text-secondary: #888888;
-  --text-muted:     #444444;
+  --text-primary:   #f0f0f0;
+  --text-secondary: #a0a0a0;
+  --text-muted:     #555555;
 
   --green:  #22c55e;
   --amber:  #f59e0b;
   --red:    #ef4444;
   --gold:   #fbbf24;
+  --accent: #d4a853;
 
   --font-display: var(--font-geist-sans);
   --font-mono:    var(--font-geist-mono);
+
+  /* Nav height used for bottom padding calculation */
+  --nav-height: 68px;
 }
 
 /* ── Base ──────────────────────────────────────────────── */
@@ -32,6 +38,8 @@ html, body {
   -webkit-font-smoothing: antialiased;
   overscroll-behavior: none;
   height: 100%;
+  /* Subtle texture on OLED screens */
+  background-image: radial-gradient(ellipse at top, rgba(212, 168, 83, 0.03) 0%, transparent 60%);
 }
 
 #__next, main {
@@ -62,24 +70,24 @@ html, body {
 
 /* ── Animations ───────────────────────────────────────── */
 @keyframes count-up {
-  from { opacity: 0; transform: translateY(12px) scale(0.94); }
+  from { opacity: 0; transform: translateY(10px) scale(0.96); }
   to   { opacity: 1; transform: translateY(0)    scale(1); }
 }
 
 @keyframes check-pop {
   0%   { transform: scale(1); }
-  40%  { transform: scale(1.18); }
-  70%  { transform: scale(0.94); }
+  40%  { transform: scale(1.16); }
+  70%  { transform: scale(0.96); }
   100% { transform: scale(1); }
 }
 
 @keyframes pulse-glow {
   0%, 100% { opacity: 1; }
-  50%       { opacity: 0.6; }
+  50%       { opacity: 0.55; }
 }
 
 @keyframes slide-up {
-  from { opacity: 0; transform: translateY(16px); }
+  from { opacity: 0; transform: translateY(14px); }
   to   { opacity: 1; transform: translateY(0); }
 }
 
@@ -97,39 +105,60 @@ html, body {
   100% { transform: scale(1); }
 }
 
+@keyframes shimmer {
+  0%   { background-position: -200% 0; }
+  100% { background-position: 200% 0; }
+}
+
+@keyframes spin {
+  from { transform: rotate(0deg); }
+  to   { transform: rotate(360deg); }
+}
+
 .animate-count-up   { animation: count-up  0.5s cubic-bezier(0.22, 1, 0.36, 1) both; }
 .animate-slide-up   { animation: slide-up  0.4s cubic-bezier(0.22, 1, 0.36, 1) both; }
 .animate-fade-in    { animation: fade-in   0.3s ease both; }
 .animate-check-pop  { animation: check-pop 0.35s cubic-bezier(0.22, 1, 0.36, 1); }
 .animate-celebrate  { animation: celebrate 0.6s cubic-bezier(0.22, 1, 0.36, 1); }
 .animate-pulse-glow { animation: pulse-glow 2s ease-in-out infinite; }
+.animate-spin       { animation: spin 1s linear infinite; }
+
+/* ── Skeleton loading shimmer ───────────────────────────── */
+.skeleton {
+  background: linear-gradient(90deg, var(--surface-2) 25%, var(--surface-3) 50%, var(--surface-2) 75%);
+  background-size: 200% 100%;
+  animation: shimmer 1.6s ease-in-out infinite;
+  border-radius: 6px;
+}
 
 /* ── Check box ──────────────────────────────────────────── */
 .check-item {
   display: flex;
   align-items: center;
   gap: 14px;
-  padding: 14px 0;
+  padding: 16px 0;
   border-bottom: 1px solid var(--border);
   cursor: pointer;
   user-select: none;
   -webkit-tap-highlight-color: transparent;
-  transition: opacity 0.2s;
+  transition: opacity 0.15s;
+  min-height: 52px; /* Touch target */
 }
 .check-item:last-child { border-bottom: none; }
-.check-item:active { opacity: 0.7; }
+.check-item:active { opacity: 0.6; }
 
 .check-box {
-  width: 28px;
-  height: 28px;
-  border-radius: 8px;
-  border: 2px solid var(--border);
+  width: 30px;
+  height: 30px;
+  border-radius: 9px;
+  border: 2px solid var(--border-2);
   flex-shrink: 0;
   display: flex;
   align-items: center;
   justify-content: center;
-  transition: background 0.15s, border-color 0.15s;
+  transition: background 0.15s, border-color 0.15s, transform 0.1s;
 }
+.check-box:active { transform: scale(0.92); }
 .check-box.checked {
   background: var(--green);
   border-color: var(--green);
@@ -143,14 +172,15 @@ html, body {
   bottom: 0;
   left: 0;
   right: 0;
-  height: 72px;
-  background: rgba(10, 10, 10, 0.95);
-  backdrop-filter: blur(12px);
+  background: rgba(8, 8, 8, 0.96);
+  backdrop-filter: blur(20px) saturate(180%);
+  -webkit-backdrop-filter: blur(20px) saturate(180%);
   border-top: 1px solid var(--border);
   display: flex;
-  align-items: center;
+  align-items: flex-end;
   justify-content: space-around;
-  padding-bottom: env(safe-area-inset-bottom, 0px);
+  padding-bottom: max(env(safe-area-inset-bottom, 8px), 8px);
+  padding-top: 10px;
   z-index: 50;
 }
 
@@ -161,33 +191,45 @@ html, body {
   gap: 3px;
   cursor: pointer;
   -webkit-tap-highlight-color: transparent;
-  padding: 8px 16px;
+  padding: 4px 12px 6px;
   border-radius: 12px;
-  transition: background 0.15s;
+  transition: transform 0.1s;
+  min-width: 48px; /* Touch target */
+  min-height: 48px;
+  justify-content: center;
 }
-.nav-item:active { background: var(--surface); }
-.nav-item span  { font-size: 10px; font-weight: 600; letter-spacing: 0.06em; color: var(--text-muted); }
-.nav-item.active span { color: var(--text-primary); }
+.nav-item:active { transform: scale(0.88); }
+.nav-item span  { font-size: 9px; font-weight: 700; letter-spacing: 0.07em; color: var(--text-muted); transition: color 0.15s; }
+.nav-item.active span { color: var(--accent); }
+.nav-item.active .nav-icon { filter: drop-shadow(0 0 6px rgba(212, 168, 83, 0.5)); }
 
 /* ── Page shell ─────────────────────────────────────────── */
 .page {
   min-height: 100dvh;
-  padding: 0 0 88px 0;
+  padding: 0 0 calc(var(--nav-height) + max(env(safe-area-inset-bottom, 16px), 16px)) 0;
   background: var(--bg);
 }
 
 .page-inner {
   max-width: 480px;
   margin: 0 auto;
-  padding: 48px 24px 0;
+  padding: max(env(safe-area-inset-top, 0px), 0px) 20px 0;
+  padding-top: calc(max(env(safe-area-inset-top, 0px), 0px) + 40px);
 }
 
 /* ── Surface cards ──────────────────────────────────────── */
 .card {
   background: var(--surface);
-  border-radius: 16px;
+  border-radius: 18px;
   border: 1px solid var(--border);
   padding: 20px;
+}
+
+.card-sm {
+  background: var(--surface);
+  border-radius: 14px;
+  border: 1px solid var(--border);
+  padding: 14px 16px;
 }
 
 /* ── Status badge ───────────────────────────────────────── */
@@ -195,32 +237,34 @@ html, body {
   display: inline-flex;
   align-items: center;
   gap: 5px;
-  font-size: 11px;
-  font-weight: 700;
-  letter-spacing: 0.08em;
-  padding: 3px 8px;
-  border-radius: 6px;
+  font-size: 10px;
+  font-weight: 800;
+  letter-spacing: 0.1em;
+  padding: 4px 9px;
+  border-radius: 7px;
 }
-.badge-green  { background: rgba(34,197,94,0.15);  color: var(--green); }
-.badge-amber  { background: rgba(245,158,11,0.15); color: var(--amber); }
-.badge-red    { background: rgba(239,68,68,0.15);  color: var(--red); }
-.badge-muted  { background: var(--surface-2);      color: var(--text-muted); }
+.badge-green  { background: rgba(34,197,94,0.12);  color: #4ade80; border: 1px solid rgba(34,197,94,0.2); }
+.badge-amber  { background: rgba(212,168,83,0.12); color: var(--accent); border: 1px solid rgba(212,168,83,0.2); }
+.badge-red    { background: rgba(239,68,68,0.12);  color: #f87171; border: 1px solid rgba(239,68,68,0.2); }
+.badge-muted  { background: var(--surface-2); color: var(--text-muted); border: 1px solid var(--border); }
 
 /* ── Input fields ───────────────────────────────────────── */
 .oracle-input {
   background: var(--surface-2);
-  border: 1px solid var(--border);
-  border-radius: 10px;
+  border: 1px solid var(--border-2);
+  border-radius: 12px;
   color: var(--text-primary);
   font-size: 16px;
-  padding: 12px 14px;
+  padding: 14px 16px;
   width: 100%;
   outline: none;
-  transition: border-color 0.15s;
+  transition: border-color 0.15s, box-shadow 0.15s;
   font-family: inherit;
+  -webkit-font-smoothing: antialiased;
 }
 .oracle-input:focus {
-  border-color: var(--amber);
+  border-color: var(--accent);
+  box-shadow: 0 0 0 3px rgba(212, 168, 83, 0.1);
 }
 .oracle-input::placeholder {
   color: var(--text-muted);
@@ -229,24 +273,24 @@ html, body {
 /* ── Number input small ─────────────────────────────────── */
 .num-input {
   background: var(--surface-2);
-  border: 1px solid var(--border);
-  border-radius: 8px;
+  border: 1px solid var(--border-2);
+  border-radius: 10px;
   color: var(--text-primary);
   font-size: 20px;
   font-weight: 700;
   width: 72px;
-  padding: 8px 10px;
+  padding: 10px;
   text-align: center;
   outline: none;
 }
-.num-input:focus { border-color: var(--amber); }
+.num-input:focus { border-color: var(--accent); }
 
 /* ── Cycle status buttons ───────────────────────────────── */
 .cycle-btn {
   display: flex;
   align-items: center;
   gap: 8px;
-  padding: 4px 10px 4px 4px;
+  padding: 8px 14px 8px 8px;
   border-radius: 20px;
   border: 1px solid transparent;
   cursor: pointer;
@@ -255,8 +299,9 @@ html, body {
   letter-spacing: 0.06em;
   -webkit-tap-highlight-color: transparent;
   transition: transform 0.1s;
+  min-height: 44px;
 }
-.cycle-btn:active { transform: scale(0.95); }
+.cycle-btn:active { transform: scale(0.94); }
 .cycle-btn .dot {
   width: 10px; height: 10px;
   border-radius: 50%;
@@ -265,7 +310,7 @@ html, body {
 
 /* ── Waterfall bar ──────────────────────────────────────── */
 .waterfall-bar {
-  height: 6px;
+  height: 5px;
   border-radius: 3px;
   background: var(--surface-2);
   overflow: hidden;
@@ -273,11 +318,84 @@ html, body {
 .waterfall-fill {
   height: 100%;
   border-radius: 3px;
-  transition: width 0.5s ease;
+  transition: width 0.6s cubic-bezier(0.22, 1, 0.36, 1);
 }
 
 /* ── Sacred screen ──────────────────────────────────────── */
 .sacred-glyph {
   font-size: 72px;
   line-height: 1;
+}
+
+/* ── Agent CTA buttons ──────────────────────────────────── */
+.agent-btn {
+  display: inline-flex;
+  align-items: center;
+  justify-content: center;
+  gap: 8px;
+  padding: 14px 20px;
+  border-radius: 14px;
+  font-size: 12px;
+  font-weight: 800;
+  letter-spacing: 0.1em;
+  text-transform: uppercase;
+  cursor: pointer;
+  -webkit-tap-highlight-color: transparent;
+  transition: transform 0.1s, opacity 0.15s;
+  min-height: 52px;
+  border: none;
+  outline: none;
+}
+.agent-btn:active { transform: scale(0.95); }
+.agent-btn:disabled { opacity: 0.4; pointer-events: none; }
+.agent-btn-primary {
+  background: linear-gradient(135deg, var(--accent) 0%, #b8922a 100%);
+  color: #000;
+}
+.agent-btn-ghost {
+  background: var(--surface-2);
+  color: var(--text-secondary);
+  border: 1px solid var(--border-2);
+}
+
+/* ── Inline spinner ─────────────────────────────────────── */
+.spinner {
+  width: 16px;
+  height: 16px;
+  border: 2px solid currentColor;
+  border-top-color: transparent;
+  border-radius: 50%;
+  display: inline-block;
+  animation: spin 0.7s linear infinite;
+  opacity: 0.7;
+  flex-shrink: 0;
+}
+
+/* Hide scrollbar but keep scrollable */
+.hide-scrollbar {
+  -ms-overflow-style: none;
+  scrollbar-width: none;
+}
+.hide-scrollbar::-webkit-scrollbar { display: none; }
+
+/* ── Alert banner for urgent items ─────────────────────── */
+.alert-banner {
+  display: flex;
+  align-items: center;
+  gap: 10px;
+  padding: 12px 16px;
+  border-radius: 12px;
+  font-size: 13px;
+  font-weight: 600;
+  border: 1px solid;
+}
+.alert-banner-red {
+  background: rgba(239,68,68,0.08);
+  border-color: rgba(239,68,68,0.25);
+  color: #f87171;
+}
+.alert-banner-amber {
+  background: rgba(212,168,83,0.08);
+  border-color: rgba(212,168,83,0.25);
+  color: var(--accent);
 }

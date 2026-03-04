@@ -1,7 +1,6 @@
 import { NextRequest, NextResponse } from "next/server";
 import { BRAND_VOICE } from "@/lib/brandVoice";
 
-export const runtime = "edge";
 
 const SYSTEM_PROMPT = `You are the Brand Guardian of past.El noir Records. You have final approval authority
 over all creative output before it reaches the CEO.

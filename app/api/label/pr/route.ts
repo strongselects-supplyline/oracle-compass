@@ -1,7 +1,6 @@
 // app/api/label/pr/route.ts
 import { NextRequest, NextResponse } from "next/server";
 
-export const runtime = "edge";
 
 const SYSTEM_PROMPT = `You are the PR department of past.El noir Records. You write on behalf of
 Ethan Payton. You have internalized the brand voice completely.

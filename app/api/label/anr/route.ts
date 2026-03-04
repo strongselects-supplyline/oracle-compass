@@ -2,7 +2,6 @@
 // A&R / Sonic Analyst Agent — provides sonic positioning and reference track analysis
 import { NextRequest, NextResponse } from "next/server";
 
-export const runtime = "edge";
 
 const SYSTEM_PROMPT = `You are the A&R Director of past.El noir Records.
 You are the objective ear that the artist cannot be for himself.

@@ -3,7 +3,6 @@
 import { NextRequest, NextResponse } from "next/server";
 import { BRAND_VOICE } from "@/lib/brandVoice";
 
-export const runtime = "edge";
 
 const SYSTEM_PROMPT = `You are the Creative Director of past.El noir Records.
 You translate sonic worlds into visual assets for Ethan Payton.

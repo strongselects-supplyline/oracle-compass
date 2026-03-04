@@ -5,7 +5,6 @@ import { NextResponse } from "next/server";
 import { REGISTRY } from "@/lib/registry";
 import { getDynamicReleases } from "@/lib/releases";
 
-export const runtime = "edge";
 
 export async function GET() {
     const now = new Date();

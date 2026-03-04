@@ -118,6 +118,19 @@ export default function MorningMode() {
     <main className="page animate-fade-in">
       <div className="page-inner">
 
+        {/* ── Urgency Banner (shows when release ≤3 days out) ── */}
+        {daysUntilRelease <= 3 && nextRelease && nextRelease.status !== 'live' && (
+          <div className="alert-banner alert-banner-red mb-8 animate-slide-up">
+            <span className="animate-pulse-glow">🔴</span>
+            <div className="flex-1">
+              <span className="font-black tracking-wider">{nextRelease.title}</span>
+              {" — "}
+              {daysUntilRelease === 0 ? "RELEASES TODAY" : `${daysUntilRelease} DAY${daysUntilRelease === 1 ? "" : "S"} OUT`}
+              <span className="block text-xs opacity-70 mt-0.5 font-medium">Check Label → Compliance before anything else</span>
+            </div>
+          </div>
+        )}
+
         <header className="mb-10 text-center">
           <p className="text-[10px] font-black tracking-[0.2em] text-[#444] uppercase mb-1">
             MAKE MODE &middot; Week {week} of 5
@@ -169,16 +182,18 @@ export default function MorningMode() {
             </section>
 
             {/* ── Scoreboard Strip ── */}
-            <div className="flex border border-[#2a2a2a] rounded-2xl overflow-hidden mb-10 bg-[#0f0f0f]">
-              <div className="flex-1 flex flex-col items-center justify-center py-5 border-r border-[#2a2a2a]">
+            <div className="flex border border-[#252525] rounded-2xl overflow-hidden mb-10 bg-[#0d0d0d]">
+              <div className="flex-1 flex flex-col items-center justify-center py-5 border-r border-[#252525]">
                 <p className="text-[9px] font-black tracking-[0.18em] text-[#555] uppercase mb-2">Streak</p>
                 <p className="text-4xl font-black leading-none text-amber-400 animate-count-up">{streak}</p>
                 <p className="text-[9px] text-[#555] mt-1 font-bold">days 💎</p>
               </div>
 
-              <div className="flex-1 flex flex-col items-center justify-center py-5 border-r border-[#2a2a2a]">
+              <div className="flex-1 flex flex-col items-center justify-center py-5 border-r border-[#252525]">
                 <p className="text-[9px] font-black tracking-[0.18em] text-[#555] uppercase mb-2">Release</p>
-                <p className="text-4xl font-black leading-none text-white animate-count-up">{daysUntilRelease}</p>
+                <p className={`text-4xl font-black leading-none animate-count-up ${daysUntilRelease <= 3 ? 'text-red-400' : 'text-white'}`}>
+                  {daysUntilRelease}
+                </p>
                 <p className="text-[9px] text-[#555] mt-1 font-bold truncate px-1 max-w-full text-center">
                   {nextRelease?.title.toUpperCase() ?? "–"}
                 </p>
@@ -201,13 +216,13 @@ export default function MorningMode() {
                     <p className="text-xs text-[#555] font-semibold">{protocol.tagline}</p>
                   </div>
                   {protocol.steps.length > 0 && (
-                    <div className="border border-[#2a2a2a] rounded-2xl bg-[#0f0f0f] overflow-hidden">
+                    <div className="border border-[#252525] rounded-2xl bg-[#0d0d0d] overflow-hidden">
                       {protocol.steps.map((step, i) => (
-                        <div key={i} className="flex items-center gap-3 px-5 py-3.5 border-b border-[#1a1a1a] last:border-0">
-                          <span className="text-lg flex-shrink-0">{step.icon}</span>
+                        <div key={i} className="flex items-center gap-3 px-5 py-4 border-b border-[#1a1a1a] last:border-0 active:bg-[#1a1a1a] transition-colors">
+                          <span className="text-xl flex-shrink-0">{step.icon}</span>
                           <span className="text-[13px] font-semibold text-[#ccc] leading-snug flex-1">{step.action}</span>
                           {step.tab && (
-                            <span className="text-[9px] font-black tracking-[0.15em] text-amber-500/60 uppercase flex-shrink-0">
+                            <span className="text-[9px] font-black tracking-[0.15em] text-amber-500/70 uppercase flex-shrink-0 bg-amber-500/10 px-2 py-1 rounded-md">
                               {step.tab}
                             </span>
                           )}
