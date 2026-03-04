@@ -12,6 +12,8 @@ export default function BottomNav() {
     const [bizDay, setBizDay] = useState(false);
     const [oracleSeverity, setOracleSeverity] = useState<string | null>(null);
 
+    const [unreviewedCopy, setUnreviewedCopy] = useState(false);
+
     useEffect(() => {
         setBizDay(isBizDay(getDayType()));
         // Show dot on Oracle tab if there's a RED/AMBER decree today
@@ -20,14 +22,19 @@ export default function BottomNav() {
                 setOracleSeverity(d.severity);
             }
         });
+        // Show dot on Label tab if there are unreviewed items in Copy Vault
+        getStoreValue<number>("label_vault_unreviewed").then(n => {
+            setUnreviewedCopy(n ? n > 0 : false);
+        });
     }, []);
 
     const navs = [
-        { name: "Grind",  path: "/grind",  icon: "⚔️" },
+        { name: "Grind", path: "/grind", icon: "⚔️" },
         { name: "Studio", path: "/studio", icon: "🎙️" },
         { name: "Engine", path: "/engine", icon: "⚙️" },
-        { name: "Brain",  path: "/brain",  icon: "🧠" },
+        { name: "Brain", path: "/brain", icon: "🧠" },
         { name: "Oracle", path: "/oracle", icon: "🔮" },
+        { name: "Label", path: "/label", icon: "🏷️" },
     ];
 
     return (
@@ -36,8 +43,9 @@ export default function BottomNav() {
                 const active = pathname === n.path;
                 const dotColor =
                     n.name === "Engine" && bizDay ? "bg-amber-500" :
-                    n.name === "Oracle" && oracleSeverity === "RED" ? "bg-red-500" :
-                    n.name === "Oracle" && oracleSeverity === "AMBER" ? "bg-amber-500" : null;
+                        n.name === "Oracle" && oracleSeverity === "RED" ? "bg-red-500" :
+                            n.name === "Oracle" && oracleSeverity === "AMBER" ? "bg-amber-500" :
+                                n.name === "Label" && unreviewedCopy ? "bg-amber-500" : null;
 
                 return (
                     <Link key={n.name} href={n.path} className={`nav-item ${active ? "active" : ""}`}>

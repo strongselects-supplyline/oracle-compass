@@ -12,7 +12,7 @@ function getMakeModeWeek(): number {
 
 function getPhasePercent(): number {
   const makeStart = Date.UTC(2026, 2, 1);
-  const pushEnd   = Date.UTC(2026, 3, 28);
+  const pushEnd = Date.UTC(2026, 3, 28);
   const now = Date.UTC(new Date().getFullYear(), new Date().getMonth(), new Date().getDate());
   const total = pushEnd - makeStart;
   const elapsed = Math.max(0, Math.min(now - makeStart, total));
@@ -26,7 +26,7 @@ export default function BrainPage() {
 
   const currentPhase =
     phasePercent < 45 ? "MAKE" :
-    phasePercent < 75 ? "SHIP" : "PUSH";
+      phasePercent < 75 ? "SHIP" : "PUSH";
 
   useEffect(() => {
     // Dynamic — reflects Oracle status updates
@@ -44,7 +44,7 @@ export default function BrainPage() {
           <h1 className="text-5xl font-black tracking-tight mb-2 leading-none">MAKE MODE</h1>
           <p className="text-[#666] text-sm leading-relaxed font-medium">
             Studio is primary. Everything else is Track 2.<br />
-            Mar 1 → Apr 1
+            Mar 1 → Apr 10
           </p>
         </div>
 
@@ -73,7 +73,7 @@ export default function BrainPage() {
             label={`5 singles uploaded (${uploadedSingles}/5)`}
           />
           <ExitLine done={false} label="4 album tracks recorded + mixed" />
-          <ExitLine done={false} label="Mar 23" />
+          <ExitLine done={false} label="Apr 3" />
         </div>
 
         {/* ── Philosophical Anchors ── */}

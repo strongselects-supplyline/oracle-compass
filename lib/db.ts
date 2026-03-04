@@ -66,6 +66,34 @@ export async function getStoreValue<T>(key: string): Promise<T | null> {
     }
 }
 
+export async function getAllWithPrefix<T>(prefix: string): Promise<Record<string, T>> {
+    try {
+        const db = await getDB();
+        return new Promise((resolve, reject) => {
+            const tx = db.transaction(STORE_NAME, 'readonly');
+            const store = tx.objectStore(STORE_NAME);
+            const request = store.openCursor();
+            const results: Record<string, T> = {};
+
+            request.onsuccess = (event) => {
+                const cursor = (event.target as IDBRequest).result as IDBCursorWithValue;
+                if (cursor) {
+                    if (cursor.key.toString().startsWith(prefix)) {
+                        results[cursor.key.toString()] = cursor.value;
+                    }
+                    cursor.continue();
+                } else {
+                    resolve(results);
+                }
+            };
+            request.onerror = () => reject(request.error);
+        });
+    } catch (e) {
+        console.error('getAllWithPrefix error', e);
+        return {};
+    }
+}
+
 export async function setStoreValue<T>(key: string, value: T): Promise<void> {
     try {
         const db = await getDB();
@@ -79,6 +107,11 @@ export async function setStoreValue<T>(key: string, value: T): Promise<void> {
     } catch (e) {
         console.error('setStoreValue error', e);
     }
+}
+
+export async function logLabelCost(amount: number): Promise<void> {
+    const current = (await getStoreValue<number>('label_total_cost')) || 0;
+    await setStoreValue('label_total_cost', current + amount);
 }
 
 // Helpers

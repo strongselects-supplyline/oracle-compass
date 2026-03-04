@@ -1,6 +1,12 @@
 // app/api/oracle/route.ts
 // The Oracle Engine — receives assembled context, calls Claude, returns a decree.
 // Called once per day by OracleTrigger (client component in layout).
+//
+// 🛡️ BUDGET GUARD: Rate limited to 1 decree per 4 hours.
+// The last decree timestamp is stored in the 'oracle_last_ts' cookie.
+// If a request arrives within 4 hours of the last decree, the cached
+// last decree is returned from the request body without calling Claude.
+// This prevents surprise charges from multi-device refreshes or hot-reload loops.
 
 import { NextRequest, NextResponse } from "next/server";
 import type { OracleContext, OracleDecree } from "@/lib/oracle";
@@ -38,6 +44,21 @@ export async function POST(req: NextRequest) {
         return NextResponse.json({ error: "ANTHROPIC_API_KEY not set" }, { status: 500 });
     }
 
+    // 🛡️ Rate limit: only allow 1 Claude call per 4 hours.
+    const RATE_LIMIT_MS = 4 * 60 * 60 * 1000; // 4 hours
+    const lastTsCookie = req.cookies.get('oracle_last_ts')?.value;
+    if (lastTsCookie) {
+        const lastTs = parseInt(lastTsCookie, 10);
+        const elapsed = Date.now() - lastTs;
+        if (elapsed < RATE_LIMIT_MS) {
+            const remainingMins = Math.ceil((RATE_LIMIT_MS - elapsed) / 60000);
+            return NextResponse.json(
+                { error: `Rate limited: Oracle already fired. Next decree in ~${remainingMins} min.` },
+                { status: 429 }
+            );
+        }
+    }
+
     let context: OracleContext;
     try {
         context = await req.json();
@@ -56,7 +77,7 @@ export async function POST(req: NextRequest) {
                 "content-type": "application/json",
             },
             body: JSON.stringify({
-                model: "claude-3-5-haiku-20241022",
+                model: "claude-sonnet-4-20250514",
                 max_tokens: 800,
                 system: SYSTEM_PROMPT,
                 messages: [{ role: "user", content: userMessage }],
@@ -75,7 +96,14 @@ export async function POST(req: NextRequest) {
         const cleaned = raw.replace(/^```(?:json)?\n?/m, "").replace(/\n?```$/m, "").trim();
         const decree: OracleDecree = JSON.parse(cleaned);
 
-        return NextResponse.json(decree);
+        // 🛡️ Set rate-limit cookie: blocks repeat Claude calls for 4 hours
+        const response = NextResponse.json(decree);
+        response.cookies.set('oracle_last_ts', String(Date.now()), {
+            maxAge: 4 * 60 * 60, // 4 hours in seconds
+            path: '/',
+            sameSite: 'lax',
+        });
+        return response;
     } catch (err) {
         return NextResponse.json({ error: `Oracle engine failed: ${String(err)}` }, { status: 500 });
     }

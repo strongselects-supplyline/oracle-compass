@@ -13,17 +13,47 @@ function getMakeModeWeek(): number {
   return Math.min(Math.max(Math.ceil(days / 7), 1), 5);
 }
 
-function getProtocolCopy(dayType: string): string {
-  if (dayType === "STUDIO + SAUNA DAY") return "10 AM → DAW. 1 PM → Sauna. Compound.";
-  if (dayType === "STUDIO DAY") return "10 AM → DAW. Execute the cycle.";
-  if (dayType === "BIZ DAY") return "Engine is Track 1. Pipeline moves today.";
-  return "";
+type ProtocolStep = { icon: string; action: string; tab?: string };
+
+function getProtocolSteps(dayType: string): { tagline: string; steps: ProtocolStep[] } {
+  if (dayType === "STUDIO + SAUNA DAY") return {
+    tagline: "Create + recover. Both compound.",
+    steps: [
+      { icon: "☀️", action: "Sovereignty Stack → log in GRIND", tab: "grind" },
+      { icon: "🎹", action: "10 AM → Open DAW, work on cycle track" },
+      { icon: "🔥", action: "1 PM → Sauna session" },
+      { icon: "📱", action: "Post content from STUDIO queue", tab: "studio" },
+      { icon: "✅", action: "Log session + check off GRIND before bed", tab: "grind" },
+    ]
+  };
+  if (dayType === "STUDIO DAY") return {
+    tagline: "Full studio immersion. No distractions.",
+    steps: [
+      { icon: "☀️", action: "Sovereignty Stack → log in GRIND", tab: "grind" },
+      { icon: "🎹", action: "10 AM → Open DAW, execute the cycle" },
+      { icon: "🎙️", action: "Record, mix, or master — move a track forward" },
+      { icon: "📱", action: "Post content from STUDIO queue", tab: "studio" },
+      { icon: "✅", action: "Log session in GRIND before bed", tab: "grind" },
+    ]
+  };
+  if (dayType === "BIZ DAY") return {
+    tagline: "Pipeline moves today. ENGINE is Track 1.",
+    steps: [
+      { icon: "☀️", action: "Sovereignty Stack → log in GRIND", tab: "grind" },
+      { icon: "⚙️", action: "Check ENGINE for pipeline tasks", tab: "engine" },
+      { icon: "📤", action: "Push content to IG/TikTok/YouTube" },
+      { icon: "📊", action: "Review STUDIO waterfall — is anything overdue?", tab: "studio" },
+      { icon: "🔮", action: "Read today's Oracle decree", tab: "oracle" },
+      { icon: "✅", action: "Log day in GRIND before bed", tab: "grind" },
+    ]
+  };
+  return { tagline: "", steps: [] };
 }
 
 const CYCLE_TRACKS = [
-  { label: "RECONNECT",  key: "cycle_reconnect" },
-  { label: "WANT U 2",   key: "cycle_wantu2" },
-  { label: "WORTH IT",   key: "cycle_worthit" },
+  { label: "RECONNECT", key: "cycle_reconnect" },
+  { label: "WANT U 2", key: "cycle_wantu2" },
+  { label: "WORTH IT", key: "cycle_worthit" },
   { label: "JUST SAY SO", key: "cycle_justsayso" },
 ];
 
@@ -161,11 +191,33 @@ export default function MorningMode() {
               </div>
             </div>
 
-            {/* ── Day Declaration ── */}
-            <div className="text-center">
-              <h3 className="text-base font-black tracking-widest uppercase text-white mb-2">{dayType}</h3>
-              <p className="text-sm text-[#666] font-medium">{getProtocolCopy(dayType)}</p>
-            </div>
+            {/* ── Today's Protocol ── */}
+            {(() => {
+              const protocol = getProtocolSteps(dayType);
+              return (
+                <div>
+                  <div className="text-center mb-5">
+                    <h3 className="text-base font-black tracking-widest uppercase text-white mb-1">{dayType}</h3>
+                    <p className="text-xs text-[#555] font-semibold">{protocol.tagline}</p>
+                  </div>
+                  {protocol.steps.length > 0 && (
+                    <div className="border border-[#2a2a2a] rounded-2xl bg-[#0f0f0f] overflow-hidden">
+                      {protocol.steps.map((step, i) => (
+                        <div key={i} className="flex items-center gap-3 px-5 py-3.5 border-b border-[#1a1a1a] last:border-0">
+                          <span className="text-lg flex-shrink-0">{step.icon}</span>
+                          <span className="text-[13px] font-semibold text-[#ccc] leading-snug flex-1">{step.action}</span>
+                          {step.tab && (
+                            <span className="text-[9px] font-black tracking-[0.15em] text-amber-500/60 uppercase flex-shrink-0">
+                              {step.tab}
+                            </span>
+                          )}
+                        </div>
+                      ))}
+                    </div>
+                  )}
+                </div>
+              );
+            })()}
           </>
         )}
       </div>
