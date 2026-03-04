@@ -57,7 +57,7 @@ export async function POST(req: NextRequest) {
                 "content-type": "application/json",
             },
             body: JSON.stringify({
-                model: "claude-3-haiku-20240307", // Fast and cheap for structuring rollouts
+                model: "claude-haiku-4-5", // Fast and cheap for structuring rollouts
                 max_tokens: 1000,
                 system: SYSTEM_PROMPT,
                 messages: [{ role: "user", content: userMessage }],
