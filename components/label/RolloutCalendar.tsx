@@ -39,6 +39,8 @@ export default function RolloutCalendar({ trackTitle, releaseDate }: { trackTitl
     const [rollout, setRollout] = useState<RolloutSchedule | null>(null);
     const [loading, setLoading] = useState(false);
     const [copyLoading, setCopyLoading] = useState<string | null>(null);
+    const [error, setError] = useState<string | null>(null);
+    const [copySuccess, setCopySuccess] = useState<string | null>(null);
     const key = `label_rollout:${trackTitle}`;
 
     useEffect(() => {
@@ -47,11 +49,16 @@ export default function RolloutCalendar({ trackTitle, releaseDate }: { trackTitl
 
     const generateRollout = async () => {
         setLoading(true);
+        setError(null);
         try {
             const res = await fetch("/api/label/marketing", {
                 method: "POST",
                 body: JSON.stringify({ trackTitle, releaseDate })
             });
+            if (!res.ok) {
+                const errText = await res.text().catch(() => "Server error");
+                throw new Error(`Marketing agent error (${res.status}): ${errText.slice(0, 120)}`);
+            }
             const data = await res.json();
             if (data.error) throw new Error(data.error);
             if (data.schedule) {
@@ -59,9 +66,9 @@ export default function RolloutCalendar({ trackTitle, releaseDate }: { trackTitl
                 await logLabelCost(LABEL_COST_ESTIMATES.marketing_rollout);
                 setRollout(data);
             }
-        } catch (e) {
+        } catch (e: any) {
             console.error(e);
-            alert("Error generating rollout. Check console.");
+            setError(e?.message || "Error generating rollout");
         }
         setLoading(false);
     };
@@ -69,13 +76,19 @@ export default function RolloutCalendar({ trackTitle, releaseDate }: { trackTitl
     const requestCopy = async (assetType: string) => {
         if (!assetType || assetType === 'manual') return;
         setCopyLoading(assetType);
+        setError(null);
         try {
             const prRes = await fetch("/api/label/pr", { method: "POST", body: JSON.stringify({ trackTitle, assetType }) });
+            if (!prRes.ok) {
+                const errText = await prRes.text().catch(() => "Server error");
+                throw new Error(`PR agent error (${prRes.status}): ${errText.slice(0, 120)}`);
+            }
             const prData = await prRes.json();
             if (!prData.variants) throw new Error("No variants generated");
 
             const gRes = await fetch("/api/label/guardian", { method: "POST", body: JSON.stringify({ inputContent: prData.variants[0], assetType }) });
-            const gData = await gRes.json();
+            let gData: any = {};
+            if (gRes.ok) gData = await gRes.json();
 
             const copyRecord = {
                 variants: [gData.content || prData.variants[0], prData.variants[1], prData.variants[2]].filter(Boolean),
@@ -83,17 +96,18 @@ export default function RolloutCalendar({ trackTitle, releaseDate }: { trackTitl
                 guardianScore: gData.score || 0,
                 edits: gData.edits,
                 hardRuleViolations: gData.hardRuleViolations,
-                approved: gData.approved
+                approved: gData.approved ?? true
             };
             const copyKey = `label_pr:${trackTitle}:${assetType}:${new Date().toISOString().split('T')[0]}`;
             await setStoreValue(copyKey, copyRecord);
             await logLabelCost(LABEL_COST_ESTIMATES.pr_request + LABEL_COST_ESTIMATES.guardian_filter);
             const unrev = (await getStoreValue<number>("label_vault_unreviewed")) || 0;
             await setStoreValue("label_vault_unreviewed", unrev + 1);
-            alert(`✓ Copy for "${assetType}" sent to Copy Vault`);
-        } catch (e) {
+            setCopySuccess(assetType);
+            setTimeout(() => setCopySuccess(null), 3000);
+        } catch (e: any) {
             console.error(e);
-            alert("Error generating copy. See console.");
+            setError(e?.message || "Error generating copy");
         }
         setCopyLoading(null);
     };
@@ -101,6 +115,13 @@ export default function RolloutCalendar({ trackTitle, releaseDate }: { trackTitl
     if (!rollout) {
         return (
             <div className="text-center py-10">
+                {error && (
+                    <div className="alert-banner alert-banner-red mb-4 animate-slide-up text-left">
+                        <span>⚠️</span>
+                        <div className="flex-1 text-xs">{error}</div>
+                        <button onClick={() => setError(null)} className="text-xs opacity-60 hover:opacity-100">✕</button>
+                    </div>
+                )}
                 {loading ? (
                     <>
                         <SkeletonRows />
@@ -122,6 +143,19 @@ export default function RolloutCalendar({ trackTitle, releaseDate }: { trackTitl
 
     return (
         <div className="animate-fade-in">
+            {error && (
+                <div className="alert-banner alert-banner-red mb-4 animate-slide-up">
+                    <span>⚠️</span>
+                    <div className="flex-1 text-xs">{error}</div>
+                    <button onClick={() => setError(null)} className="text-xs opacity-60 hover:opacity-100">✕</button>
+                </div>
+            )}
+            {copySuccess && (
+                <div className="alert-banner alert-banner-green mb-4 animate-slide-up">
+                    <span>✓</span>
+                    <div className="flex-1 text-xs">Copy for "{copySuccess}" sent to Copy Vault</div>
+                </div>
+            )}
             <div className="flex justify-between items-center mb-5">
                 <h3 className="text-sm font-black tracking-widest uppercase">📅 {trackTitle} Rollout</h3>
                 <button

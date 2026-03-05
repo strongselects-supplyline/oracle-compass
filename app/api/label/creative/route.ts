@@ -41,45 +41,45 @@ Return JSON ONLY matching this exact structure:
 No preamble. JSON only.`;
 
 export async function POST(req: NextRequest) {
-    const apiKey = process.env.ANTHROPIC_API_KEY;
-    if (!apiKey) return NextResponse.json({ error: "ANTHROPIC_API_KEY not set" }, { status: 500 });
+  const apiKey = process.env.ANTHROPIC_API_KEY;
+  if (!apiKey) return NextResponse.json({ error: "ANTHROPIC_API_KEY not set" }, { status: 500 });
 
-    try {
-        const { trackTitle, mood, lyricsSnippet } = await req.json();
+  try {
+    const { trackTitle, mood, lyricsSnippet } = await req.json();
 
-        const userMessage = `Track: "${trackTitle}"
+    const userMessage = `Track: "${trackTitle}"
 Mood/Vibe: ${mood || "dark, intimate, late-night R&B"}
 Lyrics snippet: ${lyricsSnippet || "(not provided)"}
 
 Generate the full creative package.`;
 
-        const res = await fetch("https://api.anthropic.com/v1/messages", {
-            method: "POST",
-            headers: {
-                "x-api-key": apiKey,
-                "anthropic-version": "2023-06-01",
-                "content-type": "application/json",
-            },
-            body: JSON.stringify({
-                model: "claude-3-5-haiku-20241022",
-                max_tokens: 1200,
-                system: SYSTEM_PROMPT,
-                messages: [{ role: "user", content: userMessage }],
-            }),
-        });
+    const res = await fetch("https://api.anthropic.com/v1/messages", {
+      method: "POST",
+      headers: {
+        "x-api-key": apiKey,
+        "anthropic-version": "2023-06-01",
+        "content-type": "application/json",
+      },
+      body: JSON.stringify({
+        model: "claude-haiku-4-5-20251001",
+        max_tokens: 1200,
+        system: SYSTEM_PROMPT,
+        messages: [{ role: "user", content: userMessage }],
+      }),
+    });
 
-        if (!res.ok) {
-            const err = await res.text();
-            return NextResponse.json({ error: `Anthropic error: ${err}` }, { status: 502 });
-        }
-
-        const data = await res.json();
-        const raw = data.content[0]?.text ?? "";
-        const cleaned = raw.replace(/^```(?:json)?\n?/m, "").replace(/\n?```$/m, "").trim();
-        const result = JSON.parse(cleaned);
-
-        return NextResponse.json(result);
-    } catch (err) {
-        return NextResponse.json({ error: `Creative agent failed: ${String(err)}` }, { status: 500 });
+    if (!res.ok) {
+      const err = await res.text();
+      return NextResponse.json({ error: `Anthropic error: ${err}` }, { status: 502 });
     }
+
+    const data = await res.json();
+    const raw = data.content[0]?.text ?? "";
+    const cleaned = raw.replace(/^```(?:json)?\n?/m, "").replace(/\n?```$/m, "").trim();
+    const result = JSON.parse(cleaned);
+
+    return NextResponse.json(result);
+  } catch (err) {
+    return NextResponse.json({ error: `Creative agent failed: ${String(err)}` }, { status: 500 });
+  }
 }

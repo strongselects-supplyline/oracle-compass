@@ -3,6 +3,8 @@
 import { useEffect, useState, useRef } from "react";
 import { getDayType, isBizDay, isSacredDay } from "@/lib/dayType";
 import { getStoreValue, setStoreValue } from "@/lib/db";
+import { getWeekKey } from "@/lib/oracle";
+import type { OracleFlag } from "@/lib/oracle";
 
 type Account = { name: string; days: number };
 
@@ -12,26 +14,29 @@ const DEFAULT_ACCOUNTS: Account[] = [
   { name: "Account 3", days: 0 },
 ];
 
-// ISO week key — same pattern as Studio, resets touches each week
-function getWeekKey(): string {
-  const now = new Date();
-  const d = new Date(Date.UTC(now.getFullYear(), now.getMonth(), now.getDate()));
-  d.setUTCDate(d.getUTCDate() + 4 - (d.getUTCDay() || 7));
-  const year = d.getUTCFullYear();
-  const week = Math.ceil(((d.getTime() - Date.UTC(year, 0, 1)) / 86400000 + 1) / 7);
-  return `${year}-W${String(week).padStart(2, '0')}`;
-}
-
 export default function EnginePage() {
-  // null = not yet determined (prevents flash)
   const [dayState, setDayState] = useState<"biz" | "studio" | "sacred" | null>(null);
   const [override, setOverride] = useState(false);
+
   const [dailyMove, setDailyMove] = useState("");
   const [touches, setTouches] = useState(0);
+  const [touchTarget, setTouchTarget] = useState(15);
   const [accounts, setAccounts] = useState<Account[]>(DEFAULT_ACCOUNTS);
   const [editingAccount, setEditingAccount] = useState<number | null>(null);
+
+  const [ddShifts, setDdShifts] = useState(0);
+  const [ddEarnings, setDdEarnings] = useState(0);
+  const [ssRevenue, setSsRevenue] = useState(0);
+  const [editingIncome, setEditingIncome] = useState(false);
+
+  const [priority, setPriority] = useState<string | null>(null);
+  const [flags, setFlags] = useState<OracleFlag[]>([]);
+
   const timerRef = useRef<ReturnType<typeof setTimeout> | null>(null);
-  const touchKey = `engine_touches:${getWeekKey()}`;
+  const weekKey = getWeekKey();
+  const touchKey = "engine_touches:" + weekKey;
+  const ddKey = "doordash_week:" + weekKey;
+  const ssKey = "ss_revenue:" + weekKey;
 
   useEffect(() => {
     const dt = getDayType();
@@ -39,12 +44,28 @@ export default function EnginePage() {
     else if (isBizDay(dt)) setDayState("biz");
     else setDayState("studio");
 
-    getStoreValue<string>("engine_daily_move").then(v => setDailyMove(v || ""));
-    getStoreValue<number>(touchKey).then(v => setTouches(v || 0));
-    getStoreValue<Account[]>("engine_accounts").then(v => {
-      if (v && v.length === 3) setAccounts(v);
+    const today = new Date().toISOString().split("T")[0];
+
+    Promise.all([
+      getStoreValue<string>("engine_daily_move"),
+      getStoreValue<number>(touchKey),
+      getStoreValue<number>("engine_touch_target"),
+      getStoreValue<Account[]>("engine_accounts"),
+      getStoreValue<{ shifts: number; earnings: number }>(ddKey),
+      getStoreValue<number>(ssKey),
+      getStoreValue<string>("oracle_priority"),
+      getStoreValue<OracleFlag[]>("oracle_flags:" + today),
+    ]).then(([move, t, tt, accs, dd, ss, pri, fl]) => {
+      setDailyMove(move || "");
+      setTouches(t || 0);
+      setTouchTarget(tt || 15);
+      if (accs && accs.length === 3) setAccounts(accs);
+      if (dd) { setDdShifts(dd.shifts); setDdEarnings(dd.earnings); }
+      setSsRevenue(ss || 0);
+      setPriority(pri || null);
+      setFlags(fl || []);
     });
-  }, [touchKey]);
+  }, [touchKey, ddKey, ssKey]);
 
   const handleSaveMove = async (val: string) => {
     setDailyMove(val);
@@ -63,8 +84,13 @@ export default function EnginePage() {
     await setStoreValue("engine_accounts", updated);
   };
 
+  const saveIncome = async () => {
+    await setStoreValue(ddKey, { shifts: ddShifts, earnings: ddEarnings });
+    await setStoreValue(ssKey, ssRevenue);
+    setEditingIncome(false);
+  };
+
   const startPress = () => {
-    // Long-press override disabled on sacred days
     if (dayState === "sacred") return;
     timerRef.current = setTimeout(() => setOverride(true), 500);
   };
@@ -72,15 +98,13 @@ export default function EnginePage() {
     if (timerRef.current) clearTimeout(timerRef.current);
   };
 
-  // Null state — day type not yet determined, render nothing to prevent flash
   if (dayState === null) return null;
 
-  // Sacred day — no override, no access
   if (dayState === "sacred") {
     return (
       <main className="page flex flex-col items-center justify-center text-center animate-fade-in">
         <div className="px-8 py-16 select-none">
-          <div className="text-6xl mb-8 opacity-20">🛑</div>
+          <div className="text-6xl mb-8 opacity-20">{"🛑"}</div>
           <h2 className="text-xl font-black tracking-tight mb-3">Sunday is sacred.</h2>
           <p className="text-[#555] text-sm">Rest. Zero building. No override.</p>
         </div>
@@ -88,7 +112,6 @@ export default function EnginePage() {
     );
   }
 
-  // Studio day — long-press override available
   if (dayState === "studio" && !override) {
     return (
       <main className="page flex flex-col items-center justify-center text-center animate-fade-in">
@@ -98,23 +121,56 @@ export default function EnginePage() {
           onPointerUp={endPress}
           onPointerLeave={endPress}
         >
-          <div className="text-6xl mb-8 opacity-20">⚙️</div>
+          <div className="text-6xl mb-8 opacity-20">{"⚙️"}</div>
           <h2 className="text-xl font-black tracking-tight mb-3">Studio Day.</h2>
           <p className="text-[#555] text-sm">Business resumes Tuesday.</p>
+          <p className="text-[#333] text-xs mt-4">hold to override</p>
         </div>
       </main>
     );
   }
 
+  const touchPct = Math.min((touches / touchTarget) * 100, 100);
+  const redFlags = flags.filter(f => f.urgency === "RED");
+  const amberFlags = flags.filter(f => f.urgency === "AMBER");
+
   return (
     <main className="page animate-fade-in">
       <div className="page-inner">
 
-        {/* ── Today's Move ── */}
+        {priority && (
+          <div className="mb-5 px-4 py-3 rounded-xl border border-amber-900/40 bg-[#0f0f0f] flex items-center gap-3">
+            <span className="text-amber-400 text-xs font-black tracking-widest uppercase">Oracle</span>
+            <span className="text-amber-400 text-xs font-bold capitalize">Priority today: {priority}</span>
+          </div>
+        )}
+
+        {redFlags.length > 0 && (
+          <div className="mb-4 space-y-2">
+            {redFlags.map((f, i) => (
+              <div key={i} className="px-4 py-3 rounded-xl border border-red-900/40 bg-[#0f0f0f]">
+                <p className="text-red-400 text-xs font-black tracking-widest uppercase mb-1">Action Required</p>
+                <p className="text-white text-sm font-bold">{f.action}</p>
+                <p className="text-[#666] text-xs mt-1">{f.reason}</p>
+              </div>
+            ))}
+          </div>
+        )}
+
+        {amberFlags.length > 0 && (
+          <div className="mb-4 space-y-2">
+            {amberFlags.map((f, i) => (
+              <div key={i} className="px-4 py-3 rounded-xl border border-amber-900/30 bg-[#0f0f0f]">
+                <p className="text-amber-400 text-xs font-black tracking-widest uppercase mb-1">Watch</p>
+                <p className="text-white text-sm font-bold">{f.action}</p>
+                <p className="text-[#666] text-xs mt-1">{f.reason}</p>
+              </div>
+            ))}
+          </div>
+        )}
+
         <div className="mb-6">
-          <p className="text-[10px] font-black tracking-[0.18em] text-amber-500 uppercase mb-3">
-            Today's Move
-          </p>
+          <p className="text-[10px] font-black tracking-[0.18em] text-amber-500 uppercase mb-3">Today's Move</p>
           <input
             type="text"
             className="oracle-input text-lg font-bold"
@@ -126,34 +182,39 @@ export default function EnginePage() {
           />
         </div>
 
-        {/* ── Outreach Counter ── */}
-        <div className="card mb-6 flex justify-between items-center">
-          <div>
-            <p className="text-[10px] font-black tracking-[0.18em] text-[#555] uppercase mb-1">Touches</p>
-            <p className="text-3xl font-black leading-none">{touches}
-              <span className="text-base font-bold text-[#555] ml-1">/ 15</span>
-            </p>
+        <div className="card mb-3">
+          <div className="flex justify-between items-center mb-3">
+            <div>
+              <p className="text-[10px] font-black tracking-[0.18em] text-[#555] uppercase mb-1">Touches</p>
+              <p className="text-3xl font-black leading-none">
+                {touches}
+                <span className="text-base font-bold text-[#555] ml-1">/ {touchTarget}</span>
+              </p>
+            </div>
+            <button
+              onClick={logTouch}
+              className="bg-[#222] border border-[#333] px-5 py-3 rounded-xl font-black text-sm tracking-widest hover:bg-[#2a2a2a] active:scale-95 transition-transform"
+            >
+              + TOUCH
+            </button>
           </div>
-          <button
-            onClick={logTouch}
-            className="bg-[#222] border border-[#333] px-5 py-3 rounded-xl font-black text-sm tracking-widest hover:bg-[#2a2a2a] active:scale-95 transition-transform"
-          >
-            + TOUCH
-          </button>
+          <div className="h-1 bg-[#1e1e1e] rounded-full overflow-hidden">
+            <div
+              className="h-full rounded-full transition-all duration-500"
+              style={{
+                width: touchPct + "%",
+                backgroundColor: touchPct >= 100 ? "#22c55e" : touchPct >= 60 ? "#f59e0b" : "#555",
+              }}
+            />
+          </div>
         </div>
 
-        {/* ── Top 3 Accounts ── */}
-        <div className="card">
-          <p className="text-[10px] font-black tracking-[0.18em] text-[#555] uppercase mb-4">
-            Top 3 Accounts
-          </p>
+        <div className="card mb-6">
+          <p className="text-[10px] font-black tracking-[0.18em] text-[#555] uppercase mb-4">Top 3 Accounts</p>
           {accounts.map((acc, idx) => (
-            <div
-              key={idx}
-              className="flex justify-between items-center py-3 border-b border-[#1e1e1e] last:border-0"
-            >
+            <div key={idx} className="flex justify-between items-center py-3 border-b border-[#1e1e1e] last:border-0">
               {editingAccount === idx ? (
-                <div className="flex gap-2 flex-1 mr-3 animate-slide-up">
+                <div className="flex gap-2 flex-1 mr-3">
                   <input
                     autoFocus
                     type="text"
@@ -172,35 +233,77 @@ export default function EnginePage() {
                   />
                 </div>
               ) : (
-                <button
-                  className="text-sm font-bold text-left flex-1 -webkit-tap-highlight-color-transparent"
-                  onClick={() => setEditingAccount(idx)}
-                >
+                <button className="text-sm font-bold text-left flex-1" onClick={() => setEditingAccount(idx)}>
                   {acc.name === DEFAULT_ACCOUNTS[idx].name && acc.days === 0
                     ? <span className="text-[#444] italic">tap to set account {idx + 1}</span>
                     : acc.name}
                 </button>
               )}
-
               {editingAccount === idx ? (
-                <button
-                  className="text-amber-500 text-sm font-black ml-2"
-                  onClick={() => setEditingAccount(null)}
-                >
-                  DONE
-                </button>
+                <button className="text-amber-500 text-sm font-black ml-2" onClick={() => setEditingAccount(null)}>DONE</button>
               ) : (
                 acc.days > 0 && (
-                  <span className={`badge flex-shrink-0 ${
-                    acc.days > 14 ? "badge-red" :
-                    acc.days > 7  ? "badge-amber" : "badge-green"
-                  }`}>
+                  <span className={"badge flex-shrink-0 " + (acc.days > 14 ? "badge-red" : acc.days > 7 ? "badge-amber" : "badge-green")}>
                     {acc.days}d
                   </span>
                 )
               )}
             </div>
           ))}
+        </div>
+
+        <div className="card">
+          <div className="flex justify-between items-center mb-4">
+            <p className="text-[10px] font-black tracking-[0.18em] text-[#555] uppercase">Income Bridge</p>
+            {!editingIncome && (
+              <button onClick={() => setEditingIncome(true)} className="text-[#444] text-xs font-black tracking-widest hover:text-white transition-colors">
+                EDIT
+              </button>
+            )}
+          </div>
+
+          {editingIncome ? (
+            <div className="space-y-4">
+              <div>
+                <p className="text-[10px] font-black tracking-widest text-[#555] uppercase mb-2">DoorDash this week</p>
+                <div className="flex gap-3">
+                  <div className="flex-1">
+                    <p className="text-[9px] text-[#444] uppercase tracking-widest mb-1">Shifts</p>
+                    <input type="number" className="num-input w-full" value={ddShifts || ""} onChange={e => setDdShifts(parseInt(e.target.value) || 0)} placeholder="0" />
+                  </div>
+                  <div className="flex-1">
+                    <p className="text-[9px] text-[#444] uppercase tracking-widest mb-1">Earnings $</p>
+                    <input type="number" className="num-input w-full" value={ddEarnings || ""} onChange={e => setDdEarnings(parseFloat(e.target.value) || 0)} placeholder="0" />
+                  </div>
+                </div>
+              </div>
+              <div>
+                <p className="text-[10px] font-black tracking-widest text-[#555] uppercase mb-2">Strong Selects revenue this week</p>
+                <input type="number" className="num-input w-full" value={ssRevenue || ""} onChange={e => setSsRevenue(parseFloat(e.target.value) || 0)} placeholder="0" />
+              </div>
+              <button onClick={saveIncome} className="w-full py-3 rounded-xl bg-[#1e1e1e] border border-[#2a2a2a] text-sm font-black tracking-widest text-white hover:bg-[#2a2a2a] active:scale-95 transition-transform">
+                SAVE
+              </button>
+            </div>
+          ) : (
+            <div className="space-y-3">
+              <div className="flex justify-between">
+                <div>
+                  <p className="text-[9px] text-[#444] uppercase tracking-widest mb-1">DoorDash</p>
+                  <p className="text-lg font-black">${ddEarnings}<span className="text-sm font-bold text-[#555] ml-1">{ddShifts} shift{ddShifts !== 1 ? "s" : ""}</span></p>
+                </div>
+                <div className="text-right">
+                  <p className="text-[9px] text-[#444] uppercase tracking-widest mb-1">Strong Selects</p>
+                  <p className="text-lg font-black text-green-400">${ssRevenue}</p>
+                </div>
+              </div>
+              {ddShifts > 4 && (
+                <p className="text-xs text-amber-400 font-bold">
+                  {ddShifts} shifts this week — Oracle will weigh studio impact
+                </p>
+              )}
+            </div>
+          )}
         </div>
 
       </div>

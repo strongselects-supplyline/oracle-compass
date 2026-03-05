@@ -14,23 +14,23 @@ type Escalation = {
 export default function ComplianceBoard() {
     const [loading, setLoading] = useState(false);
     const [escalations, setEscalations] = useState<Escalation[] | null>(null);
+    const [auditError, setAuditError] = useState<string | null>(null);
 
     const runAudit = async () => {
         setLoading(true);
+        setAuditError(null);
         try {
             const res = await fetch("/api/label/ops", { method: "POST", body: JSON.stringify({}) });
-            const data = await res.json();
-
-            await logLabelCost(LABEL_COST_ESTIMATES.ops_audit);
-
-            if (data.escalations) {
-                setEscalations(data.escalations);
-            } else {
-                setEscalations([]);
+            if (!res.ok) {
+                const errText = await res.text().catch(() => "Server error");
+                throw new Error(`Ops agent error (${res.status}): ${errText.slice(0, 120)}`);
             }
-        } catch (e) {
+            const data = await res.json();
+            await logLabelCost(LABEL_COST_ESTIMATES.ops_audit);
+            setEscalations(data.escalations ?? []);
+        } catch (e: any) {
             console.error(e);
-            alert("Error running ops audit.");
+            setAuditError(e?.message || "Error running ops audit");
         }
         setLoading(false);
     };
@@ -57,6 +57,14 @@ export default function ComplianceBoard() {
                     {loading ? "AUDITING..." : "[RUN FULL AUDIT]"}
                 </button>
             </div>
+
+            {auditError && (
+                <div className="alert-banner alert-banner-red mb-4 animate-slide-up">
+                    <span>⚠️</span>
+                    <div className="flex-1 text-xs">{auditError}</div>
+                    <button onClick={() => setAuditError(null)} className="text-xs opacity-60 hover:opacity-100">✕</button>
+                </div>
+            )}
 
             {escalations !== null && (
                 <div className={`mb-6 p-4 rounded border ${escalations.length > 0 ? 'bg-red-900/20 border-red-500' : 'bg-green-900/20 border-green-500'}`}>
