@@ -1,12 +1,13 @@
 // app/api/label/cron/compliance/route.ts
 // Vercel Cron: runs daily at 8am CT to check compliance registry
 import { NextResponse } from "next/server";
-import { REGISTRY, TrackRegistry } from "@/lib/registry";
-
+import { REGISTRY } from "@/lib/registry";
+import { getDynamicReleases } from "@/lib/releases";
 
 export async function GET() {
     const now = new Date();
     const escalations: { track: string; issue: string; severity: "AMBER" | "RED" }[] = [];
+    const releases = await getDynamicReleases();
 
     for (const track of REGISTRY) {
         const releaseDate = new Date(track.releaseDate);
@@ -56,6 +57,33 @@ export async function GET() {
                 issue: `Instrumental not rendered. Sync licensing at risk. ${daysUntil} days to release.`,
                 severity: "AMBER"
             });
+        }
+
+        // PITCH DEADLINE ALERTS (from studioData)
+        const releaseData = releases.find(r => r.title === track.title);
+        if (releaseData && releaseData.pitchDeadline) {
+            const pitchDate = new Date(releaseData.pitchDeadline);
+            const daysUntilPitch = Math.ceil((pitchDate.getTime() - now.getTime()) / (1000 * 60 * 60 * 24));
+
+            if (daysUntilPitch === 7) {
+                escalations.push({
+                    track: track.title,
+                    issue: `Pitch deadline is in exactly 7 days. Time to draft copy.`,
+                    severity: "AMBER"
+                });
+            } else if (daysUntilPitch === 3) {
+                escalations.push({
+                    track: track.title,
+                    issue: `Pitch deadline is in exactly 3 days. Submit today.`,
+                    severity: "RED"
+                });
+            } else if (daysUntilPitch > 0 && daysUntilPitch < 3) {
+                escalations.push({
+                    track: track.title,
+                    issue: `Pitch deadline is imminent (${daysUntilPitch} days).`,
+                    severity: "RED"
+                });
+            }
         }
     }
 

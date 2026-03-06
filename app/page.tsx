@@ -5,6 +5,7 @@ import { getDayType, isSacredDay, isStudioDay } from "@/lib/dayType";
 import { getDailyLog, saveDailyLog, DailyLog, getStoreValue } from "@/lib/db";
 import { getSobrietyStreak } from "@/lib/streaks";
 import { getDynamicReleases, Release } from "@/lib/releases";
+import WeeklyMirror from "@/components/WeeklyMirror";
 
 function getMakeModeWeek(): number {
   const start = Date.UTC(2026, 1, 20);
@@ -200,6 +201,9 @@ export default function MorningMode() {
                 <p className="text-[8px] text-[#666] font-bold truncate px-1">{activeTrack}</p>
               </div>
             </div>
+
+            {/* WEEKLY MIRROR */}
+            <WeeklyMirror />
 
             {/* PROTOCOL */}
             {(() => {

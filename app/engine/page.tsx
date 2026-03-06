@@ -5,6 +5,7 @@ import { getDayType, isBizDay, isSacredDay } from "@/lib/dayType";
 import { getStoreValue, setStoreValue } from "@/lib/db";
 import { getWeekKey } from "@/lib/oracle";
 import type { OracleFlag } from "@/lib/oracle";
+import ContentQueue from "@/components/engine/ContentQueue";
 
 type Account = { name: string; days: number };
 
@@ -208,6 +209,8 @@ export default function EnginePage() {
             />
           </div>
         </div>
+
+        <ContentQueue />
 
         <div className="card mb-6">
           <p className="text-[10px] font-black tracking-[0.18em] text-[#555] uppercase mb-4">Top 3 Accounts</p>

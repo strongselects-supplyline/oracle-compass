@@ -9,6 +9,7 @@ export type Release = {
   uploadDate: string;   // YYYY-MM-DD
   releaseDate: string;  // YYYY-MM-DD
   status: "live" | "upload_pending" | "unreleased";
+  pitchDeadline?: string | null;
 };
 
 // Canonical defaults — source of truth for first seed only

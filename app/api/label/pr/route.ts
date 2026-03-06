@@ -1,6 +1,6 @@
 // app/api/label/pr/route.ts
 import { NextRequest, NextResponse } from "next/server";
-
+import { PROJECTS, LOOSIES } from "@/lib/studioData";
 
 const SYSTEM_PROMPT = `You are the PR department of past.El noir Records. You write on behalf of
 Ethan Payton. You have internalized the brand voice completely.
@@ -19,6 +19,37 @@ Slow-burn. The music finds you.
 
 Generate 3 variants per request. Return JSON only matching: { "variants": ["variant 1", "variant 2", "variant 3"] }. No preamble.`;
 
+/** Build a human-readable sonic fingerprint from Cyanite data for AI context. */
+function buildTrackContext(trackTitle: string): string {
+    // Search across all projects
+    for (const project of PROJECTS) {
+        const track = project.tracks.find(
+            t => t.title.toLowerCase() === trackTitle.toLowerCase()
+        );
+        if (track) {
+            const moods: string[] = [];
+            if (track.sexy !== null && track.sexy > 0.5) moods.push(`sexy (${Math.round(track.sexy * 100)}%)`);
+            if (track.chill !== null && track.chill > 0.5) moods.push(`chill (${Math.round(track.chill * 100)}%)`);
+            if (track.romantic !== null && track.romantic > 0.5) moods.push(`romantic (${Math.round(track.romantic * 100)}%)`);
+            if (track.happy !== null && track.happy > 0.5) moods.push(`happy (${Math.round(track.happy * 100)}%)`);
+            if (track.energetic !== null && track.energetic > 0.3) moods.push(`energetic (${Math.round(track.energetic * 100)}%)`);
+
+            const lines: string[] = [
+                `TRACK: "${track.title}" — from the project "${project.name}"`,
+                track.bpm ? `TEMPO: ${track.bpm} BPM` : '',
+                track.key ? `KEY: ${track.key}` : '',
+                moods.length > 0 ? `MOOD PROFILE (Cyanite): ${moods.join(', ')}` : '',
+                track.releaseDate ? `RELEASE DATE: ${track.releaseDate}` : '',
+                `PROJECT ROLE: ${project.role}`,
+            ].filter(Boolean);
+
+            return lines.join('\n');
+        }
+    }
+    // Fallback: no match found
+    return `TRACK: "${trackTitle}" — artist: Ethan Payton`;
+}
+
 export async function POST(req: NextRequest) {
     const apiKey = process.env.ANTHROPIC_API_KEY;
     if (!apiKey) {
@@ -33,7 +64,13 @@ export async function POST(req: NextRequest) {
             return NextResponse.json({ error: "Missing trackTitle or assetType" }, { status: 400 });
         }
 
-        const userMessage = `Generate copy for track: "${trackTitle}". Asset type requested: ${assetType}. Remember the rules.`;
+        const trackContext = buildTrackContext(trackTitle);
+
+        const userMessage = `Generate copy for the following track. Asset type requested: ${assetType}.
+
+${trackContext}
+
+Write copy that reflects the actual sonic identity above — the tempo, mood profile, and project role should inform the emotional register of the copy. Remember all brand voice rules.`;
 
         const res = await fetch("https://api.anthropic.com/v1/messages", {
             method: "POST",
@@ -44,7 +81,7 @@ export async function POST(req: NextRequest) {
             },
             body: JSON.stringify({
                 model: "claude-haiku-4-5-20251001",
-                max_tokens: 500,
+                max_tokens: 600,
                 system: SYSTEM_PROMPT,
                 messages: [{ role: "user", content: userMessage }],
             }),
@@ -58,7 +95,6 @@ export async function POST(req: NextRequest) {
         const data = await res.json();
         const raw = data.content[0]?.text ?? "";
 
-        // Strip markdown code fences if present
         const cleaned = raw.replace(/^```(?:json)?\n?/m, "").replace(/\n?```$/m, "").trim();
         const result = JSON.parse(cleaned);
 

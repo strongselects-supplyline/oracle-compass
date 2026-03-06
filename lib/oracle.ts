@@ -39,7 +39,7 @@ export type OracleContext = {
   makeModeWeek: number;
   daysUntilAlbum: number;
   dailyLog: DailyLog;
-  previousLog: DailyLog | null;
+  recentLogs: DailyLog[]; // Last 3 days for pattern detection
   releases: Release[];
   cycleTracks: CycleTrack[];
   weeklyStudioSessions: number;
@@ -106,13 +106,17 @@ export async function assembleContext(): Promise<OracleContext> {
   const weekKey = getWeekKey();
 
   // ── Music + Grind reads ─────────────────────────────────
-  const [dailyLog, previousLog, releases, sessions, lastDecree] = await Promise.all([
+  const [dailyLog, log1, log2, log3, releases, sessions, lastDecree] = await Promise.all([
     getDailyLog(today),
     getDailyLog(yesterday),
+    getDailyLog(`${yd.getFullYear()}-${String(yd.getMonth() + 1).padStart(2, "0")}-${String(yd.getDate() - 1).padStart(2, "0")}`),
+    getDailyLog(`${yd.getFullYear()}-${String(yd.getMonth() + 1).padStart(2, "0")}-${String(yd.getDate() - 2).padStart(2, "0")}`),
     getDynamicReleases(),
     getStoreValue<number>(`weekly_sessions:${weekKey}`),
     getStoreValue<OracleDecree>(`oracle_decree:${today}`),
   ]);
+
+  const recentLogs = [log1, log2, log3].filter(l => l && (l.oneThing || l.sovereigntyStack || l.sleep !== null));
 
   const cycleTracks: CycleTrack[] = await Promise.all(
     CYCLE_TRACKS.map(async t => ({
@@ -212,7 +216,7 @@ export async function assembleContext(): Promise<OracleContext> {
     makeModeWeek: getMakeModeWeek(),
     daysUntilAlbum,
     dailyLog,
-    previousLog: previousLog?.oneThing || previousLog?.sovereigntyStack ? previousLog : null,
+    recentLogs,
     releases,
     cycleTracks,
     weeklyStudioSessions: sessions || 0,

@@ -31,7 +31,7 @@ CROSS-PILLAR LOGIC:
 - Strong Selects pipeline dry for 2+ weeks → flag action, raise touch target on next Biz Day
 - Compliance gap within 3 days of release → RED severity, flag_action immediately regardless of anything else
 - DoorDash monthly earnings + SS revenue together signal financial runway — if both are low, flag it
-- Sobriety streak is non-negotiable context. If stack or movement is missed repeatedly, acknowledge it.
+- Sobriety streak is non-negotiable context. If sovereignty stack is missed 3 days in a row, flag_action RED immediately. This is the foundation of the empire and must be protected.
 - Studio session count below 3/week by midweek on a music-heavy week → flag or shift
 
 MUSIC RULES:
@@ -169,8 +169,8 @@ SOBRIETY STREAK: ${ctx.sobrietyStreak} days
 TODAY:
 ${logSummary(ctx.dailyLog)}
 
-YESTERDAY:
-${ctx.previousLog ? logSummary(ctx.previousLog) : "  (no log)"}
+RECENT LOGS (Last 3 Days):
+${ctx.recentLogs.length > 0 ? ctx.recentLogs.map(l => `[${l.date}]\n${logSummary(l)}`).join("\n") : "  (no recent logs)"}
 
 ── MUSIC ───────────────────────────────────────
 STUDIO SESSIONS THIS WEEK: ${ctx.weeklyStudioSessions} / 4 target

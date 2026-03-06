@@ -8,11 +8,13 @@ import AgentStatus from "@/components/label/AgentStatus";
 import ComplianceBoard from "@/components/label/ComplianceBoard";
 import CreativeDept from "@/components/label/CreativeDept";
 import ANRPanel from "@/components/label/ANRPanel";
+import SubmissionLog from "@/components/label/SubmissionLog";
 
-type Tab = "rollout" | "vault" | "compliance" | "creative" | "anr";
+type Tab = "rollout" | "subs" | "vault" | "compliance" | "creative" | "anr";
 
 const TABS: { id: Tab; label: string; emoji: string }[] = [
     { id: "rollout", label: "Rollout", emoji: "📅" },
+    { id: "subs", label: "Subs", emoji: "📋" },
     { id: "vault", label: "Copy", emoji: "✍️" },
     { id: "compliance", label: "Ops", emoji: "✅" },
     { id: "creative", label: "Creative", emoji: "🎨" },
@@ -93,8 +95,8 @@ export default function LabelPage() {
                                                     key={tab.id}
                                                     onClick={() => setActiveTab(tab.id)}
                                                     className={`flex items-center gap-1.5 px-4 py-2.5 rounded-xl text-[11px] font-bold tracking-wider uppercase shrink-0 transition-all ${activeTab === tab.id
-                                                            ? 'bg-[#d4a853] text-black shadow-lg shadow-[#d4a853]/20'
-                                                            : 'bg-[#1a1a1a] text-[#666] border border-[#252525]'
+                                                        ? 'bg-[#d4a853] text-black shadow-lg shadow-[#d4a853]/20'
+                                                        : 'bg-[#1a1a1a] text-[#666] border border-[#252525]'
                                                         }`}
                                                 >
                                                     <span className="text-sm">{tab.emoji}</span>
@@ -106,6 +108,7 @@ export default function LabelPage() {
                                         {/* Agent panel */}
                                         <div className="px-4 pb-6">
                                             {activeTab === "rollout" && <RolloutCalendar trackTitle={s.title} releaseDate={s.releaseDate} />}
+                                            {activeTab === "subs" && <SubmissionLog trackTitle={s.title} />}
                                             {activeTab === "vault" && <CopyVault trackTitle={s.title} />}
                                             {activeTab === "compliance" && <ComplianceBoard />}
                                             {activeTab === "creative" && <CreativeDept trackTitle={s.title} />}
