@@ -222,14 +222,14 @@ export default function EnginePage() {
                     autoFocus
                     type="text"
                     className="oracle-input text-sm font-bold flex-1 py-2"
-                    value={acc.name}
+                    value={acc?.name || ""}
                     onChange={e => updateAccount(idx, { name: e.target.value })}
                     placeholder="Account name..."
                   />
                   <input
                     type="number"
                     className="num-input text-sm"
-                    value={acc.days || ""}
+                    value={acc?.days || ""}
                     onChange={e => updateAccount(idx, { days: parseInt(e.target.value) || 0 })}
                     placeholder="days"
                     style={{ width: "60px" }}
@@ -237,17 +237,17 @@ export default function EnginePage() {
                 </div>
               ) : (
                 <button className="text-sm font-bold text-left flex-1" onClick={() => setEditingAccount(idx)}>
-                  {acc.name === DEFAULT_ACCOUNTS[idx].name && acc.days === 0
+                  {acc?.name === DEFAULT_ACCOUNTS[idx].name && (!acc?.days || acc.days === 0)
                     ? <span className="text-[#444] italic">tap to set account {idx + 1}</span>
-                    : acc.name}
+                    : acc?.name || `Account ${idx + 1}`}
                 </button>
               )}
               {editingAccount === idx ? (
                 <button className="text-amber-500 text-sm font-black ml-2" onClick={() => setEditingAccount(null)}>DONE</button>
               ) : (
-                acc.days > 0 && (
-                  <span className={"badge flex-shrink-0 " + (acc.days > 14 ? "badge-red" : acc.days > 7 ? "badge-amber" : "badge-green")}>
-                    {acc.days}d
+                (acc?.days ?? 0) > 0 && (
+                  <span className={"badge flex-shrink-0 " + (acc!.days > 14 ? "badge-red" : acc!.days > 7 ? "badge-amber" : "badge-green")}>
+                    {acc?.days}d
                   </span>
                 )
               )}

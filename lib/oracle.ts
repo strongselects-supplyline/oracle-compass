@@ -137,9 +137,9 @@ export async function assembleContext(): Promise<OracleContext> {
     dailyMove: engineMove || "(not set)",
     weeklyTouches: weeklyTouches || 0,
     touchTarget: touchTarget || 15,
-    accounts: (rawAccounts || []).map(a => ({
-      name: a.name,
-      daysSinceContact: a.days,
+    accounts: (rawAccounts || []).map((a: any) => ({
+      name: a?.name || "",
+      daysSinceContact: a?.days || 0,
     })),
   };
 
