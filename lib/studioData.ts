@@ -70,7 +70,7 @@ const placeholderTracks = (prefix: string, count: number): Track[] =>
 export const PROJECTS: Project[] = [
     {
         id: 'all-love', name: 'ALL LOVE', color: '#6ee7b7', emoji: '🔥',
-        role: 'Re-establish presence, lead project', trackCount: 11, targetDate: '2026-04-03',
+        role: 'Re-establish presence, lead project', trackCount: 11, targetDate: '2026-04-10',
         tracks: [
             { title: 'SEE ME', bpm: 120, key: 'B min', rbConf: 0.60, sexy: 0.89, chill: 0.57, romantic: 0.55, happy: 0.38, uplifting: 0.17, energetic: 0.17, isrc: '', status: 'single_live', releaseDate: '2026-02-27', pitchDeadline: null, isLeadSingle: true, leadRank: 1 },
             { title: 'ESL', bpm: 105, key: 'C# min', rbConf: 0.59, sexy: 0.87, chill: 0.63, romantic: 0.62, happy: 0.38, uplifting: 0.05, energetic: 0.10, isrc: '', status: 'uploaded', releaseDate: '2026-03-06', pitchDeadline: '2026-02-28', isLeadSingle: true, leadRank: 2 },
@@ -121,7 +121,7 @@ export const TIMELINE_EVENTS: TimelineEvent[] = [
     { date: '2026-03-13', label: 'Sweet Frustration', project: 'all-love', type: 'single' },
     { date: '2026-03-20', label: 'I Like Girls', project: 'all-love', type: 'single' },
     { date: '2026-03-27', label: 'Like I Did', project: 'all-love', type: 'single' },
-    { date: '2026-04-03', label: 'ALL LOVE', project: 'all-love', type: 'album' },
+    { date: '2026-04-10', label: 'ALL LOVE', project: 'all-love', type: 'album' },
     { date: '2026-04-11', label: 'Deluxe Single', project: 'all-love-deluxe', type: 'single' },
     { date: '2026-04-28', label: 'DELUXE 🎂', project: 'all-love-deluxe', type: 'album' },
     { date: '2026-05-09', label: 'L1', project: 'loosies', type: 'loosie' },
