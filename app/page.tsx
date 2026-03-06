@@ -18,20 +18,20 @@ type ProtocolStep = { icon: string; action: string; tab?: string };
 
 function getProtocolSteps(dayType: string): { tagline: string; steps: ProtocolStep[] } {
   if (dayType === "STUDIO + SAUNA DAY") return {
-    tagline: "Create + recover. Both compound.",
+    tagline: "6-Hour Dual-Track Sprint + Thermal Reset.",
     steps: [
       { icon: "☀️", action: "Sovereignty Stack → log below" },
-      { icon: "🎹", action: "10 AM → Open DAW, work on cycle track" },
-      { icon: "🔥", action: "1 PM → Sauna session" },
+      { icon: "🎹", action: "10 AM → 6hr Dual-Track Sprint (2 songs at once)" },
+      { icon: "🔥", action: "4 PM → Sauna session (thermal reset)" },
       { icon: "📱", action: "Post content from STUDIO queue", tab: "studio" },
     ]
   };
   if (dayType === "STUDIO DAY") return {
-    tagline: "Full studio immersion. No distractions.",
+    tagline: "44 Tracks. 10 Hrs Each. No Distractions.",
     steps: [
       { icon: "☀️", action: "Sovereignty Stack → log below" },
-      { icon: "🎹", action: "10 AM → Open DAW, execute the cycle" },
-      { icon: "🎙️", action: "Record, mix, or master — move a track forward" },
+      { icon: "🎹", action: "10 AM → 6hr Dual-Track Sprint (Vocals + Mix)" },
+      { icon: "🎙️", action: "Track A: Vocals | Track B: Mixing" },
       { icon: "📱", action: "Post content from STUDIO queue", tab: "studio" },
     ]
   };
