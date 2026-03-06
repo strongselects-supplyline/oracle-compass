@@ -72,11 +72,11 @@ export const PROJECTS: Project[] = [
         id: 'all-love', name: 'ALL LOVE', color: '#6ee7b7', emoji: '🔥',
         role: 'Re-establish presence, lead project', trackCount: 11, targetDate: '2026-04-10',
         tracks: [
-            { title: 'SEE ME', bpm: 120, key: 'B min', rbConf: 0.60, sexy: 0.89, chill: 0.57, romantic: 0.55, happy: 0.38, uplifting: 0.17, energetic: 0.17, isrc: '', status: 'single_live', releaseDate: '2026-02-27', pitchDeadline: null, isLeadSingle: true, leadRank: 1 },
-            { title: 'ESL', bpm: 105, key: 'C# min', rbConf: 0.59, sexy: 0.87, chill: 0.63, romantic: 0.62, happy: 0.38, uplifting: 0.05, energetic: 0.10, isrc: '', status: 'uploaded', releaseDate: '2026-03-06', pitchDeadline: '2026-02-28', isLeadSingle: true, leadRank: 2 },
-            { title: 'Sweet Frustration', bpm: 124, key: 'Bb min', rbConf: 0.25, sexy: 0.85, chill: 0.36, romantic: 0.37, happy: 0.69, uplifting: 0.58, energetic: 0.48, isrc: '', status: 'unreleased', releaseDate: '2026-03-13', pitchDeadline: '2026-03-09', isLeadSingle: true, leadRank: 3 },
-            { title: 'I Like Girls', bpm: 107, key: 'F# min', rbConf: 0.74, sexy: 0.70, chill: 0.44, romantic: 0.32, happy: 0.35, uplifting: 0.34, energetic: 0.23, isrc: '', status: 'unreleased', releaseDate: '2026-03-20', pitchDeadline: '2026-03-16', isLeadSingle: true, leadRank: 4 },
-            { title: 'Like I Did', bpm: 110, key: 'D min', rbConf: 0.57, sexy: 0.60, chill: 0.73, romantic: 0.63, happy: 0.69, uplifting: 0.29, energetic: 0.17, isrc: '', status: 'unreleased', releaseDate: '2026-03-27', pitchDeadline: '2026-03-23', isLeadSingle: true, leadRank: 5 },
+            { title: 'SEE ME', bpm: 120, key: 'B min', rbConf: 0.60, sexy: 0.89, chill: 0.57, romantic: 0.55, happy: 0.38, uplifting: 0.17, energetic: 0.17, isrc: '', status: 'unreleased', releaseDate: '2026-03-13', pitchDeadline: '2026-03-06', isLeadSingle: true, leadRank: 1 },
+            { title: 'ESL', bpm: 105, key: 'C# min', rbConf: 0.59, sexy: 0.87, chill: 0.63, romantic: 0.62, happy: 0.38, uplifting: 0.05, energetic: 0.10, isrc: '', status: 'unreleased', releaseDate: '2026-03-20', pitchDeadline: '2026-03-13', isLeadSingle: true, leadRank: 2 },
+            { title: 'Sweet Frustration', bpm: 124, key: 'Bb min', rbConf: 0.25, sexy: 0.85, chill: 0.36, romantic: 0.37, happy: 0.69, uplifting: 0.58, energetic: 0.48, isrc: '', status: 'unreleased', releaseDate: '2026-03-27', pitchDeadline: '2026-03-20', isLeadSingle: true, leadRank: 3 },
+            { title: 'I Like Girls', bpm: 107, key: 'F# min', rbConf: 0.74, sexy: 0.70, chill: 0.44, romantic: 0.32, happy: 0.35, uplifting: 0.34, energetic: 0.23, isrc: '', status: 'unreleased', releaseDate: null, pitchDeadline: null, isLeadSingle: false, leadRank: null },
+            { title: 'Like I Did', bpm: 110, key: 'D min', rbConf: 0.57, sexy: 0.60, chill: 0.73, romantic: 0.63, happy: 0.69, uplifting: 0.29, energetic: 0.17, isrc: '', status: 'unreleased', releaseDate: '2026-04-03', pitchDeadline: '2026-03-27', isLeadSingle: true, leadRank: 4 },
             { title: 'Worth It', bpm: 97, key: 'F min', rbConf: 0.57, sexy: 0.79, chill: 0.57, romantic: 0.35, happy: 0.35, uplifting: 0.30, energetic: 0.15, isrc: '', status: 'unreleased', releaseDate: null, pitchDeadline: null, isLeadSingle: false, leadRank: null },
             { title: 'Reconnect', bpm: 82, key: 'D maj', rbConf: 0.56, sexy: 0.88, chill: 0.52, romantic: 0.35, happy: 0.40, uplifting: 0.25, energetic: 0.12, isrc: '', status: 'unreleased', releaseDate: null, pitchDeadline: null, isLeadSingle: false, leadRank: null },
             { title: 'Want U 2', bpm: 114, key: 'G min', rbConf: 0.52, sexy: 0.56, chill: 0.65, romantic: 0.46, happy: 0.58, uplifting: 0.38, energetic: 0.12, isrc: '', status: 'unreleased', releaseDate: null, pitchDeadline: null, isLeadSingle: false, leadRank: null },
@@ -116,11 +116,10 @@ export const LOOSIES: Loosie[] = [
 ];
 
 export const TIMELINE_EVENTS: TimelineEvent[] = [
-    { date: '2026-02-27', label: 'SEE ME ✓', project: 'all-love', type: 'single' },
-    { date: '2026-03-06', label: 'ESL', project: 'all-love', type: 'single' },
-    { date: '2026-03-13', label: 'Sweet Frustration', project: 'all-love', type: 'single' },
-    { date: '2026-03-20', label: 'I Like Girls', project: 'all-love', type: 'single' },
-    { date: '2026-03-27', label: 'Like I Did', project: 'all-love', type: 'single' },
+    { date: '2026-03-13', label: 'SEE ME', project: 'all-love', type: 'single' },
+    { date: '2026-03-20', label: 'ESL', project: 'all-love', type: 'single' },
+    { date: '2026-03-27', label: 'Sweet Frustration', project: 'all-love', type: 'single' },
+    { date: '2026-04-03', label: 'Like I Did', project: 'all-love', type: 'single' },
     { date: '2026-04-10', label: 'ALL LOVE', project: 'all-love', type: 'album' },
     { date: '2026-04-11', label: 'Deluxe Single', project: 'all-love-deluxe', type: 'single' },
     { date: '2026-04-28', label: 'DELUXE 🎂', project: 'all-love-deluxe', type: 'album' },
