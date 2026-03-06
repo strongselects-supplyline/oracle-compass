@@ -177,18 +177,21 @@ export default function CopyVault({ trackTitle }: { trackTitle: string }) {
                             </div>
                         )}
                         <div className="space-y-3">
-                            {(data.variants || []).map((v, i) => (
-                                <div key={i} className="flex gap-3 items-start">
-                                    <span className="text-[#444] font-bold text-xs mt-1 shrink-0">{['A', 'B', 'C'][i]}</span>
-                                    <p className="flex-1 text-[13px] text-[#ccc] leading-relaxed">"{v}"</p>
-                                    <button
-                                        onClick={() => copiedFeedback(v)}
-                                        className="text-[9px] font-black tracking-widest text-[#555] hover:text-[#d4a853] shrink-0 mt-1 transition-colors bg-[#1a1a1a] px-2 py-1 rounded-md"
-                                    >
-                                        COPY
-                                    </button>
-                                </div>
-                            ))}
+                            {(data.variants || []).map((v, i) => {
+                                const variantText = typeof v === 'string' ? v : (v as any).copy || (v as any).text || (v as any).content || JSON.stringify(v);
+                                return (
+                                    <div key={i} className="flex gap-3 items-start">
+                                        <span className="text-[#444] font-bold text-xs mt-1 shrink-0">{['A', 'B', 'C'][i]}</span>
+                                        <p className="flex-1 text-[13px] text-[#ccc] leading-relaxed">"{variantText}"</p>
+                                        <button
+                                            onClick={() => copiedFeedback(variantText)}
+                                            className="text-[9px] font-black tracking-widest text-[#555] hover:text-[#d4a853] shrink-0 mt-1 transition-colors bg-[#1a1a1a] px-2 py-1 rounded-md"
+                                        >
+                                            COPY
+                                        </button>
+                                    </div>
+                                );
+                            })}
                         </div>
                     </div>
                 ))}
@@ -203,8 +206,8 @@ export default function CopyVault({ trackTitle }: { trackTitle: string }) {
                             onClick={() => requestVariants(type)}
                             disabled={loading}
                             className={`text-[10px] font-bold tracking-wider uppercase px-3 py-2.5 rounded-xl transition-all min-h-[44px] ${activeRequest === type
-                                    ? 'bg-[#d4a853] text-black'
-                                    : 'bg-[#1a1a1a] text-[#777] border border-[#252525] active:scale-95'
+                                ? 'bg-[#d4a853] text-black'
+                                : 'bg-[#1a1a1a] text-[#777] border border-[#252525] active:scale-95'
                                 } disabled:opacity-40`}
                         >
                             {activeRequest === type ? (
