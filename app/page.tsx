@@ -55,19 +55,21 @@ const CYCLE_TRACKS = [
   { label: "JUST SAY SO", key: "cycle_justsayso" },
 ];
 
-function CheckItem({ label, checked, onChange, dimmed }: { label: string, checked: boolean, onChange: (v: boolean) => void, dimmed?: boolean }) {
+function CheckItem({ label, description, checked, onChange, dimmed }: { label: string, description?: string, checked: boolean, onChange: (v: boolean) => void, dimmed?: boolean }) {
   const [popping, setPopping] = useState(false);
   const handleTap = () => {
     if (!checked) { setPopping(true); setTimeout(() => setPopping(false), 400); }
     onChange(!checked);
   };
   return (
-    <div className={`flex items-center gap-3 p-3 active:bg-[#1a1a1a] transition-all cursor-pointer rounded-xl ${dimmed ? 'opacity-30 pointer-events-none' : ''}`} onClick={handleTap}>
-      <div className={`w-6 h-6 rounded border-2 flex items-center justify-center transition-all flex-shrink-0 ${checked ? 'bg-amber-500 border-amber-500' : 'border-[#333]'} ${popping ? 'scale-110' : 'scale-100'}`}>
+    <div className={`flex items-start gap-3 p-3 active:bg-[#1a1a1a] transition-all cursor-pointer rounded-xl ${dimmed ? 'opacity-30 pointer-events-none' : ''}`} onClick={handleTap}>
+      <div className={`w-6 h-6 rounded border-2 flex items-center justify-center transition-all flex-shrink-0 mt-0.5 ${checked ? 'bg-amber-500 border-amber-500' : 'border-[#333]'} ${popping ? 'scale-110' : 'scale-100'}`}>
         {checked && <svg width="14" height="14" viewBox="0 0 24 24" fill="none" stroke="#000" strokeWidth="4" strokeLinecap="round" strokeLinejoin="round"><polyline points="20 6 9 17 4 12" /></svg>}
       </div>
-      <span className={`text-sm font-bold truncate ${checked ? 'text-[#666] line-through' : 'text-white'}`}>{label}</span>
-      <div className="flex-1" />
+      <div className="flex-1 flex flex-col justify-center min-h-[24px]">
+        <span className={`text-sm font-bold ${checked ? 'text-[#666] line-through' : 'text-white'}`}>{label}</span>
+        {description && <span className={`text-[10px] leading-tight font-medium mt-1 ${checked ? 'text-[#555]' : 'text-[#888]'}`}>{description}</span>}
+      </div>
     </div>
   );
 }
@@ -230,9 +232,9 @@ export default function MorningMode() {
             <div className="mb-8">
               <h3 className="text-[10px] font-black tracking-[0.2em] text-[#555] uppercase mb-3 px-1">Morning & Grind Logging</h3>
               <div className="card !p-1.5 mb-2">
-                <CheckItem label="Sovereignty Stack" checked={log.sovereigntyStack} onChange={v => updateLog({ sovereigntyStack: v })} />
-                <CheckItem label="Movement (Pre-DAW)" checked={log.movement} onChange={v => updateLog({ movement: v })} />
-                <CheckItem label="Eucalyptus Steam" dimmed={!studioDay} checked={log.eucalyptusStream} onChange={v => updateLog({ eucalyptusStream: v })} />
+                <CheckItem label="Sovereignty Stack" description="Trataka, breathwork, mullein tea, cold shower." checked={log.sovereigntyStack} onChange={v => updateLog({ sovereigntyStack: v })} />
+                <CheckItem label="Movement (Pre-DAW)" description="Lift, run, or deep stretch — sweat required." checked={log.movement} onChange={v => updateLog({ movement: v })} />
+                <CheckItem label="Eucalyptus Steam" description="Clear the lungs for vocal performance." dimmed={!studioDay} checked={log.eucalyptusStream} onChange={v => updateLog({ eucalyptusStream: v })} />
                 <CheckItem label="Sauna" dimmed={dayType !== "STUDIO + SAUNA DAY"} checked={log.sauna} onChange={v => updateLog({ sauna: v })} />
               </div>
 
