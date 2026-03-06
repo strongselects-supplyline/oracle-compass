@@ -52,6 +52,15 @@ export default function WeeklyMirror() {
     if (loading) return null;
     if (!data) return null;
 
+    if (!data.days || !Array.isArray(data.days)) {
+        return (
+            <div className="mb-8 border border-red-900/30 bg-[#0f0f0f] p-4 rounded-xl text-center">
+                <p className="text-red-500 text-xs font-bold tracking-widest uppercase">Mirror Sync Failed</p>
+                <p className="text-[#666] text-xs mt-1">Check Vercel logs or Google Sheets API.</p>
+            </div>
+        );
+    }
+
     const maxDD = Math.max(...data.days.map(d => d.ddHours ?? 0), 1);
     const sovereignRate = data.sovereignRate;
     const rateColor =
@@ -109,10 +118,10 @@ export default function WeeklyMirror() {
                                     {/* Sovereignty dot */}
                                     <div
                                         className={`w-3.5 h-3.5 rounded-full border-2 transition-all ${noData
-                                                ? "border-[#222] bg-transparent"
-                                                : sovereign
-                                                    ? "border-amber-500 bg-amber-500"
-                                                    : "border-red-500/60 bg-transparent"
+                                            ? "border-[#222] bg-transparent"
+                                            : sovereign
+                                                ? "border-amber-500 bg-amber-500"
+                                                : "border-red-500/60 bg-transparent"
                                             }`}
                                     />
                                     {/* DD hours bar */}
