@@ -11,6 +11,7 @@ import WeeklyMirror from "@/components/WeeklyMirror";
 function getMakeModeWeek(): number {
   const start = Date.UTC(2026, 1, 20);
   const now = Date.UTC(new Date().getFullYear(), new Date().getMonth(), new Date().getDate());
+import { OracleDecree } from "@/lib/oracle";
   const days = Math.floor((now - start) / (1000 * 60 * 60 * 24));
   return Math.min(Math.max(Math.ceil(days / 7), 1), 5);
 }
@@ -93,6 +94,7 @@ function HydrationSelector({ value, onChange }: { value: number | null, onChange
 
 export default function MorningMode() {
   const [log, setLog] = useState<DailyLog | null>(null);
+  const [decree, setDecree] = useState<OracleDecree | null>(null);
   const [streak, setStreak] = useState<number>(0);
   const [dayType, setDayType] = useState<string>("");
   const [dateStr, setDateStr] = useState<string>("");
@@ -130,6 +132,8 @@ export default function MorningMode() {
       for (const t of CYCLE_TRACKS) {
         if (await getStoreValue<string>(t.key) === "recording") { setActiveTrack(t.label); break; }
       }
+
+      setDecree(await getStoreValue<OracleDecree>(`oracle_decree:${getTodayISO()}`));
     };
     init();
   }, []);
@@ -167,22 +171,12 @@ export default function MorningMode() {
   const studioDay = isStudioDay(dayType as any);
   const fuelScore = [log.fuelPreSession, log.fuelMidSession, log.fuelPostSession].filter(Boolean).length;
 
-  const fuelLabels = {
-    pre: { label: "Pre-Session Fuel", desc: "Protein + carbs before 10 AM. Eggs, oatmeal, banana." },
-    mid: { label: "Mid-Session Fuel", desc: "Arm's reach. PB&J, trail mix, apple." },
-    post: { label: "Post-Session Fuel", desc: "Batch-prepped. Rice, beans, chicken." }
+  const fuelLabels = decree?.dietary_alignment ? decree.dietary_alignment : {
+    pre: { label: "Pre-Session Fuel", desc: "Breakfast protocol not set by Oracle." },
+    mid: { label: "Mid-Session Fuel", desc: "Mid-day protocol not set by Oracle." },
+    post: { label: "Post-Session Fuel", desc: "Evening protocol not set by Oracle." },
+    warning: null
   };
-
-  if (dayType === "STUDIO + SAUNA DAY") {
-    fuelLabels.post = {
-      label: "Post-Sauna Dinner",
-      desc: "Wait until AFTER thermal reset. Eating a huge meal before the sauna is a biological disaster."
-    };
-  } else if (dayType === "BIZ DAY") {
-    fuelLabels.pre = { label: "Breakfast Engine", desc: "Protein heavy. Eggs, oatmeal, before 9 AM." };
-    fuelLabels.mid = { label: "Mid-Day Fuel", desc: "Keep it light to avoid afternoon crash." };
-    fuelLabels.post = { label: "Evening Meal", desc: "Batch-prepped. Rice, beans, chicken." };
-  }
 
   return (
     <main className="page animate-fade-in pb-20">
@@ -291,6 +285,11 @@ export default function MorningMode() {
 
               {/* FUEL TRACKING */}
               <h3 className="text-[10px] font-black tracking-[0.2em] text-[#555] uppercase mb-3 mt-6 px-1">Fuel</h3>
+              {fuelLabels.warning && (
+                <div className="mb-2 p-2 bg-red-500/10 border border-red-500/20 rounded-lg text-xs font-bold text-red-500 flex items-center gap-2">
+                  <span className="text-sm">{"\u26A0\uFE0F"}</span> {fuelLabels.warning}
+                </div>
+              )}
               <div className="card !p-1.5 mb-2">
                 <CheckItem label={fuelLabels.pre.label} description={fuelLabels.pre.desc} checked={log.fuelPreSession} onChange={v => updateLog({ fuelPreSession: v })} />
                 <CheckItem label={fuelLabels.mid.label} description={fuelLabels.mid.desc} checked={log.fuelMidSession} onChange={v => updateLog({ fuelMidSession: v })} />

@@ -55,9 +55,11 @@ FUEL RULES:
 - Fuel score is 0-3 (pre-session, mid-session, post-session meals). Target: 3/3 every day.
 - Pre-session fuel is the most critical — skipping it causes blood sugar crashes at hour 3 of a 6-hour studio block. If pre-session is missed today or 2+ of the last 3 days, flag_action AMBER.
 - If fuel score averages below 2.0 over the last 3 days, include this in the assessment — it directly impacts studio output quality.
-- Dairy flag on a studio/vocal day = mention it in the assessment (thickens mucus on vocal cords).
+- Dairy flag on a vocal tracking day = RED flag, thickens mucus on cords. Never recommend dairy.
 - Hydration below 3/5 = mention it. Dehydrated cords affect vocal takes directly.
-- Do NOT over-flag fuel. If score is 2+ and hydration is fine, it's GREEN for fuel. Only flag when the pattern threatens studio performance.
+- DIETARY ALIGNMENT: You must provide a specific, biologically aligned 3-meal protocol for the day based on the context.
+  - If it's a "STUDIO + SAUNA DAY" (has 6hr sprint and a sauna reset), the heavy post-session meal MUST be scheduled AFTER the sauna. Eating a huge meal right before the heat is a biological disaster.
+  - If it's a "BIZ DAY", pivot to "Breakfast Engine" (high protein) and "Mid-Day Fuel" (light) to avoid the afternoon crash.
 
 REALIGNMENT TYPES — only include what's warranted:
 {
@@ -77,6 +79,12 @@ Respond ONLY with valid JSON:
   "assessment": "honest cross-pillar assessment of where everything stands",
   "severity": "GREEN|AMBER|RED",
   "oracle_message": "1-2 sentence decree for EP",
+  "dietary_alignment": {
+    "pre": { "label": "string", "desc": "string" },
+    "mid": { "label": "string", "desc": "string" },
+    "post": { "label": "string", "desc": "string" },
+    "warning": "string|null (e.g., if dairy was flagged)"
+  },
   "realignments": [...]
 }`;
 
@@ -176,7 +184,7 @@ DAYS UNTIL ALBUM (Apr 10): ${ctx.daysUntilAlbum}
 SOBRIETY STREAK: ${ctx.sobrietyStreak} days
 
 -- GRIND --
-TODAY:
+TODAY (${ctx.dayType}):
 ${logSummary(ctx.dailyLog)}
 
 RECENT LOGS (Last 3 Days):

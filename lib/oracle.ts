@@ -44,6 +44,7 @@ export type FuelSnapshot = {
 
 export type OracleContext = {
   date: string;
+  dayType: string;
   makeModeWeek: number;
   daysUntilAlbum: number;
   dailyLog: DailyLog;
@@ -73,6 +74,12 @@ export type OracleDecree = {
   assessment: string;
   severity: "GREEN" | "AMBER" | "RED";
   oracle_message: string;
+  dietary_alignment?: {
+    pre: { label: "string"; desc: "string" };
+    mid: { label: "string"; desc: "string" };
+    post: { label: "string"; desc: "string" };
+    warning?: string | null;
+  };
   realignments: Realignment[];
 };
 
@@ -238,6 +245,7 @@ export async function assembleContext(): Promise<OracleContext> {
 
   return {
     date: today,
+    dayType: await import('@/lib/dayType').then(m => m.getDayType()),
     makeModeWeek: getMakeModeWeek(),
     daysUntilAlbum,
     dailyLog,
