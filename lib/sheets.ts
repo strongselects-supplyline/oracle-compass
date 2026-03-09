@@ -40,7 +40,7 @@ function getSheets() {
 
 const SHEETS = {
   JOURNAL: { name: 'JOURNAL', headers: ['EntryID', 'Date', 'Win_Process', 'Win_Persona', 'Win_Music', 'Win_Story', 'Win_Rest', 'Win_Growth', 'Mood', 'Energy', 'Highlights', 'Challenges', 'Gratitude', 'Notes', 'WinCount', 'CreatedAt', 'UpdatedAt'] },
-  HEALTH: { name: 'HEALTH', headers: ['Date', 'Weight', 'SleepHours', 'Workout', 'Mobility', 'Vocal', 'Protein', 'Steps', 'Pushups', 'Squats', 'Score', 'Notes'] },
+  HEALTH: { name: 'HEALTH', headers: ['Date', 'Weight', 'SleepHours', 'Workout', 'Mobility', 'Vocal', 'Protein', 'Steps', 'Pushups', 'Squats', 'FuelPre', 'FuelMid', 'FuelPost', 'Hydration', 'DairyFlag', 'Score', 'Notes'] },
   DOORDASH: { name: 'DOORDASH', headers: ['Date', 'Hours', 'Revenue', 'Tips', 'Gas', 'Miles', 'Gross', 'Profit', 'Notes'] },
   SALES: { name: 'SALES', headers: ['SaleID', 'Date', 'Client', 'Product', 'Lbs', 'ProductCost', 'ShippingCost', 'Revenue', 'Profit', 'Notes', 'CreatedAt', 'UpdatedAt'] },
   PRACTICE: { name: 'PRACTICE', headers: ['Date', 'Trataka', 'Breathwork', 'Meditation', 'Notes', 'UpdatedAt'] },

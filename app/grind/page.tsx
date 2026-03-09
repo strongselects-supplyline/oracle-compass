@@ -1,14 +1,16 @@
 "use client";
 
 import { useEffect, useState } from "react";
-import { getDailyLog, saveDailyLog, DailyLog } from "@/lib/db";
+import { getDailyLog, saveDailyLog, DailyLog, getTodayISO } from "@/lib/db";
 import { getSobrietyStreak } from "@/lib/streaks";
 import { getDayType, isStudioDay } from "@/lib/dayType";
+import { useCloudSync } from "@/lib/useCloudSync";
 
 export default function GrindPage() {
     const [log, setLog] = useState<DailyLog | null>(null);
     const [streak, setStreak] = useState<number>(0);
     const [dayType, setDayType] = useState<string>("");
+    const { syncStatus, sync: handleSync } = useCloudSync();
 
     useEffect(() => {
         const init = async () => {
@@ -103,6 +105,15 @@ export default function GrindPage() {
                         onChange={(e) => updateLog({ journalLine: e.target.value })}
                     />
                 </div>
+
+                <button
+                    onClick={() => handleSync(log, dayType)}
+                    disabled={!!syncStatus && syncStatus !== 'FAILED'}
+                    className="w-full mt-6 py-4 rounded-xl bg-[#1a1a1a] border border-[#333] text-sm font-black tracking-widest hover:bg-[#222] active:scale-95 transition-all outline-none"
+                    style={{ color: syncStatus === 'SYNCED' ? '#22c55e' : syncStatus === 'FAILED' ? '#ef4444' : 'white' }}
+                >
+                    {syncStatus || "SYNC TO CLOUD"}
+                </button>
 
             </div>
         </main>

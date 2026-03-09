@@ -17,6 +17,12 @@ export type DailyLog = {
     oneThing: string;
     journalLine: string;
     completedAt: string | null;
+    // Fuel tracking
+    fuelPreSession: boolean;
+    fuelMidSession: boolean;
+    fuelPostSession: boolean;
+    fuelHydration: number | null; // 1-5
+    fuelDairyFlag: boolean; // true = dairy within 2hrs of vocals (anti-pattern)
 };
 
 export type StreakData = {
@@ -122,7 +128,11 @@ export function getTodayISO(): string {
 
 export async function getDailyLog(date: string = getTodayISO()): Promise<DailyLog> {
     const log = await getStoreValue<DailyLog>(`daily_log:${date}`);
-    if (log) return log;
+    if (log) return { ...getDefaultLog(date), ...log };
+    return getDefaultLog(date);
+}
+
+function getDefaultLog(date: string): DailyLog {
     return {
         date,
         sovereigntyStack: false,
@@ -134,7 +144,12 @@ export async function getDailyLog(date: string = getTodayISO()): Promise<DailyLo
         pushups: null,
         oneThing: '',
         journalLine: '',
-        completedAt: null
+        completedAt: null,
+        fuelPreSession: false,
+        fuelMidSession: false,
+        fuelPostSession: false,
+        fuelHydration: null,
+        fuelDairyFlag: false,
     };
 }
 

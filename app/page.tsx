@@ -2,9 +2,10 @@
 
 import { useEffect, useState } from "react";
 import { getDayType, isSacredDay, isStudioDay } from "@/lib/dayType";
-import { getDailyLog, saveDailyLog, DailyLog, getStoreValue } from "@/lib/db";
+import { getDailyLog, saveDailyLog, DailyLog, getStoreValue, getTodayISO } from "@/lib/db";
 import { getSobrietyStreak } from "@/lib/streaks";
 import { getDynamicReleases, Release } from "@/lib/releases";
+import { useCloudSync } from "@/lib/useCloudSync";
 import WeeklyMirror from "@/components/WeeklyMirror";
 
 function getMakeModeWeek(): number {
@@ -20,29 +21,29 @@ function getProtocolSteps(dayType: string): { tagline: string; steps: ProtocolSt
   if (dayType === "STUDIO + SAUNA DAY") return {
     tagline: "6-Hour Dual-Track Sprint + Thermal Reset.",
     steps: [
-      { icon: "☀️", action: "Sovereignty Stack → log below" },
-      { icon: "🎹", action: "10 AM → 6hr Dual-Track Sprint (2 songs at once)" },
-      { icon: "🔥", action: "4 PM → Sauna session (thermal reset)" },
-      { icon: "📱", action: "Post content from STUDIO queue", tab: "studio" },
+      { icon: "\u2600\uFE0F", action: "Sovereignty Stack \u2192 log below" },
+      { icon: "\uD83C\uDFB9", action: "10 AM \u2192 6hr Dual-Track Sprint (2 songs at once)" },
+      { icon: "\uD83D\uDD25", action: "4 PM \u2192 Sauna session (thermal reset)" },
+      { icon: "\uD83D\uDCF1", action: "Post content from STUDIO queue", tab: "studio" },
     ]
   };
   if (dayType === "STUDIO DAY") return {
     tagline: "44 Tracks. 10 Hrs Each. No Distractions.",
     steps: [
-      { icon: "☀️", action: "Sovereignty Stack → log below" },
-      { icon: "🎹", action: "10 AM → 6hr Dual-Track Sprint (Vocals + Mix)" },
-      { icon: "🎙️", action: "Track A: Vocals | Track B: Mixing" },
-      { icon: "📱", action: "Post content from STUDIO queue", tab: "studio" },
+      { icon: "\u2600\uFE0F", action: "Sovereignty Stack \u2192 log below" },
+      { icon: "\uD83C\uDFB9", action: "10 AM \u2192 6hr Dual-Track Sprint (Vocals + Mix)" },
+      { icon: "\uD83C\uDFA4", action: "Track A: Vocals | Track B: Mixing" },
+      { icon: "\uD83D\uDCF1", action: "Post content from STUDIO queue", tab: "studio" },
     ]
   };
   if (dayType === "BIZ DAY") return {
     tagline: "Pipeline moves today. ENGINE is Track 1.",
     steps: [
-      { icon: "☀️", action: "Sovereignty Stack → log below" },
-      { icon: "⚙️", action: "Check ENGINE for pipeline tasks", tab: "engine" },
-      { icon: "📤", action: "Push content to IG/TikTok/YouTube" },
-      { icon: "📊", action: "Review STUDIO waterfall — is anything overdue?", tab: "studio" },
-      { icon: "🔮", action: "Read today's Oracle decree", tab: "oracle" },
+      { icon: "\u2600\uFE0F", action: "Sovereignty Stack \u2192 log below" },
+      { icon: "\u2699\uFE0F", action: "Check ENGINE for pipeline tasks", tab: "engine" },
+      { icon: "\uD83D\uDCE4", action: "Push content to IG/TikTok/YouTube" },
+      { icon: "\uD83D\uDCCA", action: "Review STUDIO waterfall \u2014 is anything overdue?", tab: "studio" },
+      { icon: "\uD83D\uDD2E", action: "Read today's Oracle decree", tab: "oracle" },
     ]
   };
   return { tagline: "", steps: [] };
@@ -55,7 +56,7 @@ const CYCLE_TRACKS = [
   { label: "JUST SAY SO", key: "cycle_justsayso" },
 ];
 
-function CheckItem({ label, description, checked, onChange, dimmed }: { label: string, description?: string, checked: boolean, onChange: (v: boolean) => void, dimmed?: boolean }) {
+function CheckItem({ label, description, checked, onChange, dimmed, warn }: { label: string, description?: string, checked: boolean, onChange: (v: boolean) => void, dimmed?: boolean, warn?: boolean }) {
   const [popping, setPopping] = useState(false);
   const handleTap = () => {
     if (!checked) { setPopping(true); setTimeout(() => setPopping(false), 400); }
@@ -63,13 +64,29 @@ function CheckItem({ label, description, checked, onChange, dimmed }: { label: s
   };
   return (
     <div className={`flex items-start gap-3 p-3 active:bg-[#1a1a1a] transition-all cursor-pointer rounded-xl ${dimmed ? 'opacity-30 pointer-events-none' : ''}`} onClick={handleTap}>
-      <div className={`w-6 h-6 rounded border-2 flex items-center justify-center transition-all flex-shrink-0 mt-0.5 ${checked ? 'bg-amber-500 border-amber-500' : 'border-[#333]'} ${popping ? 'scale-110' : 'scale-100'}`}>
-        {checked && <svg width="14" height="14" viewBox="0 0 24 24" fill="none" stroke="#000" strokeWidth="4" strokeLinecap="round" strokeLinejoin="round"><polyline points="20 6 9 17 4 12" /></svg>}
+      <div className={`w-6 h-6 rounded border-2 flex items-center justify-center transition-all flex-shrink-0 mt-0.5 ${checked ? (warn ? 'bg-red-500 border-red-500' : 'bg-amber-500 border-amber-500') : 'border-[#333]'} ${popping ? 'scale-110' : 'scale-100'}`}>
+        {checked && <svg width="14" height="14" viewBox="0 0 24 24" fill="none" stroke={warn ? "#fff" : "#000"} strokeWidth="4" strokeLinecap="round" strokeLinejoin="round"><polyline points="20 6 9 17 4 12" /></svg>}
       </div>
       <div className="flex-1 flex flex-col justify-center min-h-[24px]">
-        <span className={`text-sm font-bold ${checked ? 'text-[#666] line-through' : 'text-white'}`}>{label}</span>
+        <span className={`text-sm font-bold ${checked ? (warn ? 'text-red-400' : 'text-[#666] line-through') : 'text-white'}`}>{label}</span>
         {description && <span className={`text-[10px] leading-tight font-medium mt-1 ${checked ? 'text-[#555]' : 'text-[#888]'}`}>{description}</span>}
       </div>
+    </div>
+  );
+}
+
+function HydrationSelector({ value, onChange }: { value: number | null, onChange: (v: number) => void }) {
+  return (
+    <div className="flex gap-1.5">
+      {[1, 2, 3, 4, 5].map(n => (
+        <button
+          key={n}
+          onClick={() => onChange(n)}
+          className={`w-9 h-9 rounded-lg text-sm font-black transition-all ${value === n ? 'bg-blue-500 text-white' : 'bg-[#111] text-[#555] border border-[#222]'}`}
+        >
+          {n}
+        </button>
+      ))}
     </div>
   );
 }
@@ -81,10 +98,11 @@ export default function MorningMode() {
   const [dateStr, setDateStr] = useState<string>("");
   const [isEditingOneThing, setIsEditingOneThing] = useState(false);
   const [oneThingInput, setOneThingInput] = useState("");
-  const [activeTrack, setActiveTrack] = useState<string>("–");
+  const [activeTrack, setActiveTrack] = useState<string>("\u2013");
   const [week, setWeek] = useState<number>(1);
   const [nextRelease, setNextRelease] = useState<Release | null>(null);
   const [daysUntilRelease, setDaysUntilRelease] = useState<number>(0);
+  const { syncStatus, sync: handleSync } = useCloudSync();
 
   // DoorDash State
   const [ddHours, setDdHours] = useState("");
@@ -147,6 +165,7 @@ export default function MorningMode() {
   if (!log) return null;
   const isSacred = isSacredDay(dayType as any);
   const studioDay = isStudioDay(dayType as any);
+  const fuelScore = [log.fuelPreSession, log.fuelMidSession, log.fuelPostSession].filter(Boolean).length;
 
   return (
     <main className="page animate-fade-in pb-20">
@@ -154,21 +173,21 @@ export default function MorningMode() {
 
         {daysUntilRelease <= 3 && nextRelease && nextRelease.status !== 'live' && (
           <div className="alert-banner alert-banner-red mb-8 !p-3">
-            <span className="animate-pulse-glow mr-2">🔴</span>
+            <span className="animate-pulse-glow mr-2">{"\uD83D\uDD34"}</span>
             <div className="flex-1">
-              <span className="font-black text-sm">{nextRelease.title}</span> — {daysUntilRelease === 0 ? "OUT TODAY" : `${daysUntilRelease}d OUT`}
+              <span className="font-black text-sm">{nextRelease.title}</span> {"\u2014"} {daysUntilRelease === 0 ? "OUT TODAY" : `${daysUntilRelease}d OUT`}
             </div>
           </div>
         )}
 
         <header className="mb-8 text-center">
-          <p className="text-[10px] font-black tracking-[0.2em] text-[#444] uppercase mb-1">MAKE MODE &middot; Wk {week} of 5</p>
+          <p className="text-[10px] font-black tracking-[0.2em] text-[#444] uppercase mb-1">MAKE MODE {"\u00B7"} Wk {week} of 5</p>
           <p className="text-sm font-bold tracking-widest text-[#888] uppercase">{dateStr}</p>
         </header>
 
         {isSacred ? (
           <div className="text-center mt-12">
-            <div className="text-6xl mb-6">🛑</div>
+            <div className="text-6xl mb-6">{"\uD83D\uDED1"}</div>
             <h2 className="text-xl font-black mb-2">Sunday is sacred.</h2>
             <p className="text-[#666] text-sm">Zero building.<br />Nadi Shodhana. Rest.<br />The week depends on this.</p>
           </div>
@@ -176,7 +195,7 @@ export default function MorningMode() {
           <>
             {/* ONE THING */}
             <section className="mb-6 card !py-5 text-center" onClick={() => !isEditingOneThing && setIsEditingOneThing(true)}>
-              <p className="text-[9px] font-black tracking-[0.2em] text-amber-500 uppercase mb-2">Today's One Thing</p>
+              <p className="text-[9px] font-black tracking-[0.2em] text-amber-500 uppercase mb-2">Today{"'"}s One Thing</p>
               {isEditingOneThing ? (
                 <input autoFocus type="text" className="w-full bg-transparent text-xl font-black text-center text-white outline-none placeholder-[#333]"
                   value={oneThingInput} onChange={e => setOneThingInput(e.target.value)} onKeyDown={e => e.key === "Enter" && handleSaveOneThing()} onBlur={handleSaveOneThing} placeholder="The single move..." />
@@ -190,17 +209,17 @@ export default function MorningMode() {
               <div className="card flex-1 p-3 text-center">
                 <p className="text-[9px] font-black tracking-[0.1em] text-[#555] uppercase">Streak</p>
                 <p className="text-2xl font-black text-amber-400 my-1">{streak}</p>
-                <p className="text-[9px] text-[#555] font-bold">days 💎</p>
+                <p className="text-[9px] text-[#555] font-bold">days {"\uD83D\uDC8E"}</p>
               </div>
               <div className="card flex-1 p-3 text-center">
                 <p className="text-[9px] font-black tracking-[0.1em] text-[#555] uppercase">Release</p>
                 <p className={`text-2xl font-black my-1 ${daysUntilRelease <= 3 ? 'text-red-400' : 'text-white'}`}>{daysUntilRelease}</p>
-                <p className="text-[9px] text-[#555] font-bold truncate px-1">{nextRelease?.title.toUpperCase() ?? "–"}</p>
+                <p className="text-[9px] text-[#555] font-bold truncate px-1">{nextRelease?.title.toUpperCase() ?? "\u2013"}</p>
               </div>
               <div className="card flex-1 p-3 text-center">
-                <p className="text-[9px] font-black tracking-[0.1em] text-[#555] uppercase">Cycle</p>
-                <div className="w-2 h-2 rounded-full bg-red-500 animate-pulse-glow mx-auto my-1.5" />
-                <p className="text-[8px] text-[#666] font-bold truncate px-1">{activeTrack}</p>
+                <p className="text-[9px] font-black tracking-[0.1em] text-[#555] uppercase">Fuel</p>
+                <p className={`text-2xl font-black my-1 ${fuelScore === 3 ? 'text-green-400' : fuelScore >= 1 ? 'text-amber-400' : 'text-[#333]'}`}>{fuelScore}/3</p>
+                <p className="text-[9px] text-[#555] font-bold">meals</p>
               </div>
             </div>
 
@@ -228,12 +247,12 @@ export default function MorningMode() {
               );
             })()}
 
-            {/* QUICK LOGGING (Replaces Grind panel) */}
+            {/* MORNING & GRIND LOGGING */}
             <div className="mb-8">
               <h3 className="text-[10px] font-black tracking-[0.2em] text-[#555] uppercase mb-3 px-1">Morning & Grind Logging</h3>
               <div className="card !p-1.5 mb-2">
                 <CheckItem label="Sovereignty Stack" description="Trataka, breathwork, mullein tea, cold shower." checked={log.sovereigntyStack} onChange={v => updateLog({ sovereigntyStack: v })} />
-                <CheckItem label="Movement (Pre-DAW)" description="Lift, run, or deep stretch — sweat required." checked={log.movement} onChange={v => updateLog({ movement: v })} />
+                <CheckItem label="Movement (Pre-DAW)" description="Lift, run, or deep stretch \u2014 sweat required." checked={log.movement} onChange={v => updateLog({ movement: v })} />
                 <CheckItem label="Eucalyptus Steam" description="Clear the lungs for vocal performance." dimmed={!studioDay} checked={log.eucalyptusStream} onChange={v => updateLog({ eucalyptusStream: v })} />
                 <CheckItem label="Sauna" dimmed={dayType !== "STUDIO + SAUNA DAY"} checked={log.sauna} onChange={v => updateLog({ sauna: v })} />
               </div>
@@ -249,9 +268,32 @@ export default function MorningMode() {
                 </div>
               </div>
 
-              <div className="card p-3">
+              <div className="card p-3 mb-2">
                 <textarea className="w-full bg-transparent outline-none text-sm font-semibold placeholder-[#333] resize-none h-16" placeholder="GRATITUDE / WINS / NOTES..." value={log.journalLine || ""} onChange={e => updateLog({ journalLine: e.target.value })} />
               </div>
+
+              {/* FUEL TRACKING */}
+              <h3 className="text-[10px] font-black tracking-[0.2em] text-[#555] uppercase mb-3 mt-6 px-1">Fuel</h3>
+              <div className="card !p-1.5 mb-2">
+                <CheckItem label="Pre-Session Fuel" description="Protein + carbs before 10 AM. Eggs, oatmeal, banana." checked={log.fuelPreSession} onChange={v => updateLog({ fuelPreSession: v })} />
+                <CheckItem label="Mid-Session Fuel" description="Arm's reach. PB&J, trail mix, apple." checked={log.fuelMidSession} onChange={v => updateLog({ fuelMidSession: v })} />
+                <CheckItem label="Post-Session Fuel" description="Batch-prepped. Rice, beans, chicken." checked={log.fuelPostSession} onChange={v => updateLog({ fuelPostSession: v })} />
+                <CheckItem label="Dairy Before Vocals" description="Thickens mucus on cords. Flag if yes." checked={log.fuelDairyFlag} onChange={v => updateLog({ fuelDairyFlag: v })} warn={true} dimmed={!studioDay} />
+              </div>
+
+              <div className="card flex items-center justify-between p-3 mb-2">
+                <span className="text-[10px] font-black tracking-widest text-[#555] uppercase">Hydration</span>
+                <HydrationSelector value={log.fuelHydration} onChange={v => updateLog({ fuelHydration: v })} />
+              </div>
+
+              <button
+                onClick={() => handleSync(log!, dayType)}
+                disabled={!!syncStatus && syncStatus !== 'FAILED'}
+                className="w-full mt-4 py-3 rounded-xl bg-[#1a1a1a] border border-[#333] text-sm font-black tracking-widest text-white hover:bg-[#222] active:scale-95 transition-all outline-none"
+                style={{ color: syncStatus === 'SYNCED' ? '#22c55e' : syncStatus === 'FAILED' ? '#ef4444' : 'white' }}
+              >
+                {syncStatus || "SYNC TO CLOUD"}
+              </button>
             </div>
 
             {/* DOORDASH QUICK-ADD */}

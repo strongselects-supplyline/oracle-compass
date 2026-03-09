@@ -1,12 +1,7 @@
 // lib/dashboardBridge.ts
-// Fetches live DoorDash + SS income from the 2026 Release Dashboard API.
-// Returns an IncomeSnapshot if reachable, null if not (Oracle falls back to IndexedDB).
+// Native bridge to /api/income. Replaces deprecated Vercel fetch.
 
 import type { IncomeSnapshot } from "@/lib/oracle";
-
-const DASHBOARD_URL =
-    process.env.NEXT_PUBLIC_DASHBOARD_URL ||
-    "https://2026-release-dashboard.vercel.app";
 
 const FETCH_TIMEOUT_MS = 5000;
 
@@ -38,7 +33,6 @@ type DashboardSalesEntry = {
 type DashboardResponse = {
     doordash: DashboardDoordashEntry[];
     sales: DashboardSalesEntry[];
-    // Other fields exist but Oracle doesn't need them
 };
 
 /** Get ISO week key like "2026-W10" for a given date */
@@ -66,7 +60,7 @@ function weekKeysWindow(weeksBack: number): Set<string> {
 }
 
 /**
- * Fetch live income data from the Dashboard API.
+ * Fetch live income data securely from the native API endpoint.
  * Returns IncomeSnapshot if successful, null on any error.
  */
 export async function fetchDashboardIncome(): Promise<IncomeSnapshot | null> {
@@ -74,7 +68,7 @@ export async function fetchDashboardIncome(): Promise<IncomeSnapshot | null> {
         const controller = new AbortController();
         const timeout = setTimeout(() => controller.abort(), FETCH_TIMEOUT_MS);
 
-        const res = await fetch(`${DASHBOARD_URL}/api/data`, {
+        const res = await fetch(`/api/income`, {
             signal: controller.signal,
             headers: { Accept: "application/json" },
         });

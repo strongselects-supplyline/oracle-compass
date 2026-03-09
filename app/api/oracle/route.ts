@@ -1,8 +1,8 @@
 // app/api/oracle/route.ts
-// The Oracle Engine — full empire intelligence. Music + Business + Income + Label.
+// The Oracle Engine — full empire intelligence. Music + Business + Income + Label + Fuel.
 // Receives complete context, reasons across all pillars, issues decree + realignments.
 //
-// 🛡️ BUDGET GUARD: Rate limited to 1 decree per 4 hours via cookie.
+// Budget guard: Rate limited to 1 decree per 4 hours via cookie.
 
 import { NextRequest, NextResponse } from "next/server";
 import type { OracleContext, OracleDecree } from "@/lib/oracle";
@@ -27,12 +27,12 @@ CORE RULES:
 - Reason across ALL THREE TRACKS simultaneously. They are not separate — they compound.
 
 CROSS-PILLAR LOGIC:
-- Heavy DoorDash week (4+ shifts) + low studio sessions → consider shifting a release, flag the imbalance
-- Strong Selects pipeline dry for 2+ weeks → flag action, raise touch target on next Biz Day
-- Compliance gap within 3 days of release → RED severity, flag_action immediately regardless of anything else
+- Heavy DoorDash week (4+ shifts) + low studio sessions -> consider shifting a release, flag the imbalance
+- Strong Selects pipeline dry for 2+ weeks -> flag action, raise touch target on next Biz Day
+- Compliance gap within 3 days of release -> RED severity, flag_action immediately regardless of anything else
 - DoorDash monthly earnings + SS revenue together signal financial runway — if both are low, flag it
 - Sobriety streak is non-negotiable context. If sovereignty stack is missed 3 days in a row, flag_action RED immediately. This is the foundation of the empire and must be protected.
-- Studio session count below 3/week by midweek on a music-heavy week → flag or shift
+- Studio session count below 3/week by midweek on a music-heavy week -> flag or shift
 
 MUSIC RULES:
 - Shift releases only if session count is genuinely behind schedule. Don't penalize one bad day.
@@ -42,13 +42,22 @@ MUSIC RULES:
 
 BUSINESS RULES:
 - Default touch target: 15/week. Reduce to 8-10 on heavy music weeks. Raise to 20 if pipeline is dry.
-- Account stale >14 days → flag_action AMBER. >21 days → flag_action RED.
+- Account stale >14 days -> flag_action AMBER. >21 days -> flag_action RED.
 - Engine daily move being "(not set)" on a Biz Day = AMBER signal.
 
 INCOME RULES:
 - DoorDash is the bridge, not the destination. More than 4 shifts in a studio week = flag it.
-- Monthly DoorDash + SS revenue below $500 combined → flag financial runway concern.
+- Monthly DoorDash + SS revenue below $500 combined -> flag financial runway concern.
 - If SS revenue is $0 for 2+ weeks, that needs to be in the assessment.
+
+FUEL RULES:
+- EP is a neurodivergent recording athlete in active sobriety detox. Nutrition is load-bearing infrastructure, not optional.
+- Fuel score is 0-3 (pre-session, mid-session, post-session meals). Target: 3/3 every day.
+- Pre-session fuel is the most critical — skipping it causes blood sugar crashes at hour 3 of a 6-hour studio block. If pre-session is missed today or 2+ of the last 3 days, flag_action AMBER.
+- If fuel score averages below 2.0 over the last 3 days, include this in the assessment — it directly impacts studio output quality.
+- Dairy flag on a studio/vocal day = mention it in the assessment (thickens mucus on vocal cords).
+- Hydration below 3/5 = mention it. Dehydrated cords affect vocal takes directly.
+- Do NOT over-flag fuel. If score is 2+ and hydration is fine, it's GREEN for fuel. Only flag when the pattern threatens studio performance.
 
 REALIGNMENT TYPES — only include what's warranted:
 {
@@ -77,7 +86,6 @@ export async function POST(req: NextRequest) {
     return NextResponse.json({ error: "ANTHROPIC_API_KEY not set" }, { status: 500 });
   }
 
-  // 🛡️ Rate limit: 1 Claude call per 4 hours
   const RATE_LIMIT_MS = 4 * 60 * 60 * 1000;
   const lastTsCookie = req.cookies.get("oracle_last_ts")?.value;
   if (lastTsCookie) {
@@ -137,10 +145,12 @@ export async function POST(req: NextRequest) {
 }
 
 function logSummary(l: DailyLog): string {
+  const fuelScore = [l.fuelPreSession, l.fuelMidSession, l.fuelPostSession].filter(Boolean).length;
   return [
     `  One Thing: ${l.oneThing || "(not set)"}`,
-    `  Stack: ${l.sovereigntyStack ? "✓" : "✗"}  Movement: ${l.movement ? "✓" : "✗"}  Sauna: ${l.sauna ? "✓" : "✗"}`,
+    `  Stack: ${l.sovereigntyStack ? "Y" : "N"}  Movement: ${l.movement ? "Y" : "N"}  Sauna: ${l.sauna ? "Y" : "N"}`,
     `  Sleep: ${l.sleep ?? "unknown"}h  Pushups: ${l.pushups ?? 0}`,
+    `  Fuel: ${fuelScore}/3 (Pre:${l.fuelPreSession ? "Y" : "N"} Mid:${l.fuelMidSession ? "Y" : "N"} Post:${l.fuelPostSession ? "Y" : "N"}) Hydration:${l.fuelHydration ?? "?"}/5${l.fuelDairyFlag ? " DAIRY-FLAG" : ""}`,
   ].join("\n");
 }
 
@@ -156,8 +166,8 @@ function buildContextMessage(ctx: OracleContext): string {
     : "  (no accounts set)";
 
   const complianceLines = ctx.label.complianceGaps.length > 0
-    ? ctx.label.complianceGaps.map(g => `  ⚠️ ${g}`).join("\n")
-    : "  ✓ all clear";
+    ? ctx.label.complianceGaps.map(g => `  ! ${g}`).join("\n")
+    : "  all clear";
 
   return `DATE: ${ctx.date}
 DECLARED PRIORITY: ${ctx.declaredPriority || "none set"}
@@ -165,14 +175,18 @@ MAKE MODE: Week ${ctx.makeModeWeek} of 5
 DAYS UNTIL ALBUM (Apr 10): ${ctx.daysUntilAlbum}
 SOBRIETY STREAK: ${ctx.sobrietyStreak} days
 
-── GRIND ───────────────────────────────────────
+-- GRIND --
 TODAY:
 ${logSummary(ctx.dailyLog)}
 
 RECENT LOGS (Last 3 Days):
 ${ctx.recentLogs.length > 0 ? ctx.recentLogs.map(l => `[${l.date}]\n${logSummary(l)}`).join("\n") : "  (no recent logs)"}
 
-── MUSIC ───────────────────────────────────────
+-- FUEL --
+TODAY: ${ctx.fuel.todayScore}/3 | Hydration: ${ctx.fuel.todayHydration ?? "not logged"}/5${ctx.fuel.todayDairyFlag ? " | DAIRY BEFORE VOCALS" : ""}
+3-DAY AVG: ${ctx.fuel.recentAvgScore}/3 | Pre-session missed ${ctx.fuel.missedPreCount} of last 3 days
+
+-- MUSIC --
 STUDIO SESSIONS THIS WEEK: ${ctx.weeklyStudioSessions} / 4 target
 
 CYCLE TRACKS:
@@ -181,23 +195,23 @@ ${tracks}
 RELEASE SCHEDULE:
 ${releases}
 
-LABEL COMPLIANCE — ${ctx.label.nextReleaseTitle} in ${ctx.label.daysUntilNextRelease} days:
+LABEL COMPLIANCE - ${ctx.label.nextReleaseTitle} in ${ctx.label.daysUntilNextRelease} days:
 ${complianceLines}
 
-── BUSINESS ────────────────────────────────────
+-- BUSINESS --
 TODAY'S MOVE: ${ctx.engine.dailyMove}
 OUTREACH: ${ctx.engine.weeklyTouches} / ${ctx.engine.touchTarget} touches this week
 
 TOP ACCOUNTS:
 ${accounts}
 
-── INCOME ──────────────────────────────────────
-DOORDASH THIS WEEK: ${ctx.income.doordashShiftsThisWeek} shifts · $${ctx.income.doordashEarningsThisWeek}
+-- INCOME --
+DOORDASH THIS WEEK: ${ctx.income.doordashShiftsThisWeek} shifts / $${ctx.income.doordashEarningsThisWeek}
 DOORDASH THIS MONTH (rolling 4wk): $${ctx.income.doordashEarningsThisMonth}
 STRONG SELECTS REVENUE THIS WEEK: $${ctx.income.ssRevenueThisWeek}
 
-── META ────────────────────────────────────────
-LAST DECREE: ${ctx.lastDecree?.severity ?? "none"} — "${ctx.lastDecree?.oracle_message ?? "none"}"
+-- META --
+LAST DECREE: ${ctx.lastDecree?.severity ?? "none"} - "${ctx.lastDecree?.oracle_message ?? "none"}"
 
 Assess the full empire and decree.`;
 }

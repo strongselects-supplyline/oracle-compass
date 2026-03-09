@@ -1,6 +1,6 @@
 // lib/oracle.ts
 // Assembles the full daily context snapshot for the Oracle engine.
-// Reads ALL IndexedDB state — music, grind, business, income, label — into one typed object.
+// Reads ALL IndexedDB state — music, grind, business, income, label, fuel — into one typed object.
 
 import { getDailyLog, getStoreValue, getTodayISO, DailyLog } from "@/lib/db";
 import { getSobrietyStreak } from "@/lib/streaks";
@@ -24,7 +24,7 @@ export type EngineSnapshot = {
 export type IncomeSnapshot = {
   doordashShiftsThisWeek: number;
   doordashEarningsThisWeek: number;
-  doordashEarningsThisMonth: number; // rolling 4-week sum
+  doordashEarningsThisMonth: number;
   ssRevenueThisWeek: number;
 };
 
@@ -34,12 +34,20 @@ export type LabelSnapshot = {
   daysUntilNextRelease: number;
 };
 
+export type FuelSnapshot = {
+  todayScore: number;        // 0-3 (pre, mid, post)
+  todayHydration: number | null;
+  todayDairyFlag: boolean;
+  recentAvgScore: number;    // avg of last 3 days
+  missedPreCount: number;    // how many of last 3 days missed pre-session
+};
+
 export type OracleContext = {
   date: string;
   makeModeWeek: number;
   daysUntilAlbum: number;
   dailyLog: DailyLog;
-  recentLogs: DailyLog[]; // Last 3 days for pattern detection
+  recentLogs: DailyLog[];
   releases: Release[];
   cycleTracks: CycleTrack[];
   weeklyStudioSessions: number;
@@ -48,6 +56,7 @@ export type OracleContext = {
   engine: EngineSnapshot;
   income: IncomeSnapshot;
   label: LabelSnapshot;
+  fuel: FuelSnapshot;
   declaredPriority: string | null;
 };
 
@@ -87,7 +96,6 @@ function getMakeModeWeek(): number {
   return Math.min(Math.max(Math.ceil(days / 7), 1), 5);
 }
 
-// Exported so Engine page can use same key pattern
 export function getWeekKey(offsetWeeks = 0): string {
   const now = new Date();
   if (offsetWeeks > 0) now.setDate(now.getDate() - offsetWeeks * 7);
@@ -98,6 +106,10 @@ export function getWeekKey(offsetWeeks = 0): string {
   return `${year}-W${String(week).padStart(2, "0")}`;
 }
 
+function fuelScoreFromLog(l: DailyLog): number {
+  return [l.fuelPreSession, l.fuelMidSession, l.fuelPostSession].filter(Boolean).length;
+}
+
 export async function assembleContext(): Promise<OracleContext> {
   const today = getTodayISO();
   const yd = new Date();
@@ -105,7 +117,6 @@ export async function assembleContext(): Promise<OracleContext> {
   const yesterday = `${yd.getFullYear()}-${String(yd.getMonth() + 1).padStart(2, "0")}-${String(yd.getDate()).padStart(2, "0")}`;
   const weekKey = getWeekKey();
 
-  // ── Music + Grind reads ─────────────────────────────────
   const [dailyLog, log1, log2, log3, releases, sessions, lastDecree] = await Promise.all([
     getDailyLog(today),
     getDailyLog(yesterday),
@@ -125,7 +136,7 @@ export async function assembleContext(): Promise<OracleContext> {
     }))
   );
 
-  // ── Engine reads ────────────────────────────────────────
+  // Engine reads
   const [engineMove, weeklyTouches, touchTarget, rawAccounts] = await Promise.all([
     getStoreValue<string>("engine_daily_move"),
     getStoreValue<number>(`engine_touches:${weekKey}`),
@@ -143,14 +154,13 @@ export async function assembleContext(): Promise<OracleContext> {
     })),
   };
 
-  // ── Income reads — try Dashboard API first, fall back to IndexedDB ──
+  // Income reads
   const dashboardIncome = await fetchDashboardIncome();
 
   let income: IncomeSnapshot;
   if (dashboardIncome) {
     income = dashboardIncome;
   } else {
-    // Fallback: manual weekly totals from IndexedDB
     const [ddW0, ddW1, ddW2, ddW3, ssRevenue] = await Promise.all([
       getStoreValue<{ shifts: number; earnings: number }>(`doordash_week:${getWeekKey(0)}`),
       getStoreValue<{ shifts: number; earnings: number }>(`doordash_week:${getWeekKey(1)}`),
@@ -171,7 +181,7 @@ export async function assembleContext(): Promise<OracleContext> {
     };
   }
 
-  // ── Label compliance — derived live from REGISTRY ───────
+  // Label compliance
   const now = new Date();
   const upcomingReleases = releases.filter(r => r.status !== "live");
   const nextRelease = upcomingReleases[0] || null;
@@ -200,7 +210,22 @@ export async function assembleContext(): Promise<OracleContext> {
     daysUntilNextRelease: daysUntilNext,
   };
 
-  // ── Meta ────────────────────────────────────────────────
+  // Fuel snapshot
+  const recentFuelScores = recentLogs.map(fuelScoreFromLog);
+  const recentAvg = recentFuelScores.length > 0
+    ? recentFuelScores.reduce((a, b) => a + b, 0) / recentFuelScores.length
+    : 0;
+  const missedPre = recentLogs.filter(l => !l.fuelPreSession).length;
+
+  const fuel: FuelSnapshot = {
+    todayScore: fuelScoreFromLog(dailyLog),
+    todayHydration: dailyLog.fuelHydration,
+    todayDairyFlag: dailyLog.fuelDairyFlag,
+    recentAvgScore: Math.round(recentAvg * 10) / 10,
+    missedPreCount: missedPre,
+  };
+
+  // Meta
   const declaredPriority = await getStoreValue<string>("oracle_priority");
 
   const albumDate = Date.UTC(
@@ -225,6 +250,7 @@ export async function assembleContext(): Promise<OracleContext> {
     engine,
     income,
     label,
+    fuel,
     declaredPriority: declaredPriority || null,
   };
 }

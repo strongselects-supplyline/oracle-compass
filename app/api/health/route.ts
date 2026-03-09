@@ -5,7 +5,8 @@ export async function POST(req: NextRequest) {
     try {
         const {
             date, pushups, squats, steps, sleepHours,
-            weight, protein, workout, mobility, vocal, notes
+            weight, protein, workout, mobility, vocal, notes,
+            fuelPre, fuelMid, fuelPost, hydration, dairyFlag
         } = await req.json();
         if (!date) return NextResponse.json({ error: 'Date required' }, { status: 400 });
 
@@ -16,6 +17,9 @@ export async function POST(req: NextRequest) {
         if (Number(sleepHours) >= 7) score++;
         if (Number(steps) >= 8000) score++;
         if (protein) score++;
+        if (fuelPre) score++;
+        if (fuelMid) score++;
+        if (fuelPost) score++;
 
         await upsertRow('HEALTH', 'Date', date, {
             Date: date,
@@ -28,6 +32,11 @@ export async function POST(req: NextRequest) {
             Steps: steps || 0,
             Pushups: pushups || 0,
             Squats: squats || 0,
+            FuelPre: fuelPre ? 'Yes' : '',
+            FuelMid: fuelMid ? 'Yes' : '',
+            FuelPost: fuelPost ? 'Yes' : '',
+            Hydration: hydration || '',
+            DairyFlag: dairyFlag ? 'Yes' : '',
             Score: score,
             Notes: notes || '',
         });
