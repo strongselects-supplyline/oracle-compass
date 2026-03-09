@@ -167,6 +167,23 @@ export default function MorningMode() {
   const studioDay = isStudioDay(dayType as any);
   const fuelScore = [log.fuelPreSession, log.fuelMidSession, log.fuelPostSession].filter(Boolean).length;
 
+  const fuelLabels = {
+    pre: { label: "Pre-Session Fuel", desc: "Protein + carbs before 10 AM. Eggs, oatmeal, banana." },
+    mid: { label: "Mid-Session Fuel", desc: "Arm's reach. PB&J, trail mix, apple." },
+    post: { label: "Post-Session Fuel", desc: "Batch-prepped. Rice, beans, chicken." }
+  };
+
+  if (dayType === "STUDIO + SAUNA DAY") {
+    fuelLabels.post = {
+      label: "Post-Sauna Dinner",
+      desc: "Wait until AFTER thermal reset. Eating a huge meal before the sauna is a biological disaster."
+    };
+  } else if (dayType === "BIZ DAY") {
+    fuelLabels.pre = { label: "Breakfast Engine", desc: "Protein heavy. Eggs, oatmeal, before 9 AM." };
+    fuelLabels.mid = { label: "Mid-Day Fuel", desc: "Keep it light to avoid afternoon crash." };
+    fuelLabels.post = { label: "Evening Meal", desc: "Batch-prepped. Rice, beans, chicken." };
+  }
+
   return (
     <main className="page animate-fade-in pb-20">
       <div className="page-inner">
@@ -275,9 +292,9 @@ export default function MorningMode() {
               {/* FUEL TRACKING */}
               <h3 className="text-[10px] font-black tracking-[0.2em] text-[#555] uppercase mb-3 mt-6 px-1">Fuel</h3>
               <div className="card !p-1.5 mb-2">
-                <CheckItem label="Pre-Session Fuel" description="Protein + carbs before 10 AM. Eggs, oatmeal, banana." checked={log.fuelPreSession} onChange={v => updateLog({ fuelPreSession: v })} />
-                <CheckItem label="Mid-Session Fuel" description="Arm's reach. PB&J, trail mix, apple." checked={log.fuelMidSession} onChange={v => updateLog({ fuelMidSession: v })} />
-                <CheckItem label="Post-Session Fuel" description="Batch-prepped. Rice, beans, chicken." checked={log.fuelPostSession} onChange={v => updateLog({ fuelPostSession: v })} />
+                <CheckItem label={fuelLabels.pre.label} description={fuelLabels.pre.desc} checked={log.fuelPreSession} onChange={v => updateLog({ fuelPreSession: v })} />
+                <CheckItem label={fuelLabels.mid.label} description={fuelLabels.mid.desc} checked={log.fuelMidSession} onChange={v => updateLog({ fuelMidSession: v })} />
+                <CheckItem label={fuelLabels.post.label} description={fuelLabels.post.desc} checked={log.fuelPostSession} onChange={v => updateLog({ fuelPostSession: v })} />
                 <CheckItem label="Dairy Before Vocals" description="Thickens mucus on cords. Flag if yes." checked={log.fuelDairyFlag} onChange={v => updateLog({ fuelDairyFlag: v })} warn={true} dimmed={!studioDay} />
               </div>
 
