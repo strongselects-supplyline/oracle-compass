@@ -6,12 +6,12 @@ import { getDailyLog, saveDailyLog, DailyLog, getStoreValue, getTodayISO } from 
 import { getSobrietyStreak } from "@/lib/streaks";
 import { getDynamicReleases, Release } from "@/lib/releases";
 import { useCloudSync } from "@/lib/useCloudSync";
+import type { OracleDecree } from "@/lib/oracle";
 import WeeklyMirror from "@/components/WeeklyMirror";
 
 function getMakeModeWeek(): number {
   const start = Date.UTC(2026, 1, 20);
   const now = Date.UTC(new Date().getFullYear(), new Date().getMonth(), new Date().getDate());
-import { OracleDecree } from "@/lib/oracle";
   const days = Math.floor((now - start) / (1000 * 60 * 60 * 24));
   return Math.min(Math.max(Math.ceil(days / 7), 1), 5);
 }

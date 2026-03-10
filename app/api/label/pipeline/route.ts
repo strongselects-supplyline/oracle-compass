@@ -8,11 +8,11 @@ export async function POST(req: NextRequest) {
             return NextResponse.json({ error: "trackTitle is required to start the pipeline." }, { status: 400 });
         }
 
-        const host = process.env.VERCEL_URL ?\`https://\${process.env.VERCEL_URL}\` : "http://localhost:3000";
+        const host = process.env.VERCEL_URL ? `https://${process.env.VERCEL_URL}` : "http://localhost:3000";
 
         // --- STEP 1: A&R AGENT (Sonic Positioning) ---
-        console.log(\`[Pipeline] Triggering A&R Agent for \${trackTitle}...\`);
-        const anrRes = await fetch(\`\${host}/api/label/anr\`, {
+        console.log(`[Pipeline] Triggering A&R Agent for \${trackTitle}...`);
+        const anrRes = await fetch(`\${host}/api/label/anr`, {
             method: "POST",
             headers: { "Content-Type": "application/json" },
             body: JSON.stringify({ trackTitle, genre, mood, notes }),
@@ -22,11 +22,11 @@ export async function POST(req: NextRequest) {
         const anrData = await anrRes.json();
 
         // --- STEP 2: CREATIVE AGENT (Video, Art, Merch) ---
-        console.log(\`[Pipeline] Passing A&R Data to Creative Agent for \${trackTitle}...\`);
+        console.log(`[Pipeline] Passing A&R Data to Creative Agent for \${trackTitle}...`);
         // We inject the A&R sonic positioning as the "mood" for the Creative agent
-        const combinedMood = \`\${mood || ''}. A&R Assessment: \${anrData.sonicPosition}\`;
+        const combinedMood = `\${mood || ''}. A&R Assessment: \${anrData.sonicPosition}`;
         
-        const creativeRes = await fetch(\`\${host}/api/label/creative\`, {
+        const creativeRes = await fetch(`\${host}/api/label/creative`, {
             method: "POST",
             headers: { "Content-Type": "application/json" },
             body: JSON.stringify({ 
@@ -40,23 +40,23 @@ export async function POST(req: NextRequest) {
         const creativeData = await creativeRes.json();
 
         // --- STEP 3: GUARDIAN AGENT (Brand Voice Review) ---
-        console.log(\`[Pipeline] Passing Creative output to Guardian Agent for \${trackTitle}...\`);
+        console.log(`[Pipeline] Passing Creative output to Guardian Agent for \${trackTitle}...`);
         // We only really need to Guardian check the video treatment acts and the merch description,
         // as the cover art prompts are for Midjourney, not public consumption.
         
-        const treatmentText = \`Act 1: \${creativeData.videoTreatment.act1}
+        const treatmentText = `Act 1: \${creativeData.videoTreatment.act1}
 Act 2: \${creativeData.videoTreatment.act2}
-Act 3: \${creativeData.videoTreatment.act3}\`;
+Act 3: \${creativeData.videoTreatment.act3}`;
 
-        const merchText = \`\${creativeData.merchConcept.item}: \${creativeData.merchConcept.description}\`;
+        const merchText = `\${creativeData.merchConcept.item}: \${creativeData.merchConcept.description}`;
 
         const [treatmentGuardianRes, merchGuardianRes] = await Promise.all([
-            fetch(\`\${host}/api/label/guardian\`, {
+            fetch(`\${host}/api/label/guardian`, {
                 method: "POST",
                 headers: { "Content-Type": "application/json" },
                 body: JSON.stringify({ inputContent: treatmentText, assetType: "Video Treatment" })
             }),
-            fetch(\`\${host}/api/label/guardian\`, {
+            fetch(`\${host}/api/label/guardian`, {
                 method: "POST",
                 headers: { "Content-Type": "application/json" },
                 body: JSON.stringify({ inputContent: merchText, assetType: "Merch Concept" })

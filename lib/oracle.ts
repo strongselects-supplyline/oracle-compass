@@ -75,9 +75,9 @@ export type OracleDecree = {
   severity: "GREEN" | "AMBER" | "RED";
   oracle_message: string;
   dietary_alignment?: {
-    pre: { label: "string"; desc: "string" };
-    mid: { label: "string"; desc: "string" };
-    post: { label: "string"; desc: "string" };
+    pre: { label: string; desc: string };
+    mid: { label: string; desc: string };
+    post: { label: string; desc: string };
     warning?: string | null;
   };
   realignments: Realignment[];
