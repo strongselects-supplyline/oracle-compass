@@ -1,36 +1,59 @@
-This is a [Next.js](https://nextjs.org) project bootstrapped with [`create-next-app`](https://nextjs.org/docs/app/api-reference/cli/create-next-app).
+# Oracle Compass
 
-## Getting Started
+Sovereign creator daily command center. Next.js 16 PWA, deployed on Vercel.
 
-First, run the development server:
+**Live:** oracle-compass-ni8g.vercel.app
+
+## Stack
+
+- Next.js 16 + TypeScript
+- IndexedDB (client-side persistence, Phase 1)
+- Google Sheets sync via `googleapis`
+- Claude Sonnet 4 (Oracle engine) + Haiku 4.5 (7 label agents)
+- Vercel Crons (compliance + briefing)
+
+## Pillars
+
+| Page | Purpose |
+|------|---------|
+| `/` | Morning Mode — daily ignition ritual |
+| `/grind` | Sobriety, sovereignty stack, fuel tracking |
+| `/studio` | Release waterfall, cycle board, sessions |
+| `/engine` | Business pipeline, income bridge |
+| `/brain` | Phase bar, anchors, mode declaration |
+| `/oracle` | Decree history, manual fire |
+
+## AI Agents
+
+| Route | Model | Purpose |
+|-------|-------|---------|
+| `/api/oracle` | Claude Sonnet 4 | Full empire intelligence + realignments |
+| `/api/label/anr` | Claude Haiku 4.5 | Sonic positioning |
+| `/api/label/creative` | Claude Haiku 4.5 | Visual treatments |
+| `/api/label/pr` | Claude Haiku 4.5 | Social copy (3 variants) |
+| `/api/label/guardian` | Claude Haiku 4.5 | Brand compliance scoring |
+| `/api/label/marketing` | Claude Haiku 4.5 | 21-day rollout schedule |
+| `/api/label/ops` | Claude Haiku 4.5 | Compliance checks |
+
+## Crons
+
+| Path | Schedule | Purpose |
+|------|----------|---------|
+| `/api/label/cron/briefing` | 7am CT (0 12 UTC) | Morning briefing digest |
+| `/api/label/cron/compliance` | 8am CT (0 13 UTC) | Registration gap escalations |
+
+## Setup
 
 ```bash
+cp .env.example .env.local
+# Fill in API keys
+npm install
 npm run dev
-# or
-yarn dev
-# or
-pnpm dev
-# or
-bun dev
 ```
 
-Open [http://localhost:3000](http://localhost:3000) with your browser to see the result.
+## Source of Truth
 
-You can start editing the page by modifying `app/page.tsx`. The page auto-updates as you edit the file.
-
-This project uses [`next/font`](https://nextjs.org/docs/app/building-your-application/optimizing/fonts) to automatically optimize and load [Geist](https://vercel.com/font), a new font family for Vercel.
-
-## Learn More
-
-To learn more about Next.js, take a look at the following resources:
-
-- [Next.js Documentation](https://nextjs.org/docs) - learn about Next.js features and API.
-- [Learn Next.js](https://nextjs.org/learn) - an interactive Next.js tutorial.
-
-You can check out [the Next.js GitHub repository](https://github.com/vercel/next.js) - your feedback and contributions are welcome!
-
-## Deploy on Vercel
-
-The easiest way to deploy your Next.js app is to use the [Vercel Platform](https://vercel.com/new?utm_medium=default-template&filter=next.js&utm_source=create-next-app&utm_campaign=create-next-app-readme) from the creators of Next.js.
-
-Check out our [Next.js deployment documentation](https://nextjs.org/docs/app/building-your-application/deploying) for more details.
+- **Release schedule:** `lib/releases.ts` (4 singles, data version 5)
+- **Track compliance:** `lib/registry.ts` (5 tracks including album-only)
+- **Studio data:** `lib/studioData.ts` (projects, timeline, mood scores)
+- **Brain docs:** `~/.gemini/antigravity/brain/oracle-compass-v2-state.md`

@@ -1,5 +1,5 @@
 export function getSobrietyStreak(): number {
-    const start = new Date("2026-02-28");
+    const start = new Date("2026-03-11");
     const today = new Date();
 
     // Normalize both to midnight UTC to prevent Daylight Saving Time diff bugs

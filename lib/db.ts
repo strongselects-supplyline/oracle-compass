@@ -10,7 +10,7 @@ export type DailyLog = {
     sovereigntyStack: boolean;
     movement: boolean;
     eucalyptusStream: boolean;
-    ateBefore: boolean;
+
     sauna: boolean; // only relevant Mon/Wed/Fri
     sleep: number | null;
     pushups: number | null;
@@ -26,7 +26,7 @@ export type DailyLog = {
 };
 
 export type StreakData = {
-    sobrietyStart: '2026-02-28'; // HARDCODED — never changes
+    sobrietyStart: '2026-03-11'; // HARDCODED — never changes
     movementStreak: number;
     saunaStreak: number;
     lastMovementDate: string;
@@ -138,7 +138,7 @@ function getDefaultLog(date: string): DailyLog {
         sovereigntyStack: false,
         movement: false,
         eucalyptusStream: false,
-        ateBefore: false,
+
         sauna: false,
         sleep: null,
         pushups: null,
@@ -161,7 +161,7 @@ export async function getStreakData(): Promise<StreakData> {
     const data = await getStoreValue<StreakData>('streaks');
     if (data) return data;
     return {
-        sobrietyStart: '2026-02-28',
+        sobrietyStart: '2026-03-11',
         movementStreak: 0,
         saunaStreak: 0,
         lastMovementDate: '',

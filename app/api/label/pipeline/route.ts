@@ -98,8 +98,8 @@ Act 3: \${creativeData.videoTreatment.act3}`;
             }
         };
 
-        // Note: In a full SS-Tier implementation, you would write this 'finalPackage'
-        // directly to your Supabase/PostgreSQL database here.
+        // Phase 1: Persistence handled by IndexedDB on the client side.
+        // Phase 2 (post-April 10): Migrate to Supabase/PostgreSQL for cross-device sync.
 
         return NextResponse.json(finalPackage);
 

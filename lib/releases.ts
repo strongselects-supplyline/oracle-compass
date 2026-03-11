@@ -4,25 +4,52 @@
 
 import { getStoreValue, setStoreValue } from "@/lib/db";
 
+/* ── Content Deliverables ── */
+export type ContentDeliverables = {
+  visualIdea: string;                                   // "The One Idea" per track
+  primaryVideo: "none" | "planned" | "shot" | "edited" | "done";
+  lyricVideo: "none" | "planned" | "edited" | "done";
+  reelsPosted: number;                                  // running tally
+  reelsGoal: number;                                    // target per release window
+  tiktoksPosted: number;
+  tiktoksGoal: number;
+  brollClips: number;                                   // raw B-roll clips captured
+  notes: string;                                        // freeform production notes
+};
+
+const DEFAULT_DELIVERABLES: ContentDeliverables = {
+  visualIdea: "",
+  primaryVideo: "none",
+  lyricVideo: "none",
+  reelsPosted: 0,
+  reelsGoal: 20,
+  tiktoksPosted: 0,
+  tiktoksGoal: 30,
+  brollClips: 0,
+  notes: "",
+};
+
+/* ── Release type ── */
 export type Release = {
   title: string;
   uploadDate: string;   // YYYY-MM-DD
   releaseDate: string;  // YYYY-MM-DD
   status: "live" | "upload_pending" | "unreleased";
   pitchDeadline?: string | null;
+  contentDeliverables: ContentDeliverables;
 };
 
 // Canonical defaults — source of truth for first seed only
 const RELEASE_DEFAULTS: Release[] = [
-  { title: "SEE ME", uploadDate: "2026-03-09", releaseDate: "2026-03-13", status: "unreleased" },
-  { title: "ESL", uploadDate: "2026-03-16", releaseDate: "2026-03-20", status: "unreleased" },
-  { title: "Sweet Frustration", uploadDate: "2026-03-23", releaseDate: "2026-03-27", status: "unreleased" },
-  { title: "Like I Did", uploadDate: "2026-03-30", releaseDate: "2026-04-03", status: "unreleased" },
+  { title: "SEE ME",            uploadDate: "2026-03-09", releaseDate: "2026-03-13", status: "unreleased", contentDeliverables: { ...DEFAULT_DELIVERABLES } },
+  { title: "ESL",               uploadDate: "2026-03-16", releaseDate: "2026-03-20", status: "unreleased", contentDeliverables: { ...DEFAULT_DELIVERABLES } },
+  { title: "Sweet Frustration", uploadDate: "2026-03-23", releaseDate: "2026-03-27", status: "unreleased", contentDeliverables: { ...DEFAULT_DELIVERABLES } },
+  { title: "Like I Did",        uploadDate: "2026-03-30", releaseDate: "2026-04-03", status: "unreleased", contentDeliverables: { ...DEFAULT_DELIVERABLES } },
 ];
 
 const RELEASES_KEY = "dynamic_releases";
 const RELEASES_VERSION_KEY = "releases_data_version";
-const RELEASE_DATA_VERSION = 3; // Bump this to force re-seed when defaults change
+const RELEASE_DATA_VERSION = 6; // v6: added contentDeliverables per release
 
 // Read from IndexedDB, seeding defaults on first call or after version bump
 export async function getDynamicReleases(): Promise<Release[]> {
@@ -34,7 +61,16 @@ export async function getDynamicReleases(): Promise<Release[]> {
     return RELEASE_DEFAULTS;
   }
   const stored = await getStoreValue<Release[]>(RELEASES_KEY);
-  if (stored && stored.length > 0) return stored;
+  if (stored && stored.length > 0) {
+    // Back-fill contentDeliverables for any releases that lack it (migration safety)
+    const patched = stored.map(r => ({
+      ...r,
+      contentDeliverables: r.contentDeliverables
+        ? { ...DEFAULT_DELIVERABLES, ...r.contentDeliverables }
+        : { ...DEFAULT_DELIVERABLES },
+    }));
+    return patched;
+  }
   // First load — seed defaults
   await setStoreValue(RELEASES_KEY, RELEASE_DEFAULTS);
   await setStoreValue(RELEASES_VERSION_KEY, RELEASE_DATA_VERSION);
@@ -43,6 +79,22 @@ export async function getDynamicReleases(): Promise<Release[]> {
 
 export async function saveDynamicReleases(releases: Release[]): Promise<void> {
   await setStoreValue(RELEASES_KEY, releases);
+}
+
+// Update content deliverables for a specific track
+export async function updateContentDeliverables(
+  title: string,
+  patch: Partial<ContentDeliverables>
+): Promise<void> {
+  const releases = await getDynamicReleases();
+  const updated = releases.map(r => {
+    if (r.title !== title) return r;
+    return {
+      ...r,
+      contentDeliverables: { ...r.contentDeliverables, ...patch },
+    };
+  });
+  await saveDynamicReleases(updated);
 }
 
 // Shift a specific release's dates forward by N days

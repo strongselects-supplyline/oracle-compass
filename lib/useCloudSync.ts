@@ -39,7 +39,7 @@ export function useCloudSync() {
                         sleepHours: log.sleep || 0,
                         workout: log.movement,
                         vocal: log.eucalyptusStream,
-                        protein: log.ateBefore,
+                        protein: false, // Legacy field — fuel tracking now handles nutrition
                         notes: log.journalLine,
                         fuelPre: log.fuelPreSession,
                         fuelMid: log.fuelMidSession,

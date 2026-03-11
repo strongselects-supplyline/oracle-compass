@@ -3,23 +3,53 @@
 import { useEffect, useState } from "react";
 import { getStoreValue, getTodayISO } from "@/lib/db";
 import type { OracleDecree, OracleFlag } from "@/lib/oracle";
+import { assembleContext } from "@/lib/oracle";
+import { executeRealignment } from "@/lib/realign";
 
 export default function OraclePage() {
   const [decree, setDecree] = useState<OracleDecree | null>(null);
   const [flags, setFlags] = useState<OracleFlag[]>([]);
   const [loading, setLoading] = useState(true);
+  const [firing, setFiring] = useState(false);
+  const [fireError, setFireError] = useState<string | null>(null);
 
-  useEffect(() => {
+  const load = async () => {
     const today = getTodayISO();
-    Promise.all([
+    const [d, fl] = await Promise.all([
       getStoreValue<OracleDecree>("oracle_decree:" + today),
       getStoreValue<OracleFlag[]>("oracle_flags:" + today),
-    ]).then(([d, fl]) => {
-      setDecree(d);
-      setFlags(fl || []);
-      setLoading(false);
-    });
-  }, []);
+    ]);
+    setDecree(d);
+    setFlags(fl || []);
+    setLoading(false);
+  };
+
+  const fireOracle = async () => {
+    setFiring(true);
+    setFireError(null);
+    try {
+      const context = await assembleContext();
+      const res = await fetch("/api/oracle", {
+        method: "POST",
+        headers: { "Content-Type": "application/json" },
+        body: JSON.stringify(context),
+      });
+      if (!res.ok) {
+        const err = await res.json().catch(() => ({ error: "Unknown error" }));
+        setFireError(err.error || "Oracle engine failed.");
+      } else {
+        const decree: OracleDecree = await res.json();
+        await executeRealignment(decree);
+        await load();
+      }
+    } catch (e) {
+      setFireError(String(e));
+    } finally {
+      setFiring(false);
+    }
+  };
+
+  useEffect(() => { load(); }, []);
 
   const severityColor =
     decree?.severity === "GREEN" ? "text-green-400" :
@@ -138,9 +168,19 @@ export default function OraclePage() {
           <div className="text-center py-16">
             <div className="text-5xl mb-6 opacity-20">◯</div>
             <h2 className="text-xl font-black mb-2 tracking-tight">No decree yet.</h2>
-            <p className="text-[#555] text-sm leading-relaxed font-medium">
+            <p className="text-[#555] text-sm leading-relaxed font-medium mb-8">
               Oracle fires automatically on first app open each day.
             </p>
+            {fireError && (
+              <p className="text-red-400 text-xs font-bold mb-4">{fireError}</p>
+            )}
+            <button
+              onClick={fireOracle}
+              disabled={firing}
+              className="px-8 py-3 rounded-xl bg-[#1a1a1a] border border-[#333] text-sm font-black tracking-widest text-white hover:bg-[#222] active:scale-95 transition-all disabled:opacity-50"
+            >
+              {firing ? "FIRING..." : "🔮 FIRE ORACLE"}
+            </button>
           </div>
         )}
 

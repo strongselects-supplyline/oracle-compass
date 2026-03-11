@@ -5,6 +5,7 @@ import { getDailyLog, saveDailyLog, DailyLog, getTodayISO } from "@/lib/db";
 import { getSobrietyStreak } from "@/lib/streaks";
 import { getDayType, isStudioDay } from "@/lib/dayType";
 import { useCloudSync } from "@/lib/useCloudSync";
+import CheckItem from "@/components/CheckItem";
 
 export default function GrindPage() {
     const [log, setLog] = useState<DailyLog | null>(null);
@@ -61,11 +62,6 @@ export default function GrindPage() {
                         dimmed={!studioDay}
                     />
                     <CheckItem
-                        label="Ate before session"
-                        checked={log.ateBefore}
-                        onChange={(v) => updateLog({ ateBefore: v })}
-                    />
-                    <CheckItem
                         label="Sauna"
                         checked={log.sauna}
                         onChange={(v) => updateLog({ sauna: v })}
@@ -120,30 +116,3 @@ export default function GrindPage() {
     );
 }
 
-function CheckItem({ label, checked, onChange, dimmed }: { label: string, checked: boolean, onChange: (v: boolean) => void, dimmed?: boolean }) {
-    const [popping, setPopping] = useState(false);
-
-    const handleTap = () => {
-        if (!checked) {
-            setPopping(true);
-            setTimeout(() => setPopping(false), 400);
-        }
-        onChange(!checked);
-    };
-
-    return (
-        <div
-            className={`check-item ${dimmed ? 'opacity-30 pointer-events-none' : ''}`}
-            onClick={handleTap}
-        >
-            <div className={`check-box ${checked ? 'checked' : ''} ${popping ? 'animate-check-pop' : ''}`}>
-                <svg width="14" height="14" viewBox="0 0 24 24" fill="none" stroke="white" strokeWidth="3" strokeLinecap="round" strokeLinejoin="round">
-                    <polyline points="20 6 9 17 4 12" />
-                </svg>
-            </div>
-            <span className={`text-base font-semibold transition-colors duration-200 ${checked ? 'text-[#555] line-through' : 'text-white'}`}>
-                {label}
-            </span>
-        </div>
-    );
-}

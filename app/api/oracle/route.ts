@@ -140,6 +140,8 @@ export async function POST(req: NextRequest) {
     const cleaned = raw.replace(/^```(?:json)?\n?/m, "").replace(/\n?```$/m, "").trim();
     const decree: OracleDecree = JSON.parse(cleaned);
 
+    // Realignment execution happens client-side in OracleTrigger.tsx
+    // (Edge Runtime has no access to IndexedDB)
     const response = NextResponse.json(decree);
     response.cookies.set("oracle_last_ts", String(Date.now()), {
       maxAge: 4 * 60 * 60,

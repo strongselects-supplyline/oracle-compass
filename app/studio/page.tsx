@@ -4,6 +4,7 @@ import { useEffect, useState } from "react";
 import { getDynamicReleases, Release, ALBUM_RELEASE_DATE } from "@/lib/releases";
 import { getStoreValue, setStoreValue } from "@/lib/db";
 import { PROJECTS, LOOSIES, TIMELINE_EVENTS, STATUSES, Project, Track, TrackStatus } from "@/lib/studioData";
+import { getWeekKey } from "@/lib/oracle";
 
 // ── Utils ────────────────────────────────────────────────────
 function daysUntilDate(dateStr: string | null): number | null {
@@ -15,14 +16,6 @@ function daysUntilDate(dateStr: string | null): number | null {
 function fmtDate(d: string | null): string {
     if (!d) return "—";
     return new Date(d + "T00:00:00").toLocaleDateString("en-US", { month: "short", day: "numeric" });
-}
-function getWeekKey(): string {
-    const now = new Date();
-    const d = new Date(Date.UTC(now.getFullYear(), now.getMonth(), now.getDate()));
-    d.setUTCDate(d.getUTCDate() + 4 - (d.getUTCDay() || 7));
-    const yr = d.getUTCFullYear();
-    const wk = Math.ceil(((d.getTime() - Date.UTC(yr, 0, 1)) / 86400000 + 1) / 7);
-    return `${yr}-W${String(wk).padStart(2, "0")}`;
 }
 
 // ── Sub-components ─────────────────────────────────────────────

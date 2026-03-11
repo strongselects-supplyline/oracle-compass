@@ -2,13 +2,9 @@
 
 import { useEffect, useState } from "react";
 import { getDynamicReleases } from "@/lib/releases";
+import { getMakeModeWeek } from "@/lib/oracle";
+import { PROJECTS } from "@/lib/studioData";
 
-function getMakeModeWeek(): number {
-  const start = Date.UTC(2026, 1, 20);
-  const now = Date.UTC(new Date().getFullYear(), new Date().getMonth(), new Date().getDate());
-  const days = Math.floor((now - start) / (1000 * 60 * 60 * 24));
-  return Math.min(Math.max(Math.ceil(days / 7), 1), 5);
-}
 
 function getPhasePercent(): number {
   const makeStart = Date.UTC(2026, 2, 1);
@@ -21,8 +17,10 @@ function getPhasePercent(): number {
 
 export default function BrainPage() {
   const [uploadedSingles, setUploadedSingles] = useState(0);
+  const [albumTracksReady, setAlbumTracksReady] = useState(0);
   const week = getMakeModeWeek();
   const phasePercent = getPhasePercent();
+  const apr3Done = Date.UTC(new Date().getFullYear(), new Date().getMonth(), new Date().getDate()) >= Date.UTC(2026, 2, 3);
 
   const currentPhase =
     phasePercent < 45 ? "MAKE" :
@@ -33,6 +31,12 @@ export default function BrainPage() {
     getDynamicReleases().then(releases => {
       setUploadedSingles(releases.filter(s => s.status === "live").length);
     });
+    // Count ALL LOVE album tracks that are mixed or mastered
+    const allLove = PROJECTS.find(p => p.id === "all-love");
+    if (allLove) {
+      const ready = allLove.tracks.filter(t => ["mastered", "on_album", "album_live"].includes(t.status)).length;
+      setAlbumTracksReady(ready);
+    }
   }, []);
 
   return (
@@ -72,8 +76,8 @@ export default function BrainPage() {
             done={uploadedSingles >= 5}
             label={`5 singles uploaded (${uploadedSingles}/5)`}
           />
-          <ExitLine done={false} label="4 album tracks recorded + mixed" />
-          <ExitLine done={false} label="Apr 3" />
+          <ExitLine done={albumTracksReady >= 4} label={`4 album tracks recorded + mixed (${albumTracksReady}/4)`} />
+          <ExitLine done={apr3Done} label={`Apr 3 — pre-release milestone`} />
         </div>
 
         {/* ── Philosophical Anchors ── */}

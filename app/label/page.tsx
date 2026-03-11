@@ -7,13 +7,15 @@ import RolloutCalendar from "@/components/label/RolloutCalendar";
 import AgentStatus from "@/components/label/AgentStatus";
 import ComplianceBoard from "@/components/label/ComplianceBoard";
 import CreativeDept from "@/components/label/CreativeDept";
+import ContentDept from "@/components/label/ContentDept";
 import ANRPanel from "@/components/label/ANRPanel";
 import SubmissionLog from "@/components/label/SubmissionLog";
 
-type Tab = "rollout" | "subs" | "vault" | "compliance" | "creative" | "anr";
+type Tab = "rollout" | "content" | "subs" | "vault" | "compliance" | "creative" | "anr";
 
 const TABS: { id: Tab; label: string; emoji: string }[] = [
     { id: "rollout", label: "Rollout", emoji: "📅" },
+    { id: "content", label: "Content", emoji: "🎬" },
     { id: "subs", label: "Subs", emoji: "📋" },
     { id: "vault", label: "Copy", emoji: "✍️" },
     { id: "compliance", label: "Ops", emoji: "✅" },
@@ -24,7 +26,7 @@ const TABS: { id: Tab; label: string; emoji: string }[] = [
 export default function LabelPage() {
     const [releases, setReleases] = useState<Release[]>([]);
     const [expandedRelease, setExpandedRelease] = useState<string | null>(null);
-    const [activeTab, setActiveTab] = useState<Tab>("vault");
+    const [activeTab, setActiveTab] = useState<Tab>("content");
 
     useEffect(() => {
         getDynamicReleases().then(releases => {
@@ -108,6 +110,7 @@ export default function LabelPage() {
                                         {/* Agent panel */}
                                         <div className="px-4 pb-6">
                                             {activeTab === "rollout" && <RolloutCalendar trackTitle={s.title} releaseDate={s.releaseDate} />}
+                                            {activeTab === "content" && <ContentDept trackTitle={s.title} />}
                                             {activeTab === "subs" && <SubmissionLog trackTitle={s.title} />}
                                             {activeTab === "vault" && <CopyVault trackTitle={s.title} />}
                                             {activeTab === "compliance" && <ComplianceBoard />}

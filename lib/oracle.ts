@@ -96,7 +96,7 @@ const CYCLE_TRACKS = [
   { name: "JUST SAY SO", storageKey: "cycle_justsayso" },
 ];
 
-function getMakeModeWeek(): number {
+export function getMakeModeWeek(): number {
   const start = Date.UTC(2026, 1, 20);
   const now = Date.UTC(new Date().getFullYear(), new Date().getMonth(), new Date().getDate());
   const days = Math.floor((now - start) / (1000 * 60 * 60 * 24));
