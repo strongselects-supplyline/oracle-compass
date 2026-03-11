@@ -212,6 +212,15 @@ export default function StudioPage() {
                 {/* Timeline */}
                 <Timeline />
 
+                {/* Cycle Board — leaderboard position */}
+                <p className="text-[10px] font-black tracking-[0.2em] text-[#555] uppercase mb-3">Cycle Board</p>
+                <div className="card mb-6">
+                    <CycleRow title="RECONNECT" storageKey="cycle_reconnect" initialStatus="recording" />
+                    <CycleRow title="WANT U 2" storageKey="cycle_wantu2" initialStatus="mixing" />
+                    <CycleRow title="WORTH IT" storageKey="cycle_worthit" initialStatus="resting" />
+                    <CycleRow title="JUST SAY SO" storageKey="cycle_justsayso" initialStatus="add" />
+                </div>
+
                 {/* Project grid */}
                 <div className="grid grid-cols-2 gap-2 mb-6">
                     {PROJECTS.map(p => (
@@ -263,14 +272,7 @@ export default function StudioPage() {
                     ))}
                 </div>
 
-                {/* Cycle board */}
-                <p className="text-[10px] font-black tracking-[0.2em] text-[#555] uppercase mb-3">Cycle Board</p>
-                <div className="card mb-6">
-                    <CycleRow title="RECONNECT" storageKey="cycle_reconnect" initialStatus="recording" />
-                    <CycleRow title="WANT U 2" storageKey="cycle_wantu2" initialStatus="mixing" />
-                    <CycleRow title="WORTH IT" storageKey="cycle_worthit" initialStatus="resting" />
-                    <CycleRow title="JUST SAY SO" storageKey="cycle_justsayso" initialStatus="add" />
-                </div>
+
 
                 {/* Session log */}
                 <div className="card text-center py-5">
