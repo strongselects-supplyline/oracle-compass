@@ -2,7 +2,7 @@
 // The Oracle Engine — full empire intelligence. Music + Business + Income + Label + Fuel.
 // Receives complete context, reasons across all pillars, issues decree + realignments.
 //
-// Budget guard: Rate limited to 1 decree per 4 hours via cookie.
+// Budget guard: Rate limited to 1 decree per 5 minutes via cookie.
 
 import { NextRequest, NextResponse } from "next/server";
 import type { OracleContext, OracleDecree } from "@/lib/oracle";
@@ -94,7 +94,7 @@ export async function POST(req: NextRequest) {
     return NextResponse.json({ error: "ANTHROPIC_API_KEY not set" }, { status: 500 });
   }
 
-  const RATE_LIMIT_MS = 4 * 60 * 60 * 1000;
+  const RATE_LIMIT_MS = 5 * 60 * 1000; // 5 minutes
   const lastTsCookie = req.cookies.get("oracle_last_ts")?.value;
   if (lastTsCookie) {
     const elapsed = Date.now() - parseInt(lastTsCookie, 10);
@@ -144,7 +144,7 @@ export async function POST(req: NextRequest) {
     // (Edge Runtime has no access to IndexedDB)
     const response = NextResponse.json(decree);
     response.cookies.set("oracle_last_ts", String(Date.now()), {
-      maxAge: 4 * 60 * 60,
+      maxAge: 5 * 60, // 5 minutes
       path: "/",
       sameSite: "lax",
     });
