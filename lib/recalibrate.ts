@@ -8,7 +8,7 @@ import { assembleContext } from "@/lib/oracle";
 import { executeRealignment } from "@/lib/realign";
 import type { OracleDecree } from "@/lib/oracle";
 
-const COOLDOWN_MS = 30 * 60 * 1000; // 30 minutes
+const COOLDOWN_MS = 5 * 60 * 1000; // 5 minutes
 const COOLDOWN_KEY = "recalibrate_last_ts";
 
 export type RecalibrateResult =
