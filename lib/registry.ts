@@ -24,7 +24,7 @@ export type TrackRegistry = {
 export const REGISTRY: TrackRegistry[] = [
     {
         title: "SEE ME",
-        isrc: "",
+        isrc: "", // ISRC pending from Amuse — update once received
         releaseDate: "2026-03-13",
         ascap: "pending",
         mlc: "pending",
@@ -34,7 +34,7 @@ export const REGISTRY: TrackRegistry[] = [
         instrumentalRendered: false,
         splitSheetSigned: false,
         collaborators: [],
-        notes: "Uploading Mar 9 for Mar 13 release. Verify Songtrust login post-UMG.",
+        notes: "Master + cover art submitted to Amuse Mar 12. Going live Mar 13. ISRC pending from Amuse — update and complete ASCAP/MLC/Songtrust registrations once received. Verify Songtrust login post-UMG.",
     },
     {
         title: "ESL",

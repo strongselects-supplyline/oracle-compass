@@ -29,6 +29,7 @@ export default function BottomNav() {
     }, []);
 
     const navs = [
+        { name: "Log", path: "/log", icon: "⚡" },
         { name: "Grind", path: "/grind", icon: "⚔️" },
         { name: "Studio", path: "/studio", icon: "🎙️" },
         { name: "Engine", path: "/engine", icon: "⚙️" },
