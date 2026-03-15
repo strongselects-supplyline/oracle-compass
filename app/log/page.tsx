@@ -312,6 +312,64 @@ export default function QuickLogPage() {
           </div>
         </section>
 
+        {/* SESSION INTELLIGENCE */}
+        {studioDay && (
+          <section className="mb-4">
+            <p className="text-[9px] font-black tracking-[0.2em] text-[#444] uppercase mb-2 px-1">Session</p>
+            <div className="card flex items-center justify-between p-3 mb-2">
+              <span className="text-[10px] font-black tracking-widest text-[#555] uppercase">Quality</span>
+              <div className="flex gap-2">
+                {[1, 2, 3, 4, 5].map((n) => (
+                  <button
+                    key={n}
+                    onClick={() => updateLog({ sessionQuality: n })}
+                    className={`w-9 h-9 rounded-xl text-sm font-black transition-all active:scale-95 ${
+                      log.sessionQuality === n
+                        ? n <= 2 ? "bg-red-500 text-white" : n <= 3 ? "bg-amber-500 text-black" : "bg-green-500 text-black"
+                        : "bg-[#111] text-[#555] border border-[#222]"
+                    }`}
+                  >
+                    {n}
+                  </button>
+                ))}
+              </div>
+            </div>
+            <div className="flex gap-2">
+              {(["recording", "mixing", "mastering", "writing"] as const).map((t) => (
+                <button
+                  key={t}
+                  onClick={() => updateLog({ sessionType: log.sessionType === t ? "" : t })}
+                  className={`flex-1 py-2.5 rounded-xl text-[9px] font-black tracking-wider uppercase transition-all active:scale-95 ${
+                    log.sessionType === t
+                      ? "bg-amber-500 text-black shadow-lg shadow-amber-500/20"
+                      : "bg-[#0d0d0d] text-[#555] border border-[#222]"
+                  }`}
+                >
+                  {t.slice(0, 3)}
+                </button>
+              ))}
+            </div>
+          </section>
+        )}
+
+        {/* LIFE BALANCE */}
+        <section className="mb-4">
+          <p className="text-[9px] font-black tracking-[0.2em] text-[#444] uppercase mb-2 px-1">Balance</p>
+          <div className="space-y-2">
+            <TogglePill
+              label="Personal / Recovery Time"
+              checked={log.personalTime}
+              onChange={(v) => updateLog({ personalTime: v })}
+            />
+            <TogglePill
+              label="Sunday Batch Prep"
+              checked={log.batchPrepDone}
+              onChange={(v) => updateLog({ batchPrepDone: v })}
+              dimmed={new Date().getDay() !== 0}
+            />
+          </div>
+        </section>
+
         {/* DOORDASH */}
         <section className="mb-6">
           <div className="flex justify-between items-center mb-2 px-1">

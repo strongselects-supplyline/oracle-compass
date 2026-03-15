@@ -4,9 +4,10 @@
 
 import { getDailyLog, getStoreValue, getTodayISO, DailyLog } from "@/lib/db";
 import { getSobrietyStreak } from "@/lib/streaks";
-import { getDynamicReleases, Release, ALBUM_RELEASE_DATE } from "@/lib/releases";
+import { getDynamicReleases, Release, ALBUM_RELEASE_DATE, ContentDeliverables } from "@/lib/releases";
 import { REGISTRY } from "@/lib/registry";
 import { fetchDashboardIncome } from "@/lib/dashboardBridge";
+import { getDayType } from "@/lib/dayType";
 
 export type CycleTrack = {
   name: string;
@@ -42,6 +43,32 @@ export type FuelSnapshot = {
   missedPreCount: number;    // how many of last 3 days missed pre-session
 };
 
+export type ContentSnapshot = {
+  nextRelease: {
+    title: string;
+    daysUntil: number;
+    deliverables: ContentDeliverables;
+    readinessScore: number;  // 0-100 based on deliverable completion
+  } | null;
+  totalReelsThisWeek: number;
+  totalTiktoksThisWeek: number;
+};
+
+export type TimeSnapshot = {
+  currentHour: number;       // 0-23
+  currentBlock: string;      // 'pre-session' | 'studio' | 'post-studio' | 'evening' | 'dd-morning' | 'dd-evening'
+  studioHoursRemaining: number; // hours left in 10AM-4PM block (0 if past 4PM)
+};
+
+export type SessionSnapshot = {
+  todayQuality: number | null;   // 1-5
+  todayType: string;             // recording/mixing/mastering/writing/''
+  recentAvgQuality: number;      // avg of last 3 days with quality logged
+  personalTimeDays: number;      // how many of last 7 days had personal time
+  batchPrepThisWeek: boolean;    // did Sunday batch prep happen?
+  consecutiveMaxDays: number;    // streak of days without personal time
+};
+
 export type OracleContext = {
   date: string;
   dayType: string;
@@ -58,6 +85,9 @@ export type OracleContext = {
   income: IncomeSnapshot;
   label: LabelSnapshot;
   fuel: FuelSnapshot;
+  content: ContentSnapshot;
+  time: TimeSnapshot;
+  session: SessionSnapshot;
   declaredPriority: string | null;
 };
 
@@ -115,6 +145,36 @@ export function getWeekKey(offsetWeeks = 0): string {
 
 function fuelScoreFromLog(l: DailyLog): number {
   return [l.fuelPreSession, l.fuelMidSession, l.fuelPostSession].filter(Boolean).length;
+}
+
+function computeContentReadiness(d: ContentDeliverables): number {
+  let score = 0;
+  // primary video: 25 pts
+  const pvMap: Record<string, number> = { none: 0, planned: 5, shot: 12, edited: 20, done: 25 };
+  score += pvMap[d.primaryVideo] || 0;
+  // lyric video: 10 pts
+  const lvMap: Record<string, number> = { none: 0, planned: 3, edited: 7, done: 10 };
+  score += lvMap[d.lyricVideo] || 0;
+  // reels: 25 pts (proportional to goal)
+  score += d.reelsGoal > 0 ? Math.min(25, Math.round((d.reelsPosted / d.reelsGoal) * 25)) : 0;
+  // tiktoks: 15 pts
+  score += d.tiktoksGoal > 0 ? Math.min(15, Math.round((d.tiktoksPosted / d.tiktoksGoal) * 15)) : 0;
+  // b-roll: 10 pts (3+ clips = full marks)
+  score += Math.min(10, Math.round((d.brollClips / 3) * 10));
+  // visual idea: 15 pts
+  score += d.visualIdea.trim().length > 0 ? 15 : 0;
+  return Math.min(100, score);
+}
+
+function getCurrentBlock(hour: number, dayType: string): string {
+  const isWeekend = dayType === 'STUDIO DAY';
+  if (isWeekend && hour >= 7 && hour < 10) return 'dd-morning';
+  if (hour < 10) return 'pre-session';
+  if (hour >= 10 && hour < 16) return 'studio';
+  if (hour >= 16 && hour < 17) return 'post-studio';
+  if (isWeekend && hour >= 17 && hour < 22) return 'dd-evening';
+  if (hour >= 17) return 'evening';
+  return 'pre-session';
 }
 
 export async function assembleContext(): Promise<OracleContext> {
@@ -232,6 +292,83 @@ export async function assembleContext(): Promise<OracleContext> {
     missedPreCount: missedPre,
   };
 
+  // Content pipeline snapshot
+  const upcomingForContent = releases.filter(r => r.status !== 'live');
+  const nextForContent = upcomingForContent[0] || null;
+  const daysUntilContent = nextForContent
+    ? Math.ceil((new Date(nextForContent.releaseDate).getTime() - now.getTime()) / 86400000)
+    : 999;
+
+  const content: ContentSnapshot = {
+    nextRelease: nextForContent ? {
+      title: nextForContent.title,
+      daysUntil: daysUntilContent,
+      deliverables: nextForContent.contentDeliverables,
+      readinessScore: computeContentReadiness(nextForContent.contentDeliverables),
+    } : null,
+    totalReelsThisWeek: upcomingForContent.reduce((sum, r) => sum + r.contentDeliverables.reelsPosted, 0),
+    totalTiktoksThisWeek: upcomingForContent.reduce((sum, r) => sum + r.contentDeliverables.tiktoksPosted, 0),
+  };
+
+  // Time architecture snapshot
+  const currentHour = now.getHours();
+  const todayDayType = getDayType();
+  const studioEnd = 16; // 4 PM
+  const studioStart = 10;
+  const studioHoursRemaining = currentHour < studioStart
+    ? studioEnd - studioStart
+    : currentHour < studioEnd
+    ? studioEnd - currentHour
+    : 0;
+
+  const time: TimeSnapshot = {
+    currentHour,
+    currentBlock: getCurrentBlock(currentHour, todayDayType),
+    studioHoursRemaining,
+  };
+
+  // Session intelligence snapshot
+  // Get last 7 days of logs for personal time analysis
+  const last7Logs: DailyLog[] = [];
+  for (let i = 1; i <= 7; i++) {
+    const d = new Date();
+    d.setDate(d.getDate() - i);
+    const dStr = `${d.getFullYear()}-${String(d.getMonth() + 1).padStart(2, '0')}-${String(d.getDate()).padStart(2, '0')}`;
+    const l = await getDailyLog(dStr);
+    if (l && (l.oneThing || l.sovereigntyStack || l.sleep !== null)) last7Logs.push(l);
+  }
+
+  const qualityLogs = [...recentLogs, ...last7Logs.slice(0, 3)]
+    .filter(l => l.sessionQuality !== null && l.sessionQuality !== undefined);
+  const recentAvgQuality = qualityLogs.length > 0
+    ? qualityLogs.reduce((sum, l) => sum + (l.sessionQuality || 0), 0) / qualityLogs.length
+    : 0;
+
+  const personalTimeDays = last7Logs.filter(l => l.personalTime).length;
+
+  // Consecutive days without personal time (streak counter)
+  let consecutiveMaxDays = 0;
+  for (const l of last7Logs) {
+    if (!l.personalTime) consecutiveMaxDays++;
+    else break;
+  }
+  if (!dailyLog.personalTime) consecutiveMaxDays++;
+
+  // Check if Sunday batch prep happened this week
+  const lastSunday = new Date();
+  lastSunday.setDate(lastSunday.getDate() - lastSunday.getDay());
+  const sundayStr = `${lastSunday.getFullYear()}-${String(lastSunday.getMonth() + 1).padStart(2, '0')}-${String(lastSunday.getDate()).padStart(2, '0')}`;
+  const sundayLog = await getDailyLog(sundayStr);
+
+  const session: SessionSnapshot = {
+    todayQuality: dailyLog.sessionQuality,
+    todayType: dailyLog.sessionType || '',
+    recentAvgQuality: Math.round(recentAvgQuality * 10) / 10,
+    personalTimeDays,
+    batchPrepThisWeek: sundayLog?.batchPrepDone || false,
+    consecutiveMaxDays,
+  };
+
   // Meta
   const declaredPriority = await getStoreValue<string>("oracle_priority");
 
@@ -245,7 +382,7 @@ export async function assembleContext(): Promise<OracleContext> {
 
   return {
     date: today,
-    dayType: await import('@/lib/dayType').then(m => m.getDayType()),
+    dayType: todayDayType,
     makeModeWeek: getMakeModeWeek(),
     daysUntilAlbum,
     dailyLog,
@@ -259,6 +396,9 @@ export async function assembleContext(): Promise<OracleContext> {
     income,
     label,
     fuel,
+    content,
+    time,
+    session,
     declaredPriority: declaredPriority || null,
   };
 }

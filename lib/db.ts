@@ -23,6 +23,12 @@ export type DailyLog = {
     fuelPostSession: boolean;
     fuelHydration: number | null; // 1-5
     fuelDairyFlag: boolean; // true = dairy within 2hrs of vocals (anti-pattern)
+    // Session intelligence
+    sessionQuality: number | null; // 1-5 (1=struggled, 3=solid, 5=flow state)
+    sessionType: string; // 'recording' | 'mixing' | 'mastering' | 'writing' | ''
+    // Life balance
+    personalTime: boolean; // did you take real personal/social/recovery time today?
+    batchPrepDone: boolean; // Sunday batch prep completed (only relevant on Sundays)
 };
 
 export type StreakData = {
@@ -150,6 +156,10 @@ function getDefaultLog(date: string): DailyLog {
         fuelPostSession: false,
         fuelHydration: null,
         fuelDairyFlag: false,
+        sessionQuality: null,
+        sessionType: '',
+        personalTime: false,
+        batchPrepDone: false,
     };
 }
 
