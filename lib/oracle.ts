@@ -8,6 +8,7 @@ import { getDynamicReleases, Release, ALBUM_RELEASE_DATE, ContentDeliverables } 
 import { REGISTRY } from "@/lib/registry";
 import { fetchDashboardIncome } from "@/lib/dashboardBridge";
 import { getDayType } from "@/lib/dayType";
+import { getSprintTarget, getTrackStatuses, getSundayChecklist, computeTrackProgress, isSundayChecklistComplete } from "@/lib/planner";
 
 export type CycleTrack = {
   name: string;
@@ -69,6 +70,14 @@ export type SessionSnapshot = {
   consecutiveMaxDays: number;    // streak of days without personal time
 };
 
+export type PlannerSnapshot = {
+  sprintTarget: string;          // this week's declared focus
+  trackTotal: number;            // total tracks in production grid
+  trackDone: number;             // tracks at 'done' status
+  trackInProgress: number;       // tracks at an intermediate phase
+  sundayChecklistComplete: boolean; // all 4 Sunday ritual items checked
+};
+
 export type OracleContext = {
   date: string;
   dayType: string;
@@ -88,6 +97,7 @@ export type OracleContext = {
   content: ContentSnapshot;
   time: TimeSnapshot;
   session: SessionSnapshot;
+  planner: PlannerSnapshot;
   declaredPriority: string | null;
 };
 
@@ -380,6 +390,21 @@ export async function assembleContext(): Promise<OracleContext> {
   const nowUTC = Date.UTC(now.getFullYear(), now.getMonth(), now.getDate());
   const daysUntilAlbum = Math.max(Math.ceil((albumDate - nowUTC) / 86400000), 0);
 
+  // Planner snapshot
+  const [sprintTargetData, trackStatuses, sundayChecklistData] = await Promise.all([
+    getSprintTarget(weekKey),
+    getTrackStatuses(),
+    getSundayChecklist(weekKey),
+  ]);
+  const trackProgress = computeTrackProgress(trackStatuses);
+  const planner: PlannerSnapshot = {
+    sprintTarget: sprintTargetData.target,
+    trackTotal: trackProgress.total,
+    trackDone: trackProgress.done,
+    trackInProgress: trackProgress.inProgress,
+    sundayChecklistComplete: isSundayChecklistComplete(sundayChecklistData),
+  };
+
   return {
     date: today,
     dayType: todayDayType,
@@ -399,6 +424,7 @@ export async function assembleContext(): Promise<OracleContext> {
     content,
     time,
     session,
+    planner,
     declaredPriority: declaredPriority || null,
   };
 }

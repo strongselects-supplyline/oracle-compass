@@ -6,13 +6,15 @@ import { useEffect, useState } from "react";
 import { getDayType, isBizDay } from "@/lib/dayType";
 import { getStoreValue, getTodayISO } from "@/lib/db";
 import type { OracleDecree } from "@/lib/oracle";
+import { getSundayChecklist, isSundayChecklistComplete } from "@/lib/planner";
+import { getWeekKey } from "@/lib/oracle";
 
 export default function BottomNav() {
     const pathname = usePathname();
     const [bizDay, setBizDay] = useState(false);
     const [oracleSeverity, setOracleSeverity] = useState<string | null>(null);
-
     const [unreviewedCopy, setUnreviewedCopy] = useState(false);
+    const [plannerDot, setPlannerDot] = useState(false);
 
     useEffect(() => {
         setBizDay(isBizDay(getDayType()));
@@ -26,14 +28,20 @@ export default function BottomNav() {
         getStoreValue<number>("label_vault_unreviewed").then(n => {
             setUnreviewedCopy(n ? n > 0 : false);
         });
+        // Show amber dot on Plan tab if it's Sunday and checklist is incomplete
+        if (new Date().getDay() === 0) {
+            getSundayChecklist(getWeekKey()).then(c => {
+                setPlannerDot(!isSundayChecklistComplete(c));
+            });
+        }
     }, []);
 
     const navs = [
         { name: "Log", path: "/log", icon: "⚡" },
+        { name: "Plan", path: "/planner", icon: "📋" },
         { name: "Grind", path: "/grind", icon: "⚔️" },
         { name: "Studio", path: "/studio", icon: "🎙️" },
         { name: "Engine", path: "/engine", icon: "⚙️" },
-        { name: "Brain", path: "/brain", icon: "🧠" },
         { name: "Oracle", path: "/oracle", icon: "🔮" },
         { name: "Label", path: "/label", icon: "🏷️" },
     ];
@@ -43,10 +51,11 @@ export default function BottomNav() {
             {navs.map((n) => {
                 const active = pathname === n.path;
                 const dotColor =
-                    n.name === "Engine" && bizDay ? "bg-amber-500" :
-                        n.name === "Oracle" && oracleSeverity === "RED" ? "bg-red-500" :
-                            n.name === "Oracle" && oracleSeverity === "AMBER" ? "bg-amber-500" :
-                                n.name === "Label" && unreviewedCopy ? "bg-amber-500" : null;
+                    n.name === "Plan" && plannerDot ? "bg-amber-500" :
+                        n.name === "Engine" && bizDay ? "bg-amber-500" :
+                            n.name === "Oracle" && oracleSeverity === "RED" ? "bg-red-500" :
+                                n.name === "Oracle" && oracleSeverity === "AMBER" ? "bg-amber-500" :
+                                    n.name === "Label" && unreviewedCopy ? "bg-amber-500" : null;
 
                 return (
                     <Link key={n.name} href={n.path} className={`nav-item ${active ? "active" : ""}`}>

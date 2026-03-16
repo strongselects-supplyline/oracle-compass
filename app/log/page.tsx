@@ -11,6 +11,8 @@ import { recalibrateOracle, getCooldownRemaining } from "@/lib/recalibrate";
 import type { OracleDecree } from "@/lib/oracle";
 import { getWeekKey } from "@/lib/oracle";
 import CheckItem from "@/components/CheckItem";
+import { ALL_TRACKS, PHASE_LABELS, PHASE_ORDER, TrackPhase, getTrackStatuses, TrackProductionStatus } from "@/lib/planner";
+import { logStudioSessionAndAdvance, getTodaySessions, StudioSessionEntry } from "@/lib/studioLog";
 
 function fmt(ms: number): string {
   const m = Math.floor(ms / 60000);
@@ -86,6 +88,14 @@ export default function QuickLogPage() {
   const [ddStatus, setDdStatus] = useState("");
   const [oneThingInput, setOneThingInput] = useState("");
 
+  // Studio track logging state
+  const [trackStatuses, setTrackStatuses] = useState<TrackProductionStatus[]>([]);
+  const [todaySessions, setTodaySessions] = useState<StudioSessionEntry[]>([]);
+  const [activeTrack, setActiveTrack] = useState<string | null>(null);
+  const [trackHours, setTrackHours] = useState("");
+  const [trackPhase, setTrackPhase] = useState<TrackPhase>("not_started");
+  const [studioLogStatus, setStudioLogStatus] = useState<"" | "saving" | "saved" | "error">("");
+
   // Recalibration state
   const [recalibStatus, setRecalibStatus] = useState<"idle" | "loading" | "done" | "cooldown" | "error">("idle");
   const [recalibDecree, setRecalibDecree] = useState<OracleDecree | null>(null);
@@ -104,6 +114,11 @@ export default function QuickLogPage() {
         setCooldownMs(remaining);
         setRecalibStatus("cooldown");
       }
+      // Load track statuses + today's sessions
+      const statuses = await getTrackStatuses();
+      setTrackStatuses(statuses);
+      const sessions = await getTodaySessions();
+      setTodaySessions(sessions);
     };
     init();
   }, []);
@@ -192,6 +207,47 @@ export default function QuickLogPage() {
       setRecalibStatus("error");
     }
   };
+
+  const handleTrackSelect = (trackName: string) => {
+    if (activeTrack === trackName) {
+      setActiveTrack(null);
+      setTrackPhase("not_started");
+      return;
+    }
+    setActiveTrack(trackName);
+    const status = trackStatuses.find(t => t.name === trackName);
+    setTrackPhase(status?.phase || "not_started");
+    setTrackHours("");
+    setStudioLogStatus("");
+  };
+
+  const submitStudioSession = async () => {
+    if (!activeTrack || !trackHours) return;
+    setStudioLogStatus("saving");
+    try {
+      const entry = await logStudioSessionAndAdvance(
+        activeTrack,
+        parseFloat(trackHours),
+        trackPhase,
+        log?.sessionType || "",
+        log?.sessionQuality || null
+      );
+      // Refresh local state
+      const updatedStatuses = await getTrackStatuses();
+      setTrackStatuses(updatedStatuses);
+      setTodaySessions(prev => [...prev, entry]);
+      setStudioLogStatus("saved");
+      setTimeout(() => {
+        setActiveTrack(null);
+        setTrackHours("");
+        setStudioLogStatus("");
+      }, 2000);
+    } catch {
+      setStudioLogStatus("error");
+    }
+  };
+
+  const todayTotalHours = todaySessions.reduce((sum, s) => sum + s.hours, 0);
 
   if (!log) return null;
   const studioDay = isStudioDay(dayType as any);
@@ -351,6 +407,115 @@ export default function QuickLogPage() {
             </div>
           </section>
         )}
+
+        {/* STUDIO TRACK LOG */}
+        <section className="mb-4">
+          <div className="flex justify-between items-center mb-2 px-1">
+            <p className="text-[9px] font-black tracking-[0.2em] text-[#444] uppercase">Track Log</p>
+            {todayTotalHours > 0 && (
+              <span className="text-[10px] font-black tracking-widest text-amber-500">
+                {todayTotalHours}h today
+              </span>
+            )}
+          </div>
+
+          {/* Track selector grid */}
+          <div className="grid grid-cols-3 gap-1.5 mb-3">
+            {trackStatuses.map((t) => (
+              <button
+                key={t.name}
+                onClick={() => handleTrackSelect(t.name)}
+                className={`py-2.5 px-1 rounded-xl text-[8px] font-black tracking-wider uppercase transition-all active:scale-95 leading-tight ${
+                  activeTrack === t.name
+                    ? "bg-amber-500 text-black shadow-lg shadow-amber-500/20"
+                    : t.phase === "done"
+                    ? "bg-green-500/15 border border-green-500/30 text-green-500"
+                    : t.phase !== "not_started"
+                    ? "bg-[#1a1a1a] border border-amber-500/30 text-amber-400"
+                    : "bg-[#0d0d0d] text-[#555] border border-[#222]"
+                }`}
+              >
+                <span className="block truncate">{t.name}</span>
+                <span className="block text-[7px] mt-0.5 opacity-60">{PHASE_LABELS[t.phase]}</span>
+              </button>
+            ))}
+          </div>
+
+          {/* Active track input panel */}
+          {activeTrack && (
+            <div className="card !p-3 border border-amber-500/20 space-y-3">
+              <div className="flex items-center justify-between">
+                <span className="text-xs font-black text-amber-400 uppercase tracking-wider">{activeTrack}</span>
+                {studioLogStatus && (
+                  <span className={`text-[10px] font-black tracking-widest ${
+                    studioLogStatus === "saved" ? "text-green-500" : studioLogStatus === "error" ? "text-red-500" : "text-amber-500"
+                  }`}>
+                    {studioLogStatus === "saving" ? "SAVING..." : studioLogStatus === "saved" ? "LOGGED ✓" : "FAILED ✗"}
+                  </span>
+                )}
+              </div>
+
+              {/* Hours input */}
+              <div className="flex items-center gap-3">
+                <span className="text-[9px] font-black tracking-widest text-[#555] uppercase w-14">Hours</span>
+                <input
+                  type="number"
+                  step="0.5"
+                  min="0.5"
+                  max="6"
+                  className="flex-1 bg-[#111] rounded-xl p-3 text-center text-sm font-black outline-none border border-transparent focus:border-amber-500/30 text-white"
+                  value={trackHours}
+                  onChange={(e) => setTrackHours(e.target.value)}
+                  placeholder="0.0"
+                />
+              </div>
+
+              {/* Phase selector */}
+              <div>
+                <span className="text-[9px] font-black tracking-widest text-[#555] uppercase block mb-1.5">Phase</span>
+                <div className="flex gap-1.5">
+                  {PHASE_ORDER.filter(p => p !== "not_started").map((p) => (
+                    <button
+                      key={p}
+                      onClick={() => setTrackPhase(p)}
+                      className={`flex-1 py-2 rounded-xl text-[8px] font-black tracking-wider uppercase transition-all active:scale-95 ${
+                        trackPhase === p
+                          ? p === "done" ? "bg-green-500 text-black" : "bg-amber-500 text-black"
+                          : "bg-[#111] text-[#555] border border-[#222]"
+                      }`}
+                    >
+                      {PHASE_LABELS[p]}
+                    </button>
+                  ))}
+                </div>
+              </div>
+
+              {/* Submit */}
+              <button
+                onClick={submitStudioSession}
+                disabled={!trackHours || studioLogStatus === "saving"}
+                className="w-full py-3 rounded-xl bg-amber-500 text-black font-black tracking-widest text-xs uppercase transition-all active:scale-[0.98] disabled:opacity-30"
+              >
+                Log Session
+              </button>
+            </div>
+          )}
+
+          {/* Today's session feed */}
+          {todaySessions.length > 0 && !activeTrack && (
+            <div className="mt-2 space-y-1">
+              {todaySessions.map((s) => (
+                <div key={s.id} className="flex items-center justify-between px-3 py-2 rounded-xl bg-[#0a0a0a] border border-[#1a1a1a]">
+                  <span className="text-[10px] font-bold text-[#888]">{s.trackName}</span>
+                  <div className="flex items-center gap-2">
+                    <span className="text-[9px] font-black text-[#555] uppercase">{PHASE_LABELS[s.phaseAfter]}</span>
+                    <span className="text-[10px] font-black text-amber-500">{s.hours}h</span>
+                  </div>
+                </div>
+              ))}
+            </div>
+          )}
+        </section>
 
         {/* LIFE BALANCE */}
         <section className="mb-4">

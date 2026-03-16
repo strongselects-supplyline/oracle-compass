@@ -45,6 +45,7 @@ const SHEETS = {
   SALES: { name: 'SALES', headers: ['SaleID', 'Date', 'Client', 'Product', 'Lbs', 'ProductCost', 'ShippingCost', 'Revenue', 'Profit', 'Notes', 'CreatedAt', 'UpdatedAt'] },
   PRACTICE: { name: 'PRACTICE', headers: ['Date', 'Trataka', 'Breathwork', 'Meditation', 'Notes', 'UpdatedAt'] },
   FUEL: { name: 'FUEL', headers: ['Date', 'Fuel', 'Notes', 'UpdatedAt'] },
+  STUDIO_SESSIONS: { name: 'STUDIO_SESSIONS', headers: ['Date', 'Track', 'Hours', 'SessionType', 'PhaseBefore', 'PhaseAfter', 'Quality', 'Notes', 'CreatedAt'] },
 } as const;
 
 type SheetKey = keyof typeof SHEETS;
