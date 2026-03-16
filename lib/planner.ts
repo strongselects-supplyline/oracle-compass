@@ -30,32 +30,24 @@ export type SundayChecklist = {
 
 // ── Default track list ──────────────────────────────────────────────────────
 
-// ALL LOVE album — DELUXE 11 tracks
-const DELUXE_TRACKS: string[] = [
+// ALL LOVE album — 11 tracks (confirmed March 15, 2026)
+const ALL_LOVE_TRACKS: string[] = [
+  'I LIKE GIRLS',
   'SEE ME',
-  'ESL',
+  'EAST SIDE LOVE',
+  'WANT U BAD',
+  'GREEN LIGHT PATIENT',
+  'LUXURY',
+  'WORTH IT',
   'SWEET FRUSTRATION',
   'LIKE I DID',
-  'SMOKE SIGNALS',
-  'PULL UP',
-  'BLUE DREAM',
-  '414 DAY',
-  'MILES AWAY',
-  'SUNROOF',
-  'LATE NIGHT LOVE',
-];
-
-// Cycle tracks — studio pipeline
-const CYCLE_TRACKS: string[] = [
-  'RECONNECT',
-  'WANT U 2',
-  'WORTH IT',
   'JUST SAY SO',
+  'RECONNECT',
 ];
 
-export const ALL_TRACKS: string[] = [...DELUXE_TRACKS, ...CYCLE_TRACKS];
+export const ALL_TRACKS: string[] = [...ALL_LOVE_TRACKS];
 
-export const DELUXE_TRACK_COUNT = DELUXE_TRACKS.length;
+export const ALL_LOVE_TRACK_COUNT = ALL_LOVE_TRACKS.length;
 
 function defaultTrackStatuses(): TrackProductionStatus[] {
   return ALL_TRACKS.map(name => ({
@@ -79,7 +71,7 @@ function defaultSundayChecklist(weekKey: string): SundayChecklist {
 
 const TRACK_STATUS_KEY = 'planner_track_statuses';
 const TRACK_STATUS_VERSION_KEY = 'planner_track_version';
-const TRACK_DATA_VERSION = 1;
+const TRACK_DATA_VERSION = 2; // Bumped: corrected ALL LOVE tracklist Mar 15 2026
 
 // ── Track production status ─────────────────────────────────────────────────
 

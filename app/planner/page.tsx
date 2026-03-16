@@ -16,7 +16,7 @@ import {
   isSundayChecklistComplete,
   PHASE_ORDER,
   PHASE_LABELS,
-  DELUXE_TRACK_COUNT,
+  ALL_LOVE_TRACK_COUNT,
   type TrackProductionStatus,
   type TrackPhase,
   type SundayChecklist,
@@ -66,7 +66,7 @@ function TrackRow({
       {isDivider && (
         <div className="flex items-center gap-3 my-1">
           <div className="h-px flex-1 bg-[#1a1a1a]" />
-          <span className="text-[9px] font-black tracking-[0.15em] text-[#333] uppercase">Cycle Tracks</span>
+          <span className="text-[9px] font-black tracking-[0.15em] text-[#333] uppercase">—</span>
           <div className="h-px flex-1 bg-[#1a1a1a]" />
         </div>
       )}
@@ -300,7 +300,7 @@ export default function PlannerPage() {
             <div className="flex items-center gap-3 py-2">
               <div className="h-px flex-1 bg-[#1a1a1a]" />
               <span className="text-[9px] font-black tracking-[0.15em] text-[#333] uppercase">
-                DELUXE — ALL LOVE
+                ALL LOVE
               </span>
               <div className="h-px flex-1 bg-[#1a1a1a]" />
             </div>
@@ -310,7 +310,7 @@ export default function PlannerPage() {
                 key={track.name}
                 track={track}
                 index={idx}
-                isDivider={idx === DELUXE_TRACK_COUNT}
+                isDivider={false}
                 onPhaseChange={handlePhaseChange}
               />
             ))}
