@@ -154,6 +154,70 @@ function TogglePill({
   );
 }
 
+const SPRINT_PLAN_WEEKS = [
+  { wk: 1, dates: "Mar 7–13", phase: "ALL LOVE", target: "4 (2 prod, 2 in-progress)", total: 4 },
+  { wk: 2, dates: "Mar 14–20", phase: "ALL LOVE", target: "7 (close remaining)", total: 11 },
+  { wk: 3, dates: "Mar 22–28", phase: "DELUXE", target: "3 tracks", total: 14 },
+  { wk: 4, dates: "Mar 29–Apr 4", phase: "DELUXE", target: "3 tracks", total: 17 },
+  { wk: 5, dates: "Apr 5–11", phase: "DELUXE", target: "3 tracks (+ album upload)", total: 20 },
+  { wk: 6, dates: "Apr 12–18", phase: "DELUXE / CREAM", target: "3 tracks", total: 23 },
+  { wk: 7, dates: "Apr 19–25", phase: "CREAM", target: "3 tracks", total: 26 },
+  { wk: 8, dates: "Apr 26–May 2", phase: "CREAM", target: "3 tracks", total: 29 },
+  { wk: 9, dates: "May 3–9", phase: "CREAM / FREAKSHOW", target: "3 tracks", total: 32 },
+  { wk: 10, dates: "May 10–16", phase: "FREAKSHOW", target: "3 tracks", total: 35 },
+  { wk: 11, dates: "May 17–23", phase: "FREAKSHOW", target: "3 tracks", total: 38 },
+  { wk: 12, dates: "May 24–30", phase: "FREAKSHOW", target: "3 tracks", total: 41 },
+  { wk: 13, dates: "May 31–Jun 6", phase: "FREAKSHOW", target: "2 tracks", total: 43 },
+  { wk: 14, dates: "Jun 7–13", phase: "BUFFER", target: "—", total: 43 },
+];
+
+function SprintPlanMatrix() {
+  const [open, setOpen] = useState(false);
+  return (
+    <div className="card !p-0 mb-5 overflow-hidden border border-[#222]">
+      <button 
+        onClick={() => setOpen(!open)}
+        className="w-full flex items-center justify-between p-4 bg-[#0d0d0d] hover:bg-[#141414] transition-colors active:scale-[0.99]"
+      >
+        <div className="flex flex-col items-start gap-1">
+          <span className="text-[11px] font-black tracking-widest text-[#888] uppercase">14-Week Marathon Tracker</span>
+          <span className="text-sm font-bold text-white">View Full Sprint Plan</span>
+        </div>
+        <span className="text-[#555] text-sm transform transition-transform" style={{ transform: open ? 'rotate(90deg)' : 'rotate(0deg)' }}>›</span>
+      </button>
+      
+      {open && (
+        <div className="p-4 border-t border-[#1a1a1a] bg-[#0a0a0a]">
+          <div className="flex justify-between items-end mb-4 border-b border-[#1a1a1a] pb-3">
+            <h4 className="text-[9px] font-black tracking-[0.2em] text-amber-500 uppercase">Pace Table</h4>
+            <span className="text-[9px] font-black text-[#666]">43 TRACKS TOTAL</span>
+          </div>
+          
+          <div className="space-y-2">
+            {SPRINT_PLAN_WEEKS.map(w => (
+              <div key={w.wk} className="flex flex-col border border-[#1a1a1a] rounded-lg p-3 bg-[#111]">
+                <div className="flex justify-between items-center mb-2">
+                  <span className="text-[10px] font-black text-[#555] uppercase">
+                    <span className="text-white">Wk {w.wk}</span> <span className="mx-1 opacity-40">|</span> {w.dates}
+                  </span>
+                  <span className="text-[9px] font-black tracking-widest text-amber-500 bg-amber-500/10 px-2 py-0.5 rounded border border-amber-500/20">{w.phase}</span>
+                </div>
+                <div className="flex justify-between items-end">
+                  <span className="text-xs font-bold text-[#ccc]">{w.target}</span>
+                  <span className="text-[10px] font-black text-[#666]">{w.total}/43</span>
+                </div>
+              </div>
+            ))}
+          </div>
+          <p className="text-[10px] font-medium text-[#444] mt-4 text-center italic">
+            Week 14 is pure buffer. Early-June finish.
+          </p>
+        </div>
+      )}
+    </div>
+  );
+}
+
 // ── Main page ───────────────────────────────────────────────────────────────
 
 export default function PlannerPage() {
@@ -316,6 +380,9 @@ export default function PlannerPage() {
             ))}
           </div>
         </section>
+
+        {/* SPRINT PLAN MATRIX */}
+        <SprintPlanMatrix />
 
         {/* SUNDAY RITUAL */}
         <section className="mb-5">
