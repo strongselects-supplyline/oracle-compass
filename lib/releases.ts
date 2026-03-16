@@ -42,14 +42,14 @@ export type Release = {
 // Canonical defaults — source of truth for first seed only
 const RELEASE_DEFAULTS: Release[] = [
   { title: "SEE ME",            uploadDate: "2026-03-09", releaseDate: "2026-03-13", status: "unreleased", contentDeliverables: { ...DEFAULT_DELIVERABLES } },
-  { title: "ESL",               uploadDate: "2026-03-16", releaseDate: "2026-03-20", status: "unreleased", contentDeliverables: { ...DEFAULT_DELIVERABLES } },
+  { title: "East Side Love",    uploadDate: "2026-03-16", releaseDate: "2026-03-20", status: "unreleased", contentDeliverables: { ...DEFAULT_DELIVERABLES } },
   { title: "Sweet Frustration", uploadDate: "2026-03-23", releaseDate: "2026-03-27", status: "unreleased", contentDeliverables: { ...DEFAULT_DELIVERABLES } },
   { title: "Like I Did",        uploadDate: "2026-03-30", releaseDate: "2026-04-03", status: "unreleased", contentDeliverables: { ...DEFAULT_DELIVERABLES } },
 ];
 
 const RELEASES_KEY = "dynamic_releases";
 const RELEASES_VERSION_KEY = "releases_data_version";
-const RELEASE_DATA_VERSION = 6; // v6: added contentDeliverables per release
+const RELEASE_DATA_VERSION = 7; // v7: ESL → East Side Love, corrected Mar 15 2026
 
 // Read from IndexedDB, seeding defaults on first call or after version bump
 export async function getDynamicReleases(): Promise<Release[]> {

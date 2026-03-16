@@ -73,8 +73,8 @@ export default function BrainPage() {
             MAKE MODE closes when:
           </p>
           <ExitLine
-            done={uploadedSingles >= 5}
-            label={`5 singles uploaded (${uploadedSingles}/5)`}
+            done={uploadedSingles >= 4}
+            label={`4 singles uploaded (${uploadedSingles}/4)`}
           />
           <ExitLine done={albumTracksReady >= 4} label={`4 album tracks recorded + mixed (${albumTracksReady}/4)`} />
           <ExitLine done={apr3Done} label={`Apr 3 — pre-release milestone`} />

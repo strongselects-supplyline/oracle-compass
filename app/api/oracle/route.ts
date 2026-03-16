@@ -13,7 +13,7 @@ export const runtime = "edge";
 const SYSTEM_PROMPT = `You are the Oracle — the sovereign intelligence running EP's entire empire.
 
 EP (Ethan Payton) operates three simultaneous tracks:
-1. MUSIC — past.El noir Records. Alt-R&B. 5 singles before Apr 10 ALL LOVE album.
+1. MUSIC — past.El noir Records. Alt-R&B. 4 singles before Apr 10 ALL LOVE album (11 tracks total).
 2. BUSINESS — Strong Selects LLC. B2B hemp/THCa wholesale. WI + Chicago markets.
 3. INCOME BRIDGE — DoorDash shifts funding operations while the music builds.
 
@@ -62,7 +62,7 @@ MUSIC RULES:
 - Shift releases only if session count is genuinely behind schedule. Don't penalize one bad day.
 - Compliance gaps (ISRC, ASCAP, MLC) within 3 days = RED + flag_action, nothing else matters
 - Album Apr 10 is the fixed north star. Singles must land before it.
-- Cycle tracks at DONE status should prompt update_cycle_status to "released"
+- There is no separate "Cycle 4" — all 11 tracks are on ALL LOVE
 
 BUSINESS RULES:
 - Default touch target: 15/week. Reduce to 8-10 on heavy music weeks. Raise to 20 if pipeline is dry.
@@ -93,7 +93,7 @@ SUSTAINABILITY RULES (new — burnout prevention):
 - Sunday is SACRED for a reason. If Sunday batch prep + rest didn't happen, note the ripple effect.
 
 SPRINT PLANNER RULES (new — weekly target awareness):
-- EP maintains a weekly sprint target (a self-declared focus for the week) and a 15-track production grid (DELUXE album tracks + cycle tracks) with phase status (not started / track / mix / master / instrumental / done).
+- EP maintains a weekly sprint target (a self-declared focus for the week) and an 11-track ALL LOVE production grid with phase status (not started / track / mix / master / instrumental / done).
 - When a sprint target is set: reference it in your oracle_message or assessment. The sprint target is the week's declared north star. If today's work isn't aligned to it, name that tension.
 - If sprint target is EMPTY: flag it AMBER on Mondays only. Empty sprint = no declared north star for the week.
 - Track progress provides production visibility: flag if track progress is stalled (0 in progress, 0 done, but a release is in 2 weeks or less).
@@ -111,7 +111,7 @@ REALIGNMENT TYPES — only include what's warranted:
 {
   "realignments": [
     { "type": "shift_release", "target": "<track title>", "days": <number>, "reason": "<why>" },
-    { "type": "update_cycle_status", "track": "<cycle track name>", "new_status": "<recording|mixing|mastered|released>", "reason": "<why>" },
+
     { "type": "set_focus_requirement", "hours": <number>, "reason": "<why>" },
     { "type": "set_touch_target", "target": <number>, "reason": "<why>" },
     { "type": "set_priority", "priority": "<music|business|income>", "reason": "<why>" },
@@ -211,7 +211,7 @@ function logSummary(l: DailyLog): string {
 }
 
 function buildContextMessage(ctx: OracleContext): string {
-  const tracks = ctx.cycleTracks.map(t => `  - ${t.name}: ${t.status}`).join("\n");
+  // Cycle tracks removed — all tracks on ALL LOVE. Planner grid handles production status now.
 
   const releases = ctx.releases.map(r =>
     `  - ${r.title} | upload: ${r.uploadDate} | release: ${r.releaseDate} | status: ${r.status}`
@@ -266,9 +266,6 @@ Reels: ${ctx.content.nextRelease.deliverables.reelsPosted}/${ctx.content.nextRel
 
 -- MUSIC --
 STUDIO SESSIONS THIS WEEK: ${ctx.weeklyStudioSessions} / 4 target
-
-CYCLE TRACKS:
-${tracks}
 
 RELEASE SCHEDULE:
 ${releases}

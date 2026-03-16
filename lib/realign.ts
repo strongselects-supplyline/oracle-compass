@@ -23,14 +23,8 @@ async function applyRealignment(r: Realignment): Promise<void> {
       break;
 
     case "update_cycle_status": {
-      const keyMap: Record<string, string> = {
-        "RECONNECT":   "cycle_reconnect",
-        "WANT U 2":    "cycle_wantu2",
-        "WORTH IT":    "cycle_worthit",
-        "JUST SAY SO": "cycle_justsayso",
-      };
-      const key = keyMap[r.track.toUpperCase()];
-      if (key) await setStoreValue(key, r.new_status);
+      // Cycle 4 removed Mar 15, 2026 — all tracks are on ALL LOVE.
+      // Handler retained for type safety but Oracle no longer generates this realignment.
       break;
     }
 

@@ -129,12 +129,8 @@ export type OracleFlag = {
   reason: string;
 };
 
-const CYCLE_TRACKS = [
-  { name: "RECONNECT", storageKey: "cycle_reconnect" },
-  { name: "WANT U 2", storageKey: "cycle_wantu2" },
-  { name: "WORTH IT", storageKey: "cycle_worthit" },
-  { name: "JUST SAY SO", storageKey: "cycle_justsayso" },
-];
+// Cycle 4 removed March 15, 2026 — all tracks are on ALL LOVE. No separate pipeline.
+const CYCLE_TRACKS: { name: string; storageKey: string }[] = [];
 
 export function getMakeModeWeek(): number {
   const start = Date.UTC(2026, 1, 20);

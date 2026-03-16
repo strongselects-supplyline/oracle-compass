@@ -317,7 +317,7 @@ export default function PlannerPage() {
               onChange={(e) => setSprintInput(e.target.value)}
               onBlur={saveSprint}
               onKeyDown={(e) => e.key === "Enter" && saveSprint()}
-              placeholder="e.g. finish ESL mix + Sweet Frustration vocal tracking..."
+              placeholder="e.g. finish East Side Love mix + Sweet Frustration vocals..."
             />
           </div>
           {sprintTarget && (
