@@ -83,12 +83,41 @@ export async function appendRow(sheetName: SheetKey, data: Row): Promise<{ ok: b
   const config = SHEETS[sheetName];
   const headers = config.headers as unknown as string[];
   const row = objectToRow(headers, data);
-  await sheets.spreadsheets.values.append({
-    spreadsheetId: SPREADSHEET_ID,
-    range: `${config.name}!A:Z`,
-    valueInputOption: 'USER_ENTERED',
-    requestBody: { values: [row] },
-  });
+  
+  try {
+    await sheets.spreadsheets.values.append({
+      spreadsheetId: SPREADSHEET_ID,
+      range: `${config.name}!A:Z`,
+      valueInputOption: 'USER_ENTERED',
+      requestBody: { values: [row] },
+    });
+  } catch (error: any) {
+    if (error.message && error.message.includes('Unable to parse range')) {
+      // Create the missing tab
+      await sheets.spreadsheets.batchUpdate({
+        spreadsheetId: SPREADSHEET_ID,
+        requestBody: {
+          requests: [{ addSheet: { properties: { title: config.name } } }],
+        },
+      });
+      // Set the headers
+      await sheets.spreadsheets.values.update({
+        spreadsheetId: SPREADSHEET_ID,
+        range: `${config.name}!A1:Z1`,
+        valueInputOption: 'USER_ENTERED',
+        requestBody: { values: [headers] },
+      });
+      // Retry pending append
+      await sheets.spreadsheets.values.append({
+        spreadsheetId: SPREADSHEET_ID,
+        range: `${config.name}!A:Z`,
+        valueInputOption: 'USER_ENTERED',
+        requestBody: { values: [row] },
+      });
+    } else {
+      throw error;
+    }
+  }
   return { ok: true };
 }
 
