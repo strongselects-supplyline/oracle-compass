@@ -29,6 +29,9 @@ export type DailyLog = {
     // Life balance
     personalTime: boolean; // did you take real personal/social/recovery time today?
     batchPrepDone: boolean; // Sunday batch prep completed (only relevant on Sundays)
+    // Performance Conditioning (414 Day prep)
+    conditioningType: string; // 'zone2' | 'vo2max' | 'anaerobic' | 'dance_walkthrough' | 'dance_fullout' | ''
+    conditioningMinutes: number | null;
 };
 
 export type StreakData = {
@@ -160,6 +163,8 @@ function getDefaultLog(date: string): DailyLog {
         sessionType: '',
         personalTime: false,
         batchPrepDone: false,
+        conditioningType: '',
+        conditioningMinutes: null,
     };
 }
 

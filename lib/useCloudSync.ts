@@ -46,6 +46,8 @@ export function useCloudSync() {
                         fuelPost: log.fuelPostSession,
                         hydration: log.fuelHydration,
                         dairyFlag: log.fuelDairyFlag,
+                        conditioningType: log.conditioningType,
+                        conditioningMinutes: log.conditioningMinutes,
                     }),
                 }),
             ]);

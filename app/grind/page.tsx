@@ -69,6 +69,59 @@ export default function GrindPage() {
                     />
                 </div>
 
+                <div className="card mb-6">
+                    <span className="block text-xs font-bold tracking-widest text-[#888] mb-3">PERFORMANCE CONDITIONING</span>
+                    <div className="grid grid-cols-3 gap-2 mb-3">
+                        {[
+                            { value: 'zone2', label: 'Zone 2' },
+                            { value: 'vo2max', label: 'VO2 Max' },
+                            { value: 'anaerobic', label: 'Anaerobic' },
+                        ].map((p) => (
+                            <button
+                                key={p.value}
+                                onClick={() => updateLog({ conditioningType: log.conditioningType === p.value ? '' : p.value })}
+                                className={`py-2 px-1 rounded-lg text-[10px] font-black tracking-wider border transition-all ${
+                                    log.conditioningType === p.value
+                                        ? 'bg-amber-500/20 border-amber-500 text-amber-400'
+                                        : 'border-[#333] text-[#666] hover:border-[#555]'
+                                }`}
+                            >
+                                {p.label}
+                            </button>
+                        ))}
+                    </div>
+                    <div className="grid grid-cols-2 gap-2">
+                        {[
+                            { value: 'dance_walkthrough', label: 'Dance (Walk)' },
+                            { value: 'dance_fullout', label: 'Dance (Full Out)' },
+                        ].map((p) => (
+                            <button
+                                key={p.value}
+                                onClick={() => updateLog({ conditioningType: log.conditioningType === p.value ? '' : p.value })}
+                                className={`py-2 px-1 rounded-lg text-[10px] font-black tracking-wider border transition-all ${
+                                    log.conditioningType === p.value
+                                        ? 'bg-amber-500/20 border-amber-500 text-amber-400'
+                                        : 'border-[#333] text-[#666] hover:border-[#555]'
+                                }`}
+                            >
+                                {p.label}
+                            </button>
+                        ))}
+                    </div>
+                    {log.conditioningType && (
+                        <div className="flex items-center gap-3 mt-3 pt-3 border-t border-[#222]">
+                            <input
+                                type="number"
+                                className="num-input w-20 text-center"
+                                value={log.conditioningMinutes || ''}
+                                onChange={(e) => updateLog({ conditioningMinutes: parseInt(e.target.value) || null })}
+                                placeholder="0"
+                            />
+                            <span className="text-xs font-bold text-[#666]">MINUTES</span>
+                        </div>
+                    )}
+                </div>
+
                 <div className="flex gap-4 mb-6">
                     <div className="card flex-1 flex flex-col items-center">
                         <span className="text-xs font-bold tracking-widest text-[#888] mb-3">SLEEP (HRS)</span>

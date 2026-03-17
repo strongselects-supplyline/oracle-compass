@@ -6,7 +6,8 @@ export async function POST(req: NextRequest) {
         const {
             date, pushups, squats, steps, sleepHours,
             weight, protein, workout, mobility, vocal, notes,
-            fuelPre, fuelMid, fuelPost, hydration, dairyFlag
+            fuelPre, fuelMid, fuelPost, hydration, dairyFlag,
+            conditioningType, conditioningMinutes
         } = await req.json();
         if (!date) return NextResponse.json({ error: 'Date required' }, { status: 400 });
 
@@ -37,6 +38,8 @@ export async function POST(req: NextRequest) {
             FuelPost: fuelPost ? 'Yes' : '',
             Hydration: hydration || '',
             DairyFlag: dairyFlag ? 'Yes' : '',
+            ConditioningType: conditioningType || '',
+            ConditioningMinutes: conditioningMinutes || '',
             Score: score,
             Notes: notes || '',
         });
