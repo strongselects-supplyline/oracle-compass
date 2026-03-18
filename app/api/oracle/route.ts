@@ -7,6 +7,7 @@
 import { NextRequest, NextResponse } from "next/server";
 import type { OracleContext, OracleDecree } from "@/lib/oracle";
 import type { DailyLog } from "@/lib/db";
+import { assembleDerivedIntelligence, formatDerivedIntelligence } from "@/lib/derived-intelligence";
 
 export const runtime = "edge";
 
@@ -45,18 +46,25 @@ CROSS-PILLAR LOGIC:
 - Sobriety streak is non-negotiable context. If sovereignty stack is missed 3 days in a row, flag_action RED immediately. This is the foundation of the empire and must be protected.
 - Studio session count below 3/week by midweek on a music-heavy week -> flag or shift
 
-CONTENT PIPELINE RULES (new):
-EP has a per-song content deliverable system: each release needs a primary video, lyric video, reels, TikToks, B-roll, and a visual idea.
-- Readiness score below 30% at T-5 (5 days before release) = AMBER flag. "Content pipeline is behind for [TRACK]."
-- Readiness score below 50% at T-3 = RED flag. "Content will not be ready for release day."
-- Visual idea being empty at T-7 = AMBER. The creative direction for [TRACK] needs to be locked.
-- If reels are at 0 at T-3, flag that CF4 hasn't run yet.
+CONTENT PIPELINE THRESHOLDS (upgraded — weighted scoring):
+The derived intelligence block contains a pre-computed CONTENT READINESS score with weighted deliverables (Primary Video 25%, Reels 30%, TikToks 20%, Lyric Video 10%, B-Roll 10%, Visual Idea 5%).
+- T-7, readiness < 40%: AMBER. "Content pipeline behind for [TRACK]. Lock visual idea and start CF4 batch."
+- T-5, readiness < 50%: RED. "Content won't be ready. Cut to essentials: Canvas + 3 reels + announcement post. Everything else is optional."
+- T-3, readiness < 60%: RED + flag_action. "Deploy what you have. Ship imperfect over ship nothing."
+- T-1, readiness < 70%: RED + flag_action. "Post what exists. Missing content can backfill post-release."
+Do NOT recompute the readiness score — use the derived value. Cite specific missing items from the MISSING CRITICAL list.
 - Content work fits in the 5-7PM window on studio days, or the 1-5PM window on biz days. Don't compete with studio or business blocks.
 
 SESSION INTELLIGENCE RULES (new):
 - Session quality is 1-5 (1=struggled, 3=solid, 5=flow state). If average drops below 2.5 over 3 days, flag it — something is wrong (sleep? fuel? burnout?).
 - Session type matters: recording days need vocal prep (hydration, no dairy). Mixing days are less vocally demanding. Mastering sessions are short and focused.
 - If session quality is trending down AND fuel scores are also down, connect the dots in your assessment. Don't treat them separately.
+
+SESSION-TYPE DIFFERENTIATED RESPONSE:
+- RECORDING day: Decree addresses vocal prep, fuel quality, hydration, dairy check. If quality is low, check fuel/sleep FIRST.
+- MIXING day: Decree addresses ear fatigue, reference track discipline, break frequency. Fuel matters less for vocal quality but still for focus.
+- MASTERING day: Short focused session. Decree should be brief. Don't over-manage.
+- WRITING day: Creative flow state matters most. Decree should protect the session from interruptions, not add tasks.
 
 MUSIC RULES:
 - Shift releases only if session count is genuinely behind schedule. Don't penalize one bad day.
@@ -126,6 +134,28 @@ REALIGNMENT TYPES — only include what's warranted:
     { "type": "no_change" }
   ]
 }
+
+DERIVED INTELLIGENCE PROTOCOL:
+You will receive a DERIVED INTELLIGENCE block in the context. These signals are pre-computed by deterministic code — they are FACTS, not suggestions. Your role:
+1. START from the pre-computed severity score and classification. You may adjust UP by 1 level if you detect something the code missed. You may NOT adjust DOWN — the numeric thresholds are calibrated.
+2. READ the causal chains. They are already detected. Your job is to WEAVE them into a coherent assessment narrative, not re-derive them.
+3. RESPECT the convergence advisory. If convergence is CRITICAL, your decree must address it directly.
+4. USE the content readiness score and missing items. Do not recompute — cite the specific gaps.
+5. ACKNOWLEDGE the time directive. Your decree must be actionable for the CURRENT block, not generically aspirational.
+6. FACTOR the compound risk / burnout signal. If HIGH or CRITICAL, your decree must include rest/recovery guidance, not more work.
+
+SEVERITY OVERRIDE RULES:
+- If pre-score is RED (70+), your severity MUST be RED. No softening.
+- If pre-score is AMBER (40-69), your severity is AMBER unless you detect an additional factor → RED.
+- If pre-score is GREEN (<40), your severity is GREEN unless you detect something the code didn't catch.
+- NEVER downgrade from the pre-computed classification. The code doesn't have vibes — it has thresholds.
+
+414 DAY CONVERGENCE (April 14, 2026):
+414 Day falls 3 days BEFORE album drop (April 17). This is a compound event:
+- Week of Apr 7-13: Album upload to Amuse (Apr 7), setlist finalization, rehearsal, content capture prep, AND Like I Did post-release engagement all overlap.
+- Week of Apr 14-17: Live performance (Apr 14), album drop (Apr 17), performance content capture, album launch content — maximum operational density.
+- If within 14 days of Apr 14: Flag rehearsal time and content capture strategy in every decree.
+- If within 7 days: EVERY decree must reference the convergence. No exceptions.
 
 Respond ONLY with valid JSON:
 {
@@ -220,6 +250,46 @@ function logSummary(l: DailyLog): string {
 function buildContextMessage(ctx: OracleContext): string {
   // Cycle tracks removed — all tracks on ALL LOVE. Planner grid handles production status now.
 
+  // ── Derived Intelligence Layer ──
+  const fuelScore = [ctx.dailyLog.fuelPreSession, ctx.dailyLog.fuelMidSession, ctx.dailyLog.fuelPostSession].filter(Boolean).length;
+
+  const derived = assembleDerivedIntelligence({
+    fuelToday: fuelScore,
+    fuelAvg3Day: ctx.fuel.recentAvgScore,
+    missedPreSession: ctx.fuel.missedPreCount,
+    dairyOnVocalDay: ctx.fuel.todayDairyFlag && ctx.session.todayType === "recording",
+    hydration: ctx.fuel.todayHydration,
+    sleepLast: ctx.dailyLog.sleep,
+    sessionAvg3Day: ctx.session.recentAvgQuality,
+    studioSessionsThisWeek: ctx.weeklyStudioSessions,
+    weekday: new Date(ctx.date).getDay(),
+    currentHour: ctx.time.currentHour,
+    daysUntilNextRelease: ctx.label.daysUntilNextRelease,
+    daysUntilAlbum: ctx.daysUntilAlbum,
+    daysUntil414Day: Math.ceil((new Date("2026-04-14").getTime() - new Date(ctx.date).getTime()) / 86400000),
+    complianceGaps: ctx.label.complianceGaps,
+    ddShiftsThisWeek: ctx.income.doordashShiftsThisWeek,
+    ssRevenue2Weeks: ctx.income.ssRevenueThisWeek,
+    personalTimeDays: ctx.session.personalTimeDays,
+    consecutiveNoPersonal: ctx.session.consecutiveMaxDays,
+    sovereigntyStackStreak: 0, // TODO: compute from recent logs
+    batchPrepDone: ctx.session.batchPrepThisWeek,
+    sessionType: ctx.session.todayType || "",
+    contentDeliverables: ctx.content.nextRelease?.deliverables || null,
+    weekNumber: ctx.makeModeWeek,
+    weekTarget: ctx.planner.sprintTarget || "(not set)",
+    totalDone: ctx.planner.trackDone,
+    totalTarget: ctx.planner.trackTotal,
+    inProgress: ctx.planner.trackInProgress,
+    currentBlock: ctx.time.currentBlock,
+    hoursRemaining: ctx.time.studioHoursRemaining,
+    today: ctx.date,
+    ssRestartDate: "2026-03-27",
+    nextReleaseTitle: ctx.content.nextRelease?.title || "unknown",
+  });
+
+  const derivedBlock = formatDerivedIntelligence(derived);
+
   const releases = ctx.releases.map(r =>
     `  - ${r.title} | upload: ${r.uploadDate} | release: ${r.releaseDate} | status: ${r.status}`
   ).join("\n");
@@ -294,6 +364,8 @@ STRONG SELECTS REVENUE THIS WEEK: $${ctx.income.ssRevenueThisWeek}
 
 -- META --
 LAST DECREE: ${ctx.lastDecree?.severity ?? "none"} - "${ctx.lastDecree?.oracle_message ?? "none"}"
+
+${derivedBlock}
 
 Assess the full empire — connect the dots between pillars, account for the current time block, and decree.`;
 }
