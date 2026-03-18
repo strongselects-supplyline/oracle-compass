@@ -177,7 +177,7 @@ export async function POST(req: NextRequest) {
     return NextResponse.json({ error: "ANTHROPIC_API_KEY not set" }, { status: 500 });
   }
 
-  const RATE_LIMIT_MS = 3 * 60 * 1000; // 3 minutes
+  const RATE_LIMIT_MS = 60 * 1000; // 60 seconds
   const lastTsCookie = req.cookies.get("oracle_last_ts")?.value;
   if (lastTsCookie) {
     const elapsed = Date.now() - parseInt(lastTsCookie, 10);
@@ -227,7 +227,7 @@ export async function POST(req: NextRequest) {
     // (Edge Runtime has no access to IndexedDB)
     const response = NextResponse.json(decree);
     response.cookies.set("oracle_last_ts", String(Date.now()), {
-      maxAge: 3 * 60, // 3 minutes
+      maxAge: 60, // 60 seconds
       path: "/",
       sameSite: "lax",
     });
