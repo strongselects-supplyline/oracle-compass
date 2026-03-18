@@ -1,6 +1,6 @@
 // lib/recalibrate.ts
 // On-demand Oracle recalibration — callable from Quick-Log page.
-// Enforces a 30-minute cooldown to prevent API cost spam.
+// Enforces a 60-second cooldown to prevent API cost spam.
 // The morning OracleTrigger uses this same function.
 
 import { getStoreValue, setStoreValue } from "@/lib/db";
@@ -8,7 +8,7 @@ import { assembleContext } from "@/lib/oracle";
 import { executeRealignment } from "@/lib/realign";
 import type { OracleDecree } from "@/lib/oracle";
 
-const COOLDOWN_MS = 5 * 60 * 1000; // 5 minutes
+const COOLDOWN_MS = 60 * 1000; // 60 seconds
 const COOLDOWN_KEY = "recalibrate_last_ts";
 
 export type RecalibrateResult =
@@ -26,7 +26,7 @@ export async function getCooldownRemaining(): Promise<number> {
 
 /**
  * Fire the Oracle engine on-demand and write the new decree back to IndexedDB.
- * Respects the 30-minute cooldown unless `force` is true.
+ * Respects the 60-second cooldown unless `force` is true.
  */
 export async function recalibrateOracle(force = false): Promise<RecalibrateResult> {
   const remaining = await getCooldownRemaining();
