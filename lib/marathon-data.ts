@@ -92,27 +92,27 @@ export const SPRINT_WEEKS: SprintWeek[] = [
   {
     wk: 2, dates: 'Mar 14–20', startDate: '2026-03-14', endDate: '2026-03-20',
     phase: 'ALL_LOVE', phaseBadge: 'ALL LOVE', target: '7 tracks — close ALL LOVE', total: 11,
-    keyEvents: ['East Side Love drops Mar 20', 'Strong Selects restarts Mar 20', 'ALL LOVE front-load window closes Mar 21'],
+    keyEvents: ['East Side Love drops Mar 27', 'Strong Selects restarts Mar 20', 'ALL LOVE front-load window closes Mar 28'],
   },
   {
     wk: 3, dates: 'Mar 22–28', startDate: '2026-03-22', endDate: '2026-03-28',
     phase: 'DELUXE', phaseBadge: 'DELUXE', target: '3 tracks', total: 14,
-    keyEvents: ['Sweet Frustration drops Mar 27'],
+    keyEvents: ['Sweet Frustration drops Apr 3'],
   },
   {
     wk: 4, dates: 'Mar 29–Apr 4', startDate: '2026-03-29', endDate: '2026-04-04',
     phase: 'DELUXE', phaseBadge: 'DELUXE', target: '3 tracks', total: 17,
-    keyEvents: ['Like I Did drops Apr 3'],
+    keyEvents: ['Like I Did drops Apr 10'],
   },
   {
     wk: 5, dates: 'Apr 5–11', startDate: '2026-04-05', endDate: '2026-04-11',
     phase: 'DELUXE', phaseBadge: 'DELUXE', target: '3 tracks + album upload', total: 20,
-    keyEvents: ['Upload ALL LOVE to Amuse Apr 6', 'ALL LOVE drops Apr 10 🔥'],
+    keyEvents: ['Upload ALL LOVE to Amuse Apr 7 (pre-save build)', 'ALL LOVE drops Apr 17 🔥'],
   },
   {
     wk: 6, dates: 'Apr 12–18', startDate: '2026-04-12', endDate: '2026-04-18',
     phase: 'DELUXE', phaseBadge: 'DELUXE / CREAM', target: '3 tracks', total: 23,
-    keyEvents: ['414 Day performance Apr 14 🎤'],
+    keyEvents: ['414 Day performance Apr 14 🎤 (3 days before album)'],
   },
   {
     wk: 7, dates: 'Apr 19–25', startDate: '2026-04-19', endDate: '2026-04-25',
