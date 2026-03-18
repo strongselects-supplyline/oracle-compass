@@ -1,6 +1,7 @@
 "use client";
 
-import { useState, useCallback } from "react";
+import { useState, useCallback, useEffect } from "react";
+import { getStoreValue, setStoreValue } from "@/lib/db";
 
 // ─── ORACLE ASSESSMENT ENGINE ───────────────────────────────────────
 // Pillar weights and scoring logic. Each action item maps to a pillar
@@ -289,11 +290,30 @@ export default function OraclePage() {
   const [actions, setActions] = useState(INITIAL_ACTIONS);
   const [assessment, setAssessment] = useState(() => assess(INITIAL_ACTIONS));
   const [recalibrating, setRecalibrating] = useState(false);
+  const [loaded, setLoaded] = useState(false);
+
+  // Load cleared state from IndexedDB on mount
+  useEffect(() => {
+    (async () => {
+      const clearedIds = await getStoreValue<string[]>("oracle_cleared_actions");
+      if (clearedIds && clearedIds.length > 0) {
+        const restored = INITIAL_ACTIONS.map((a) =>
+          clearedIds.includes(a.id) ? { ...a, cleared: true } : a
+        );
+        setActions(restored);
+        setAssessment(assess(restored));
+      }
+      setLoaded(true);
+    })();
+  }, []);
 
   const handleClear = useCallback((id: string) => {
     setRecalibrating(true);
     setActions((prev) => {
       const updated = prev.map((a) => (a.id === id ? { ...a, cleared: true } : a));
+      // Persist cleared IDs to IndexedDB
+      const clearedIds = updated.filter((a) => a.cleared).map((a) => a.id);
+      setStoreValue("oracle_cleared_actions", clearedIds);
       setTimeout(() => {
         setAssessment(assess(updated));
         setRecalibrating(false);
@@ -305,6 +325,7 @@ export default function OraclePage() {
   const handleReset = () => {
     setActions(INITIAL_ACTIONS);
     setAssessment(assess(INITIAL_ACTIONS));
+    setStoreValue("oracle_cleared_actions", []);
   };
 
   const activeActions = actions.filter((a) => !a.cleared);
