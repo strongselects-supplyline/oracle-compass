@@ -7,11 +7,16 @@ import { shiftRelease } from "@/lib/releases";
 import type { OracleDecree, Realignment, OracleFlag } from "@/lib/oracle";
 
 export async function executeRealignment(decree: OracleDecree): Promise<void> {
+  // Clear today's flags before processing — each decree is a full reassessment,
+  // not an additive layer. Old flags from earlier recalibrations are superseded.
+  const today = getTodayISO();
+  await setStoreValue(`oracle_flags:${today}`, []);
+
   for (const r of decree.realignments) {
     await applyRealignment(r);
   }
   // Persist full decree — read by Oracle page + next day's context assembly
-  await setStoreValue(`oracle_decree:${getTodayISO()}`, decree);
+  await setStoreValue(`oracle_decree:${today}`, decree);
 }
 
 async function applyRealignment(r: Realignment): Promise<void> {
@@ -46,12 +51,16 @@ async function applyRealignment(r: Realignment): Promise<void> {
 
     // ── Flags ──────────────────────────────────────────────
     case "flag_action": {
-      // Appends to today's flag list — shown on Oracle page + Engine page
+      // Append to today's flag list (cleared at top of executeRealignment)
+      // Dedup by action string — same flag from same decree won't stack
       const today = getTodayISO();
       const existing = await getStoreValue<OracleFlag[]>(`oracle_flags:${today}`);
       const flags: OracleFlag[] = existing || [];
-      flags.push({ action: r.action, urgency: r.urgency, reason: r.reason });
-      await setStoreValue(`oracle_flags:${today}`, flags);
+      const isDuplicate = flags.some(f => f.action === r.action);
+      if (!isDuplicate) {
+        flags.push({ action: r.action, urgency: r.urgency, reason: r.reason });
+        await setStoreValue(`oracle_flags:${today}`, flags);
+      }
       break;
     }
 
