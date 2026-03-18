@@ -38,11 +38,11 @@ export default function BottomNav() {
 
     const navs = [
         { name: "Log", path: "/log", icon: "⚡" },
-        { name: "Plan", path: "/planner", icon: "📋" },
-        { name: "Grind", path: "/grind", icon: "⚔️" },
-        { name: "Studio", path: "/studio", icon: "🎙️" },
-        { name: "Engine", path: "/engine", icon: "⚙️" },
         { name: "Oracle", path: "/oracle", icon: "🔮" },
+        { name: "Plan", path: "/planner", icon: "📋" },
+        { name: "Studio", path: "/studio", icon: "🎙️" },
+        { name: "Grind", path: "/grind", icon: "⚔️" },
+        { name: "Engine", path: "/engine", icon: "⚙️" },
         { name: "Label", path: "/label", icon: "🏷️" },
     ];
 
