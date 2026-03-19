@@ -17,7 +17,12 @@ HARD RULES — violation means rejection:
 BRAND: Late-night confidence. Confessional. Analog warmth. Lake Geneva solitude.
 Slow-burn. The music finds you.
 
-Generate 3 variants per request. Return JSON only matching: { "variants": ["variant 1", "variant 2", "variant 3"] }. No preamble.`;
+HOW TO USE VAULT DATA:
+- SONIC DATA (BPM, key, mood scores) → match the emotional register. A 120 BPM track at 69% sexy gets different copy than a 98 BPM track at 87% sexy. Be precise.
+- LYRICS (if provided) → mine them for quotable lines, emotional hooks, and the core thesis of the song. Weave actual lyrical themes into the copy. Don’t paraphrase — reference the real words.
+- VISUAL DIRECTION (if provided from Creative Dept) → let it inform imagery in the copy.
+
+Generate 3 distinct variants per request. Each variant should take a different angle but all must be grounded in the actual track data. Return JSON only matching: { "variants": ["variant 1", "variant 2", "variant 3"] }. No preamble.`;
 
 function buildVoiceBlock(voiceExamples: { original: string; edited: string }[]): string {
     if (!voiceExamples || voiceExamples.length === 0) return '';
@@ -85,15 +90,22 @@ export async function POST(req: NextRequest) {
             return NextResponse.json({ error: "Missing trackTitle or assetType" }, { status: 400 });
         }
 
-        const trackContext = buildTrackContext(trackTitle);
-        const voiceBlock = buildVoiceBlock(voiceExamples || []);
-        const crossAgentBlock = buildCrossAgentBlock(sonicContext, visualDirection);
+        // Prefer vault context (real Cyanite + lyrics) over static studioData lookup
+        const trackContext = (typeof sonicContext === 'string' && sonicContext.length > 0)
+            ? sonicContext  // Vault context — includes BPM, mood, lyrics snippet
+            : buildTrackContext(trackTitle);  // Fallback: static Cyanite data only
 
-        const userMessage = `Generate copy for the following track. Asset type requested: ${assetType}.
+        const voiceBlock = buildVoiceBlock(voiceExamples || []);
+        const crossAgentBlock = buildCrossAgentBlock(
+            typeof sonicContext === 'string' ? null : sonicContext,  // Don't double-inject vault data
+            visualDirection
+        );
+
+        const userMessage = `Generate ${assetType} copy for the following track.
 
 ${trackContext}
 
-Write copy that reflects the actual sonic identity above — the tempo, mood profile, and project role should inform the emotional register of the copy. Remember all brand voice rules.`;
+Write copy that reflects the actual sonic identity and lyrical themes above — the tempo, mood profile, and any lyrics should directly inform the emotional register and word choice. Ground every variant in the real data. Remember all brand voice rules.`;
 
         const fullSystem = SYSTEM_PROMPT + voiceBlock + crossAgentBlock;
 

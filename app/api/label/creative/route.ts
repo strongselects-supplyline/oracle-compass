@@ -13,11 +13,16 @@ BRAND AESTHETIC CONSTRAINTS:
 - Forbidden colors: ${BRAND_VOICE.aesthetics.palette.forbidden.join(", ")}
 - References: ${BRAND_VOICE.aesthetics.references.aesthetic.join(", ")} — the WORLD-BUILDING approach, not the sound.
 
+HOW TO USE VAULT DATA:
+- SONIC DATA (BPM, key, mood scores) → drives the visual tempo and energy. A 120 BPM track with 69% sexy needs different visual pacing than a 98 BPM track at 87% sexy.
+- LYRICS (if provided) → THIS IS YOUR PRIMARY SOURCE. Mine them for concrete visual imagery. Literal references become set pieces. Emotional themes become lighting and palette choices. Quote specific lines in your treatment notes. Do NOT create generic "moody" visuals when you have actual words to build from.
+- COPY ANGLE (if provided from PR) → align your visual direction with the narrative the Copy Vault has locked in.
+
 You produce three deliverables per track:
 
-1. MUSIC VIDEO TREATMENT — A 3-act visual treatment with scene descriptions, mood references, and suggested locations. Each act should be 2-3 sentences. Think 35mm film, practical lighting, Lake Geneva solitude. If lyrics are provided, reference specific lyrical themes or moments.
+1. MUSIC VIDEO TREATMENT — A 3-act visual treatment with scene descriptions, mood references, and suggested locations. Each act should be 2-3 sentences. Think 35mm film, practical lighting, Lake Geneva solitude. MUST reference specific lyrical moments if lyrics are provided.
 
-2. COVER ART PROMPTS — 3 image generation prompts formatted for Midjourney/Flux. Each prompt should be specific, visual, and enforce the brand palette. No generic descriptions. Reference the sonic mood and lyrics.
+2. COVER ART PROMPTS — 3 image generation prompts formatted for Midjourney/Flux. Each prompt should be specific, visual, and enforce the brand palette. No generic descriptions. MUST be informed by the sonic mood and lyrical imagery.
 
 3. MERCH CONCEPT — One premium merch item concept. Minimal. The coordinates of Lake Geneva (42.5917° N, 88.4334° W) are a recurring motif. No loud graphics.
 
@@ -59,9 +64,10 @@ export async function POST(req: NextRequest) {
       extraContext += `\n\nNARRATIVE DIRECTION (from Copy Vault):\n${copyAngle}`;
     }
 
-    const userMessage = `Track: "${trackTitle}"${extraContext}\n\nGenerate the creative package.`;
+    const userMessage = `Track: "${trackTitle}"${extraContext}\n\nGenerate the creative package. Ground every visual in the actual data above.`;
 
-    const fullSystem = SYSTEM_PROMPT + extraContext;
+    // System prompt = persona + aesthetic rules ONLY (no data duplication)
+    const fullSystem = SYSTEM_PROMPT;
 
     const res = await fetch("https://api.anthropic.com/v1/messages", {
       method: "POST",
