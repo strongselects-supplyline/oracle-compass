@@ -47,11 +47,12 @@ function EditableText({ value, onSave }: { value: string; onSave: (v: string) =>
 // ── Asset Card ───────────────────────────────────────────────────────
 
 function AssetCard({
-  asset, label, trackTitle, copyFormat, copyLabel, onSelect
+  asset, label, trackTitle, copyFormat, copyLabel, onSelect, onGenerateImage
 }: {
   asset: CreativeAsset; label: string; trackTitle: string;
   copyFormat?: (text: string) => string; copyLabel?: string;
   onSelect: (id: string, editedContent?: string) => void;
+  onGenerateImage?: (promptText: string) => void;
 }) {
   const text = asset.editedContent || asset.content;
   const [copied, setCopied] = useState(false);
@@ -95,6 +96,12 @@ function AssetCard({
           className="text-[10px] font-black text-[#555] px-3 py-1.5 border border-[#222] rounded-lg hover:text-white transition-colors">
           {copied ? "✓ COPIED" : (copyLabel || "COPY")}
         </button>
+        {onGenerateImage && !isImage && asset.type === "cover_art_prompt" && (
+          <button onClick={() => onGenerateImage(text)}
+            className="text-[10px] font-black text-[#d4a853] px-3 py-1.5 border border-[#d4a853]/50 bg-[#d4a853]/10 rounded-lg hover:text-white transition-colors">
+            GEN IMAGE
+          </button>
+        )}
       </div>
     </div>
   );
@@ -200,12 +207,12 @@ export default function CreativeDept({ trackTitle }: { trackTitle: string }) {
     setLoading(false);
   };
 
-  const generateCoverArt = async () => {
+  const generateCoverArt = async (specificPrompt?: string) => {
     setLoading(true);
     setError(null);
     try {
       const vaultAssets = await getTrackAssets(trackTitle);
-      const direction = await getCanonicalCopy(trackTitle, "spotify_pitch");
+      const direction = specificPrompt || await getCanonicalCopy(trackTitle, "spotify_pitch");
 
       // Feedback loop: pull past canonical cover art prompts
       const coverArtLabelData = await getTrackLabelData(trackTitle);
@@ -290,9 +297,9 @@ export default function CreativeDept({ trackTitle }: { trackTitle: string }) {
       <div className="flex justify-between items-center mb-5 gap-2">
         <h3 className="text-sm font-black tracking-widest uppercase">🎨 Creative Dept</h3>
         <div className="flex gap-2">
-          <button onClick={generateCoverArt} disabled={loading}
+          <button onClick={() => generateCoverArt()} disabled={loading}
             className="text-[10px] font-black tracking-widest text-[#d4a853] hover:text-white uppercase disabled:opacity-30 transition-colors">
-            {loading ? "..." : "[GEN COVER]"}
+            {loading ? "..." : "[RANDOM COVER]"}
           </button>
           {(labelData?.creativeAssets?.length ?? 0) > 0 ? (
             <button onClick={generate} disabled={loading}
@@ -352,6 +359,7 @@ export default function CreativeDept({ trackTitle }: { trackTitle: string }) {
                     copyFormat={meta.copyFormat}
                     copyLabel={meta.copyLabel}
                     onSelect={handleSelect}
+                    onGenerateImage={type === "cover_art_prompt" ? generateCoverArt : undefined}
                   />
                 ))}
               </div>

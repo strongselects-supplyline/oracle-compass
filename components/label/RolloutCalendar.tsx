@@ -2,6 +2,7 @@
 
 import { useState, useEffect } from "react";
 import { getStoreValue, setStoreValue, logLabelCost } from "@/lib/db";
+import { getTrackAssets, buildFullTrackContext } from "@/lib/assetVault";
 import { LABEL_COST_ESTIMATES } from "@/lib/budget";
 
 export type RolloutItem = {
@@ -51,9 +52,12 @@ export default function RolloutCalendar({ trackTitle, releaseDate }: { trackTitl
         setLoading(true);
         setError(null);
         try {
+            const vaultAssets = await getTrackAssets(trackTitle);
+            const sonicContext = buildFullTrackContext(vaultAssets);
+
             const res = await fetch("/api/label/marketing", {
                 method: "POST",
-                body: JSON.stringify({ trackTitle, releaseDate })
+                body: JSON.stringify({ trackTitle, releaseDate, sonicContext })
             });
             if (!res.ok) {
                 const errText = await res.text().catch(() => "Server error");

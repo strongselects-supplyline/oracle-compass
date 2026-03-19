@@ -41,13 +41,18 @@ export async function POST(req: NextRequest) {
 
     try {
         const body = await req.json();
-        const { trackTitle, releaseDate } = body;
+        const { trackTitle, releaseDate, sonicContext } = body;
 
         if (!trackTitle || !releaseDate) {
             return NextResponse.json({ error: "Missing trackTitle or releaseDate" }, { status: 400 });
         }
 
-        const userMessage = `Generate the 21-day marketing rollout schedule for track: "${trackTitle}", which releases on ${releaseDate}.`;
+        const userMessage = `Generate the 21-day marketing rollout schedule for track: "${trackTitle}", which releases on ${releaseDate}.
+        
+VAULT CONTEXT (Sonic Data & Lyrics):
+${sonicContext || "(No vault data available)"}
+
+The rollout action items and content concepts MUST reflect this specific emotional register. Use the actual data above to shape the marketing angles.`;
 
         const res = await fetch("https://api.anthropic.com/v1/messages", {
             method: "POST",
@@ -58,7 +63,7 @@ export async function POST(req: NextRequest) {
             },
             body: JSON.stringify({
                 model: "claude-haiku-4-5-20251001",
-                max_tokens: 1000,
+                max_tokens: 2500,
                 system: SYSTEM_PROMPT,
                 messages: [{ role: "user", content: userMessage }],
             }),
