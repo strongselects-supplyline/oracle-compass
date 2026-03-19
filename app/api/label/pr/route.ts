@@ -19,6 +19,22 @@ Slow-burn. The music finds you.
 
 Generate 3 variants per request. Return JSON only matching: { "variants": ["variant 1", "variant 2", "variant 3"] }. No preamble.`;
 
+function buildVoiceBlock(voiceExamples: { original: string; edited: string }[]): string {
+    if (!voiceExamples || voiceExamples.length === 0) return '';
+    return `\n\nVOICE LEARNING — The artist has edited past generated copy. The delta between original and edited IS their voice. Match it exactly:\n${voiceExamples.map(e => `Original: "${e.original}"\nArtist preferred: "${e.edited}"`).join('\n\n')}`;
+}
+
+function buildCrossAgentBlock(sonicContext: any, visualDirection: string | null): string {
+    const parts: string[] = [];
+    if (sonicContext) {
+        parts.push(`SONIC CONTEXT: ${sonicContext.bpm || '?'} BPM, mood: ${(sonicContext.moodTags || []).join(', ')}`);
+    }
+    if (visualDirection) {
+        parts.push(`VISUAL DIRECTION: ${visualDirection}`);
+    }
+    return parts.length > 0 ? `\n\nCROSS-AGENT CONTEXT:\n${parts.join('\n')}` : '';
+}
+
 /** Build a human-readable sonic fingerprint from Cyanite data for AI context. */
 function buildTrackContext(trackTitle: string): string {
     // Search across all projects
@@ -58,19 +74,23 @@ export async function POST(req: NextRequest) {
 
     try {
         const body = await req.json();
-        const { trackTitle, assetType } = body;
+        const { trackTitle, assetType, voiceExamples, sonicContext, visualDirection } = body;
 
         if (!trackTitle || !assetType) {
             return NextResponse.json({ error: "Missing trackTitle or assetType" }, { status: 400 });
         }
 
         const trackContext = buildTrackContext(trackTitle);
+        const voiceBlock = buildVoiceBlock(voiceExamples || []);
+        const crossAgentBlock = buildCrossAgentBlock(sonicContext, visualDirection);
 
         const userMessage = `Generate copy for the following track. Asset type requested: ${assetType}.
 
 ${trackContext}
 
 Write copy that reflects the actual sonic identity above — the tempo, mood profile, and project role should inform the emotional register of the copy. Remember all brand voice rules.`;
+
+        const fullSystem = SYSTEM_PROMPT + voiceBlock + crossAgentBlock;
 
         const res = await fetch("https://api.anthropic.com/v1/messages", {
             method: "POST",
@@ -82,7 +102,7 @@ Write copy that reflects the actual sonic identity above — the tempo, mood pro
             body: JSON.stringify({
                 model: "claude-haiku-4-5-20251001",
                 max_tokens: 600,
-                system: SYSTEM_PROMPT,
+                system: fullSystem,
                 messages: [{ role: "user", content: userMessage }],
             }),
         });

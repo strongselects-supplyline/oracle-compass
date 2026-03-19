@@ -45,13 +45,27 @@ export async function POST(req: NextRequest) {
   if (!apiKey) return NextResponse.json({ error: "ANTHROPIC_API_KEY not set" }, { status: 500 });
 
   try {
-    const { trackTitle, mood, lyricsSnippet } = await req.json();
+    const { trackTitle, mood, lyricsSnippet, voiceExamples, sonicContext, copyAngle } = await req.json();
+
+    // Build cross-agent context blocks
+    let extraContext = '';
+    if (voiceExamples && voiceExamples.length > 0) {
+      extraContext += `\n\nVOICE LEARNING — The artist has selected and edited creative content before. Match their preferences:\n${voiceExamples.map((e: any) => `Original: "${e.original}"\nArtist preferred: "${e.edited}"`).join('\n\n')}`;
+    }
+    if (sonicContext) {
+      extraContext += `\n\nSONIC CONTEXT: ${sonicContext.bpm || '?'} BPM, mood: ${(sonicContext.moodTags || []).join(', ')}`;
+    }
+    if (copyAngle) {
+      extraContext += `\n\nNARRATIVE DIRECTION (from Copy Vault): ${copyAngle}`;
+    }
 
     const userMessage = `Track: "${trackTitle}"
 Mood/Vibe: ${mood || "dark, intimate, late-night R&B"}
 Lyrics snippet: ${lyricsSnippet || "(not provided)"}
 
 Generate the full creative package.`;
+
+    const fullSystem = SYSTEM_PROMPT + extraContext;
 
     const res = await fetch("https://api.anthropic.com/v1/messages", {
       method: "POST",
@@ -63,7 +77,7 @@ Generate the full creative package.`;
       body: JSON.stringify({
         model: "claude-haiku-4-5-20251001",
         max_tokens: 1200,
-        system: SYSTEM_PROMPT,
+        system: fullSystem,
         messages: [{ role: "user", content: userMessage }],
       }),
     });
