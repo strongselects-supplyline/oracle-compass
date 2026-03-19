@@ -22,6 +22,12 @@ const PILLAR_LABELS: Record<string, string> = {
 
 // ── Extract release name from task title (format: "Task — Track Name") ──
 function getGroupKey(task: KillTask): string {
+  // Oracle flags and non-release tasks always go under "Today"
+  if (task.id.startsWith("flag-") || task.id.startsWith("fuel-") ||
+      task.id.startsWith("grind-") || task.id.startsWith("session-") ||
+      task.id.startsWith("biz-")) {
+    return "Today";
+  }
   const match = task.title.match(/\s—\s(.+)$/);
   if (match) return match[1];
   return "Today";

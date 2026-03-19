@@ -278,8 +278,9 @@ export async function deriveKillList(): Promise<KillTask[]> {
     });
   }
 
-  // ── 7. BUSINESS → Tasks (biz days) ──────────────────────────────
-  if (isBizDay(dayType)) {
+  // ── 7. BUSINESS → Tasks (biz days, only after SS restart) ───────
+  const ssRestart = new Date("2026-03-27T00:00:00");
+  if (isBizDay(dayType) && now >= ssRestart) {
     const move = await getStoreValue<string>("engine_daily_move");
     if (!move || move.trim().length === 0) {
       tasks.push({
