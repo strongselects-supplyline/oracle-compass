@@ -27,7 +27,12 @@ function buildVoiceBlock(voiceExamples: { original: string; edited: string }[]):
 function buildCrossAgentBlock(sonicContext: any, visualDirection: string | null): string {
     const parts: string[] = [];
     if (sonicContext) {
-        parts.push(`SONIC CONTEXT: ${sonicContext.bpm || '?'} BPM, mood: ${(sonicContext.moodTags || []).join(', ')}`);
+        // Vault sends a pre-formatted string; legacy sends { bpm, moodTags }
+        if (typeof sonicContext === 'string') {
+            parts.push(`VAULT CONTEXT (Sonic + Lyrics):\n${sonicContext}`);
+        } else {
+            parts.push(`SONIC CONTEXT: ${sonicContext.bpm || '?'} BPM, mood: ${(sonicContext.moodTags || []).join(', ')}`);
+        }
     }
     if (visualDirection) {
         parts.push(`VISUAL DIRECTION: ${visualDirection}`);
