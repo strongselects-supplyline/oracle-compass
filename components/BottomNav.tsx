@@ -8,6 +8,7 @@ import { getStoreValue, getTodayISO } from "@/lib/db";
 import type { OracleDecree } from "@/lib/oracle";
 import { getSundayChecklist, isSundayChecklistComplete } from "@/lib/planner";
 import { getWeekKey } from "@/lib/oracle";
+import { getKillStats } from "@/lib/killList";
 
 export default function BottomNav() {
     const pathname = usePathname();
@@ -15,6 +16,8 @@ export default function BottomNav() {
     const [oracleSeverity, setOracleSeverity] = useState<string | null>(null);
     const [unreviewedCopy, setUnreviewedCopy] = useState(false);
     const [plannerDot, setPlannerDot] = useState(false);
+    const [killRed, setKillRed] = useState(false);
+    const [killCount, setKillCount] = useState(0);
 
     useEffect(() => {
         setBizDay(isBizDay(getDayType()));
@@ -34,15 +37,20 @@ export default function BottomNav() {
                 setPlannerDot(!isSundayChecklistComplete(c));
             });
         }
+        // Kill list badge — RED tasks remaining
+        getKillStats().then(s => {
+            setKillRed(s.redRemaining > 0);
+            setKillCount(s.total - s.cleared);
+        });
     }, []);
 
     const navs = [
+        { name: "Kill", path: "/kill", icon: "🎯" },
         { name: "Log", path: "/log", icon: "⚡" },
-        { name: "Oracle", path: "/oracle", icon: "🔮" },
         { name: "Plan", path: "/planner", icon: "📋" },
         { name: "Studio", path: "/studio", icon: "🎙️" },
-        { name: "Grind", path: "/grind", icon: "⚔️" },
         { name: "Engine", path: "/engine", icon: "⚙️" },
+        { name: "Oracle", path: "/oracle", icon: "🔮" },
         { name: "Label", path: "/label", icon: "🏷️" },
     ];
 
@@ -55,7 +63,9 @@ export default function BottomNav() {
                         n.name === "Engine" && bizDay ? "bg-amber-500" :
                             n.name === "Oracle" && oracleSeverity === "RED" ? "bg-red-500" :
                                 n.name === "Oracle" && oracleSeverity === "AMBER" ? "bg-amber-500" :
-                                    n.name === "Label" && unreviewedCopy ? "bg-amber-500" : null;
+                                    n.name === "Kill" && killRed ? "bg-red-500" :
+                                        n.name === "Kill" && killCount > 0 ? "bg-amber-500" :
+                                            n.name === "Label" && unreviewedCopy ? "bg-amber-500" : null;
 
                 return (
                     <Link key={n.name} href={n.path} className={`nav-item ${active ? "active" : ""}`}>

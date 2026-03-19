@@ -39,7 +39,7 @@ export const REGISTRY: TrackRegistry[] = [
     {
         title: "East Side Love",
         isrc: "",
-        releaseDate: "2026-03-20",
+        releaseDate: "2026-03-27",
         ascap: "not_started",
         mlc: "not_started",
         soundExchange: "complete",
@@ -53,7 +53,7 @@ export const REGISTRY: TrackRegistry[] = [
     {
         title: "Sweet Frustration",
         isrc: "",
-        releaseDate: "2026-03-27",
+        releaseDate: "2026-04-03",
         ascap: "not_started",
         mlc: "not_started",
         soundExchange: "complete",
@@ -67,7 +67,7 @@ export const REGISTRY: TrackRegistry[] = [
     {
         title: "I Like Girls",
         isrc: "",
-        releaseDate: "2026-04-10",
+        releaseDate: "2026-04-17",
         ascap: "not_started",
         mlc: "not_started",
         soundExchange: "complete",
@@ -76,12 +76,12 @@ export const REGISTRY: TrackRegistry[] = [
         instrumentalRendered: false,
         splitSheetSigned: false,
         collaborators: [],
-        notes: "Album-only track (intro). Still needs full PRO registration before Apr 10.",
+        notes: "Album-only track (intro). Still needs full PRO registration before Apr 17.",
     },
     {
         title: "Like I Did",
         isrc: "",
-        releaseDate: "2026-04-03",
+        releaseDate: "2026-04-10",
         ascap: "not_started",
         mlc: "not_started",
         soundExchange: "complete",
@@ -95,7 +95,7 @@ export const REGISTRY: TrackRegistry[] = [
     {
         title: "Want U Bad",
         isrc: "",
-        releaseDate: "2026-04-10",
+        releaseDate: "2026-04-17",
         ascap: "not_started",
         mlc: "not_started",
         soundExchange: "not_started",
@@ -109,7 +109,7 @@ export const REGISTRY: TrackRegistry[] = [
     {
         title: "Green Light Patient",
         isrc: "",
-        releaseDate: "2026-04-10",
+        releaseDate: "2026-04-17",
         ascap: "not_started",
         mlc: "not_started",
         soundExchange: "not_started",
@@ -123,7 +123,7 @@ export const REGISTRY: TrackRegistry[] = [
     {
         title: "Luxury",
         isrc: "",
-        releaseDate: "2026-04-10",
+        releaseDate: "2026-04-17",
         ascap: "not_started",
         mlc: "not_started",
         soundExchange: "not_started",
@@ -137,7 +137,7 @@ export const REGISTRY: TrackRegistry[] = [
     {
         title: "Worth It",
         isrc: "",
-        releaseDate: "2026-04-10",
+        releaseDate: "2026-04-17",
         ascap: "not_started",
         mlc: "not_started",
         soundExchange: "not_started",
@@ -151,7 +151,7 @@ export const REGISTRY: TrackRegistry[] = [
     {
         title: "Just Say So",
         isrc: "",
-        releaseDate: "2026-04-10",
+        releaseDate: "2026-04-17",
         ascap: "not_started",
         mlc: "not_started",
         soundExchange: "not_started",
@@ -165,7 +165,7 @@ export const REGISTRY: TrackRegistry[] = [
     {
         title: "Reconnect",
         isrc: "",
-        releaseDate: "2026-04-10",
+        releaseDate: "2026-04-17",
         ascap: "not_started",
         mlc: "not_started",
         soundExchange: "not_started",
