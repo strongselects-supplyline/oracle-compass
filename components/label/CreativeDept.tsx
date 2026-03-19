@@ -8,7 +8,7 @@ import {
   getVoiceExamples, getSonicProfile, getCanonicalCopy,
   type CreativeAsset, type TrackLabelData
 } from "@/lib/labelStore";
-import { getTrackAssets, buildFullTrackContext, buildCreativeContext, saveTrackCoverArt } from "@/lib/assetVault";
+import { getTrackAssets, buildFullTrackContext, buildCreativeContext, saveTrackCoverArt, getArtistAssets } from "@/lib/assetVault";
 
 // ── Inline Editable Text ─────────────────────────────────────────────
 
@@ -213,6 +213,7 @@ export default function CreativeDept({ trackTitle }: { trackTitle: string }) {
     try {
       const vaultAssets = await getTrackAssets(trackTitle);
       const direction = specificPrompt || await getCanonicalCopy(trackTitle, "spotify_pitch");
+      const artistAssets = await getArtistAssets();
 
       // Feedback loop: pull past canonical cover art prompts
       const coverArtLabelData = await getTrackLabelData(trackTitle);
@@ -227,6 +228,7 @@ export default function CreativeDept({ trackTitle }: { trackTitle: string }) {
           sonicContext: buildFullTrackContext(vaultAssets),
           direction,
           pastCanonicalPrompts,
+          artistAppearance: artistAssets.physicalDescription,
         }),
       });
       

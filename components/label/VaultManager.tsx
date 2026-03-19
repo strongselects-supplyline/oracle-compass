@@ -4,7 +4,7 @@ import { useState, useEffect, useRef, useCallback } from "react";
 import {
   getTrackAssets, saveTrackLyrics, saveTrackCoverArt,
   addVisualReference, removeVisualReference,
-  getArtistAssets, addArtistPhoto, removeArtistPhoto, saveArtistBio,
+  getArtistAssets, addArtistPhoto, removeArtistPhoto, saveArtistBio, saveArtistPhysicalDescription,
   type TrackAssets, type ArtistAssets,
 } from "@/lib/assetVault";
 
@@ -303,7 +303,9 @@ function ArtistVaultPanel() {
   const [artist, setArtist] = useState<ArtistAssets | null>(null);
   const [bioEdit, setBioEdit] = useState("");
   const [oneLinerEdit, setOneLinerEdit] = useState("");
+  const [physicalDescriptionEdit, setPhysicalDescriptionEdit] = useState("");
   const [bioSaved, setBioSaved] = useState(false);
+  const [extracting, setExtracting] = useState(false);
   const photoRef = useRef<HTMLInputElement>(null);
 
   const load = useCallback(async () => {
@@ -311,6 +313,7 @@ function ArtistVaultPanel() {
     setArtist(a);
     setBioEdit(a.pressKitBio ?? "");
     setOneLinerEdit(a.oneLiner ?? "");
+    setPhysicalDescriptionEdit(a.physicalDescription ?? "");
   }, []);
 
   useEffect(() => { load(); }, [load]);
@@ -331,9 +334,30 @@ function ArtistVaultPanel() {
 
   const saveBio = async () => {
     await saveArtistBio(bioEdit, oneLinerEdit);
+    await saveArtistPhysicalDescription(physicalDescriptionEdit);
     await load();
     setBioSaved(true);
     setTimeout(() => setBioSaved(false), 2000);
+  };
+
+  const autoExtractAppearance = async () => {
+    if (!artist || artist.baselinePhotos.length === 0) return;
+    setExtracting(true);
+    try {
+      const res = await fetch("/api/label/vision", {
+        method: "POST",
+        body: JSON.stringify({ photos: artist.baselinePhotos.slice(0, 3) })
+      });
+      if (!res.ok) throw new Error("Vision extraction failed");
+      const { description } = await res.json();
+      setPhysicalDescriptionEdit(description);
+      await saveArtistPhysicalDescription(description);
+      await load();
+    } catch (e) {
+      console.error(e);
+    } finally {
+      setExtracting(false);
+    }
   };
 
   if (!artist) return <div className="text-[#555] text-sm py-4">Loading…</div>;
@@ -380,6 +404,30 @@ function ArtistVaultPanel() {
             + Upload artist reference photos
           </button>
         )}
+      </div>
+      {/* Physical Appearance */}
+      <div className="card">
+        <div className="flex items-center justify-between mb-3">
+          <div className="flex items-center">
+            <StatusDot filled={!!artist.physicalDescription} />
+            <span className="text-[10px] font-black tracking-widest text-[#777] uppercase">Physical Appearance</span>
+          </div>
+          <button 
+            onClick={autoExtractAppearance}
+            disabled={extracting || artist.baselinePhotos.length === 0}
+            className="text-[9px] font-black tracking-widest text-[#d4a853] hover:text-white uppercase disabled:opacity-30 transition-colors"
+          >
+            {extracting ? "[EXTRACTING...]" : "[AUTO-EXTRACT FROM PHOTOS]"}
+          </button>
+        </div>
+        <p className="text-[11px] text-[#444] mb-3">Since DALL-E cannot process image uploads locally, we convert your photos into a permanent text description to inject into all image prompts.</p>
+        <textarea
+          value={physicalDescriptionEdit}
+          onChange={e => setPhysicalDescriptionEdit(e.target.value)}
+          placeholder="e.g. 26-year-old mixed-race man with a short fade, neatly trimmed beard..."
+          className="w-full h-24 bg-[#0a0a0a] text-[13px] text-[#ccc] p-3 rounded-lg border border-[#1a1a1a] outline-none resize-none placeholder:text-[#333]"
+        />
+        <div className="mt-2 text-[9px] text-[#555] italic text-right">Auto-saves with bio.</div>
       </div>
 
       {/* Bio */}

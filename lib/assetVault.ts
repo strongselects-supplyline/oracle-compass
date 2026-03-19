@@ -40,6 +40,7 @@ export type TrackAssets = {
 
 export type ArtistAssets = {
   baselinePhotos: string[];  // artist reference photos for AI image gen (data URLs)
+  physicalDescription: string | null;
   pressKitBio: string | null;
   oneLiner: string | null;
   brandVoice: typeof BRAND_VOICE;
@@ -145,6 +146,7 @@ export async function getArtistAssets(): Promise<ArtistAssets> {
   const stored = await getStoreValue<Partial<ArtistAssets>>(ARTIST_KEY);
   return {
     baselinePhotos: stored?.baselinePhotos ?? [],
+    physicalDescription: stored?.physicalDescription ?? null,
     pressKitBio: stored?.pressKitBio ?? null,
     oneLiner: stored?.oneLiner ?? null,
     brandVoice: BRAND_VOICE,
@@ -166,6 +168,11 @@ export async function removeArtistPhoto(index: number): Promise<void> {
 export async function saveArtistBio(bio: string, oneLiner: string): Promise<void> {
   const stored = await getStoreValue<Partial<ArtistAssets>>(ARTIST_KEY) ?? {};
   await setStoreValue(ARTIST_KEY, { ...stored, pressKitBio: bio, oneLiner });
+}
+
+export async function saveArtistPhysicalDescription(desc: string): Promise<void> {
+  const stored = await getStoreValue<Partial<ArtistAssets>>(ARTIST_KEY) ?? {};
+  await setStoreValue(ARTIST_KEY, { ...stored, physicalDescription: desc });
 }
 
 // ── Context Builders — prompt-ready text for agent injection ─────────
