@@ -8,7 +8,6 @@
 
 import { getDailyLog, saveDailyLog, getStoreValue, setStoreValue, getTodayISO, DailyLog } from "@/lib/db";
 import { getDynamicReleases, Release, updateContentDeliverables } from "@/lib/releases";
-import { REGISTRY, TrackRegistry } from "@/lib/registry";
 import { getDayType, isStudioDay, isBizDay } from "@/lib/dayType";
 import { getWeekKey, OracleFlag } from "@/lib/oracle";
 
@@ -21,7 +20,6 @@ export type KillTask = {
   urgency: "RED" | "AMBER" | "GREEN";
   pillar: "creative" | "business" | "body" | "ops";
   timeBlock: "any" | "studio" | "biz" | "content" | "evening";
-  // What happens when tapped — returns a function that writes to IndexedDB
   action: () => Promise<void>;
 };
 
@@ -34,7 +32,6 @@ export async function deriveKillList(): Promise<KillTask[]> {
   const hour = new Date().getHours();
   const weekKey = getWeekKey();
 
-  // Parallel data fetch
   const [dailyLog, releases, flags, sessions] = await Promise.all([
     getDailyLog(today),
     getDynamicReleases(),
@@ -43,7 +40,6 @@ export async function deriveKillList(): Promise<KillTask[]> {
   ]);
 
   // ── 1. ORACLE FLAGS → Tasks ──────────────────────────────────────
-  // These are the Oracle's own directives. Highest priority.
   if (flags && flags.length > 0) {
     for (const flag of flags) {
       tasks.push({
@@ -54,7 +50,6 @@ export async function deriveKillList(): Promise<KillTask[]> {
         pillar: "ops",
         timeBlock: "any",
         action: async () => {
-          // Clearing a flag removes it from today's list
           const current = await getStoreValue<OracleFlag[]>(`oracle_flags:${today}`);
           if (current) {
             const updated = current.filter(f => f.action !== flag.action);
@@ -143,9 +138,9 @@ export async function deriveKillList(): Promise<KillTask[]> {
       pillar: "body",
       timeBlock: "any",
       action: async () => {
-      const log = await getDailyLog(today);
-      log.sovereigntyStack = true;
-      await saveDailyLog(log);
+        const log = await getDailyLog(today);
+        log.sovereigntyStack = true;
+        await saveDailyLog(log);
       },
     });
   }
@@ -158,155 +153,112 @@ export async function deriveKillList(): Promise<KillTask[]> {
       pillar: "body",
       timeBlock: "any",
       action: async () => {
-      const log = await getDailyLog(today);
-      log.movement = true;
-      await saveDailyLog(log);
+        const log = await getDailyLog(today);
+        log.movement = true;
+        await saveDailyLog(log);
       },
     });
   }
 
-  // ── 4. COMPLIANCE → Tasks ────────────────────────────────────────
-  // Check each upcoming release against its registry entry
+  // ── 4 & 5. PER-RELEASE CHECKLIST (content + registrations + distribution) ──
+  // Everything a song needs post-master, derived from the expanded ContentDeliverables.
   const now = new Date();
   for (const release of releases) {
     if (release.status === "live") continue;
     const releaseDate = new Date(release.releaseDate + "T00:00:00");
     const daysUntil = Math.ceil((releaseDate.getTime() - now.getTime()) / 86400000);
-    if (daysUntil > 14) continue; // Only show compliance for releases within 2 weeks
-
-    const reg = REGISTRY.find(r => r.title === release.title);
-    if (!reg) continue;
-
-    const urgency = daysUntil <= 3 ? "RED" : daysUntil <= 7 ? "AMBER" : "GREEN";
-
-    if (!reg.isrc) {
-      tasks.push({
-        id: `compliance-isrc-${release.title}`,
-        title: `Pull ISRC for ${release.title}`,
-        subtitle: `Check Amuse confirmation email — needed for all registrations`,
-        urgency,
-        pillar: "ops",
-        timeBlock: "any",
-        action: async () => {
-          // Can't auto-complete — this requires manual data entry
-          // Mark as acknowledged in flags
-          const flags = await getStoreValue<OracleFlag[]>(`oracle_flags:${today}`) || [];
-          flags.push({ action: `ISRC pulled for ${release.title}`, urgency: "AMBER", reason: "Manual confirmation" });
-          await setStoreValue(`oracle_flags:${today}`, flags);
-        },
-      });
-    }
-    if (reg.ascap !== "complete") {
-      tasks.push({
-        id: `compliance-ascap-${release.title}`,
-        title: `Register ${release.title} on ASCAP`,
-        subtitle: `ascap.com → Register Works${!reg.isrc ? " (needs ISRC first)" : ""}`,
-        urgency: !reg.isrc ? "AMBER" : urgency,
-        pillar: "ops",
-        timeBlock: "biz",
-        action: async () => {
-          // Clearing marks as acknowledged — actual registration is manual
-          const current = await getStoreValue<string[]>(`compliance_cleared:${today}`) || [];
-          current.push(`ascap-${release.title}`);
-          await setStoreValue(`compliance_cleared:${today}`, current);
-        },
-      });
-    }
-    if (reg.mlc !== "complete") {
-      tasks.push({
-        id: `compliance-mlc-${release.title}`,
-        title: `Register ${release.title} on MLC`,
-        subtitle: `themlc.com${!reg.isrc ? " (needs ISRC first)" : ""}`,
-        urgency: !reg.isrc ? "AMBER" : urgency,
-        pillar: "ops",
-        timeBlock: "biz",
-        action: async () => {
-          const current = await getStoreValue<string[]>(`compliance_cleared:${today}`) || [];
-          current.push(`mlc-${release.title}`);
-          await setStoreValue(`compliance_cleared:${today}`, current);
-        },
-      });
-    }
-    if (reg.songtrust !== "complete") {
-      tasks.push({
-        id: `compliance-songtrust-${release.title}`,
-        title: `Register ${release.title} on Songtrust`,
-        subtitle: `Verify login post-UMG acquisition first${!reg.isrc ? " (needs ISRC)" : ""}`,
-        urgency: !reg.isrc ? "AMBER" : urgency,
-        pillar: "ops",
-        timeBlock: "biz",
-        action: async () => {
-          const current = await getStoreValue<string[]>(`compliance_cleared:${today}`) || [];
-          current.push(`songtrust-${release.title}`);
-          await setStoreValue(`compliance_cleared:${today}`, current);
-        },
-      });
-    }
-  }
-
-  // ── 5. CONTENT DELIVERABLES → Tasks ──────────────────────────────
-  for (const release of releases) {
-    if (release.status === "live") continue;
-    const releaseDate = new Date(release.releaseDate + "T00:00:00");
-    const daysUntil = Math.ceil((releaseDate.getTime() - now.getTime()) / 86400000);
-    if (daysUntil > 10 || daysUntil < -3) continue;
+    if (daysUntil > 21 || daysUntil < -3) continue;
 
     const d = release.contentDeliverables;
+    const t = release.title;
+    const urg = (threshold: number): "RED" | "AMBER" | "GREEN" =>
+      daysUntil <= threshold ? "RED" : daysUntil <= threshold + 4 ? "AMBER" : "GREEN";
 
+    // Helper to create a simple toggle task
+    const toggle = (
+      id: string, field: keyof typeof d, title: string, subtitle: string,
+      urgThreshold: number, pillar: "creative" | "ops" | "business", block: "any" | "content" | "biz" | "studio"
+    ) => {
+      if (d[field] === false) {
+        tasks.push({
+          id: `${id}-${t}`, title: `${title} — ${t}`, subtitle,
+          urgency: urg(urgThreshold), pillar, timeBlock: block,
+          action: async () => { await updateContentDeliverables(t, { [field]: true } as any); },
+        });
+      }
+    };
+
+    // ── PRODUCTION PREP (T-7) ──
+    toggle("prep-swap", "variableSwapSheet", "Fill variable swap sheet", "Palette, photos, copy angle, hashtags", 7, "creative", "content");
+    toggle("prep-photo", "sourcePhotoLocked", "Lock source photography", "Hero shot needed for Canvas, posts, and visualizer", 7, "creative", "content");
+    toggle("prep-palette", "paletteExtracted", "Run palette extraction", "Open Sonnet session → extract from cover art", 6, "creative", "content");
+
+    // ── CREATIVE ASSETS (T-6 to T-2) ──
     if (!d.visualIdea || d.visualIdea.trim().length === 0) {
       tasks.push({
-        id: `content-visual-${release.title}`,
-        title: `Lock visual idea for ${release.title}`,
-        subtitle: "Creative direction needs to be set before any assets are built",
-        urgency: daysUntil <= 7 ? "RED" : "AMBER",
-        pillar: "creative",
-        timeBlock: "content",
-        action: async () => {
-          await updateContentDeliverables(release.title, { visualIdea: "(locked — set in session)" });
-        },
+        id: `content-visual-${t}`, title: `Lock visual idea — ${t}`,
+        subtitle: "Creative direction must be set before any assets are built",
+        urgency: urg(7), pillar: "creative", timeBlock: "content",
+        action: async () => { await updateContentDeliverables(t, { visualIdea: "(locked)" }); },
       });
     }
+    toggle("asset-canvas", "spotifyCanvas", "Build Spotify Canvas", "720×1280 · 3–8s loop · After Effects (T-6)", 5, "creative", "content");
+    toggle("asset-teaser", "prereleaseTeaser", "Build pre-release teaser", "1080×1920 ≤15s · IG/TikTok (T-5)", 5, "creative", "content");
+    toggle("asset-story", "instagramStory", "Build Instagram Story", "1080×1920 · motion · After Effects (T-5)", 4, "creative", "content");
+    toggle("asset-visualizer", "youtubeVisualizer", "Build YouTube visualizer", "1920×1080 · full track length · AE (T-5)", 4, "creative", "content");
+    toggle("asset-announce", "announcementPost", "Build announcement post", "1080×1080 · Canva (T-4)", 4, "creative", "content");
+    toggle("asset-thumb", "youtubeThumbnail", "Build YouTube thumbnail", "1280×720 PNG · Canva (T-4)", 3, "creative", "content");
+
     if (d.primaryVideo === "none" || d.primaryVideo === "planned") {
       tasks.push({
-        id: `content-video-${release.title}`,
-        title: `${d.primaryVideo === "none" ? "Start" : "Shoot"} primary video for ${release.title}`,
-        subtitle: `Primary video is the highest-impact asset (25% of readiness score)`,
-        urgency: daysUntil <= 5 ? "RED" : "AMBER",
-        pillar: "creative",
-        timeBlock: "content",
+        id: `asset-video-${t}`, title: `${d.primaryVideo === "none" ? "Start" : "Shoot"} primary video — ${t}`,
+        subtitle: "Highest-impact asset (25% of readiness score)",
+        urgency: urg(5), pillar: "creative", timeBlock: "content",
         action: async () => {
           const next = d.primaryVideo === "none" ? "planned" : "shot";
-          await updateContentDeliverables(release.title, { primaryVideo: next });
+          await updateContentDeliverables(t, { primaryVideo: next as any });
         },
       });
     }
+
+    if (d.brollClips === 0) {
+      tasks.push({
+        id: `asset-broll-${t}`, title: `Capture B-roll — ${t}`,
+        subtitle: "Zero clips — feeds reels and video",
+        urgency: urg(7), pillar: "creative", timeBlock: "content",
+        action: async () => { await updateContentDeliverables(t, { brollClips: 1 }); },
+      });
+    }
+
     if (d.reelsPosted < Math.ceil(d.reelsGoal * 0.3)) {
       const needed = Math.ceil(d.reelsGoal * 0.3) - d.reelsPosted;
       tasks.push({
-        id: `content-reels-${release.title}`,
-        title: `Post ${needed}+ reels for ${release.title}`,
-        subtitle: `${d.reelsPosted}/${d.reelsGoal} posted — run CF4 --multi if footage exists`,
-        urgency: daysUntil <= 5 ? "RED" : "AMBER",
-        pillar: "creative",
-        timeBlock: "content",
-        action: async () => {
-          await updateContentDeliverables(release.title, { reelsPosted: d.reelsPosted + 1 });
-        },
+        id: `asset-reels-${t}`, title: `Post ${needed}+ reels — ${t}`,
+        subtitle: `${d.reelsPosted}/${d.reelsGoal} posted — run CF4 --multi (T-3)`,
+        urgency: urg(3), pillar: "creative", timeBlock: "content",
+        action: async () => { await updateContentDeliverables(t, { reelsPosted: d.reelsPosted + 1 }); },
       });
     }
-    if (d.brollClips === 0) {
-      tasks.push({
-        id: `content-broll-${release.title}`,
-        title: `Capture B-roll for ${release.title}`,
-        subtitle: "Zero B-roll clips — feeds into reels and video assets",
-        urgency: daysUntil <= 7 ? "AMBER" : "GREEN",
-        pillar: "creative",
-        timeBlock: "content",
-        action: async () => {
-          await updateContentDeliverables(release.title, { brollClips: 1 });
-        },
-      });
+
+    // ── CAPTIONS & SCHEDULING (T-2) ──
+    toggle("post-captions", "captionsWritten", "Write all captions", "Use templates from Per-Song Playbook (T-2)", 2, "creative", "content");
+    toggle("post-schedule", "postsScheduled", "Schedule all posts", "BTS → teaser → release day → reaction (T-2)", 2, "creative", "content");
+
+    // ── DISTRIBUTION (T-2 to T-0) ──
+    toggle("dist-amuse", "amuseUploaded", "Upload to Amuse", `48hr window — upload by ${release.uploadDate}`, 3, "ops", "any");
+    toggle("dist-presave", "preSaveLive", "Pre-save link live in bio", "IG + TikTok bio → pre-save URL", 5, "ops", "any");
+    toggle("dist-pitch", "spotifyPitchSubmitted", "Submit Spotify editorial pitch", "Spotify for Artists → Upcoming → Pitch", 7, "ops", "biz");
+    if (daysUntil <= 0) {
+      toggle("dist-verify", "streamingLinksVerified", "Verify streaming links", "Confirm live on Spotify + Apple Music", 0, "ops", "any");
     }
+
+    // ── REGISTRATIONS ──
+    toggle("reg-isrc", "isrcPulled", "Pull ISRC from Amuse", "Check confirmation email — needed for all registrations", 7, "ops", "biz");
+    toggle("reg-ascap", "ascapRegistered", "Register on ASCAP", `ascap.com → Register Works${!d.isrcPulled ? " (needs ISRC first)" : ""}`, 5, "ops", "biz");
+    toggle("reg-mlc", "mlcRegistered", "Register on MLC", `themlc.com${!d.isrcPulled ? " (needs ISRC first)" : ""}`, 5, "ops", "biz");
+    toggle("reg-songtrust", "songtrustRegistered", "Register on Songtrust", `Verify login post-UMG${!d.isrcPulled ? " (needs ISRC)" : ""}`, 5, "ops", "biz");
+    toggle("reg-musixmatch", "musixmatchSubmitted", "Submit lyrics to Musixmatch", "pro.musixmatch.com → submit lyrics", 3, "ops", "biz");
+    toggle("reg-instrumental", "instrumentalRendered", "Render instrumental", "Required for sync licensing", 7, "ops", "studio");
   }
 
   // ── 6. SESSION → Tasks ───────────────────────────────────────────
@@ -319,9 +271,9 @@ export async function deriveKillList(): Promise<KillTask[]> {
       pillar: "creative",
       timeBlock: "evening",
       action: async () => {
-      const log = await getDailyLog(today);
-      log.sessionQuality = 3; // Default to solid — user should update in Quick-Log
-      await saveDailyLog(log);
+        const log = await getDailyLog(today);
+        log.sessionQuality = 3;
+        await saveDailyLog(log);
       },
     });
   }
@@ -338,7 +290,6 @@ export async function deriveKillList(): Promise<KillTask[]> {
         pillar: "business",
         timeBlock: "biz",
         action: async () => {
-          // Can't set from here — direct to Engine page
           await setStoreValue("engine_daily_move", "(set in Engine)");
         },
       });
@@ -361,30 +312,7 @@ export async function deriveKillList(): Promise<KillTask[]> {
     }
   }
 
-  // ── 8. AMUSE UPLOAD DEADLINES ────────────────────────────────────
-  for (const release of releases) {
-    if (release.status === "live") continue;
-    const uploadDate = new Date(release.uploadDate + "T00:00:00");
-    const daysUntilUpload = Math.ceil((uploadDate.getTime() - now.getTime()) / 86400000);
-    if (daysUntilUpload >= 0 && daysUntilUpload <= 3) {
-      tasks.push({
-        id: `upload-${release.title}`,
-        title: `Upload ${release.title} to Amuse`,
-        subtitle: `Upload by ${release.uploadDate} — ${daysUntilUpload === 0 ? "TODAY" : `${daysUntilUpload} day${daysUntilUpload > 1 ? "s" : ""} left`}`,
-        urgency: daysUntilUpload <= 1 ? "RED" : "AMBER",
-        pillar: "ops",
-        timeBlock: "any",
-        action: async () => {
-          const current = await getStoreValue<string[]>(`uploads_confirmed:${today}`) || [];
-          current.push(release.title);
-          await setStoreValue(`uploads_confirmed:${today}`, current);
-        },
-      });
-    }
-  }
-
   // ── Filter by cleared ────────────────────────────────────────────
-  // Check which tasks were already cleared today
   const cleared = await getStoreValue<string[]>(`kill_cleared:${today}`) || [];
   const filtered = tasks.filter(t => !cleared.includes(t.id));
 
@@ -396,13 +324,9 @@ export async function deriveKillList(): Promise<KillTask[]> {
 }
 
 // ── Task Completion ──────────────────────────────────────────────────
-// Executes the action AND marks the task as cleared for today
 
 export async function completeTask(task: KillTask): Promise<void> {
-  // Execute the underlying data mutation
   await task.action();
-
-  // Mark as cleared (prevents re-showing after re-derive)
   const today = getTodayISO();
   const cleared = await getStoreValue<string[]>(`kill_cleared:${today}`) || [];
   if (!cleared.includes(task.id)) {
@@ -420,7 +344,7 @@ export async function getKillStats(): Promise<{
 }> {
   const today = getTodayISO();
   const cleared = await getStoreValue<string[]>(`kill_cleared:${today}`) || [];
-  const all = await deriveKillList(); // Already filtered by cleared
+  const all = await deriveKillList();
   const redRemaining = all.filter(t => t.urgency === "RED").length;
   return {
     total: all.length + cleared.length,

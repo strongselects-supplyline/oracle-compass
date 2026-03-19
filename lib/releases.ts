@@ -6,26 +6,73 @@ import { getStoreValue, setStoreValue } from "@/lib/db";
 
 /* ── Content Deliverables ── */
 export type ContentDeliverables = {
+  // Creative assets
   visualIdea: string;                                   // "The One Idea" per track
   primaryVideo: "none" | "planned" | "shot" | "edited" | "done";
   lyricVideo: "none" | "planned" | "edited" | "done";
-  reelsPosted: number;                                  // running tally
-  reelsGoal: number;                                    // target per release window
+  spotifyCanvas: boolean;
+  announcementPost: boolean;
+  instagramStory: boolean;
+  youtubeVisualizer: boolean;
+  youtubeThumbnail: boolean;
+  prereleaseTeaser: boolean;
+  reelsPosted: number;
+  reelsGoal: number;
   tiktoksPosted: number;
   tiktoksGoal: number;
-  brollClips: number;                                   // raw B-roll clips captured
-  notes: string;                                        // freeform production notes
+  brollClips: number;
+  // Production prep
+  variableSwapSheet: boolean;                           // palette, photos, copy angle filled
+  paletteExtracted: boolean;
+  sourcePhotoLocked: boolean;
+  captionsWritten: boolean;
+  postsScheduled: boolean;
+  // Distribution
+  amuseUploaded: boolean;
+  preSaveLive: boolean;
+  streamingLinksVerified: boolean;
+  spotifyPitchSubmitted: boolean;
+  // Registrations (per-track)
+  isrcPulled: boolean;
+  ascapRegistered: boolean;
+  mlcRegistered: boolean;
+  songtrustRegistered: boolean;
+  musixmatchSubmitted: boolean;
+  instrumentalRendered: boolean;
+  // Meta
+  notes: string;
 };
 
 const DEFAULT_DELIVERABLES: ContentDeliverables = {
   visualIdea: "",
   primaryVideo: "none",
   lyricVideo: "none",
+  spotifyCanvas: false,
+  announcementPost: false,
+  instagramStory: false,
+  youtubeVisualizer: false,
+  youtubeThumbnail: false,
+  prereleaseTeaser: false,
   reelsPosted: 0,
   reelsGoal: 20,
   tiktoksPosted: 0,
   tiktoksGoal: 30,
   brollClips: 0,
+  variableSwapSheet: false,
+  paletteExtracted: false,
+  sourcePhotoLocked: false,
+  captionsWritten: false,
+  postsScheduled: false,
+  amuseUploaded: false,
+  preSaveLive: false,
+  streamingLinksVerified: false,
+  spotifyPitchSubmitted: false,
+  isrcPulled: false,
+  ascapRegistered: false,
+  mlcRegistered: false,
+  songtrustRegistered: false,
+  musixmatchSubmitted: false,
+  instrumentalRendered: false,
   notes: "",
 };
 
@@ -49,7 +96,7 @@ const RELEASE_DEFAULTS: Release[] = [
 
 const RELEASES_KEY = "dynamic_releases";
 const RELEASES_VERSION_KEY = "releases_data_version";
-const RELEASE_DATA_VERSION = 9; // v9: SEE ME status → live, studioData synced, flag dedup fix. Mar 18 2026
+const RELEASE_DATA_VERSION = 10; // v10: expanded deliverables (full per-release checklist), SEE ME live. Mar 18 2026
 
 // Read from IndexedDB, seeding defaults on first call or after version bump
 export async function getDynamicReleases(): Promise<Release[]> {
