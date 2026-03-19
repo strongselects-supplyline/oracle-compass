@@ -8,12 +8,17 @@ export async function POST(req: NextRequest) {
   if (!apiKey) return NextResponse.json({ error: "OPENAI_API_KEY not set" }, { status: 500 });
 
   try {
-    const { trackTitle, sonicContext, direction } = await req.json();
+    const { trackTitle, sonicContext, direction, pastCanonicalPrompts } = await req.json();
+
+    // Build context from past selections (feedback loop)
+    const pastDirection = (pastCanonicalPrompts && pastCanonicalPrompts.length > 0)
+      ? `\nPAST APPROVED DIRECTION (artist selected these — evolve from this visual language, don’t start over):\n${pastCanonicalPrompts.slice(0, 3).join('\n')}`
+      : '';
 
     // Enforce strict brand rules in the prompt
     const prompt = `Album cover art for the track "${trackTitle}".
 Direction: ${direction || "A cinematic, intimate, late-night scene."}
-Sonic Profile: ${sonicContext || "dark R&B"}
+Sonic Profile: ${sonicContext || "dark R&B"}${pastDirection}
 
 CRITICAL BRAND AESTHETICS:
 - Palette MUST heavily feature: Deep Emerald / Dark Green (#1a4a2e), Warm Gold / Amber (#d4a853), Midnight Navy / Black (#0a0a1a).

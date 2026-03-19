@@ -8,7 +8,7 @@ import {
   getVoiceExamples, getSonicProfile, getCanonicalCopy,
   type CreativeAsset, type TrackLabelData
 } from "@/lib/labelStore";
-import { getTrackAssets, buildFullTrackContext, saveTrackCoverArt } from "@/lib/assetVault";
+import { getTrackAssets, buildFullTrackContext, buildCreativeContext, saveTrackCoverArt } from "@/lib/assetVault";
 
 // ── Inline Editable Text ─────────────────────────────────────────────
 
@@ -132,13 +132,18 @@ export default function CreativeDept({ trackTitle }: { trackTitle: string }) {
         getTrackAssets(trackTitle),
       ]);
 
+      // Collect past canonical creative selections for the feedback loop
+      const pastCanonicals = (labelData?.creativeAssets || [])
+        .filter(a => a.isCanonical)
+        .map(a => a.editedContent || a.content);
+
       const res = await fetch("/api/label/creative", {
         method: "POST",
         body: JSON.stringify({
           trackTitle,
           voiceExamples,
-          // Vault context (real Cyanite data + full lyrics)
-          sonicContext: buildFullTrackContext(vaultAssets),
+          // Full vault context with past selections baked in
+          sonicContext: buildCreativeContext(vaultAssets, pastCanonicals),
           copyAngle: canonicalCopy,
         })
       });
@@ -201,13 +206,20 @@ export default function CreativeDept({ trackTitle }: { trackTitle: string }) {
     try {
       const vaultAssets = await getTrackAssets(trackTitle);
       const direction = await getCanonicalCopy(trackTitle, "spotify_pitch");
-      
+
+      // Feedback loop: pull past canonical cover art prompts
+      const coverArtLabelData = await getTrackLabelData(trackTitle);
+      const pastCanonicalPrompts = (coverArtLabelData.creativeAssets || [])
+        .filter(a => a.type === "cover_art_prompt" && a.isCanonical)
+        .map(a => a.editedContent || a.content);
+
       const res = await fetch("/api/label/image", {
         method: "POST",
         body: JSON.stringify({
           trackTitle,
           sonicContext: buildFullTrackContext(vaultAssets),
           direction,
+          pastCanonicalPrompts,
         }),
       });
       

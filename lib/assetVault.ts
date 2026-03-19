@@ -203,11 +203,24 @@ export function buildLyricsSnippetContext(assets: TrackAssets): string {
   return `LYRICS SNIPPET:\n${assets.lyricsSnippet}`;
 }
 
+export function buildVisualContext(assets: TrackAssets): string {
+  const parts: string[] = [];
+  if (assets.coverArtUrl) {
+    parts.push("COVER ART: Uploaded and available in vault. Use this as the primary visual anchor when generating new assets.");
+  }
+  if (assets.visualReferences.length > 0) {
+    parts.push(`VISUAL REFERENCES: ${assets.visualReferences.length} mood board image(s) uploaded. These represent the artist's visual direction for this track.`);
+  }
+  return parts.length > 0 ? `VISUAL ASSETS:\n${parts.join("\n")}` : "VISUAL ASSETS: None uploaded yet.";
+}
+
 export function buildFullTrackContext(assets: TrackAssets): string {
   return [
     buildSonicContext(assets),
     "",
     buildLyricsContext(assets),
+    "",
+    buildVisualContext(assets),
   ].join("\n");
 }
 
@@ -218,4 +231,28 @@ export function buildCompactTrackContext(assets: TrackAssets): string {
     "",
     buildLyricsSnippetContext(assets),
   ].join("\n");
+}
+
+// Full context for Creative Dept — includes past canonical creative direction
+export function buildCreativeContext(
+  assets: TrackAssets,
+  pastCanonicalPrompts: string[]
+): string {
+  const parts = [
+    buildSonicContext(assets),
+    "",
+    buildLyricsContext(assets),
+    "",
+    buildVisualContext(assets),
+  ];
+
+  if (pastCanonicalPrompts.length > 0) {
+    parts.push("");
+    parts.push("PAST CANONICAL SELECTIONS (artist approved these — match this direction):");
+    pastCanonicalPrompts.forEach((p, i) => {
+      parts.push(`  ${i + 1}. ${p.slice(0, 200)}${p.length > 200 ? "..." : ""}`);
+    });
+  }
+
+  return parts.join("\n");
 }
