@@ -45,6 +45,13 @@ export const TOOLS: Record<string, ToolRef> = {
     cost: "Included in Adobe Creative Suite",
   },
   // ── Content Tools ─────────────────────────────────────────────────
+  godaddy: {
+    name: "GoDaddy Studio Pro",
+    category: "creative",
+    platform: "mobile",
+    openVerb: "Open",
+    cost: "Pro subscription",
+  },
   capcut: {
     name: "CapCut",
     category: "creative",

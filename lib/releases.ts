@@ -39,6 +39,10 @@ export type ContentDeliverables = {
   songtrustRegistered: boolean;
   musixmatchSubmitted: boolean;
   instrumentalRendered: boolean;
+  // Marketing & Growth (Multiplier Engine)
+  grooverPitchesSent: boolean;
+  songtoolsCampaignLive: boolean;
+  unhurdDataLogged: boolean;
   // Meta
   notes: string;
 };
@@ -73,6 +77,9 @@ const DEFAULT_DELIVERABLES: ContentDeliverables = {
   songtrustRegistered: false,
   musixmatchSubmitted: false,
   instrumentalRendered: false,
+  grooverPitchesSent: false,
+  songtoolsCampaignLive: false,
+  unhurdDataLogged: false,
   notes: "",
 };
 
@@ -96,7 +103,7 @@ const RELEASE_DEFAULTS: Release[] = [
 
 const RELEASES_KEY = "dynamic_releases";
 const RELEASES_VERSION_KEY = "releases_data_version";
-const RELEASE_DATA_VERSION = 10; // v10: expanded deliverables (full per-release checklist), SEE ME live. Mar 18 2026
+const RELEASE_DATA_VERSION = 11; // v11: added Multiplier Engine deliverables (Groover, SongTools, un:hurd)
 
 // Read from IndexedDB, seeding defaults on first call or after version bump
 export async function getDynamicReleases(): Promise<Release[]> {

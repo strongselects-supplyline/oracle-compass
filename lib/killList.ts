@@ -206,7 +206,7 @@ export async function deriveKillList(): Promise<KillTask[]> {
     if (release.status === "live") continue;
     const releaseDate = new Date(release.releaseDate + "T00:00:00");
     const daysUntil = Math.ceil((releaseDate.getTime() - now.getTime()) / 86400000);
-    if (daysUntil > 21 || daysUntil < -3) continue;
+    if (daysUntil > 21 || daysUntil < -14) continue;
 
     const d = release.contentDeliverables;
     const t = release.title;
@@ -305,7 +305,7 @@ export async function deriveKillList(): Promise<KillTask[]> {
     ], 4, "creative", "content");
 
     toggle("asset-announce", "announcementPost", "Make announcement post", "The main feed post announcing the release", [
-      openApp("photoshop"),
+      openApp("godaddy") + " or " + openApp("photoshop"),
       "Size: 1080 × 1080 (square) for IG feed",
       "Use your hero photo + color palette",
       "Add: song title, release date, 'PRE-SAVE LINK IN BIO'",
@@ -432,6 +432,30 @@ export async function deriveKillList(): Promise<KillTask[]> {
         "If it's not showing up, check your Amuse dashboard for errors",
         "Share the links to your socials once confirmed",
       ], 0, "ops", "any");
+    }
+
+    // ── GROWTH & PROM0 (MULTIPLIER ENGINE) ──
+    toggle("growth-groover", "grooverPitchesSent", "Pitch to curators on Groover", "Guaranteed feedback and playlist consideration", [
+      openApp("groover"),
+      amusePartnerNote("groover"),
+      "Use the Copy Vault in Label OS to generate your 1-liner pitch",
+      "Blast to 20 carefully selected curators",
+    ], 7, "business", "biz");
+
+    toggle("growth-songtools", "songtoolsCampaignLive", "Launch SongTools ad campaign", "Drive immediate traffic for algorithmic priming", [
+      openApp("songtools"),
+      amusePartnerNote("songtools"),
+      "Deploy $50-$100 on release day to run IG/TikTok promos",
+      "This forces Spotify's Release Radar to trigger locally",
+    ], 0, "business", "biz");
+
+    if (daysUntil <= -7) {
+      toggle("growth-unhurd", "unhurdDataLogged", "Log audience intel from un:hurd", "Track demographics for the Z-to-A flywheel", [
+        openApp("unhurd"),
+        "Load the performance data from the first week of release",
+        "Note strictly *who* is saving the track (age/geo)",
+        "Feed this data back into the Label OS for future PR copy",
+      ], -7, "business", "biz");
     }
 
     // ── REGISTRATIONS ──
