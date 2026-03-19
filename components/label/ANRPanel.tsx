@@ -3,6 +3,7 @@
 import { useState, useEffect } from "react";
 import { setStoreValue, getStoreValue, logLabelCost } from "@/lib/db";
 import { LABEL_COST_ESTIMATES } from "@/lib/budget";
+import { getTrackLabelData, saveTrackLabelData, type SonicProfile } from "@/lib/labelStore";
 
 type SonicReport = {
     sonicPosition: string;
@@ -39,6 +40,20 @@ export default function ANRPanel({ trackTitle }: { trackTitle: string }) {
 
             setReport(data);
             await setStoreValue(`label_anr:${trackTitle}`, data);
+
+            // Save to shared labelStore for cross-agent access
+            const labelData = await getTrackLabelData(trackTitle);
+            labelData.sonicProfile = {
+              bpm: parseInt(data.bpmRange) || 0,
+              key: "—",
+              genreBreakdown: {},
+              moodTags: [data.energyLevel || "mid"],
+              comparableArtists: (data.referenceTracks || []).map((r: any) => `${r.artist} — ${r.title}`),
+              pitchAngle: data.sonicPosition || "",
+              generatedAt: new Date().toISOString(),
+            };
+            await saveTrackLabelData(labelData);
+
             await logLabelCost(LABEL_COST_ESTIMATES.anr_track_analysis);
         } catch (e: any) {
             console.error("A&R agent failed:", e);
