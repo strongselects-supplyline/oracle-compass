@@ -44,13 +44,14 @@ export default function BottomNav() {
         });
     }, []);
 
+    // Flywheel order: SEE → INPUT → THINK → PLAN → CREATE → HUSTLE → SHIP
     const navs = [
         { name: "Kill", path: "/kill", icon: "🎯" },
         { name: "Log", path: "/log", icon: "⚡" },
+        { name: "Oracle", path: "/oracle", icon: "🔮" },
         { name: "Plan", path: "/planner", icon: "📋" },
         { name: "Studio", path: "/studio", icon: "🎙️" },
         { name: "Engine", path: "/engine", icon: "⚙️" },
-        { name: "Oracle", path: "/oracle", icon: "🔮" },
         { name: "Label", path: "/label", icon: "🏷️" },
     ];
 
