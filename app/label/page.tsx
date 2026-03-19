@@ -10,8 +10,9 @@ import CreativeDept from "@/components/label/CreativeDept";
 import ContentDept from "@/components/label/ContentDept";
 import ANRPanel from "@/components/label/ANRPanel";
 import SubmissionLog from "@/components/label/SubmissionLog";
+import VaultManager from "@/components/label/VaultManager";
 
-type Tab = "rollout" | "content" | "subs" | "vault" | "compliance" | "creative" | "anr";
+type Tab = "rollout" | "content" | "subs" | "vault" | "compliance" | "creative" | "anr" | "assets";
 
 const TABS: { id: Tab; label: string; emoji: string }[] = [
     { id: "rollout", label: "Rollout", emoji: "📅" },
@@ -21,6 +22,7 @@ const TABS: { id: Tab; label: string; emoji: string }[] = [
     { id: "compliance", label: "Ops", emoji: "✅" },
     { id: "creative", label: "Creative", emoji: "🎨" },
     { id: "anr", label: "A&R", emoji: "🎧" },
+    { id: "assets", label: "Vault", emoji: "📦" },
 ];
 
 export default function LabelPage() {
@@ -116,6 +118,7 @@ export default function LabelPage() {
                                             {activeTab === "compliance" && <ComplianceBoard />}
                                             {activeTab === "creative" && <CreativeDept trackTitle={s.title} />}
                                             {activeTab === "anr" && <ANRPanel trackTitle={s.title} />}
+                                            {activeTab === "assets" && <VaultManager trackTitle={s.title} />}
                                         </div>
                                     </div>
                                 )}

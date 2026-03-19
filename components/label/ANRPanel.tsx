@@ -4,6 +4,7 @@ import { useState, useEffect } from "react";
 import { setStoreValue, getStoreValue, logLabelCost } from "@/lib/db";
 import { LABEL_COST_ESTIMATES } from "@/lib/budget";
 import { getTrackLabelData, saveTrackLabelData, type SonicProfile } from "@/lib/labelStore";
+import { getTrackAssets, buildSonicContext, buildLyricsContext } from "@/lib/assetVault";
 
 type SonicReport = {
     sonicPosition: string;
@@ -27,9 +28,14 @@ export default function ANRPanel({ trackTitle }: { trackTitle: string }) {
         setLoading(true);
         setError(null);
         try {
+            // Pull real Cyanite data + lyrics from vault
+            const vaultAssets = await getTrackAssets(trackTitle);
+            const sonicContext = buildSonicContext(vaultAssets);
+            const lyricsContext = buildLyricsContext(vaultAssets);
+
             const res = await fetch("/api/label/anr", {
                 method: "POST",
-                body: JSON.stringify({ trackTitle })
+                body: JSON.stringify({ trackTitle, sonicContext, lyricsContext })
             });
             if (!res.ok) {
                 const errText = await res.text().catch(() => "Server error");

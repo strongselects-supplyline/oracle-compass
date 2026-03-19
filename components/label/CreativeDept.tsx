@@ -8,6 +8,7 @@ import {
   getVoiceExamples, getSonicProfile, getCanonicalCopy,
   type CreativeAsset, type TrackLabelData
 } from "@/lib/labelStore";
+import { getTrackAssets, buildFullTrackContext, saveTrackCoverArt } from "@/lib/assetVault";
 
 // ── Inline Editable Text ─────────────────────────────────────────────
 
@@ -62,6 +63,9 @@ function AssetCard({
     setTimeout(() => setCopied(false), 2000);
   };
 
+  // If content is an image URL, render it
+  const isImage = text.startsWith("http") || text.startsWith("data:image");
+
   return (
     <div className="rounded-xl p-4 mb-3 transition-all" style={{
       background: asset.isCanonical ? "rgba(0,230,118,0.04)" : "rgba(255,255,255,0.02)",
@@ -73,7 +77,13 @@ function AssetCard({
           <span className="text-[9px] font-black text-green-500 tracking-widest">SELECTED ✓</span>
         )}
       </div>
-      <EditableText value={text} onSave={(newText) => onSelect(asset.id, newText)} />
+      
+      {isImage ? (
+        <img src={text} alt="Generated cover" className="w-full h-auto aspect-square object-cover rounded-lg mb-3 border border-[#1a1a1a]" />
+      ) : (
+        <EditableText value={text} onSave={(newText) => onSelect(asset.id, newText)} />
+      )}
+
       <div className="flex gap-2 mt-3">
         {!asset.isCanonical && (
           <button onClick={() => onSelect(asset.id)}
@@ -114,20 +124,21 @@ export default function CreativeDept({ trackTitle }: { trackTitle: string }) {
     setLoading(true);
     setError(null);
     try {
-      // Cross-agent pull
-      const [voiceExamples, sonicProfile, canonicalCopy] = await Promise.all([
+      // Pull vault data + cross-agent context
+      const [voiceExamples, sonicProfile, canonicalCopy, vaultAssets] = await Promise.all([
         getVoiceExamples("video_treatment", 5),
         getSonicProfile(trackTitle),
         getCanonicalCopy(trackTitle, "spotify_pitch"),
+        getTrackAssets(trackTitle),
       ]);
 
       const res = await fetch("/api/label/creative", {
         method: "POST",
         body: JSON.stringify({
           trackTitle,
-          mood: "dark, intimate, late-night R&B",
           voiceExamples,
-          sonicContext: sonicProfile ? { bpm: sonicProfile.bpm, moodTags: sonicProfile.moodTags } : null,
+          // Vault context (real Cyanite data + full lyrics)
+          sonicContext: buildFullTrackContext(vaultAssets),
           copyAngle: canonicalCopy,
         })
       });
@@ -184,8 +195,63 @@ export default function CreativeDept({ trackTitle }: { trackTitle: string }) {
     setLoading(false);
   };
 
-  const handleSelect = async (assetId: string, editedContent?: string) => {
-    await selectCanonicalCreative(trackTitle, assetId, editedContent);
+  const generateCoverArt = async () => {
+    setLoading(true);
+    setError(null);
+    try {
+      const vaultAssets = await getTrackAssets(trackTitle);
+      const direction = await getCanonicalCopy(trackTitle, "spotify_pitch");
+      
+      const res = await fetch("/api/label/image", {
+        method: "POST",
+        body: JSON.stringify({
+          trackTitle,
+          sonicContext: buildFullTrackContext(vaultAssets),
+          direction,
+        }),
+      });
+      
+      if (!res.ok) {
+        const errText = await res.text().catch(() => "Server error");
+        throw new Error(`DALL-E error (${res.status}): ${errText.slice(0, 120)}`);
+      }
+      
+      const { url } = await res.json();
+      if (!url) throw new Error("No image URL returned");
+
+      // Save to Vault
+      await saveTrackCoverArt(trackTitle, url);
+
+      // Save as creative asset so it shows in the UI
+      const data = await getTrackLabelData(trackTitle);
+      const newAsset: CreativeAsset = {
+        id: `cover_art-${Date.now()}`,
+        type: "cover_art_prompt",
+        content: url, // Storing URL as content
+        generatedAt: new Date().toISOString(),
+        isCanonical: true,
+        editedContent: null, // Added to match CreativeAsset type
+      };
+      
+      const updated = {
+        ...data,
+        creativeAssets: [newAsset, ...(data.creativeAssets || []).map(a => 
+          a.type === "cover_art_prompt" ? { ...a, isCanonical: false } : a
+        )]
+      };
+      
+      await saveTrackLabelData(updated);
+      await loadData();
+    } catch (e: any) {
+      console.error(e);
+      setError(e.message || "Failed to generate cover art");
+    } finally {
+      setLoading(false);
+    }
+  };
+
+  const handleSelect = async (id: string, editedContent?: string) => {
+    await selectCanonicalCreative(trackTitle, id, editedContent);
     await loadData();
   };
 
@@ -211,12 +277,18 @@ export default function CreativeDept({ trackTitle }: { trackTitle: string }) {
     <div className="animate-fade-in">
       <div className="flex justify-between items-center mb-5 gap-2">
         <h3 className="text-sm font-black tracking-widest uppercase">🎨 Creative Dept</h3>
-        {(labelData?.creativeAssets?.length ?? 0) > 0 ? (
-          <button onClick={generate} disabled={loading}
-            className="text-[10px] font-black tracking-widest text-[#555] hover:text-white uppercase disabled:opacity-30 transition-colors">
-            {loading ? "..." : "[REGEN]"}
+        <div className="flex gap-2">
+          <button onClick={generateCoverArt} disabled={loading}
+            className="text-[10px] font-black tracking-widest text-[#d4a853] hover:text-white uppercase disabled:opacity-30 transition-colors">
+            {loading ? "..." : "[GEN COVER]"}
           </button>
-        ) : null}
+          {(labelData?.creativeAssets?.length ?? 0) > 0 ? (
+            <button onClick={generate} disabled={loading}
+              className="text-[10px] font-black tracking-widest text-[#555] hover:text-white uppercase disabled:opacity-30 transition-colors">
+              {loading ? "..." : "[REGEN ALL]"}
+            </button>
+          ) : null}
+        </div>
       </div>
 
       {error && (

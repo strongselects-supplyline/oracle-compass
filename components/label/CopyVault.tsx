@@ -8,6 +8,7 @@ import {
   getVoiceExamples, getSonicProfile, getCanonicalCreative,
   type CopyVariant, type TrackLabelData
 } from "@/lib/labelStore";
+import { getTrackAssets, buildCompactTrackContext } from "@/lib/assetVault";
 
 // ── Inline Editable Text ─────────────────────────────────────────────
 
@@ -129,11 +130,12 @@ export default function CopyVault({ trackTitle }: { trackTitle: string }) {
     setActiveRequest(assetType);
     setError(null);
     try {
-      // Cross-agent pull: voice examples + sonic profile + creative direction
-      const [voiceExamples, sonicProfile, visualDirection] = await Promise.all([
+      // Pull vault data + cross-agent context
+      const [voiceExamples, sonicProfile, visualDirection, vaultAssets] = await Promise.all([
         getVoiceExamples(assetType, 5),
         getSonicProfile(trackTitle),
         getCanonicalCreative(trackTitle, "video_treatment"),
+        getTrackAssets(trackTitle),
       ]);
 
       const prRes = await fetch("/api/label/pr", {
@@ -142,10 +144,8 @@ export default function CopyVault({ trackTitle }: { trackTitle: string }) {
           trackTitle,
           assetType,
           voiceExamples,
-          sonicContext: sonicProfile ? {
-            bpm: sonicProfile.bpm,
-            moodTags: sonicProfile.moodTags,
-          } : null,
+          // Vault sonic context (real Cyanite data — overrides labelStore placeholder)
+          sonicContext: buildCompactTrackContext(vaultAssets),
           visualDirection,
         })
       });

@@ -15,9 +15,9 @@ BRAND AESTHETIC CONSTRAINTS:
 
 You produce three deliverables per track:
 
-1. MUSIC VIDEO TREATMENT — A 3-act visual treatment with scene descriptions, mood references, and suggested locations. Each act should be 2-3 sentences. Think 35mm film, practical lighting, Lake Geneva solitude.
+1. MUSIC VIDEO TREATMENT — A 3-act visual treatment with scene descriptions, mood references, and suggested locations. Each act should be 2-3 sentences. Think 35mm film, practical lighting, Lake Geneva solitude. If lyrics are provided, reference specific lyrical themes or moments.
 
-2. COVER ART PROMPTS — 3 image generation prompts formatted for Midjourney/Flux. Each prompt should be specific, visual, and enforce the brand palette. No generic descriptions.
+2. COVER ART PROMPTS — 3 image generation prompts formatted for Midjourney/Flux. Each prompt should be specific, visual, and enforce the brand palette. No generic descriptions. Reference the sonic mood and lyrics.
 
 3. MERCH CONCEPT — One premium merch item concept. Minimal. The coordinates of Lake Geneva (42.5917° N, 88.4334° W) are a recurring motif. No loud graphics.
 
@@ -53,17 +53,13 @@ export async function POST(req: NextRequest) {
       extraContext += `\n\nVOICE LEARNING — The artist has selected and edited creative content before. Match their preferences:\n${voiceExamples.map((e: any) => `Original: "${e.original}"\nArtist preferred: "${e.edited}"`).join('\n\n')}`;
     }
     if (sonicContext) {
-      extraContext += `\n\nSONIC CONTEXT: ${sonicContext.bpm || '?'} BPM, mood: ${(sonicContext.moodTags || []).join(', ')}`;
+      extraContext += `\n\nVAULT CONTEXT (Sonic Data & Lyrics):\n${sonicContext}`;
     }
     if (copyAngle) {
-      extraContext += `\n\nNARRATIVE DIRECTION (from Copy Vault): ${copyAngle}`;
+      extraContext += `\n\nNARRATIVE DIRECTION (from Copy Vault):\n${copyAngle}`;
     }
 
-    const userMessage = `Track: "${trackTitle}"
-Mood/Vibe: ${mood || "dark, intimate, late-night R&B"}
-Lyrics snippet: ${lyricsSnippet || "(not provided)"}
-
-Generate the full creative package.`;
+    const userMessage = `Track: "${trackTitle}"${extraContext}\n\nGenerate the creative package.`;
 
     const fullSystem = SYSTEM_PROMPT + extraContext;
 

@@ -10,6 +10,7 @@ import { getDailyLog, saveDailyLog, getStoreValue, setStoreValue, getTodayISO, D
 import { getDynamicReleases, Release, updateContentDeliverables } from "@/lib/releases";
 import { getDayType, isStudioDay, isBizDay } from "@/lib/dayType";
 import { getWeekKey, OracleFlag } from "@/lib/oracle";
+import { openApp, amusePartnerNote } from "@/lib/toolchain";
 
 // ── Types ────────────────────────────────────────────────────────────
 
@@ -270,7 +271,7 @@ export async function deriveKillList(): Promise<KillTask[]> {
     }
 
     toggle("asset-canvas", "spotifyCanvas", "Make Spotify Canvas (looping video)", "The short video that plays on the Spotify Now Playing screen", [
-      "Open After Effects, CapCut, or Canva Video",
+      openApp("afterEffects") + " or CapCut",
       "Size: 720 wide × 1280 tall (vertical/portrait)",
       "Make a 3-8 second seamless loop — use your hero photo or a clip",
       "Add subtle motion: slow zoom, color shift, particles, etc.",
@@ -279,7 +280,7 @@ export async function deriveKillList(): Promise<KillTask[]> {
     ], 5, "creative", "content");
 
     toggle("asset-teaser", "prereleaseTeaser", "Make 15-second teaser clip", "Short hype clip for IG Reels and TikTok before release day", [
-      "Open CapCut, After Effects, or your phone editor",
+      openApp("capcut") + " or After Effects",
       "Size: 1080 × 1920 (vertical)",
       "Max 15 seconds — use the catchiest part of the song",
       "Add text: song title + release date",
@@ -288,7 +289,7 @@ export async function deriveKillList(): Promise<KillTask[]> {
     ], 5, "creative", "content");
 
     toggle("asset-story", "instagramStory", "Make Instagram Story announcement", "Animated story for release day or pre-release hype", [
-      "Open Canva, After Effects, or Instagram directly",
+      openApp("afterEffects") + " or Instagram directly",
       "Size: 1080 × 1920 (full screen vertical)",
       "Add: album art, song title, 'OUT NOW' or 'drops [date]'",
       "Add motion — even a simple fade or slide works",
@@ -296,7 +297,7 @@ export async function deriveKillList(): Promise<KillTask[]> {
     ], 4, "creative", "content");
 
     toggle("asset-visualizer", "youtubeVisualizer", "Make YouTube visualizer", "Full-length audio visualizer video for YouTube", [
-      "Open After Effects (or use the Synesthesia Visualizer tool)",
+      openApp("afterEffects") + " (or use the Synesthesia Visualizer tool)",
       "Size: 1920 × 1080 (landscape)",
       "Duration: full track length",
       "Add: waveform/spectrum animation + album art + song info",
@@ -304,7 +305,7 @@ export async function deriveKillList(): Promise<KillTask[]> {
     ], 4, "creative", "content");
 
     toggle("asset-announce", "announcementPost", "Make announcement post", "The main feed post announcing the release", [
-      "Open Canva or Photoshop",
+      openApp("photoshop"),
       "Size: 1080 × 1080 (square) for IG feed",
       "Use your hero photo + color palette",
       "Add: song title, release date, 'PRE-SAVE LINK IN BIO'",
@@ -312,7 +313,7 @@ export async function deriveKillList(): Promise<KillTask[]> {
     ], 4, "creative", "content");
 
     toggle("asset-thumb", "youtubeThumbnail", "Make YouTube thumbnail", "The clickable thumbnail image for the YouTube upload", [
-      "Open Canva or Photoshop",
+      openApp("photoshop"),
       "Size: 1280 × 720 (landscape)",
       "Use your hero photo, make the text BIG and readable",
       "Include song title — keep it to 3-4 words max on screen",
@@ -367,7 +368,8 @@ export async function deriveKillList(): Promise<KillTask[]> {
         id: `asset-reels-${t}`, title: `Post ${needed}+ reels — ${t}`,
         subtitle: `${d.reelsPosted}/${d.reelsGoal} posted so far`,
         howTo: [
-          "Open CapCut or IG Reels editor",
+          openApp("capcut") + " or IG Reels editor",
+          "If using a long video, " + openApp("opusclip") + " to auto-extract hooks",
           "Use your B-roll clips or screen recordings",
           "Add a snippet of the song as audio",
           "Keep it 7-15 seconds, hook in the first 2 seconds",
@@ -398,7 +400,7 @@ export async function deriveKillList(): Promise<KillTask[]> {
 
     // ── DISTRIBUTION (T-2 to T-0) ──
     toggle("dist-amuse", "amuseUploaded", "Upload song to Amuse", `Must be uploaded by ${release.uploadDate} (48hr review window)`, [
-      "Open the Amuse app on your phone",
+      openApp("amuse"),
       "Tap 'Upload' or 'New Release'",
       "Upload the final master WAV/MP3 + album art",
       "Fill in: title, artist, genre, release date",
@@ -464,7 +466,8 @@ export async function deriveKillList(): Promise<KillTask[]> {
     ], 5, "ops", "biz");
 
     toggle("reg-musixmatch", "musixmatchSubmitted", "Submit lyrics to Musixmatch", "Gets your lyrics to show on Spotify, Apple Music, etc.", [
-      "Go to pro.musixmatch.com and log in (or create account)",
+      openApp("musixmatch"),
+      amusePartnerNote("musixmatch"),
       "Search for your song (may take 1-2 days after release to appear)",
       "Click the song and 'Submit Lyrics'",
       "Paste your full lyrics — double-check timing if doing synced lyrics",
@@ -472,6 +475,7 @@ export async function deriveKillList(): Promise<KillTask[]> {
     ], 3, "ops", "biz");
 
     toggle("reg-instrumental", "instrumentalRendered", "Render the instrumental version", "Needed for sync licensing, remixes, and content use", [
+      "Alternatively, " + openApp("masterchannel") + " to auto-master stems. (" + amusePartnerNote("masterchannel") + ")",
       "Open your DAW (Logic, Ableton, FL Studio, etc.)",
       "Mute all vocal tracks",
       "Export/bounce as WAV (same settings as the master)",
