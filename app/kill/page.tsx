@@ -39,7 +39,7 @@ function getGroupUrgency(tasks: KillTask[]): "RED" | "AMBER" | "GREEN" {
   return "GREEN";
 }
 
-// ── Task Row (compact inside accordion) ──────────────────────────────
+// ── Task Row (expandable how-to + separate complete button) ──────────
 
 function TaskRow({
   task,
@@ -48,11 +48,12 @@ function TaskRow({
   task: KillTask;
   onComplete: (task: KillTask) => void;
 }) {
-  const [pressing, setPressing] = useState(false);
+  const [expanded, setExpanded] = useState(false);
   const [clearing, setClearing] = useState(false);
   const style = URGENCY_STYLES[task.urgency];
 
-  const handleComplete = () => {
+  const handleComplete = (e: React.MouseEvent | React.TouchEvent) => {
+    e.stopPropagation();
     setClearing(true);
     setTimeout(() => onComplete(task), 350);
   };
@@ -75,41 +76,87 @@ function TaskRow({
   const displayTitle = task.title.replace(/\s—\s.+$/, "");
 
   return (
-    <button
-      onClick={handleComplete}
-      onMouseDown={() => setPressing(true)}
-      onMouseUp={() => setPressing(false)}
-      onMouseLeave={() => setPressing(false)}
-      onTouchStart={() => setPressing(true)}
-      onTouchEnd={() => setPressing(false)}
-      className="w-full flex items-center justify-between px-4 py-3 border-b transition-all duration-100"
+    <div
+      className="border-b transition-all duration-200"
       style={{
         borderColor: "rgba(255,255,255,0.04)",
-        background: pressing ? "rgba(255,255,255,0.03)" : "transparent",
+        background: expanded ? "rgba(255,255,255,0.02)" : "transparent",
       }}
     >
-      <div className="flex-1 min-w-0 mr-3">
-        <p className="text-[12px] font-semibold text-white leading-snug truncate">
-          {displayTitle}
-        </p>
-        <p className="text-[10px] leading-relaxed mt-0.5" style={{ color: "rgba(255,255,255,0.3)" }}>
-          {task.subtitle}
-        </p>
-      </div>
-      <div className="flex items-center gap-2 flex-shrink-0">
-        <span className="text-[8px] font-black tracking-widest" style={{ color: style.color, opacity: 0.5 }}>
-          {PILLAR_LABELS[task.pillar]}
-        </span>
-        <div
-          className="w-5 h-5 rounded-full flex items-center justify-center"
-          style={{ border: `1.5px solid ${style.color}30`, background: `${style.color}08` }}
+      {/* Main row — tap text to expand, tap circle to complete */}
+      <div className="flex items-center justify-between px-4 py-3">
+        {/* Tap target: expand/collapse instructions */}
+        <button
+          onClick={() => setExpanded(!expanded)}
+          className="flex-1 min-w-0 mr-3 text-left"
         >
-          <svg width="10" height="10" viewBox="0 0 24 24" fill="none" stroke={style.color} strokeWidth="2.5" strokeLinecap="round" strokeLinejoin="round" style={{ opacity: 0.4 }}>
-            <polyline points="20 6 9 17 4 12" />
-          </svg>
+          <div className="flex items-center gap-2">
+            <span
+              className="text-[9px] transition-transform duration-200 flex-shrink-0"
+              style={{
+                color: "rgba(255,255,255,0.2)",
+                transform: expanded ? "rotate(90deg)" : "rotate(0deg)",
+              }}
+            >
+              ▶
+            </span>
+            <div className="min-w-0">
+              <p className="text-[12px] font-semibold text-white leading-snug">
+                {displayTitle}
+              </p>
+              <p className="text-[10px] leading-relaxed mt-0.5" style={{ color: "rgba(255,255,255,0.3)" }}>
+                {task.subtitle}
+              </p>
+            </div>
+          </div>
+        </button>
+
+        {/* Tap target: complete the task */}
+        <div className="flex items-center gap-2 flex-shrink-0">
+          <span className="text-[8px] font-black tracking-widest" style={{ color: style.color, opacity: 0.5 }}>
+            {PILLAR_LABELS[task.pillar]}
+          </span>
+          <button
+            onClick={handleComplete}
+            className="w-7 h-7 rounded-full flex items-center justify-center active:scale-90 transition-transform"
+            style={{ border: `1.5px solid ${style.color}40`, background: `${style.color}10` }}
+          >
+            <svg width="12" height="12" viewBox="0 0 24 24" fill="none" stroke={style.color} strokeWidth="2.5" strokeLinecap="round" strokeLinejoin="round" style={{ opacity: 0.5 }}>
+              <polyline points="20 6 9 17 4 12" />
+            </svg>
+          </button>
         </div>
       </div>
-    </button>
+
+      {/* How-to drawer — step-by-step instructions */}
+      {expanded && task.howTo.length > 0 && (
+        <div
+          className="px-4 pb-3 ml-6"
+          style={{ animation: "killFadeIn 0.2s ease both" }}
+        >
+          <div
+            className="rounded-lg px-3 py-2.5"
+            style={{ background: "rgba(255,255,255,0.03)", border: "1px solid rgba(255,255,255,0.06)" }}
+          >
+            <p className="text-[9px] font-black tracking-[0.15em] uppercase mb-2" style={{ color: "rgba(255,255,255,0.2)" }}>
+              How to do this
+            </p>
+            <ol className="list-none space-y-1.5">
+              {task.howTo.map((step, i) => (
+                <li key={i} className="flex gap-2">
+                  <span className="text-[10px] font-black flex-shrink-0 mt-px" style={{ color: style.color, opacity: 0.4, minWidth: "14px" }}>
+                    {i + 1}.
+                  </span>
+                  <span className="text-[11px] leading-relaxed" style={{ color: "rgba(255,255,255,0.55)" }}>
+                    {step}
+                  </span>
+                </li>
+              ))}
+            </ol>
+          </div>
+        </div>
+      )}
+    </div>
   );
 }
 

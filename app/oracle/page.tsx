@@ -3,6 +3,7 @@
 import { useState, useCallback, useEffect } from "react";
 import { getStoreValue, setStoreValue, getTodayISO } from "@/lib/db";
 import type { OracleDecree, Realignment } from "@/lib/oracle";
+import { getKillStats } from "@/lib/killList";
 
 // ─── TYPES ──────────────────────────────────────────────────────────
 
@@ -274,10 +275,12 @@ export default function OraclePage() {
   const [assessment, setAssessment] = useState<Assessment | null>(null);
   const [recalibrating, setRecalibrating] = useState(false);
   const [loading, setLoading] = useState(true);
+  const [killStats, setKillStats] = useState({ active: 0, total: 0 });
 
   const loadDecree = useCallback(async () => {
     const stored = await getStoreValue<OracleDecree>(`oracle_decree:${getTodayISO()}`);
     const clearedIds = await getStoreValue<string[]>(CLEARED_KEY) ?? [];
+    const stats = await getKillStats();
 
     if (stored) {
       setDecree(stored);
@@ -288,6 +291,7 @@ export default function OraclePage() {
       setActions(baseActions);
       setAssessment(assess(baseActions, stored));
     }
+    setKillStats({ active: stats.total - stats.cleared, total: stats.total });
     setLoading(false);
   }, []);
 
@@ -496,26 +500,51 @@ export default function OraclePage() {
               </div>
             )}
 
-            {/* ─── ALL CLEAR STATE ─── */}
+            {/* ─── CONTINUITY / ALL CLEAR STATE ─── */}
             {activeActions.length === 0 && actions.length > 0 && (
               <div
-                className="text-center py-12 rounded-2xl mb-8"
+                className="text-center py-10 rounded-2xl mb-8"
                 style={{
-                  background: "rgba(0,230,118,0.04)",
-                  border: "1px solid rgba(0,230,118,0.1)",
+                  background: killStats.active > 0 ? "rgba(255,255,255,0.02)" : "rgba(0,230,118,0.04)",
+                  border: killStats.active > 0 ? "1px solid rgba(255,255,255,0.06)" : "1px solid rgba(0,230,118,0.1)",
                   animation: "fadeSlideIn 0.6s ease both",
                 }}
               >
-                <div
-                  className="w-12 h-12 rounded-full mx-auto mb-4 flex items-center justify-center"
-                  style={{ background: "rgba(0,230,118,0.1)", boxShadow: "0 0 24px rgba(0,230,118,0.15)" }}
-                >
-                  <svg width="24" height="24" viewBox="0 0 24 24" fill="none" stroke="#00E676" strokeWidth="2" strokeLinecap="round" strokeLinejoin="round">
-                    <polyline points="20 6 9 17 4 12" />
-                  </svg>
-                </div>
-                <p className="text-sm font-medium" style={{ color: "#00E676" }}>All pillars GREEN</p>
-                <p className="text-xs mt-1" style={{ color: "rgba(255,255,255,0.3)" }}>Full creative capacity unlocked. Execute.</p>
+                {killStats.active > 0 ? (
+                  <>
+                    <h3 className="text-xs font-mono uppercase tracking-[0.2em] mb-3" style={{ color: "rgba(255,255,255,0.3)" }}>
+                      Oracle Status Check
+                    </h3>
+                    <p className="text-sm font-semibold text-white mb-1">Pillars stabilized.</p>
+                    <p className="text-xs mb-5" style={{ color: "rgba(255,255,255,0.5)" }}>
+                      But you still have <strong style={{ color: "#FFB800" }}>{killStats.active} tasks</strong> remaining on the Kill List based on your current trajectory.
+                    </p>
+                    <a
+                      href="/kill"
+                      className="inline-flex items-center gap-2 px-5 py-2.5 rounded-lg text-xs font-bold transition-all"
+                      style={{ background: "rgba(255,255,255,0.05)", border: "1px solid rgba(255,255,255,0.1)", color: "white" }}
+                    >
+                      <span>Execute Kill List</span>
+                      <svg width="12" height="12" viewBox="0 0 24 24" fill="none" stroke="currentColor" strokeWidth="2.5" strokeLinecap="round" strokeLinejoin="round">
+                        <line x1="5" y1="12" x2="19" y2="12" />
+                        <polyline points="12 5 19 12 12 19" />
+                      </svg>
+                    </a>
+                  </>
+                ) : (
+                  <>
+                    <div
+                      className="w-12 h-12 rounded-full mx-auto mb-4 flex items-center justify-center"
+                      style={{ background: "rgba(0,230,118,0.1)", boxShadow: "0 0 24px rgba(0,230,118,0.15)" }}
+                    >
+                      <svg width="24" height="24" viewBox="0 0 24 24" fill="none" stroke="#00E676" strokeWidth="2" strokeLinecap="round" strokeLinejoin="round">
+                        <polyline points="20 6 9 17 4 12" />
+                      </svg>
+                    </div>
+                    <p className="text-sm font-medium" style={{ color: "#00E676" }}>All systems clear</p>
+                    <p className="text-xs mt-1" style={{ color: "rgba(255,255,255,0.3)" }}>Kill list and Oracle both clear. Execute freely.</p>
+                  </>
+                )}
               </div>
             )}
 

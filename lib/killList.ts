@@ -3,8 +3,8 @@
 // Nothing is stored. Everything is computed. When you clear a task,
 // it mutates the underlying data and the list re-derives.
 //
-// This is the action surface the Oracle has been missing.
-// Built March 18, 2026.
+// ADHD-first design: every task has plain language + step-by-step howTo.
+// Built March 18, 2026. Rewritten March 19, 2026.
 
 import { getDailyLog, saveDailyLog, getStoreValue, setStoreValue, getTodayISO, DailyLog } from "@/lib/db";
 import { getDynamicReleases, Release, updateContentDeliverables } from "@/lib/releases";
@@ -17,6 +17,7 @@ export type KillTask = {
   id: string;
   title: string;
   subtitle: string;
+  howTo: string[];  // Step-by-step instructions — plain English, ADHD-friendly
   urgency: "RED" | "AMBER" | "GREEN";
   pillar: "creative" | "business" | "body" | "ops";
   timeBlock: "any" | "studio" | "biz" | "content" | "evening";
@@ -46,6 +47,7 @@ export async function deriveKillList(): Promise<KillTask[]> {
         id: `flag-${hashStr(flag.action)}`,
         title: flag.action,
         subtitle: flag.reason,
+        howTo: ["This is a direct order from the Oracle based on your current state.", "Read the action above and do exactly what it says.", "Tap ✓ when done."],
         urgency: flag.urgency,
         pillar: "ops",
         timeBlock: "any",
@@ -65,10 +67,16 @@ export async function deriveKillList(): Promise<KillTask[]> {
     if (!dailyLog.fuelPreSession && hour < 16) {
       tasks.push({
         id: "fuel-pre",
-        title: "Fuel: Pre-session meal",
+        title: "Eat before your session",
         subtitle: hour >= 10
-          ? "You're in studio with no fuel — blood sugar crash is coming"
-          : "Eat before the session starts at 10AM",
+          ? "You're working with no food — energy crash is coming"
+          : "Eat something real before you start at 10AM",
+        howTo: [
+          "Make or order a meal with protein + carbs (eggs, oatmeal, rice, etc.)",
+          "Avoid dairy if you're recording vocals today",
+          "Eat at least 30 min before singing",
+          "Tap ✓ after you've eaten",
+        ],
         urgency: hour >= 11 ? "RED" : "AMBER",
         pillar: "body",
         timeBlock: "any",
@@ -82,8 +90,14 @@ export async function deriveKillList(): Promise<KillTask[]> {
     if (!dailyLog.fuelMidSession && hour >= 12 && hour < 16) {
       tasks.push({
         id: "fuel-mid",
-        title: "Fuel: Mid-session meal",
-        subtitle: "Refuel to sustain output through hour 4-6",
+        title: "Eat your mid-session meal",
+        subtitle: "You need fuel to sustain output through hour 4-6",
+        howTo: [
+          "Take a 15-20 min break from the DAW",
+          "Eat something substantial — not just a snack",
+          "Hydrate while you're at it",
+          "Tap ✓ after you've eaten",
+        ],
         urgency: "AMBER",
         pillar: "body",
         timeBlock: "studio",
@@ -97,8 +111,14 @@ export async function deriveKillList(): Promise<KillTask[]> {
     if (!dailyLog.fuelPostSession && hour >= 16) {
       tasks.push({
         id: "fuel-post",
-        title: "Fuel: Post-session meal",
-        subtitle: "Recovery nutrition — replenish after 6hr creative block",
+        title: "Eat your recovery meal",
+        subtitle: "Post-session nutrition — replenish after the creative block",
+        howTo: [
+          "Session's over — your body needs fuel to recover",
+          "High protein meal (chicken, fish, eggs, etc.)",
+          "This prevents the crash that kills your evening productivity",
+          "Tap ✓ after you've eaten",
+        ],
         urgency: "AMBER",
         pillar: "body",
         timeBlock: "evening",
@@ -112,10 +132,16 @@ export async function deriveKillList(): Promise<KillTask[]> {
     if (dailyLog.fuelHydration === null || dailyLog.fuelHydration < 3) {
       tasks.push({
         id: "fuel-hydration",
-        title: "Hydrate — water intake is low",
+        title: "Drink more water",
         subtitle: dailyLog.sessionType === "recording"
-          ? "Dehydrated cords lose elasticity — affects every take"
-          : "Hydration affects focus and stamina",
+          ? "Dry vocal cords = bad takes. Hydrate now."
+          : "Low water intake kills focus and energy",
+        howTo: [
+          "Fill a water bottle right now",
+          "Goal: at least 3 bottles today (about 1 gallon)",
+          "Rate your hydration on the Log tab when you're caught up",
+          "Tap ✓ once you've had a full bottle",
+        ],
         urgency: dailyLog.sessionType === "recording" ? "RED" : "AMBER",
         pillar: "body",
         timeBlock: "any",
@@ -132,8 +158,15 @@ export async function deriveKillList(): Promise<KillTask[]> {
   if (!dailyLog.sovereigntyStack) {
     tasks.push({
       id: "grind-stack",
-      title: "Complete Sovereignty Stack",
-      subtitle: "Foundation of the empire. Non-negotiable.",
+      title: "Complete your Sovereignty Stack",
+      subtitle: "Foundation of the day. Non-negotiable.",
+      howTo: [
+        "Trataka (candle gazing) — 3-5 minutes",
+        "Breathwork — Nadi Shodhana or box breathing",
+        "Mullein tea — brew and drink",
+        "Cold shower — finish your shower cold for 30+ seconds",
+        "Go to the Log tab and check the box when done",
+      ],
       urgency: hour >= 12 ? "AMBER" : "GREEN",
       pillar: "body",
       timeBlock: "any",
@@ -147,8 +180,14 @@ export async function deriveKillList(): Promise<KillTask[]> {
   if (!dailyLog.movement && hour < 16) {
     tasks.push({
       id: "grind-movement",
-      title: "Movement (before DAW)",
+      title: "Move your body before working",
       subtitle: "Physical activation before creative work",
+      howTo: [
+        "Choose one: lift, run, bodyweight circuit, or deep stretch",
+        "Minimum 20 minutes — you need to sweat",
+        "Do this BEFORE opening the DAW or laptop",
+        "Log pushups on the Log tab if applicable",
+      ],
       urgency: "GREEN",
       pillar: "body",
       timeBlock: "any",
@@ -160,8 +199,7 @@ export async function deriveKillList(): Promise<KillTask[]> {
     });
   }
 
-  // ── 4 & 5. PER-RELEASE CHECKLIST (content + registrations + distribution) ──
-  // Everything a song needs post-master, derived from the expanded ContentDeliverables.
+  // ── 4 & 5. PER-RELEASE CHECKLIST ─────────────────────────────────
   const now = new Date();
   for (const release of releases) {
     if (release.status === "live") continue;
@@ -174,14 +212,15 @@ export async function deriveKillList(): Promise<KillTask[]> {
     const urg = (threshold: number): "RED" | "AMBER" | "GREEN" =>
       daysUntil <= threshold ? "RED" : daysUntil <= threshold + 4 ? "AMBER" : "GREEN";
 
-    // Helper to create a simple toggle task
+    // Helper to create a toggle task with howTo instructions
     const toggle = (
       id: string, field: keyof typeof d, title: string, subtitle: string,
+      howTo: string[],
       urgThreshold: number, pillar: "creative" | "ops" | "business", block: "any" | "content" | "biz" | "studio"
     ) => {
       if (d[field] === false) {
         tasks.push({
-          id: `${id}-${t}`, title: `${title} — ${t}`, subtitle,
+          id: `${id}-${t}`, title: `${title} — ${t}`, subtitle, howTo,
           urgency: urg(urgThreshold), pillar, timeBlock: block,
           action: async () => { await updateContentDeliverables(t, { [field]: true } as any); },
         });
@@ -189,30 +228,115 @@ export async function deriveKillList(): Promise<KillTask[]> {
     };
 
     // ── PRODUCTION PREP (T-7) ──
-    toggle("prep-swap", "variableSwapSheet", "Fill variable swap sheet", "Palette, photos, copy angle, hashtags", 7, "creative", "content");
-    toggle("prep-photo", "sourcePhotoLocked", "Lock source photography", "Hero shot needed for Canvas, posts, and visualizer", 7, "creative", "content");
-    toggle("prep-palette", "paletteExtracted", "Run palette extraction", "Open Sonnet session → extract from cover art", 6, "creative", "content");
+    toggle("prep-swap", "variableSwapSheet", "Create promo kit", "Gather all the info you need to promote this song", [
+      "Open a note (Notes app, Google Doc, or paper)",
+      "Write: song title, release date, and 3-5 hashtags",
+      "Write a 1-sentence pitch for the song (what's it about?)",
+      "Pick 2-3 photos from your camera roll to use in posts",
+      "Screenshot the album art and note the main colors",
+      "Save this note — you'll reference it for every post and caption",
+    ], 7, "creative", "content");
+
+    toggle("prep-photo", "sourcePhotoLocked", "Pick your hero photo", "Choose the main photo for all posts, Canvas, and video", [
+      "Open your camera roll or recent photo shoots",
+      "Pick ONE strong photo that matches the song's vibe",
+      "This photo will be used on: Spotify Canvas, IG posts, YouTube thumbnail",
+      "Save/star it so you can find it easily later",
+    ], 7, "creative", "content");
+
+    toggle("prep-palette", "paletteExtracted", "Choose color palette from cover art", "Pull 3-5 colors from the album art to use in all visual assets", [
+      "Open the album/single cover art on your phone",
+      "Screenshot it",
+      "Open Canva or any color picker tool",
+      "Use the eyedropper to grab 3-5 colors from the art",
+      "Note the hex codes (e.g., #FF5500) or just save swatches",
+      "These colors go on EVERYTHING: Canvas, posts, stories, visualizer",
+    ], 6, "creative", "content");
 
     // ── CREATIVE ASSETS (T-6 to T-2) ──
     if (!d.visualIdea || d.visualIdea.trim().length === 0) {
       tasks.push({
-        id: `content-visual-${t}`, title: `Lock visual idea — ${t}`,
-        subtitle: "Creative direction must be set before any assets are built",
+        id: `content-visual-${t}`, title: `Decide the visual direction — ${t}`,
+        subtitle: "What should the content look and feel like?",
+        howTo: [
+          "Think: what's the mood of this song? Dark? Energetic? Emotional?",
+          "Pick a visual style: cinematic, gritty, colorful, minimal, etc.",
+          "Write 1-2 sentences describing the look (e.g., 'moody blue lighting, close-up shots, slow motion')",
+          "This guides every asset you build — Canvas, reels, video, posts",
+        ],
         urgency: urg(7), pillar: "creative", timeBlock: "content",
         action: async () => { await updateContentDeliverables(t, { visualIdea: "(locked)" }); },
       });
     }
-    toggle("asset-canvas", "spotifyCanvas", "Build Spotify Canvas", "720×1280 · 3–8s loop · After Effects (T-6)", 5, "creative", "content");
-    toggle("asset-teaser", "prereleaseTeaser", "Build pre-release teaser", "1080×1920 ≤15s · IG/TikTok (T-5)", 5, "creative", "content");
-    toggle("asset-story", "instagramStory", "Build Instagram Story", "1080×1920 · motion · After Effects (T-5)", 4, "creative", "content");
-    toggle("asset-visualizer", "youtubeVisualizer", "Build YouTube visualizer", "1920×1080 · full track length · AE (T-5)", 4, "creative", "content");
-    toggle("asset-announce", "announcementPost", "Build announcement post", "1080×1080 · Canva (T-4)", 4, "creative", "content");
-    toggle("asset-thumb", "youtubeThumbnail", "Build YouTube thumbnail", "1280×720 PNG · Canva (T-4)", 3, "creative", "content");
+
+    toggle("asset-canvas", "spotifyCanvas", "Make Spotify Canvas (looping video)", "The short video that plays on the Spotify Now Playing screen", [
+      "Open After Effects, CapCut, or Canva Video",
+      "Size: 720 wide × 1280 tall (vertical/portrait)",
+      "Make a 3-8 second seamless loop — use your hero photo or a clip",
+      "Add subtle motion: slow zoom, color shift, particles, etc.",
+      "Export as MP4, keep it under 8MB",
+      "Upload: Spotify for Artists → Music → select track → Canvas → Upload",
+    ], 5, "creative", "content");
+
+    toggle("asset-teaser", "prereleaseTeaser", "Make 15-second teaser clip", "Short hype clip for IG Reels and TikTok before release day", [
+      "Open CapCut, After Effects, or your phone editor",
+      "Size: 1080 × 1920 (vertical)",
+      "Max 15 seconds — use the catchiest part of the song",
+      "Add text: song title + release date",
+      "Use your color palette from earlier",
+      "Post to IG Reels and TikTok with 'drops [date]' caption",
+    ], 5, "creative", "content");
+
+    toggle("asset-story", "instagramStory", "Make Instagram Story announcement", "Animated story for release day or pre-release hype", [
+      "Open Canva, After Effects, or Instagram directly",
+      "Size: 1080 × 1920 (full screen vertical)",
+      "Add: album art, song title, 'OUT NOW' or 'drops [date]'",
+      "Add motion — even a simple fade or slide works",
+      "Save to camera roll and post to IG Stories",
+    ], 4, "creative", "content");
+
+    toggle("asset-visualizer", "youtubeVisualizer", "Make YouTube visualizer", "Full-length audio visualizer video for YouTube", [
+      "Open After Effects (or use the Synesthesia Visualizer tool)",
+      "Size: 1920 × 1080 (landscape)",
+      "Duration: full track length",
+      "Add: waveform/spectrum animation + album art + song info",
+      "Export as MP4, upload to YouTube with proper title and description",
+    ], 4, "creative", "content");
+
+    toggle("asset-announce", "announcementPost", "Make announcement post", "The main feed post announcing the release", [
+      "Open Canva or Photoshop",
+      "Size: 1080 × 1080 (square) for IG feed",
+      "Use your hero photo + color palette",
+      "Add: song title, release date, 'PRE-SAVE LINK IN BIO'",
+      "Keep it clean — this is the first impression",
+    ], 4, "creative", "content");
+
+    toggle("asset-thumb", "youtubeThumbnail", "Make YouTube thumbnail", "The clickable thumbnail image for the YouTube upload", [
+      "Open Canva or Photoshop",
+      "Size: 1280 × 720 (landscape)",
+      "Use your hero photo, make the text BIG and readable",
+      "Include song title — keep it to 3-4 words max on screen",
+      "Export as PNG (not JPG — crisper quality)",
+    ], 3, "creative", "content");
 
     if (d.primaryVideo === "none" || d.primaryVideo === "planned") {
       tasks.push({
-        id: `asset-video-${t}`, title: `${d.primaryVideo === "none" ? "Start" : "Shoot"} primary video — ${t}`,
-        subtitle: "Highest-impact asset (25% of readiness score)",
+        id: `asset-video-${t}`,
+        title: `${d.primaryVideo === "none" ? "Plan" : "Shoot"} the music video — ${t}`,
+        subtitle: "Highest-impact visual asset",
+        howTo: d.primaryVideo === "none" ? [
+          "Decide: full music video, performance video, or lyric video?",
+          "Pick locations — where will you shoot?",
+          "Plan outfits and any props",
+          "Set a shoot date on your calendar",
+          "Tap ✓ when you have a plan locked in",
+        ] : [
+          "Execute your video plan — grab your phone or camera",
+          "Shoot at least 2-3 different locations or setups",
+          "Get more footage than you think you need",
+          "Transfer files to your editing computer when done",
+          "Tap ✓ when footage is captured",
+        ],
         urgency: urg(5), pillar: "creative", timeBlock: "content",
         action: async () => {
           const next = d.primaryVideo === "none" ? "planned" : "shot";
@@ -223,8 +347,15 @@ export async function deriveKillList(): Promise<KillTask[]> {
 
     if (d.brollClips === 0) {
       tasks.push({
-        id: `asset-broll-${t}`, title: `Capture B-roll — ${t}`,
-        subtitle: "Zero clips — feeds reels and video",
+        id: `asset-broll-${t}`, title: `Film B-roll clips — ${t}`,
+        subtitle: "Behind-the-scenes footage for reels and video",
+        howTo: [
+          "Use your phone — quality doesn't need to be perfect",
+          "Film: studio setup, mixing, headphones on, vibing to the beat",
+          "Get 5-10 clips, 5-15 seconds each",
+          "Variety: close-ups, wide shots, hands on keyboard, screen recordings",
+          "These feed into reels, TikToks, and the music video",
+        ],
         urgency: urg(7), pillar: "creative", timeBlock: "content",
         action: async () => { await updateContentDeliverables(t, { brollClips: 1 }); },
       });
@@ -234,39 +365,133 @@ export async function deriveKillList(): Promise<KillTask[]> {
       const needed = Math.ceil(d.reelsGoal * 0.3) - d.reelsPosted;
       tasks.push({
         id: `asset-reels-${t}`, title: `Post ${needed}+ reels — ${t}`,
-        subtitle: `${d.reelsPosted}/${d.reelsGoal} posted — run CF4 --multi (T-3)`,
+        subtitle: `${d.reelsPosted}/${d.reelsGoal} posted so far`,
+        howTo: [
+          "Open CapCut or IG Reels editor",
+          "Use your B-roll clips or screen recordings",
+          "Add a snippet of the song as audio",
+          "Keep it 7-15 seconds, hook in the first 2 seconds",
+          "Post to IG Reels AND TikTok (cross-post saves time)",
+          `You need ${needed} more to stay on pace`,
+        ],
         urgency: urg(3), pillar: "creative", timeBlock: "content",
         action: async () => { await updateContentDeliverables(t, { reelsPosted: d.reelsPosted + 1 }); },
       });
     }
 
     // ── CAPTIONS & SCHEDULING (T-2) ──
-    toggle("post-captions", "captionsWritten", "Write all captions", "Use templates from Per-Song Playbook (T-2)", 2, "creative", "content");
-    toggle("post-schedule", "postsScheduled", "Schedule all posts", "BTS → teaser → release day → reaction (T-2)", 2, "creative", "content");
+    toggle("post-captions", "captionsWritten", "Write all your captions", "Write the text for every post you'll make for this release", [
+      "Open Notes or a Google Doc",
+      "Write captions for: teaser post, announcement post, release day post, follow-up post",
+      "Include your pitch line from the promo kit",
+      "Add hashtags (from your promo kit) to each caption",
+      "Save — you'll copy-paste these when you schedule posts",
+    ], 2, "creative", "content");
+
+    toggle("post-schedule", "postsScheduled", "Schedule all posts", "Load everything into Later, Buffer, or post manually on a schedule", [
+      "Open your scheduling tool (Later, Buffer, or calendar reminders)",
+      "Schedule: BTS reel (T-3), teaser (T-2), announcement (T-1), release day post (T-0)",
+      "Add your pre-written captions to each",
+      "Double-check dates and times (post between 11AM-1PM or 6PM-9PM)",
+      "If no scheduling tool: set phone alarms for each post time",
+    ], 2, "creative", "content");
 
     // ── DISTRIBUTION (T-2 to T-0) ──
-    toggle("dist-amuse", "amuseUploaded", "Upload to Amuse", `48hr window — upload by ${release.uploadDate}`, 3, "ops", "any");
-    toggle("dist-presave", "preSaveLive", "Pre-save link live in bio", "IG + TikTok bio → pre-save URL", 5, "ops", "any");
-    toggle("dist-pitch", "spotifyPitchSubmitted", "Submit Spotify editorial pitch", "Spotify for Artists → Upcoming → Pitch", 7, "ops", "biz");
+    toggle("dist-amuse", "amuseUploaded", "Upload song to Amuse", `Must be uploaded by ${release.uploadDate} (48hr review window)`, [
+      "Open the Amuse app on your phone",
+      "Tap 'Upload' or 'New Release'",
+      "Upload the final master WAV/MP3 + album art",
+      "Fill in: title, artist, genre, release date",
+      "Submit and wait for confirmation email (usually within 24hr)",
+    ], 3, "ops", "any");
+
+    toggle("dist-presave", "preSaveLive", "Put pre-save link in your bio", "Fans can save the song before it drops", [
+      "Get your pre-save link from DistroKid/Amuse/Linkfire",
+      "If you don't have one: use linktr.ee or a Linkin.bio page",
+      "Open Instagram → Edit Profile → Website → paste the link",
+      "Open TikTok → Edit Profile → Website → paste the link",
+      "Mention 'link in bio' in your next post/story",
+    ], 5, "ops", "any");
+
+    toggle("dist-pitch", "spotifyPitchSubmitted", "Pitch song to Spotify editors", "Submit for editorial playlist consideration", [
+      "Open Spotify for Artists (app or website)",
+      "Go to Music → select the upcoming release",
+      "Tap 'Pitch a song'",
+      "Fill in: genre, mood, instruments, culture, song description",
+      "Write 2-3 sentences about why this song matters",
+      "Submit — Spotify reviews these up to 4 weeks before release",
+    ], 7, "ops", "biz");
+
     if (daysUntil <= 0) {
-      toggle("dist-verify", "streamingLinksVerified", "Verify streaming links", "Confirm live on Spotify + Apple Music", 0, "ops", "any");
+      toggle("dist-verify", "streamingLinksVerified", "Check that the song is actually live", "Verify it's on Spotify and Apple Music", [
+        "Open Spotify and search for the song by title",
+        "Open Apple Music and search for it there too",
+        "Click play — make sure the audio is correct",
+        "If it's not showing up, check your Amuse dashboard for errors",
+        "Share the links to your socials once confirmed",
+      ], 0, "ops", "any");
     }
 
     // ── REGISTRATIONS ──
-    toggle("reg-isrc", "isrcPulled", "Pull ISRC from Amuse", "Check confirmation email — needed for all registrations", 7, "ops", "biz");
-    toggle("reg-ascap", "ascapRegistered", "Register on ASCAP", `ascap.com → Register Works${!d.isrcPulled ? " (needs ISRC first)" : ""}`, 5, "ops", "biz");
-    toggle("reg-mlc", "mlcRegistered", "Register on MLC", `themlc.com${!d.isrcPulled ? " (needs ISRC first)" : ""}`, 5, "ops", "biz");
-    toggle("reg-songtrust", "songtrustRegistered", "Register on Songtrust", `Verify login post-UMG${!d.isrcPulled ? " (needs ISRC)" : ""}`, 5, "ops", "biz");
-    toggle("reg-musixmatch", "musixmatchSubmitted", "Submit lyrics to Musixmatch", "pro.musixmatch.com → submit lyrics", 3, "ops", "biz");
-    toggle("reg-instrumental", "instrumentalRendered", "Render instrumental", "Required for sync licensing", 7, "ops", "studio");
+    toggle("reg-isrc", "isrcPulled", "Get your ISRC code", "Unique tracking code for this song — needed for all registrations below", [
+      "Check your email for the Amuse upload confirmation",
+      "The ISRC code looks like: US-XX1-23-45678",
+      "If you can't find it: open Amuse app → My Releases → tap the song → ISRC",
+      "Copy this code — you'll paste it into ASCAP, MLC, and Songtrust",
+    ], 7, "ops", "biz");
+
+    toggle("reg-ascap", "ascapRegistered", "Register song on ASCAP", `Collects your performance royalties${!d.isrcPulled ? " (get ISRC code first ↑)" : ""}`, [
+      "Go to ascap.com and log in",
+      "Click 'Register a Work' or 'Add Work'",
+      "Enter: song title, your name as writer/publisher, ISRC code",
+      "Set ownership split (100% if you're the only writer)",
+      "Submit — ASCAP will confirm via email",
+    ], 5, "ops", "biz");
+
+    toggle("reg-mlc", "mlcRegistered", "Register song on MLC", `Collects mechanical royalties from streaming${!d.isrcPulled ? " (get ISRC code first ↑)" : ""}`, [
+      "Go to themlc.com and log in",
+      "Click 'Register Works' or 'Add a Work'",
+      "Enter: song title, ISRC code, your info",
+      "This captures royalties ASCAP doesn't cover",
+      "Submit and confirm",
+    ], 5, "ops", "biz");
+
+    toggle("reg-songtrust", "songtrustRegistered", "Register song on Songtrust", `International royalty collection${!d.isrcPulled ? " (get ISRC code first ↑)" : ""}`, [
+      "Go to songtrust.com and log in",
+      "If you can't log in: check if account transferred during UMG changes",
+      "Add the new song with title and ISRC",
+      "Songtrust handles royalty collection in 60+ countries",
+    ], 5, "ops", "biz");
+
+    toggle("reg-musixmatch", "musixmatchSubmitted", "Submit lyrics to Musixmatch", "Gets your lyrics to show on Spotify, Apple Music, etc.", [
+      "Go to pro.musixmatch.com and log in (or create account)",
+      "Search for your song (may take 1-2 days after release to appear)",
+      "Click the song and 'Submit Lyrics'",
+      "Paste your full lyrics — double-check timing if doing synced lyrics",
+      "Submit for review",
+    ], 3, "ops", "biz");
+
+    toggle("reg-instrumental", "instrumentalRendered", "Render the instrumental version", "Needed for sync licensing, remixes, and content use", [
+      "Open your DAW (Logic, Ableton, FL Studio, etc.)",
+      "Mute all vocal tracks",
+      "Export/bounce as WAV (same settings as the master)",
+      "Save as: '[Song Title] - Instrumental.wav'",
+      "Store in your masters folder alongside the vocal version",
+    ], 7, "ops", "studio");
   }
 
   // ── 6. SESSION → Tasks ───────────────────────────────────────────
   if (isStudioDay(dayType as any) && dailyLog.sessionQuality === null && hour >= 16) {
     tasks.push({
       id: "session-quality",
-      title: "Log session quality",
-      subtitle: "Oracle needs session data to assess creative output trends",
+      title: "Rate today's session quality",
+      subtitle: "The Oracle needs this data to track your creative output",
+      howTo: [
+        "Think: how productive was today's session? 1-5 scale",
+        "Go to the Log tab",
+        "Rate your session quality honestly",
+        "This feeds into the Oracle's severity calculation",
+      ],
       urgency: "AMBER",
       pillar: "creative",
       timeBlock: "evening",
@@ -285,8 +510,14 @@ export async function deriveKillList(): Promise<KillTask[]> {
     if (!move || move.trim().length === 0) {
       tasks.push({
         id: "biz-move",
-        title: "Set today's business move",
-        subtitle: "Biz day with no declared move — open Engine and commit",
+        title: "Decide your one business move today",
+        subtitle: "It's a biz day — pick one concrete pipeline action",
+        howTo: [
+          "Open the Engine tab",
+          "Pick ONE thing: outreach email, follow-up, content pitch, etc.",
+          "Write it down and commit to it",
+          "Do it before end of day",
+        ],
         urgency: hour >= 12 ? "AMBER" : "GREEN",
         pillar: "business",
         timeBlock: "biz",
@@ -300,8 +531,14 @@ export async function deriveKillList(): Promise<KillTask[]> {
     if ((touches || 0) < Math.floor(target * 0.5) && new Date().getDay() >= 3) {
       tasks.push({
         id: "biz-touches",
-        title: `Outreach: ${touches || 0}/${target} touches this week`,
-        subtitle: "Below 50% by midweek — pipeline will dry up",
+        title: `Do outreach: ${touches || 0}/${target} touches this week`,
+        subtitle: "Below 50% by midweek — you'll fall behind",
+        howTo: [
+          "Open your outreach list (DMs, emails, contacts)",
+          "Send 3-5 messages: introduce yourself, pitch a collab, follow up",
+          "Each message = 1 touch. Log them in the Engine tab",
+          "Quality over quantity — personalize each message",
+        ],
         urgency: "AMBER",
         pillar: "business",
         timeBlock: "biz",
