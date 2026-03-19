@@ -1,7 +1,7 @@
 "use client";
 
 // app/kill/page.tsx
-// Dynamic Kill List — the Oracle's action surface.
+// Dynamic Kill List — grouped by release with collapsible accordions.
 // Every task is derived from live system state. Nothing is hardcoded.
 // Tapping a task mutates the underlying data and the list re-derives.
 // When all RED items clear, the Oracle auto-recalibrates.
@@ -10,26 +10,36 @@ import { useState, useEffect, useCallback } from "react";
 import { deriveKillList, completeTask, getKillStats, KillTask } from "@/lib/killList";
 import { recalibrateOracle } from "@/lib/recalibrate";
 
-const URGENCY_STYLES: Record<string, { color: string; bg: string; border: string; glow: string }> = {
-  RED:   { color: "#FF2D2D", bg: "rgba(255,45,45,0.06)",   border: "rgba(255,45,45,0.2)",   glow: "rgba(255,45,45,0.1)" },
-  AMBER: { color: "#FFB800", bg: "rgba(255,184,0,0.05)",   border: "rgba(255,184,0,0.18)",  glow: "rgba(255,184,0,0.08)" },
-  GREEN: { color: "#22c55e", bg: "rgba(34,197,94,0.04)",   border: "rgba(34,197,94,0.15)",  glow: "rgba(34,197,94,0.06)" },
+const URGENCY_STYLES: Record<string, { color: string; bg: string; border: string }> = {
+  RED:   { color: "#FF2D2D", bg: "rgba(255,45,45,0.06)",   border: "rgba(255,45,45,0.2)" },
+  AMBER: { color: "#FFB800", bg: "rgba(255,184,0,0.05)",   border: "rgba(255,184,0,0.18)" },
+  GREEN: { color: "#22c55e", bg: "rgba(34,197,94,0.04)",   border: "rgba(34,197,94,0.15)" },
 };
 
 const PILLAR_LABELS: Record<string, string> = {
-  creative: "CREATIVE",
-  business: "BUSINESS",
-  body: "BODY",
-  ops: "OPS",
+  creative: "CREATIVE", business: "BUSINESS", body: "BODY", ops: "OPS",
 };
 
-function TaskCard({
+// ── Extract release name from task title (format: "Task — Track Name") ──
+function getGroupKey(task: KillTask): string {
+  const match = task.title.match(/\s—\s(.+)$/);
+  if (match) return match[1];
+  return "Today";
+}
+
+function getGroupUrgency(tasks: KillTask[]): "RED" | "AMBER" | "GREEN" {
+  if (tasks.some(t => t.urgency === "RED")) return "RED";
+  if (tasks.some(t => t.urgency === "AMBER")) return "AMBER";
+  return "GREEN";
+}
+
+// ── Task Row (compact inside accordion) ──────────────────────────────
+
+function TaskRow({
   task,
-  index,
   onComplete,
 }: {
   task: KillTask;
-  index: number;
   onComplete: (task: KillTask) => void;
 }) {
   const [pressing, setPressing] = useState(false);
@@ -38,28 +48,25 @@ function TaskCard({
 
   const handleComplete = () => {
     setClearing(true);
-    setTimeout(() => onComplete(task), 400);
+    setTimeout(() => onComplete(task), 350);
   };
 
   if (clearing) {
     return (
       <div
-        className="rounded-xl px-5 py-4 mb-2.5 overflow-hidden"
-        style={{
-          background: "rgba(34,197,94,0.06)",
-          border: "1px solid rgba(34,197,94,0.2)",
-          animation: "killClearOut 0.4s ease forwards",
-        }}
+        className="flex items-center gap-2 px-4 py-2.5 overflow-hidden"
+        style={{ animation: "killClearOut 0.35s ease forwards" }}
       >
-        <div className="flex items-center gap-2">
-          <svg width="16" height="16" viewBox="0 0 24 24" fill="none" stroke="#22c55e" strokeWidth="2.5" strokeLinecap="round" strokeLinejoin="round">
-            <polyline points="20 6 9 17 4 12" />
-          </svg>
-          <span className="text-sm font-bold" style={{ color: "#22c55e" }}>Cleared</span>
-        </div>
+        <svg width="14" height="14" viewBox="0 0 24 24" fill="none" stroke="#22c55e" strokeWidth="2.5" strokeLinecap="round" strokeLinejoin="round">
+          <polyline points="20 6 9 17 4 12" />
+        </svg>
+        <span className="text-[11px] font-bold" style={{ color: "#22c55e" }}>Cleared</span>
       </div>
     );
   }
+
+  // Strip the track name from display (it's already in the accordion header)
+  const displayTitle = task.title.replace(/\s—\s.+$/, "");
 
   return (
     <button
@@ -69,50 +76,117 @@ function TaskCard({
       onMouseLeave={() => setPressing(false)}
       onTouchStart={() => setPressing(true)}
       onTouchEnd={() => setPressing(false)}
-      className="w-full text-left rounded-xl px-5 py-4 mb-2.5 transition-all duration-150 cursor-pointer"
+      className="w-full flex items-center justify-between px-4 py-3 border-b transition-all duration-100"
       style={{
-        background: pressing ? style.bg.replace(/[\d.]+\)$/, "0.12)") : style.bg,
-        border: `1px solid ${style.border}`,
-        transform: pressing ? "scale(0.98)" : "scale(1)",
-        animation: `killFadeIn 0.3s ease ${index * 0.04}s both`,
+        borderColor: "rgba(255,255,255,0.04)",
+        background: pressing ? "rgba(255,255,255,0.03)" : "transparent",
       }}
     >
-      <div className="flex items-start justify-between gap-3">
-        <div className="flex-1 min-w-0">
-          <p className="text-[13px] font-bold text-white leading-snug mb-1">
-            {task.title}
-          </p>
-          <p className="text-[11px] leading-relaxed" style={{ color: "rgba(255,255,255,0.4)" }}>
-            {task.subtitle}
-          </p>
-        </div>
+      <div className="flex-1 min-w-0 mr-3">
+        <p className="text-[12px] font-semibold text-white leading-snug truncate">
+          {displayTitle}
+        </p>
+        <p className="text-[10px] leading-relaxed mt-0.5" style={{ color: "rgba(255,255,255,0.3)" }}>
+          {task.subtitle}
+        </p>
+      </div>
+      <div className="flex items-center gap-2 flex-shrink-0">
+        <span className="text-[8px] font-black tracking-widest" style={{ color: style.color, opacity: 0.5 }}>
+          {PILLAR_LABELS[task.pillar]}
+        </span>
         <div
-          className="mt-0.5 flex-shrink-0 w-6 h-6 rounded-full flex items-center justify-center"
-          style={{
-            border: `1.5px solid ${style.color}30`,
-            background: `${style.color}08`,
-          }}
+          className="w-5 h-5 rounded-full flex items-center justify-center"
+          style={{ border: `1.5px solid ${style.color}30`, background: `${style.color}08` }}
         >
-          <svg width="11" height="11" viewBox="0 0 24 24" fill="none" stroke={style.color} strokeWidth="2.5" strokeLinecap="round" strokeLinejoin="round" style={{ opacity: 0.5 }}>
+          <svg width="10" height="10" viewBox="0 0 24 24" fill="none" stroke={style.color} strokeWidth="2.5" strokeLinecap="round" strokeLinejoin="round" style={{ opacity: 0.4 }}>
             <polyline points="20 6 9 17 4 12" />
           </svg>
         </div>
       </div>
-      <div className="mt-2.5 flex items-center gap-2">
-        <span
-          className="text-[9px] font-black uppercase tracking-widest"
-          style={{ color: style.color, opacity: 0.6 }}
-        >
-          {task.urgency}
-        </span>
-        <span style={{ color: "rgba(255,255,255,0.1)" }}>·</span>
-        <span className="text-[9px] font-bold uppercase tracking-wider" style={{ color: "rgba(255,255,255,0.25)" }}>
-          {PILLAR_LABELS[task.pillar] || task.pillar}
-        </span>
-      </div>
     </button>
   );
 }
+
+// ── Release Accordion ────────────────────────────────────────────────
+
+function ReleaseGroup({
+  name,
+  tasks,
+  defaultOpen,
+  onComplete,
+  index,
+}: {
+  name: string;
+  tasks: KillTask[];
+  defaultOpen: boolean;
+  onComplete: (task: KillTask) => void;
+  index: number;
+}) {
+  const [open, setOpen] = useState(defaultOpen);
+  const urgency = getGroupUrgency(tasks);
+  const style = URGENCY_STYLES[urgency];
+  const redCount = tasks.filter(t => t.urgency === "RED").length;
+  const amberCount = tasks.filter(t => t.urgency === "AMBER").length;
+
+  return (
+    <div
+      className="rounded-xl overflow-hidden mb-3"
+      style={{
+        border: `1px solid ${open ? style.border : "rgba(255,255,255,0.06)"}`,
+        background: open ? style.bg : "rgba(255,255,255,0.02)",
+        animation: `killFadeIn 0.25s ease ${index * 0.04}s both`,
+      }}
+    >
+      {/* Header — tap to toggle */}
+      <button
+        onClick={() => setOpen(!open)}
+        className="w-full flex items-center justify-between px-4 py-3.5 transition-all"
+      >
+        <div className="flex items-center gap-3">
+          <div
+            className="w-2 h-2 rounded-full flex-shrink-0"
+            style={{ backgroundColor: style.color, boxShadow: `0 0 6px ${style.color}40` }}
+          />
+          <span className="text-[13px] font-black text-white tracking-tight">
+            {name}
+          </span>
+        </div>
+        <div className="flex items-center gap-2">
+          {redCount > 0 && (
+            <span className="text-[9px] font-black px-1.5 py-0.5 rounded" style={{ color: "#FF2D2D", background: "rgba(255,45,45,0.12)" }}>
+              {redCount}
+            </span>
+          )}
+          {amberCount > 0 && (
+            <span className="text-[9px] font-black px-1.5 py-0.5 rounded" style={{ color: "#FFB800", background: "rgba(255,184,0,0.1)" }}>
+              {amberCount}
+            </span>
+          )}
+          <span className="text-[10px] font-bold" style={{ color: "rgba(255,255,255,0.25)" }}>
+            {tasks.length}
+          </span>
+          <span
+            className="text-[10px] transition-transform duration-200"
+            style={{ color: "rgba(255,255,255,0.2)", transform: open ? "rotate(180deg)" : "rotate(0deg)" }}
+          >
+            ▾
+          </span>
+        </div>
+      </button>
+
+      {/* Task list — only visible when open */}
+      {open && (
+        <div style={{ borderTop: `1px solid ${style.border}` }}>
+          {tasks.map((task) => (
+            <TaskRow key={task.id} task={task} onComplete={onComplete} />
+          ))}
+        </div>
+      )}
+    </div>
+  );
+}
+
+// ── Main Page ────────────────────────────────────────────────────────
 
 export default function KillPage() {
   const [tasks, setTasks] = useState<KillTask[]>([]);
@@ -127,19 +201,14 @@ export default function KillPage() {
     setLoading(false);
   }, []);
 
-  useEffect(() => {
-    refresh();
-  }, [refresh]);
+  useEffect(() => { refresh(); }, [refresh]);
 
   const handleComplete = async (task: KillTask) => {
     await completeTask(task);
-
-    // Re-derive immediately
     const [t, s] = await Promise.all([deriveKillList(), getKillStats()]);
     setTasks(t);
     setStats(s);
 
-    // If all RED items just cleared → auto-recalibrate
     const redBefore = stats.redRemaining;
     const redAfter = t.filter(x => x.urgency === "RED").length;
     if (redBefore > 0 && redAfter === 0) {
@@ -147,24 +216,42 @@ export default function KillPage() {
       try {
         await recalibrateOracle(true);
         setRecalStatus("done");
-        // Re-derive after new decree (may generate new flags)
-        setTimeout(async () => {
-          await refresh();
-          setRecalStatus("idle");
-        }, 1500);
-      } catch {
-        setRecalStatus("idle");
-      }
+        setTimeout(async () => { await refresh(); setRecalStatus("idle"); }, 1500);
+      } catch { setRecalStatus("idle"); }
     }
   };
 
-  const pct = stats.total > 0 ? Math.round((stats.cleared / stats.total) * 100) : 0;
-  const redTasks = tasks.filter(t => t.urgency === "RED");
-  const amberTasks = tasks.filter(t => t.urgency === "AMBER");
-  const greenTasks = tasks.filter(t => t.urgency === "GREEN");
+  // ── Group tasks by release/category ──
+  const groups: { name: string; tasks: KillTask[] }[] = [];
+  const groupMap = new Map<string, KillTask[]>();
 
-  const statusColor = redTasks.length > 0 ? "#FF2D2D" : amberTasks.length > 0 ? "#FFB800" : "#22c55e";
-  const statusLabel = redTasks.length > 0 ? "ACTIVE" : amberTasks.length > 0 ? "CLEARING" : tasks.length === 0 ? "CLEAR" : "CLEARING";
+  for (const task of tasks) {
+    const key = getGroupKey(task);
+    if (!groupMap.has(key)) groupMap.set(key, []);
+    groupMap.get(key)!.push(task);
+  }
+
+  // "Today" group first, then releases sorted by urgency
+  const todayTasks = groupMap.get("Today");
+  if (todayTasks && todayTasks.length > 0) {
+    groups.push({ name: "Today", tasks: todayTasks });
+    groupMap.delete("Today");
+  }
+
+  const releaseGroups = Array.from(groupMap.entries())
+    .map(([name, tasks]) => ({ name, tasks }))
+    .sort((a, b) => {
+      const order: Record<string, number> = { RED: 0, AMBER: 1, GREEN: 2 };
+      return order[getGroupUrgency(a.tasks)] - order[getGroupUrgency(b.tasks)];
+    });
+
+  groups.push(...releaseGroups);
+
+  const pct = stats.total > 0 ? Math.round((stats.cleared / stats.total) * 100) : 0;
+  const statusColor = tasks.some(t => t.urgency === "RED") ? "#FF2D2D"
+    : tasks.some(t => t.urgency === "AMBER") ? "#FFB800" : "#22c55e";
+  const statusLabel = tasks.some(t => t.urgency === "RED") ? "ACTIVE"
+    : tasks.length > 0 ? "CLEARING" : "CLEAR";
 
   if (loading) {
     return (
@@ -178,13 +265,13 @@ export default function KillPage() {
     <main className="page animate-fade-in pb-28">
       <style>{`
         @keyframes killFadeIn {
-          from { opacity: 0; transform: translateY(8px); }
+          from { opacity: 0; transform: translateY(6px); }
           to { opacity: 1; transform: translateY(0); }
         }
         @keyframes killClearOut {
-          0% { opacity: 1; max-height: 100px; }
-          50% { opacity: 0; max-height: 100px; }
-          100% { opacity: 0; max-height: 0; padding: 0; margin: 0; border: 0; }
+          0% { opacity: 1; max-height: 60px; }
+          50% { opacity: 0; max-height: 60px; }
+          100% { opacity: 0; max-height: 0; padding: 0; margin: 0; }
         }
         @keyframes killPulse {
           0%, 100% { opacity: 1; }
@@ -195,8 +282,8 @@ export default function KillPage() {
       <div className="page-inner">
 
         {/* ── Header ── */}
-        <div className="mb-6" style={{ animation: "killFadeIn 0.3s ease both" }}>
-          <div className="flex items-center justify-between mb-4">
+        <div className="mb-5" style={{ animation: "killFadeIn 0.25s ease both" }}>
+          <div className="flex items-center justify-between mb-3">
             <h1 className="text-[10px] font-black tracking-[0.3em] uppercase" style={{ color: "rgba(255,255,255,0.3)" }}>
               Kill List
             </h1>
@@ -218,13 +305,11 @@ export default function KillPage() {
           </div>
 
           {/* Progress bar */}
-          <div className="flex items-center justify-between mb-2">
+          <div className="flex items-center justify-between mb-1.5">
             <span className="text-[10px]" style={{ color: "rgba(255,255,255,0.3)" }}>
               {stats.cleared}/{stats.total} cleared
             </span>
-            <span className="text-[10px] font-black" style={{ color: statusColor }}>
-              {pct}%
-            </span>
+            <span className="text-[10px] font-black" style={{ color: statusColor }}>{pct}%</span>
           </div>
           <div className="h-1 rounded-full overflow-hidden" style={{ background: "rgba(255,255,255,0.06)" }}>
             <div
@@ -238,41 +323,17 @@ export default function KillPage() {
           </div>
         </div>
 
-        {/* ── RED section ── */}
-        {redTasks.length > 0 && (
-          <div className="mb-6" style={{ animation: "killFadeIn 0.3s ease 0.05s both" }}>
-            <p className="text-[9px] font-black tracking-[0.2em] uppercase mb-3" style={{ color: "#FF2D2D" }}>
-              Critical — {redTasks.length} item{redTasks.length > 1 ? "s" : ""}
-            </p>
-            {redTasks.map((task, i) => (
-              <TaskCard key={task.id} task={task} index={i} onComplete={handleComplete} />
-            ))}
-          </div>
-        )}
-
-        {/* ── AMBER section ── */}
-        {amberTasks.length > 0 && (
-          <div className="mb-6" style={{ animation: "killFadeIn 0.3s ease 0.1s both" }}>
-            <p className="text-[9px] font-black tracking-[0.2em] uppercase mb-3" style={{ color: "#FFB800" }}>
-              Action — {amberTasks.length} item{amberTasks.length > 1 ? "s" : ""}
-            </p>
-            {amberTasks.map((task, i) => (
-              <TaskCard key={task.id} task={task} index={i} onComplete={handleComplete} />
-            ))}
-          </div>
-        )}
-
-        {/* ── GREEN section ── */}
-        {greenTasks.length > 0 && (
-          <div className="mb-6" style={{ animation: "killFadeIn 0.3s ease 0.15s both" }}>
-            <p className="text-[9px] font-black tracking-[0.2em] uppercase mb-3" style={{ color: "rgba(255,255,255,0.2)" }}>
-              Maintenance — {greenTasks.length} item{greenTasks.length > 1 ? "s" : ""}
-            </p>
-            {greenTasks.map((task, i) => (
-              <TaskCard key={task.id} task={task} index={i} onComplete={handleComplete} />
-            ))}
-          </div>
-        )}
+        {/* ── Grouped accordions ── */}
+        {groups.map((group, i) => (
+          <ReleaseGroup
+            key={group.name}
+            name={group.name}
+            tasks={group.tasks}
+            defaultOpen={i === 0 || getGroupUrgency(group.tasks) === "RED"}
+            onComplete={handleComplete}
+            index={i}
+          />
+        ))}
 
         {/* ── All Clear state ── */}
         {tasks.length === 0 && (
