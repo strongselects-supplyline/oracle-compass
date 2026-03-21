@@ -97,27 +97,27 @@ export const SPRINT_WEEKS: SprintWeek[] = [
   {
     wk: 3, dates: 'Mar 22–28', startDate: '2026-03-22', endDate: '2026-03-28',
     phase: 'DELUXE', phaseBadge: 'DELUXE', target: '3 tracks', total: 14,
-    keyEvents: ['Sweet Frustration drops Apr 3'],
+    keyEvents: ['Sweet Frustration drops Apr 3', 'Every CTA: "save East Side Love"', '$50 Spotify Ad Studio (Denver, Minn, Dallas, Calgary)', 'Submit to 3-5 playlist curators on Groover'],
   },
   {
     wk: 4, dates: 'Mar 29–Apr 4', startDate: '2026-03-29', endDate: '2026-04-04',
     phase: 'DELUXE', phaseBadge: 'DELUXE', target: '3 tracks', total: 17,
-    keyEvents: ['Like I Did drops Apr 10'],
+    keyEvents: ['Close 6 album tracks by Apr 1', 'Like I Did drops Apr 10', 'CTAs shift: "save Sweet Frustration" + Mention ALL LOVE Apr 17', '$50 ad push same city split', 'First 414 Day rehearsal (timed, recorded)'],
   },
   {
     wk: 5, dates: 'Apr 5–11', startDate: '2026-04-05', endDate: '2026-04-11',
     phase: 'DELUXE', phaseBadge: 'DELUXE', target: '3 tracks + album upload', total: 20,
-    keyEvents: ['Upload ALL LOVE to Amuse Apr 7 (pre-save build)', 'ALL LOVE drops Apr 17 🔥'],
+    keyEvents: ['Upload ALL LOVE to Amuse Apr 7 (pre-save build)', 'ALL LOVE drops Apr 17 🔥', '$75 ad push, add Chicago to split', 'CTAs: "save Like I Did" + "pre-save ALL LOVE"', 'Second rehearsal + gear check', 'Compliance done for all four singles'],
   },
   {
     wk: 6, dates: 'Apr 12–18', startDate: '2026-04-12', endDate: '2026-04-18',
     phase: 'DELUXE', phaseBadge: 'DELUXE / CREAM', target: '3 tracks', total: 23,
-    keyEvents: ['414 Day performance Apr 14 🎤 (3 days before album)'],
+    keyEvents: ['Upload ALL LOVE to Amuse Apr 14', '414 Day performance Apr 14 🎤', 'QR code at venue straight to Spotify', '414 Day CTA: "save East Side Love, album drops in 3 days"', 'Apr 17 Marquee fires + maximum ad spend', 'All CTAs switch to "save the album"'],
   },
   {
     wk: 7, dates: 'Apr 19–25', startDate: '2026-04-19', endDate: '2026-04-25',
     phase: 'CREAM', phaseBadge: 'CREAM', target: '3 tracks', total: 26,
-    keyEvents: [],
+    keyEvents: ['First week stream check (target 25+ Discover Weekly)', 'Deploy 414 Day performance footage', 'Strong Selects strategy session', 'DELUXE planning begins'],
   },
   {
     wk: 8, dates: 'Apr 26–May 2', startDate: '2026-04-26', endDate: '2026-05-02',
