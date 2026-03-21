@@ -51,7 +51,7 @@ Return ONLY the description text, 1-2 paragraphs max. No preamble.`;
                 "content-type": "application/json",
             },
             body: JSON.stringify({
-                model: "claude-3-5-sonnet-20241022",
+                model: "claude-sonnet-4-6",
                 max_tokens: 300,
                 messages: [{
                     role: "user",

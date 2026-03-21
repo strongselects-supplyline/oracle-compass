@@ -176,6 +176,21 @@ export const REGISTRY: TrackRegistry[] = [
         collaborators: [],
         notes: "Album track.",
     },
+    {
+        title: "ALL LOVE (Album)",
+        isrc: "",
+        upc: "", // Album needs UPC (not ISRC) — check Amuse after upload
+        releaseDate: "2026-04-17",
+        ascap: "not_started",
+        mlc: "not_started",
+        soundExchange: "not_started",
+        songtrust: "not_started",
+        copyrightOffice: "not_started",
+        instrumentalRendered: false, // N/A for album entity but keeps type consistent
+        splitSheetSigned: false,
+        collaborators: [],
+        notes: "Album entity. Upload to Amuse by Apr 7 for pre-save window. Needs: album cover art, track sequencing, UPC, album-level Spotify editorial pitch.",
+    },
 ];
 
 // Operations agent Oracle escalation rules:

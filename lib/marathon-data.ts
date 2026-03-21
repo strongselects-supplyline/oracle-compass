@@ -1,6 +1,6 @@
 // marathon-data.ts
 // Source of truth for the 43-Track, 14-Week Sprint
-// Last updated: March 16, 2026
+// Last updated: March 21, 2026
 
 export type Phase = 'ALL_LOVE' | 'DELUXE' | 'CREAM' | 'FREAKSHOW';
 export type TrackStatus = 'not_started' | 'in_progress' | 'done';
@@ -92,7 +92,7 @@ export const SPRINT_WEEKS: SprintWeek[] = [
   {
     wk: 2, dates: 'Mar 14–20', startDate: '2026-03-14', endDate: '2026-03-20',
     phase: 'ALL_LOVE', phaseBadge: 'ALL LOVE', target: '7 tracks — close ALL LOVE', total: 11,
-    keyEvents: ['East Side Love drops Mar 27', 'Strong Selects restarts Mar 20', 'ALL LOVE front-load window closes Mar 28'],
+    keyEvents: ['East Side Love drops Mar 27', 'Strong Selects restarts Mar 27', 'ALL LOVE front-load window closes Mar 28'],
   },
   {
     wk: 3, dates: 'Mar 22–28', startDate: '2026-03-22', endDate: '2026-03-28',

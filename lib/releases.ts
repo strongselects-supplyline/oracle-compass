@@ -99,11 +99,12 @@ const RELEASE_DEFAULTS: Release[] = [
   { title: "East Side Love",    uploadDate: "2026-03-23", releaseDate: "2026-03-27", status: "unreleased", contentDeliverables: { ...DEFAULT_DELIVERABLES } },
   { title: "Sweet Frustration", uploadDate: "2026-03-30", releaseDate: "2026-04-03", status: "unreleased", contentDeliverables: { ...DEFAULT_DELIVERABLES } },
   { title: "Like I Did",        uploadDate: "2026-04-06", releaseDate: "2026-04-10", status: "unreleased", contentDeliverables: { ...DEFAULT_DELIVERABLES } },
+  { title: "ALL LOVE (Album)",  uploadDate: "2026-04-07", releaseDate: "2026-04-17", status: "unreleased", contentDeliverables: { ...DEFAULT_DELIVERABLES } },
 ];
 
 const RELEASES_KEY = "dynamic_releases";
 const RELEASES_VERSION_KEY = "releases_data_version";
-const RELEASE_DATA_VERSION = 11; // v11: added Multiplier Engine deliverables (Groover, SongTools, un:hurd)
+const RELEASE_DATA_VERSION = 12; // v12: added ALL LOVE album entry for album-level Kill List task derivation
 
 // Read from IndexedDB, seeding defaults on first call or after version bump
 export async function getDynamicReleases(): Promise<Release[]> {
