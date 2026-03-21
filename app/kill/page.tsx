@@ -25,8 +25,16 @@ function getGroupKey(task: KillTask): string {
   // Oracle flags and non-release tasks always go under "Today"
   if (task.id.startsWith("flag-") || task.id.startsWith("fuel-") ||
       task.id.startsWith("grind-") || task.id.startsWith("session-") ||
-      task.id.startsWith("biz-")) {
+      task.id.startsWith("biz-") || task.id.startsWith("fan-")) {
     return "Today";
+  }
+  // 414 Day prep tasks group together
+  if (task.id.startsWith("414-")) {
+    return "414 Day";
+  }
+  // Instrumentals group under their track name
+  if (task.id.startsWith("instrumental-")) {
+    return "Instrumentals";
   }
   const match = task.title.match(/\s—\s(.+)$/);
   if (match) return match[1];

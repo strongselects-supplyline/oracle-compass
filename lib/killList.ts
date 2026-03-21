@@ -498,14 +498,7 @@ export async function deriveKillList(): Promise<KillTask[]> {
       "Submit for review",
     ], 3, "ops", "biz");
 
-    toggle("reg-instrumental", "instrumentalRendered", "Render the instrumental version", "Needed for sync licensing, remixes, and content use", [
-      "Alternatively, " + openApp("masterchannel") + " to auto-master stems. (" + amusePartnerNote("masterchannel") + ")",
-      "Open your DAW (Logic, Ableton, FL Studio, etc.)",
-      "Mute all vocal tracks",
-      "Export/bounce as WAV (same settings as the master)",
-      "Save as: '[Song Title] - Instrumental.wav'",
-      "Store in your masters folder alongside the vocal version",
-    ], 7, "ops", "studio");
+    // Instrumental rendering handled separately in section 10 (all tracks, no timeline gate)
   }
 
   // ── 6. SESSION → Tasks ───────────────────────────────────────────
@@ -576,6 +569,201 @@ export async function deriveKillList(): Promise<KillTask[]> {
         },
       });
     }
+  }
+
+  // ── 8. FAN CAPTURE INFRASTRUCTURE ────────────────────────────────
+  const linktreeSetup = await getStoreValue<boolean>("fan_capture_linktree");
+  const mailchimpSetup = await getStoreValue<boolean>("fan_capture_mailchimp");
+
+  if (!linktreeSetup) {
+    tasks.push({
+      id: "fan-linktree",
+      title: "Set up Linktree",
+      subtitle: "20 minutes. You have zero owned audience right now.",
+      howTo: [
+        "Go to linktr.ee and sign up (free tier)",
+        "Add links: Spotify, Apple Music, YouTube, Pre-save for next single",
+        "Add an email signup link (connect to Mailchimp after that's set up)",
+        "Copy your Linktree URL",
+        "Paste into Instagram bio and TikTok bio",
+        "This is your single hub — every CTA in every post points here",
+      ],
+      urgency: "RED",
+      pillar: "business",
+      timeBlock: "any",
+      action: async () => { await setStoreValue("fan_capture_linktree", true); },
+    });
+  }
+
+  if (!mailchimpSetup) {
+    tasks.push({
+      id: "fan-mailchimp",
+      title: "Set up Mailchimp email list",
+      subtitle: "Free tier. Start capturing fans you OWN.",
+      howTo: [
+        "Go to mailchimp.com and create a free account",
+        "Create an audience/list called 'past.El Fans'",
+        "Create a simple signup form (Mailchimp generates one automatically)",
+        "Copy the signup form link",
+        "Add it to your Linktree as 'Join the list'",
+        "Every post, every story — mention the list. Own your audience.",
+      ],
+      urgency: "RED",
+      pillar: "business",
+      timeBlock: "any",
+      action: async () => { await setStoreValue("fan_capture_mailchimp", true); },
+    });
+  }
+
+  // ── 9. 414 DAY PREP (Apr 14, 2026) ──────────────────────────────
+  const fourteenDayDate = new Date("2026-04-14T00:00:00");
+  const daysUntil414 = Math.ceil((fourteenDayDate.getTime() - now.getTime()) / 86400000);
+
+  if (daysUntil414 >= 0 && daysUntil414 <= 30) {
+    const live414Urg = (threshold: number): "RED" | "AMBER" | "GREEN" =>
+      daysUntil414 <= threshold ? "RED" : daysUntil414 <= threshold + 7 ? "AMBER" : "GREEN";
+
+    const setlistLocked = await getStoreValue<boolean>("414day_setlist_locked");
+    const rehearsal1 = await getStoreValue<boolean>("414day_rehearsal_1");
+    const rehearsal2 = await getStoreValue<boolean>("414day_rehearsal_2");
+    const gearChecked = await getStoreValue<boolean>("414day_gear_checked");
+    const contentCapturePlan = await getStoreValue<boolean>("414day_content_capture_plan");
+    const synesthesiaTested = await getStoreValue<boolean>("414day_synesthesia_tested");
+
+    if (!setlistLocked) {
+      tasks.push({
+        id: "414-setlist",
+        title: "Lock 414 Day setlist",
+        subtitle: `${daysUntil414} days until performance. 20-minute set.`,
+        howTo: [
+          "Pick 5-6 songs from ALL LOVE that flow well live",
+          "Order them: opener (energy), 2-3 mid songs, closer (biggest hit)",
+          "Time it — must fit in 20 minutes including transitions",
+          "Write it down. No changes after this is locked.",
+          "Consider: this is 3 days BEFORE album drop — tease unreleased tracks?",
+        ],
+        urgency: live414Urg(14),
+        pillar: "creative",
+        timeBlock: "any",
+        action: async () => { await setStoreValue("414day_setlist_locked", true); },
+      });
+    }
+
+    if (setlistLocked && !rehearsal1) {
+      tasks.push({
+        id: "414-rehearsal1",
+        title: "414 Day rehearsal #1",
+        subtitle: "Full run-through of the 20-minute set",
+        howTo: [
+          "Run the full setlist start to finish, no stops",
+          "Time it — are you under 20 minutes?",
+          "Note which transitions feel rough",
+          "Record yourself on your phone for review",
+        ],
+        urgency: live414Urg(10),
+        pillar: "creative",
+        timeBlock: "studio",
+        action: async () => { await setStoreValue("414day_rehearsal_1", true); },
+      });
+    }
+
+    if (rehearsal1 && !rehearsal2) {
+      tasks.push({
+        id: "414-rehearsal2",
+        title: "414 Day rehearsal #2 (final)",
+        subtitle: "Polish run — fix everything from rehearsal 1",
+        howTo: [
+          "Run the full set again with fixes from last time",
+          "Focus on transitions, energy management, stage movement",
+          "This is your final dress rehearsal",
+          "If it feels tight, you're ready",
+        ],
+        urgency: live414Urg(5),
+        pillar: "creative",
+        timeBlock: "studio",
+        action: async () => { await setStoreValue("414day_rehearsal_2", true); },
+      });
+    }
+
+    if (!gearChecked && daysUntil414 <= 7) {
+      tasks.push({
+        id: "414-gear",
+        title: "414 Day gear check",
+        subtitle: "Don't show up with dead batteries",
+        howTo: [
+          "Check in-ear monitors — batteries charged, working",
+          "Check cables — bring backups",
+          "Check microphone — is it yours or venue-provided?",
+          "Pack a bag the night before: cables, in-ears, phone charger, water",
+        ],
+        urgency: live414Urg(3),
+        pillar: "ops",
+        timeBlock: "any",
+        action: async () => { await setStoreValue("414day_gear_checked", true); },
+      });
+    }
+
+    if (!contentCapturePlan && daysUntil414 <= 14) {
+      tasks.push({
+        id: "414-content",
+        title: "Plan 414 Day content capture",
+        subtitle: "This is your biggest content day of the year",
+        howTo: [
+          "Who's filming? You need at least one person dedicated to camera",
+          "Minimum: phone on tripod for full set + handheld for BTS",
+          "Ideal: 2 angles (front of stage + crowd/side)",
+          "Plan: BTS arrival, soundcheck, crowd energy, performance clips, post-show",
+          "This footage feeds reels for 2-3 weeks of content",
+        ],
+        urgency: live414Urg(7),
+        pillar: "creative",
+        timeBlock: "any",
+        action: async () => { await setStoreValue("414day_content_capture_plan", true); },
+      });
+    }
+
+    if (!synesthesiaTested && daysUntil414 <= 14) {
+      tasks.push({
+        id: "414-synesthesia",
+        title: "Test Synesthesia Visualizer event mode",
+        subtitle: "Live visuals for the set — needs testing before the show",
+        howTo: [
+          "Open https://strongselects-supplyline.github.io/synesthesia-visualizer/?mode=event",
+          "Load the audio files for your setlist tracks",
+          "Run through the full set in event mode",
+          "Check transitions between tracks",
+          "Note any bugs or visual glitches to fix before April 14",
+        ],
+        urgency: live414Urg(10),
+        pillar: "creative",
+        timeBlock: "content",
+        action: async () => { await setStoreValue("414day_synesthesia_tested", true); },
+      });
+    }
+  }
+
+  // ── 10. INSTRUMENTALS (all tracks, regardless of timeline) ───────
+  // Sync licensing requires instrumentals. Don't gate on release date.
+  for (const release of releases) {
+    if (release.contentDeliverables.instrumentalRendered) continue;
+    const t = release.title;
+    tasks.push({
+      id: `instrumental-${t}`,
+      title: `Render instrumental — ${t}`,
+      subtitle: "Without this, sync placements (TV/film/ads) are impossible",
+      howTo: [
+        "Open FL Studio and load the project file for this song",
+        "Mute all vocal tracks (lead + harmonies + ad-libs)",
+        "Solo check: make sure NO vocals are bleeding through",
+        "Export/bounce as WAV (same sample rate and bit depth as the master)",
+        "Save as: '" + t + " - Instrumental.wav'",
+        "Store in your masters folder alongside the vocal version",
+      ],
+      urgency: "AMBER",
+      pillar: "ops",
+      timeBlock: "studio",
+      action: async () => { await updateContentDeliverables(t, { instrumentalRendered: true }); },
+    });
   }
 
   // ── Filter by cleared ────────────────────────────────────────────

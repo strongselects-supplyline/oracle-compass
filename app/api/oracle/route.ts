@@ -362,6 +362,15 @@ DOORDASH THIS WEEK: ${ctx.income.doordashShiftsThisWeek} shifts / $${ctx.income.
 DOORDASH THIS MONTH (rolling 4wk): $${ctx.income.doordashEarningsThisMonth}
 STRONG SELECTS REVENUE THIS WEEK: $${ctx.income.ssRevenueThisWeek}
 
+-- LIVE PERFORMANCE --
+414 DAY MILWAUKEE: ${Math.ceil((new Date("2026-04-14").getTime() - new Date(ctx.date).getTime()) / 86400000)} days away (Apr 14, 3 days before album)
+SETLIST: Not yet tracked in Oracle context — check Kill List for prep status
+
+-- FAN INFRASTRUCTURE --
+LINKTREE: Not yet tracked — check Kill List
+MAILCHIMP: Not yet tracked — check Kill List
+NOTE: If both are missing, flag as RED. Zero owned audience = existential risk.
+
 -- META --
 LAST DECREE: ${ctx.lastDecree?.severity ?? "none"} - "${ctx.lastDecree?.oracle_message ?? "none"}"
 
