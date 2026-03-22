@@ -42,6 +42,12 @@ export type StreakData = {
     lastSaunaDate: string;
 };
 
+export type DailyTelemetry = {
+    sf_hours_logged: number;
+    lid_hours_logged: number;
+    doordash_earned: number;
+};
+
 // Singleton DB promise
 let dbPromise: Promise<IDBDatabase> | null = null;
 
@@ -186,4 +192,18 @@ export async function getStreakData(): Promise<StreakData> {
 
 export async function saveStreakData(data: StreakData): Promise<void> {
     await setStoreValue('streaks', data);
+}
+
+export async function getDailyTelemetry(): Promise<DailyTelemetry> {
+    const data = await getStoreValue<DailyTelemetry>('daily_telemetry');
+    if (data) return data;
+    return {
+        sf_hours_logged: 0,
+        lid_hours_logged: 0,
+        doordash_earned: 0
+    };
+}
+
+export async function saveDailyTelemetry(data: DailyTelemetry): Promise<void> {
+    await setStoreValue('daily_telemetry', data);
 }

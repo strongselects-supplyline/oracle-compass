@@ -6,7 +6,7 @@
 // ADHD-first design: every task has plain language + step-by-step howTo.
 // Built March 18, 2026. Rewritten March 19, 2026.
 
-import { getDailyLog, saveDailyLog, getStoreValue, setStoreValue, getTodayISO, DailyLog } from "@/lib/db";
+import { getDailyLog, saveDailyLog, getStoreValue, setStoreValue, getTodayISO, DailyLog, getDailyTelemetry } from "@/lib/db";
 import { getDynamicReleases, Release, updateContentDeliverables } from "@/lib/releases";
 import { getDayType, isStudioDay, isBizDay } from "@/lib/dayType";
 import { getWeekKey, OracleFlag } from "@/lib/oracle";
@@ -34,11 +34,12 @@ export async function deriveKillList(): Promise<KillTask[]> {
   const hour = new Date().getHours();
   const weekKey = getWeekKey();
 
-  const [dailyLog, releases, flags, sessions] = await Promise.all([
+  const [dailyLog, releases, flags, sessions, telemetry] = await Promise.all([
     getDailyLog(today),
     getDynamicReleases(),
     getStoreValue<OracleFlag[]>(`oracle_flags:${today}`),
     getStoreValue<number>(`weekly_sessions:${weekKey}`),
+    getDailyTelemetry()
   ]);
 
   // ── 1. ORACLE FLAGS → Tasks ──────────────────────────────────────
@@ -421,8 +422,8 @@ export async function deriveKillList(): Promise<KillTask[]> {
       "Tap 'Pitch a song'",
       "Fill in: genre, mood, instruments, culture, song description",
       "Write 2-3 sentences about why this song matters",
-      "Submit — Spotify reviews these up to 4 weeks before release",
-    ], 7, "ops", "biz");
+      "Must submit at least 7 days before release to lock Release Radar",
+    ], 10, "ops", "biz");
 
     if (daysUntil <= 0) {
       toggle("dist-verify", "streamingLinksVerified", "Check that the song is actually live", "Verify it's on Spotify and Apple Music", [
@@ -767,6 +768,73 @@ export async function deriveKillList(): Promise<KillTask[]> {
       pillar: "ops",
       timeBlock: "studio",
       action: async () => { await updateContentDeliverables(t, { instrumentalRendered: true }); },
+    });
+  }
+
+  // ── 11. ANTI-DRIFT TELEMETRY ESCALATIONS ─────────────────────────
+  // Hard deadlines
+  const apr1 = new Date("2026-04-01T00:00:00");
+  const apr3 = new Date("2026-04-03T00:00:00");
+  const daysToApr1 = Math.max(1, Math.ceil((apr1.getTime() - now.getTime()) / 86400000));
+  const daysToApr3 = Math.max(1, Math.ceil((apr3.getTime() - now.getTime()) / 86400000));
+
+  // DoorDash ($1,000 target by Apr 3)
+  if (telemetry.doordash_earned < 1000 && now < apr3) {
+    const dailyTargetDD = Math.ceil((1000 - telemetry.doordash_earned) / daysToApr3);
+    const ddUrgency = dailyTargetDD > 200 ? "RED" : dailyTargetDD > 120 ? "AMBER" : "GREEN";
+    tasks.push({
+      id: "telemetry-dd",
+      title: `DoorDash: Earn $${dailyTargetDD} today`,
+      subtitle: `$${telemetry.doordash_earned} / $1,000 logged. ${daysToApr3} days left.`,
+      howTo: [
+        `You need $${dailyTargetDD}/day to hit the $1k bill by Apr 3.`,
+        "Lock your 2:00 PM - 8:30 PM window.",
+        "Update the Telemetry panel instantly when you get home."
+      ],
+      urgency: ddUrgency,
+      pillar: "business",
+      timeBlock: "evening",
+      action: async () => {}, // Handled by telemetry UI
+    });
+  }
+
+  // SF Mixdown (11 hr target by Apr 1)
+  if (telemetry.sf_hours_logged < 11 && now < apr1) {
+    const dailyTargetSF = ((11 - telemetry.sf_hours_logged) / daysToApr1).toFixed(1);
+    const sfUrgency = parseFloat(dailyTargetSF) > 3 ? "RED" : parseFloat(dailyTargetSF) > 1.5 ? "AMBER" : "GREEN";
+    tasks.push({
+      id: "telemetry-sf",
+      title: `Mix/Master SF: ${dailyTargetSF} hr pace`,
+      subtitle: `Sweet Frustration: ${telemetry.sf_hours_logged} / 11 hrs logged. ${daysToApr1} days left.`,
+      howTo: [
+        "10:00 AM - 2:00 PM is the unbreakable studio block.",
+        "Your only job is closing this track.",
+        "Log your focus hours in the Anti-Drift Telemetry panel."
+      ],
+      urgency: sfUrgency,
+      pillar: "creative",
+      timeBlock: "studio",
+      action: async () => {}, // Handled by telemetry UI
+    });
+  }
+
+  // LID Mixdown (11 hr target by Apr 1)
+  if (telemetry.lid_hours_logged < 11 && now < apr1) {
+    const dailyTargetLID = ((11 - telemetry.lid_hours_logged) / daysToApr1).toFixed(1);
+    const lidUrgency = parseFloat(dailyTargetLID) > 3 ? "RED" : parseFloat(dailyTargetLID) > 1.5 ? "AMBER" : "GREEN";
+    tasks.push({
+      id: "telemetry-lid",
+      title: `Mix/Master LID: ${dailyTargetLID} hr pace`,
+      subtitle: `Like I Did: ${telemetry.lid_hours_logged} / 11 hrs logged. ${daysToApr1} days left.`,
+      howTo: [
+        "10:00 AM - 2:00 PM is the unbreakable studio block.",
+        "If SF is done, all your time goes here.",
+        "Log your focus hours in the Anti-Drift Telemetry panel."
+      ],
+      urgency: lidUrgency,
+      pillar: "creative",
+      timeBlock: "studio",
+      action: async () => {}, // Handled by telemetry UI
     });
   }
 
