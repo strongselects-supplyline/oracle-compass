@@ -780,8 +780,8 @@ export async function deriveKillList(): Promise<KillTask[]> {
   const daysToApr3 = Math.max(1, Math.ceil((apr3.getTime() - now.getTime()) / 86400000));
 
   const trackSummaries = await getTrackHoursSummaries();
-  const sfSummary = trackSummaries.find(t => t.trackName === 'SWEET FRUSTRATION');
-  const lidSummary = trackSummaries.find(t => t.trackName === 'LIKE I DID');
+  const sfSummary = trackSummaries.find(t => t.trackName.toUpperCase() === 'SWEET FRUSTRATION');
+  const lidSummary = trackSummaries.find(t => t.trackName.toUpperCase() === 'LIKE I DID');
   const sfHours = sfSummary?.totalHours || 0;
   const lidHours = lidSummary?.totalHours || 0;
 

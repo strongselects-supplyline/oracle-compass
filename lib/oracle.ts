@@ -58,7 +58,7 @@ export type ContentSnapshot = {
 export type TimeSnapshot = {
   currentHour: number;       // 0-23
   currentBlock: string;      // 'pre-session' | 'studio' | 'post-studio' | 'evening' | 'dd-morning' | 'dd-evening'
-  studioHoursRemaining: number; // hours left in 10AM-4PM block (0 if past 4PM)
+  studioHoursRemaining: number; // hours left in 10AM-2PM block (0 if past 2PM)
 };
 
 export type SessionSnapshot = {
@@ -176,10 +176,10 @@ function getCurrentBlock(hour: number, dayType: string): string {
   const isWeekend = dayType === 'STUDIO DAY';
   if (isWeekend && hour >= 7 && hour < 10) return 'dd-morning';
   if (hour < 10) return 'pre-session';
-  if (hour >= 10 && hour < 16) return 'studio';
-  if (hour >= 16 && hour < 17) return 'post-studio';
-  if (isWeekend && hour >= 17 && hour < 22) return 'dd-evening';
-  if (hour >= 17) return 'evening';
+  if (hour >= 10 && hour < 14) return 'studio';
+  if (hour >= 14 && hour < 15) return 'post-studio';
+  if (isWeekend && hour >= 15 && hour < 22) return 'dd-evening';
+  if (hour >= 15) return 'evening';
   return 'pre-session';
 }
 

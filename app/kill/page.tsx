@@ -323,8 +323,8 @@ export default function KillPage() {
 
   groups.push(...releaseGroups);
 
-  const sfHoursFromLog = trackSummaries.find(t => t.trackName === 'SWEET FRUSTRATION')?.totalHours || 0;
-  const lidHoursFromLog = trackSummaries.find(t => t.trackName === 'LIKE I DID')?.totalHours || 0;
+  const sfHoursFromLog = trackSummaries.find(t => t.trackName.toUpperCase() === 'SWEET FRUSTRATION')?.totalHours || 0;
+  const lidHoursFromLog = trackSummaries.find(t => t.trackName.toUpperCase() === 'LIKE I DID')?.totalHours || 0;
 
   const pct = stats.total > 0 ? Math.round((stats.cleared / stats.total) * 100) : 0;
   const statusColor = tasks.some(t => t.urgency === "RED") ? "#FF2D2D"
