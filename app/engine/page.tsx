@@ -2,7 +2,7 @@
 
 import { useEffect, useState, useRef } from "react";
 import { getDayType, isBizDay, isSacredDay } from "@/lib/dayType";
-import { getStoreValue, setStoreValue } from "@/lib/db";
+import { getStoreValue, setStoreValue, getDailyTelemetry, DailyTelemetry } from "@/lib/db";
 import { getWeekKey } from "@/lib/oracle";
 import type { OracleFlag } from "@/lib/oracle";
 import ContentQueue from "@/components/engine/ContentQueue";
@@ -25,10 +25,7 @@ export default function EnginePage() {
   const [accounts, setAccounts] = useState<Account[]>(DEFAULT_ACCOUNTS);
   const [editingAccount, setEditingAccount] = useState<number | null>(null);
 
-  const [ddShifts, setDdShifts] = useState(0);
-  const [ddEarnings, setDdEarnings] = useState(0);
-  const [ssRevenue, setSsRevenue] = useState(0);
-  const [editingIncome, setEditingIncome] = useState(false);
+  const [telemetry, setTelemetry] = useState<DailyTelemetry>({ sf_hours_logged: 0, lid_hours_logged: 0, doordash_earned: 0 });
 
   const [priority, setPriority] = useState<string | null>(null);
   const [flags, setFlags] = useState<OracleFlag[]>([]);
@@ -36,8 +33,6 @@ export default function EnginePage() {
   const timerRef = useRef<ReturnType<typeof setTimeout> | null>(null);
   const weekKey = getWeekKey();
   const touchKey = "engine_touches:" + weekKey;
-  const ddKey = "doordash_week:" + weekKey;
-  const ssKey = "ss_revenue:" + weekKey;
 
   useEffect(() => {
     const dt = getDayType();
@@ -52,21 +47,19 @@ export default function EnginePage() {
       getStoreValue<number>(touchKey),
       getStoreValue<number>("engine_touch_target"),
       getStoreValue<Account[]>("engine_accounts"),
-      getStoreValue<{ shifts: number; earnings: number }>(ddKey),
-      getStoreValue<number>(ssKey),
+      getDailyTelemetry(),
       getStoreValue<string>("oracle_priority"),
       getStoreValue<OracleFlag[]>("oracle_flags:" + today),
-    ]).then(([move, t, tt, accs, dd, ss, pri, fl]) => {
+    ]).then(([move, t, tt, accs, tel, pri, fl]) => {
       setDailyMove(move || "");
       setTouches(t || 0);
       setTouchTarget(tt || 15);
       if (accs && accs.length === 3) setAccounts(accs);
-      if (dd) { setDdShifts(dd.shifts); setDdEarnings(dd.earnings); }
-      setSsRevenue(ss || 0);
+      if (tel) setTelemetry(tel);
       setPriority(pri || null);
       setFlags(fl || []);
     });
-  }, [touchKey, ddKey, ssKey]);
+  }, [touchKey]);
 
   const handleSaveMove = async (val: string) => {
     setDailyMove(val);
@@ -83,12 +76,6 @@ export default function EnginePage() {
     const updated = accounts.map((a, i) => i === idx ? { ...a, ...patch } : a);
     setAccounts(updated);
     await setStoreValue("engine_accounts", updated);
-  };
-
-  const saveIncome = async () => {
-    await setStoreValue(ddKey, { shifts: ddShifts, earnings: ddEarnings });
-    await setStoreValue(ssKey, ssRevenue);
-    setEditingIncome(false);
   };
 
   const startPress = () => {
@@ -258,55 +245,25 @@ export default function EnginePage() {
         <div className="card">
           <div className="flex justify-between items-center mb-4">
             <p className="text-[10px] font-black tracking-[0.18em] text-[#555] uppercase">Income Bridge</p>
-            {!editingIncome && (
-              <button onClick={() => setEditingIncome(true)} className="text-[#444] text-xs font-black tracking-widest hover:text-white transition-colors">
-                EDIT
-              </button>
-            )}
           </div>
 
-          {editingIncome ? (
-            <div className="space-y-4">
+          <div className="space-y-3">
+            <div className="flex justify-between items-end">
               <div>
-                <p className="text-[10px] font-black tracking-widest text-[#555] uppercase mb-2">DoorDash this week</p>
-                <div className="flex gap-3">
-                  <div className="flex-1">
-                    <p className="text-[9px] text-[#444] uppercase tracking-widest mb-1">Shifts</p>
-                    <input type="number" className="num-input w-full" value={ddShifts || ""} onChange={e => setDdShifts(parseInt(e.target.value) || 0)} placeholder="0" />
-                  </div>
-                  <div className="flex-1">
-                    <p className="text-[9px] text-[#444] uppercase tracking-widest mb-1">Earnings $</p>
-                    <input type="number" className="num-input w-full" value={ddEarnings || ""} onChange={e => setDdEarnings(parseFloat(e.target.value) || 0)} placeholder="0" />
-                  </div>
-                </div>
+                <p className="text-[9px] text-[#444] uppercase tracking-widest mb-1">DoorDash</p>
+                <p className="text-lg font-black text-amber-500">${telemetry.doordash_earned} <span className="text-[11px] font-bold text-[#555]">/ $1,000</span></p>
               </div>
-              <div>
-                <p className="text-[10px] font-black tracking-widest text-[#555] uppercase mb-2">Strong Selects revenue this week</p>
-                <input type="number" className="num-input w-full" value={ssRevenue || ""} onChange={e => setSsRevenue(parseFloat(e.target.value) || 0)} placeholder="0" />
-              </div>
-              <button onClick={saveIncome} className="w-full py-3 rounded-xl bg-[#1e1e1e] border border-[#2a2a2a] text-sm font-black tracking-widest text-white hover:bg-[#2a2a2a] active:scale-95 transition-transform">
-                SAVE
-              </button>
+              <p className="text-[10px] font-black tracking-widest text-[#444] uppercase">(log on Kill tab)</p>
             </div>
-          ) : (
-            <div className="space-y-3">
-              <div className="flex justify-between">
-                <div>
-                  <p className="text-[9px] text-[#444] uppercase tracking-widest mb-1">DoorDash</p>
-                  <p className="text-lg font-black">${ddEarnings}<span className="text-sm font-bold text-[#555] ml-1">{ddShifts} shift{ddShifts !== 1 ? "s" : ""}</span></p>
-                </div>
-                <div className="text-right">
-                  <p className="text-[9px] text-[#444] uppercase tracking-widest mb-1">Strong Selects</p>
-                  <p className="text-lg font-black text-green-400">${ssRevenue}</p>
-                </div>
+            {telemetry.doordash_earned < 1000 && (
+              <div className="h-1 bg-[#1e1e1e] rounded-full overflow-hidden mt-3">
+                <div
+                  className="h-full rounded-full transition-all duration-500 bg-amber-500"
+                  style={{ width: `${Math.min((telemetry.doordash_earned / 1000) * 100, 100)}%` }}
+                />
               </div>
-              {ddShifts > 4 && (
-                <p className="text-xs text-amber-400 font-bold">
-                  {ddShifts} shifts this week — Oracle will weigh studio impact
-                </p>
-              )}
-            </div>
-          )}
+            )}
+          </div>
         </div>
 
       </div>

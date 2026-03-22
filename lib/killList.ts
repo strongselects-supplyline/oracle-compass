@@ -11,6 +11,7 @@ import { getDynamicReleases, Release, updateContentDeliverables } from "@/lib/re
 import { getDayType, isStudioDay, isBizDay } from "@/lib/dayType";
 import { getWeekKey, OracleFlag } from "@/lib/oracle";
 import { openApp, amusePartnerNote } from "@/lib/toolchain";
+import { getTrackHoursSummaries } from "@/lib/studioLog";
 
 // ── Types ────────────────────────────────────────────────────────────
 
@@ -778,6 +779,12 @@ export async function deriveKillList(): Promise<KillTask[]> {
   const daysToApr1 = Math.max(1, Math.ceil((apr1.getTime() - now.getTime()) / 86400000));
   const daysToApr3 = Math.max(1, Math.ceil((apr3.getTime() - now.getTime()) / 86400000));
 
+  const trackSummaries = await getTrackHoursSummaries();
+  const sfSummary = trackSummaries.find(t => t.trackName === 'SWEET FRUSTRATION');
+  const lidSummary = trackSummaries.find(t => t.trackName === 'LIKE I DID');
+  const sfHours = sfSummary?.totalHours || 0;
+  const lidHours = lidSummary?.totalHours || 0;
+
   // DoorDash ($1,000 target by Apr 3)
   if (telemetry.doordash_earned < 1000 && now < apr3) {
     const dailyTargetDD = Math.ceil((1000 - telemetry.doordash_earned) / daysToApr3);
@@ -799,42 +806,42 @@ export async function deriveKillList(): Promise<KillTask[]> {
   }
 
   // SF Mixdown (11 hr target by Apr 1)
-  if (telemetry.sf_hours_logged < 11 && now < apr1) {
-    const dailyTargetSF = ((11 - telemetry.sf_hours_logged) / daysToApr1).toFixed(1);
+  if (sfHours < 11 && now < apr1) {
+    const dailyTargetSF = ((11 - sfHours) / daysToApr1).toFixed(1);
     const sfUrgency = parseFloat(dailyTargetSF) > 3 ? "RED" : parseFloat(dailyTargetSF) > 1.5 ? "AMBER" : "GREEN";
     tasks.push({
       id: "telemetry-sf",
       title: `Mix/Master SF: ${dailyTargetSF} hr pace`,
-      subtitle: `Sweet Frustration: ${telemetry.sf_hours_logged} / 11 hrs logged. ${daysToApr1} days left.`,
+      subtitle: `Sweet Frustration: ${sfHours} / 11 hrs logged. ${daysToApr1} days left.`,
       howTo: [
         "10:00 AM - 2:00 PM is the unbreakable studio block.",
         "Your only job is closing this track.",
-        "Log your focus hours in the Anti-Drift Telemetry panel."
+        "Sessions logged on the Log tab automatically update this pace."
       ],
       urgency: sfUrgency,
       pillar: "creative",
       timeBlock: "studio",
-      action: async () => {}, // Handled by telemetry UI
+      action: async () => {}, // Display only task
     });
   }
 
   // LID Mixdown (11 hr target by Apr 1)
-  if (telemetry.lid_hours_logged < 11 && now < apr1) {
-    const dailyTargetLID = ((11 - telemetry.lid_hours_logged) / daysToApr1).toFixed(1);
+  if (lidHours < 11 && now < apr1) {
+    const dailyTargetLID = ((11 - lidHours) / daysToApr1).toFixed(1);
     const lidUrgency = parseFloat(dailyTargetLID) > 3 ? "RED" : parseFloat(dailyTargetLID) > 1.5 ? "AMBER" : "GREEN";
     tasks.push({
       id: "telemetry-lid",
       title: `Mix/Master LID: ${dailyTargetLID} hr pace`,
-      subtitle: `Like I Did: ${telemetry.lid_hours_logged} / 11 hrs logged. ${daysToApr1} days left.`,
+      subtitle: `Like I Did: ${lidHours} / 11 hrs logged. ${daysToApr1} days left.`,
       howTo: [
         "10:00 AM - 2:00 PM is the unbreakable studio block.",
         "If SF is done, all your time goes here.",
-        "Log your focus hours in the Anti-Drift Telemetry panel."
+        "Sessions logged on the Log tab automatically update this pace."
       ],
       urgency: lidUrgency,
       pillar: "creative",
       timeBlock: "studio",
-      action: async () => {}, // Handled by telemetry UI
+      action: async () => {}, // Display only task
     });
   }
 

@@ -4,6 +4,7 @@ import { useState, useCallback, useEffect } from "react";
 import { getStoreValue, setStoreValue, getTodayISO } from "@/lib/db";
 import type { OracleDecree, Realignment } from "@/lib/oracle";
 import { getKillStats } from "@/lib/killList";
+import { recalibrateOracle } from "@/lib/recalibrate";
 
 // ─── TYPES ──────────────────────────────────────────────────────────
 
@@ -278,7 +279,20 @@ export default function OraclePage() {
   const [killStats, setKillStats] = useState({ active: 0, total: 0 });
 
   const loadDecree = useCallback(async () => {
-    const stored = await getStoreValue<OracleDecree>(`oracle_decree:${getTodayISO()}`);
+    const today = getTodayISO();
+    let stored = await getStoreValue<OracleDecree>(`oracle_decree:${today}`);
+    
+    if (!stored) {
+      setRecalibrating(true);
+      try {
+        await recalibrateOracle();
+        stored = await getStoreValue<OracleDecree>(`oracle_decree:${today}`);
+      } catch (e) {
+        console.error("Auto-recalibration failed:", e);
+      }
+      setRecalibrating(false);
+    }
+
     const clearedIds = await getStoreValue<string[]>(CLEARED_KEY) ?? [];
     const stats = await getKillStats();
 

@@ -10,6 +10,7 @@ import { useState, useEffect, useCallback, useRef } from "react";
 import { getDailyTelemetry, saveDailyTelemetry, DailyTelemetry } from "@/lib/db";
 import { deriveKillList, completeTask, getKillStats, KillTask } from "@/lib/killList";
 import { recalibrateOracle } from "@/lib/recalibrate";
+import { getTrackHoursSummaries, TrackHoursSummary } from "@/lib/studioLog";
 
 const URGENCY_STYLES: Record<string, { color: string; bg: string; border: string }> = {
   RED:   { color: "#FF2D2D", bg: "rgba(255,45,45,0.06)",   border: "rgba(255,45,45,0.2)" },
@@ -254,14 +255,16 @@ export default function KillPage() {
   const [tasks, setTasks] = useState<KillTask[]>([]);
   const [stats, setStats] = useState({ total: 0, cleared: 0, redRemaining: 0 });
   const [telemetry, setTelemetry] = useState<DailyTelemetry>({ sf_hours_logged: 0, lid_hours_logged: 0, doordash_earned: 0 });
+  const [trackSummaries, setTrackSummaries] = useState<TrackHoursSummary[]>([]);
   const [loading, setLoading] = useState(true);
   const [recalStatus, setRecalStatus] = useState<"idle" | "running" | "done">("idle");
 
   const refresh = useCallback(async () => {
-    const [t, s, tel] = await Promise.all([deriveKillList(), getKillStats(), getDailyTelemetry()]);
+    const [t, s, tel, summaries] = await Promise.all([deriveKillList(), getKillStats(), getDailyTelemetry(), getTrackHoursSummaries()]);
     setTasks(t);
     setStats(s);
     setTelemetry(tel);
+    setTrackSummaries(summaries);
     setLoading(false);
   }, []);
 
@@ -269,10 +272,11 @@ export default function KillPage() {
 
   const handleComplete = async (task: KillTask) => {
     await completeTask(task);
-    const [t, s, tel] = await Promise.all([deriveKillList(), getKillStats(), getDailyTelemetry()]);
+    const [t, s, tel, summaries] = await Promise.all([deriveKillList(), getKillStats(), getDailyTelemetry(), getTrackHoursSummaries()]);
     setTasks(t);
     setStats(s);
     setTelemetry(tel);
+    setTrackSummaries(summaries);
 
     const redBefore = stats.redRemaining;
     const redAfter = t.filter(x => x.urgency === "RED").length;
@@ -318,6 +322,9 @@ export default function KillPage() {
     });
 
   groups.push(...releaseGroups);
+
+  const sfHoursFromLog = trackSummaries.find(t => t.trackName === 'SWEET FRUSTRATION')?.totalHours || 0;
+  const lidHoursFromLog = trackSummaries.find(t => t.trackName === 'LIKE I DID')?.totalHours || 0;
 
   const pct = stats.total > 0 ? Math.round((stats.cleared / stats.total) * 100) : 0;
   const statusColor = tasks.some(t => t.urgency === "RED") ? "#FF2D2D"
@@ -400,38 +407,30 @@ export default function KillPage() {
           <div className="flex items-center justify-between mb-3">
             <h2 className="text-[9px] font-black tracking-[0.2em] uppercase" style={{ color: "rgba(255,255,255,0.4)" }}>Anti-Drift Telemetry</h2>
           </div>
-          <div className="grid grid-cols-2 gap-3 mb-3">
+          <div className="grid grid-cols-2 gap-3 mb-4 border-b border-[#ffffff10] pb-4">
             <div>
-              <p className="text-[10px] uppercase font-bold text-white mb-1.5 opacity-80">SF Mixdown</p>
-              <div className="flex items-center gap-2">
-                <button onClick={() => updateTelemetry('sf_hours_logged', Math.max(0, telemetry.sf_hours_logged - 1))} className="w-7 h-7 rounded bg-[#ffffff10] text-[#fff] text-xs font-bold active:scale-95">-</button>
-                <div className="flex-1 text-center font-black text-[13px] text-white tabular-nums">{telemetry.sf_hours_logged} <span className="opacity-40 text-[10px]">/ 11h</span></div>
-                <button onClick={() => updateTelemetry('sf_hours_logged', Math.min(11, telemetry.sf_hours_logged + 1))} className="w-7 h-7 rounded bg-[#ffffff10] text-[#fff] text-xs font-bold active:scale-95">+</button>
+              <p className="text-[10px] uppercase font-bold text-white mb-2 opacity-80 text-center">SF Mixdown</p>
+              <div className="text-center font-black text-[14px] text-white tabular-nums">
+                {sfHoursFromLog} <span className="opacity-40 text-[10px]">/ 11h (auto)</span>
               </div>
             </div>
             <div>
-              <p className="text-[10px] uppercase font-bold text-white mb-1.5 opacity-80">LID Mixdown</p>
-              <div className="flex items-center gap-2">
-                <button onClick={() => updateTelemetry('lid_hours_logged', Math.max(0, telemetry.lid_hours_logged - 1))} className="w-7 h-7 rounded bg-[#ffffff10] text-[#fff] text-xs font-bold active:scale-95">-</button>
-                <div className="flex-1 text-center font-black text-[13px] text-white tabular-nums">{telemetry.lid_hours_logged} <span className="opacity-40 text-[10px]">/ 11h</span></div>
-                <button onClick={() => updateTelemetry('lid_hours_logged', Math.min(11, telemetry.lid_hours_logged + 1))} className="w-7 h-7 rounded bg-[#ffffff10] text-[#fff] text-xs font-bold active:scale-95">+</button>
+              <p className="text-[10px] uppercase font-bold text-white mb-2 opacity-80 text-center">LID Mixdown</p>
+              <div className="text-center font-black text-[14px] text-white tabular-nums">
+                {lidHoursFromLog} <span className="opacity-40 text-[10px]">/ 11h (auto)</span>
               </div>
             </div>
           </div>
           <div>
-            <p className="text-[10px] uppercase font-bold text-white mb-1.5 opacity-80">DoorDash Earned</p>
-            <div className="flex items-center gap-2">
-              <span className="text-white font-black text-[14px]">$</span>
-              <input 
-                type="number" 
-                value={telemetry.doordash_earned || ""} 
-                onChange={(e) => updateTelemetry('doordash_earned', parseInt(e.target.value) || 0)}
-                className="w-full bg-[#ffffff05] border border-[#ffffff10] rounded px-3 py-1.5 text-white font-black text-[13px] outline-none tabular-nums placeholder:opacity-30" 
-                placeholder="0"
-                inputMode="numeric"
-              />
-              <span className="opacity-40 text-[10px] font-black w-14">/ $1000</span>
+            <p className="text-[10px] uppercase font-bold text-white mb-2 opacity-80 text-center">DoorDash Earned</p>
+            <div className="flex gap-2 mb-3">
+              <button onClick={() => updateTelemetry('doordash_earned', telemetry.doordash_earned + 20)} className="flex-1 py-1.5 rounded bg-[#ffffff10] border border-[#ffffff1a] text-[#fff] text-[11px] font-black active:scale-95 transition-transform">+$20</button>
+              <button onClick={() => updateTelemetry('doordash_earned', telemetry.doordash_earned + 50)} className="flex-1 py-1.5 rounded bg-[#ffffff10] border border-[#ffffff1a] text-[#fff] text-[11px] font-black active:scale-95 transition-transform">+$50</button>
+              <button onClick={() => updateTelemetry('doordash_earned', telemetry.doordash_earned + 100)} className="flex-1 py-1.5 rounded bg-[#ffffff10] border border-[#ffffff1a] text-[#fff] text-[11px] font-black active:scale-95 transition-transform">+$100</button>
             </div>
+            <p className="text-center font-black text-[15px] text-white">
+              ${telemetry.doordash_earned} <span className="opacity-40 text-[11px] w-14">/ $1000</span>
+            </p>
           </div>
         </div>
 

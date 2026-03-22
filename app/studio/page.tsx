@@ -5,6 +5,7 @@ import { getDynamicReleases, Release, ALBUM_RELEASE_DATE } from "@/lib/releases"
 import { getStoreValue, setStoreValue } from "@/lib/db";
 import { PROJECTS, LOOSIES, TIMELINE_EVENTS, STATUSES, Project, Track, TrackStatus } from "@/lib/studioData";
 import { getWeekKey } from "@/lib/oracle";
+import { getSessionsForDateRange } from "@/lib/studioLog";
 
 // ── Utils ────────────────────────────────────────────────────
 function daysUntilDate(dateStr: string | null): number | null {
@@ -16,6 +17,16 @@ function daysUntilDate(dateStr: string | null): number | null {
 function fmtDate(d: string | null): string {
     if (!d) return "—";
     return new Date(d + "T00:00:00").toLocaleDateString("en-US", { month: "short", day: "numeric" });
+}
+function getWeekDateRange() {
+    const now = new Date();
+    const day = now.getDay() || 7; // 1 Mon to 7 Sun
+    const start = new Date(now);
+    start.setDate(now.getDate() - day + 1);
+    const end = new Date(now);
+    end.setDate(now.getDate() - day + 7);
+    const toISO = (d: Date) => `${d.getFullYear()}-${String(d.getMonth() + 1).padStart(2, '0')}-${String(d.getDate()).padStart(2, '0')}`;
+    return { startStr: toISO(start), endStr: toISO(end) };
 }
 
 // ── Sub-components ─────────────────────────────────────────────
@@ -178,16 +189,12 @@ export default function StudioPage() {
             setAlbumDays(Math.max(Math.ceil((utcAlbum - utcNow) / 86400000), 0));
             const r = await getDynamicReleases();
             setReleases(r);
-            getStoreValue<number>(weekKey).then(v => setSessions(v || 0));
+            const { startStr, endStr } = getWeekDateRange();
+            const loggedSessions = await getSessionsForDateRange(startStr, endStr);
+            setSessions(loggedSessions.length);
         };
         init();
-    }, [weekKey]);
-
-    const logSession = async () => {
-        const next = sessions + 1;
-        setSessions(next);
-        await setStoreValue(weekKey, next);
-    };
+    }, []);
 
     const project = PROJECTS.find(p => p.id === activeProject)!;
 
@@ -215,10 +222,8 @@ export default function StudioPage() {
                 {/* Cycle Board — leaderboard position */}
                 <p className="text-[10px] font-black tracking-[0.2em] text-[#555] uppercase mb-3">Cycle Board</p>
                 <div className="card mb-6">
-                    <CycleRow title="RECONNECT" storageKey="cycle_reconnect" initialStatus="recording" />
-                    <CycleRow title="WANT U 2" storageKey="cycle_wantu2" initialStatus="mixing" />
-                    <CycleRow title="WORTH IT" storageKey="cycle_worthit" initialStatus="resting" />
-                    <CycleRow title="JUST SAY SO" storageKey="cycle_justsayso" initialStatus="add" />
+                    <CycleRow title="SWEET FRUSTRATION" storageKey="cycle_sf" initialStatus="mixing" />
+                    <CycleRow title="LIKE I DID" storageKey="cycle_lid" initialStatus="mixing" />
                 </div>
 
                 {/* Project grid */}
@@ -277,11 +282,8 @@ export default function StudioPage() {
                 {/* Session log */}
                 <div className="card text-center py-5">
                     <div className="text-[10px] font-black tracking-widest text-[#666] uppercase mb-1.5">This Week&apos;s Sessions</div>
-                    <div className="text-2xl font-black mb-4">{sessions} / 4</div>
-                    <button onClick={logSession}
-                        className={`w-full py-3 rounded-xl font-black text-sm transition-all ${sessions >= 4 ? "bg-green-500 text-black" : "bg-[#1c1c1c] text-white active:bg-[#2a2a2a]"}`}>
-                        {sessions >= 4 ? "TARGET HIT ✓" : "+ LOG SESSION"}
-                    </button>
+                    <div className="text-2xl font-black mb-2">{sessions} / 4</div>
+                    <div className="text-[10px] text-[#555] font-bold">(Auto-counted from Log tab)</div>
                 </div>
 
             </div>
