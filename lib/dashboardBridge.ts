@@ -102,23 +102,10 @@ export async function fetchDashboardIncome(): Promise<IncomeSnapshot | null> {
             }
         }
 
-        // ── SS Sales aggregation ───────────────────────────────
-        let ssRevenueThisWeek = 0;
-
-        for (const entry of data.sales || []) {
-            const entryDate = new Date(entry.date);
-            if (isNaN(entryDate.getTime())) continue;
-
-            if (isoWeekKey(entryDate) === currentWeek) {
-                ssRevenueThisWeek += entry.revenue || 0;
-            }
-        }
-
         return {
             doordashShiftsThisWeek: shiftsThisWeek,
             doordashEarningsThisWeek: earningsThisWeek,
             doordashEarningsThisMonth: earningsThisMonth,
-            ssRevenueThisWeek,
         };
     } catch {
         // Network error, timeout, parse error — silent fallback

@@ -13,12 +13,11 @@ export const runtime = "edge";
 
 const SYSTEM_PROMPT = `You are the Oracle — the sovereign intelligence running EP's entire empire.
 
-EP (Ethan Payton) operates three simultaneous tracks:
+EP (Ethan Payton) operates two simultaneous tracks:
 1. MUSIC — past.El noir Records. Alt-R&B. 4 singles before Apr 17 ALL LOVE album (11 tracks total). Album submitted to Amuse Apr 7 for pre-save window.
-2. BUSINESS — Strong Selects LLC. B2B hemp/THCa wholesale. WI + Chicago markets.
-3. INCOME BRIDGE — DoorDash shifts funding operations while the music builds.
+2. INCOME BRIDGE — DoorDash shifts funding operations while the music builds.
 
-You receive a complete daily snapshot across every pillar. Your job is to assess reality honestly, issue a decree, and automatically execute realignments that keep all three tracks aligned with the north star.
+You receive a complete daily snapshot across every pillar. Your job is to assess reality honestly, issue a decree, and automatically execute realignments that keep all tracks aligned with the north star.
 
 CORE RULES:
 - Be direct. EP responds to truth, not comfort. No fluff, no cheerleading.
@@ -40,9 +39,8 @@ If it's evening, acknowledge that the work day is done — guide recovery or con
 
 CROSS-PILLAR LOGIC:
 - Heavy DoorDash week (4+ shifts) + low studio sessions -> consider shifting a release, flag the imbalance
-- Strong Selects pipeline dry for 2+ weeks -> flag action, raise touch target on next Biz Day
 - Compliance gap within 3 days of release -> RED severity, flag_action immediately regardless of anything else
-- DoorDash monthly earnings + SS revenue together signal financial runway — if both are low, flag it
+- DoorDash monthly earnings signal financial runway — if low, flag it
 - Sobriety streak is non-negotiable context. If sovereignty stack is missed 3 days in a row, flag_action RED immediately. This is the foundation of the empire and must be protected.
 - Studio session count below 3/week by midweek on a music-heavy week -> flag or shift
 
@@ -79,8 +77,7 @@ BUSINESS RULES:
 
 INCOME RULES:
 - DoorDash is the bridge, not the destination. More than 4 shifts in a studio week = flag it.
-- Monthly DoorDash + SS revenue below $500 combined -> flag financial runway concern.
-- If SS revenue is $0 for 2+ weeks, that needs to be in the assessment.
+- Monthly DoorDash earnings below $500 -> flag financial runway concern.
 
 FUEL RULES:
 - EP is a neurodivergent recording athlete in active sobriety detox. Nutrition is load-bearing infrastructure, not optional.
@@ -269,7 +266,6 @@ function buildContextMessage(ctx: OracleContext): string {
     daysUntil414Day: Math.ceil((new Date("2026-04-14").getTime() - new Date(ctx.date).getTime()) / 86400000),
     complianceGaps: ctx.label.complianceGaps,
     ddShiftsThisWeek: ctx.income.doordashShiftsThisWeek,
-    ssRevenue2Weeks: ctx.income.ssRevenueThisWeek,
     personalTimeDays: ctx.session.personalTimeDays,
     consecutiveNoPersonal: ctx.session.consecutiveMaxDays,
     sovereigntyStackStreak: 0, // TODO: compute from recent logs
@@ -284,7 +280,6 @@ function buildContextMessage(ctx: OracleContext): string {
     currentBlock: ctx.time.currentBlock,
     hoursRemaining: ctx.time.studioHoursRemaining,
     today: ctx.date,
-    ssRestartDate: "2026-03-27",
     nextReleaseTitle: ctx.content.nextRelease?.title || "unknown",
   });
 
@@ -360,7 +355,6 @@ ${accounts}
 -- INCOME --
 DOORDASH THIS WEEK: ${ctx.income.doordashShiftsThisWeek} shifts / $${ctx.income.doordashEarningsThisWeek}
 DOORDASH THIS MONTH (rolling 4wk): $${ctx.income.doordashEarningsThisMonth}
-STRONG SELECTS REVENUE THIS WEEK: $${ctx.income.ssRevenueThisWeek}
 
 -- LIVE PERFORMANCE --
 414 DAY MILWAUKEE: ${Math.ceil((new Date("2026-04-14").getTime() - new Date(ctx.date).getTime()) / 86400000)} days away (Apr 14, 3 days before album)

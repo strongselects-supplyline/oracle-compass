@@ -2,13 +2,14 @@
 // Assembles the full daily context snapshot for the Oracle engine.
 // Reads ALL IndexedDB state — music, grind, business, income, label, fuel — into one typed object.
 
-import { getDailyLog, getStoreValue, getTodayISO, DailyLog } from "@/lib/db";
+import { getDailyLog, getStoreValue, getTodayISO, DailyLog, getDailyTelemetry } from "@/lib/db";
 import { getSobrietyStreak } from "@/lib/streaks";
 import { getDynamicReleases, Release, ALBUM_RELEASE_DATE, ContentDeliverables } from "@/lib/releases";
 import { REGISTRY } from "@/lib/registry";
 import { fetchDashboardIncome } from "@/lib/dashboardBridge";
 import { getDayType } from "@/lib/dayType";
 import { getSprintTarget, getTrackStatuses, getSundayChecklist, computeTrackProgress, isSundayChecklistComplete } from "@/lib/planner";
+import { getSessionsForDateRange } from "@/lib/studioLog";
 
 export type CycleTrack = {
   name: string;
@@ -27,7 +28,6 @@ export type IncomeSnapshot = {
   doordashShiftsThisWeek: number;
   doordashEarningsThisWeek: number;
   doordashEarningsThisMonth: number;
-  ssRevenueThisWeek: number;
 };
 
 export type LabelSnapshot = {
@@ -190,14 +190,21 @@ export async function assembleContext(): Promise<OracleContext> {
   const yesterday = `${yd.getFullYear()}-${String(yd.getMonth() + 1).padStart(2, "0")}-${String(yd.getDate()).padStart(2, "0")}`;
   const weekKey = getWeekKey();
 
-  const [dailyLog, log1, log2, log3, releases, sessions, lastDecree] = await Promise.all([
+  const now = new Date();
+  const day = now.getDay() || 7;
+  const start = new Date(now); start.setDate(now.getDate() - day + 1);
+  const end = new Date(now); end.setDate(now.getDate() - day + 7);
+  const toISO = (d: Date) => `${d.getFullYear()}-${String(d.getMonth() + 1).padStart(2, '0')}-${String(d.getDate()).padStart(2, '0')}`;
+
+  const [dailyLog, log1, log2, log3, releases, weekSessions, lastDecree, telemetry] = await Promise.all([
     getDailyLog(today),
     getDailyLog(yesterday),
     getDailyLog(`${yd.getFullYear()}-${String(yd.getMonth() + 1).padStart(2, "0")}-${String(yd.getDate() - 1).padStart(2, "0")}`),
     getDailyLog(`${yd.getFullYear()}-${String(yd.getMonth() + 1).padStart(2, "0")}-${String(yd.getDate() - 2).padStart(2, "0")}`),
     getDynamicReleases(),
-    getStoreValue<number>(`weekly_sessions:${weekKey}`),
+    getSessionsForDateRange(toISO(start), toISO(end)),
     getStoreValue<OracleDecree>(`oracle_decree:${today}`),
+    getDailyTelemetry()
   ]);
 
   const recentLogs = [log1, log2, log3].filter(l => l && (l.oneThing || l.sovereigntyStack || l.sleep !== null));
@@ -234,28 +241,14 @@ export async function assembleContext(): Promise<OracleContext> {
   if (dashboardIncome) {
     income = dashboardIncome;
   } else {
-    const [ddW0, ddW1, ddW2, ddW3, ssRevenue] = await Promise.all([
-      getStoreValue<{ shifts: number; earnings: number }>(`doordash_week:${getWeekKey(0)}`),
-      getStoreValue<{ shifts: number; earnings: number }>(`doordash_week:${getWeekKey(1)}`),
-      getStoreValue<{ shifts: number; earnings: number }>(`doordash_week:${getWeekKey(2)}`),
-      getStoreValue<{ shifts: number; earnings: number }>(`doordash_week:${getWeekKey(3)}`),
-      getStoreValue<number>(`ss_revenue:${weekKey}`),
-    ]);
-
-    const monthlyDoorDash = [ddW0, ddW1, ddW2, ddW3]
-      .filter(Boolean)
-      .reduce((sum, w) => sum + (w?.earnings || 0), 0);
-
     income = {
-      doordashShiftsThisWeek: ddW0?.shifts || 0,
-      doordashEarningsThisWeek: ddW0?.earnings || 0,
-      doordashEarningsThisMonth: monthlyDoorDash,
-      ssRevenueThisWeek: ssRevenue || 0,
+      doordashShiftsThisWeek: 0,
+      doordashEarningsThisWeek: telemetry.doordash_earned,
+      doordashEarningsThisMonth: telemetry.doordash_earned,
     };
   }
 
   // Label compliance
-  const now = new Date();
   const upcomingReleases = releases.filter(r => r.status !== "live");
   const nextRelease = upcomingReleases[0] || null;
   const daysUntilNext = nextRelease
@@ -319,7 +312,7 @@ export async function assembleContext(): Promise<OracleContext> {
   // Time architecture snapshot
   const currentHour = now.getHours();
   const todayDayType = getDayType();
-  const studioEnd = 16; // 4 PM
+  const studioEnd = 14; // 2 PM
   const studioStart = 10;
   const studioHoursRemaining = currentHour < studioStart
     ? studioEnd - studioStart
@@ -410,7 +403,7 @@ export async function assembleContext(): Promise<OracleContext> {
     recentLogs,
     releases,
     cycleTracks,
-    weeklyStudioSessions: sessions || 0,
+    weeklyStudioSessions: weekSessions.length,
     sobrietyStreak: getSobrietyStreak(),
     lastDecree: lastDecree || null,
     engine,

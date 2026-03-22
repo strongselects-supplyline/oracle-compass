@@ -68,7 +68,6 @@ interface SeverityInput {
   daysUntilNextRelease: number;
   complianceGaps: string[];
   ddShiftsThisWeek: number;
-  ssRevenue2Weeks: number;
   personalTimeDays: number;
   consecutiveNoPersonal: number;
   sovereigntyStackStreak: number;
@@ -165,15 +164,9 @@ export function computeSeverity(ctx: SeverityInput): {
     );
   }
 
-  // ── BUSINESS PILLAR (max ~20 pts) ──
   if (ctx.ddShiftsThisWeek > 4) {
     score += 8;
     drivers.push(`${ctx.ddShiftsThisWeek} DD shifts this week — eating into studio capacity`);
-  }
-
-  if (ctx.ssRevenue2Weeks <= 0) {
-    score += 6;
-    drivers.push("Strong Selects revenue $0 for 2+ weeks — pipeline is dry");
   }
 
   // ── SUSTAINABILITY (max ~15 pts) ──
@@ -270,7 +263,6 @@ export function detectConvergence(ctx: {
   daysUntilAlbum: number;
   daysUntilNextRelease: number;
   daysUntil414Day: number;
-  ssRestartDate: string;
   today: string;
 }): {
   active: boolean;
@@ -294,16 +286,6 @@ export function detectConvergence(ctx: {
   if (ctx.daysUntilNextRelease >= 0 && ctx.daysUntilNextRelease <= 5) {
     events.push(
       `Single dropping in ${ctx.daysUntilNextRelease}d — T-minus content sprint active`
-    );
-  }
-
-  const ssDays = Math.ceil(
-    (new Date(ctx.ssRestartDate).getTime() - new Date(ctx.today).getTime()) /
-      86400000
-  );
-  if (ssDays >= 0 && ssDays <= 3 && ctx.daysUntilNextRelease <= 10) {
-    events.push(
-      `Strong Selects restart in ${ssDays}d while release is ${ctx.daysUntilNextRelease}d out — bandwidth crunch`
     );
   }
 
@@ -487,8 +469,7 @@ export function computeSprintPace(ctx: {
 // ── Financial Runway ─────────────────────────────────────────────────
 
 export function computeFinancialRunway(
-  ddShifts: number,
-  ssRevenue2Wk: number
+  ddShifts: number
 ): {
   weeklyBurn: number;
   weeklyIncome: number;
@@ -497,7 +478,7 @@ export function computeFinancialRunway(
 } {
   const estimatedDDPerShift = 45;
   const weeklyDD = ddShifts * estimatedDDPerShift;
-  const weeklyIncome = weeklyDD + ssRevenue2Wk / 2;
+  const weeklyIncome = weeklyDD;
   const weeklyBurn = 300;
 
   const status =
@@ -509,9 +490,9 @@ export function computeFinancialRunway(
 
   const advisory =
     status === "CRITICAL"
-      ? "Income below burn rate. Front-load DD shifts or push SS outreach immediately."
+      ? "Income below burn rate. Front-load DD shifts immediately."
       : status === "TIGHT"
-      ? "Income is tight. One extra DD shift or SS close this week stabilizes."
+      ? "Income is tight. One extra DD shift this week stabilizes."
       : null;
 
   return { weeklyBurn, weeklyIncome, status, advisory };
@@ -526,7 +507,7 @@ export function generateTimeDirective(
 ): string {
   if (weekday === 0)
     return "Sunday is sacred. Rest, batch prep, plan the week.";
-  if (block === "pre-studio")
+  if (block === "pre-session")
     return "Pre-studio window. Fuel, stack, movement. Protect the session.";
   if (block === "studio" && hours > 3)
     return `${hours}h of studio remaining. Deep work. No interruptions.`;
@@ -534,14 +515,12 @@ export function generateTimeDirective(
     return `${hours}h left in studio. Wrap current task, don't start new tracks.`;
   if (block === "post-studio")
     return "Studio done. Content window or recovery — no new creative.";
-  if (block === "content-window")
-    return "Content window. Deploy reels, schedule posts, review CF4 output.";
+  if (block === "dd-morning")
+    return "Morning DoorDash block. Prioritize high-tip routes.";
+  if (block === "dd-evening")
+    return "Evening DoorDash block. Peak dinner rush. Lock in.";
   if (block === "evening")
     return "Day is done. Recovery, personal time, or light admin only.";
-  if (block === "biz-morning")
-    return "Business block. Outreach, Strong Selects, touches.";
-  if (block === "biz-afternoon")
-    return "Afternoon admin. Content, planning, light work. No deep creative.";
   return "Assess what block you're in and act accordingly.";
 }
 
@@ -563,7 +542,6 @@ export interface DerivedIntelligenceInput {
   daysUntil414Day: number;
   complianceGaps: string[];
   ddShiftsThisWeek: number;
-  ssRevenue2Weeks: number;
   personalTimeDays: number;
   consecutiveNoPersonal: number;
   sovereigntyStackStreak: number;
@@ -578,7 +556,6 @@ export interface DerivedIntelligenceInput {
   currentBlock: string;
   hoursRemaining: number;
   today: string;
-  ssRestartDate: string;
   nextReleaseTitle: string;
 }
 
@@ -608,7 +585,6 @@ export function assembleDerivedIntelligence(
     daysUntilAlbum: raw.daysUntilAlbum,
     daysUntilNextRelease: raw.daysUntilNextRelease,
     daysUntil414Day: raw.daysUntil414Day,
-    ssRestartDate: raw.ssRestartDate,
     today: raw.today,
   });
 
@@ -644,8 +620,7 @@ export function assembleDerivedIntelligence(
   });
 
   const financialRunway = computeFinancialRunway(
-    raw.ddShiftsThisWeek,
-    raw.ssRevenue2Weeks
+    raw.ddShiftsThisWeek
   );
 
   const timeDirective = {
