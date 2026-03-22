@@ -94,17 +94,19 @@ export type Release = {
 };
 
 // Canonical defaults — source of truth for first seed only
+// EP tracks only: SEE ME, East Side Love, Sweet Frustration, Like I Did, ALL LOVE (EP)
+// 7 parked album tracks are NOT in this list — they do not drive Kill List tasks
 const RELEASE_DEFAULTS: Release[] = [
-  { title: "SEE ME",            uploadDate: "2026-03-09", releaseDate: "2026-03-13", status: "live", contentDeliverables: { ...DEFAULT_DELIVERABLES } },
-  { title: "East Side Love",    uploadDate: "2026-03-23", releaseDate: "2026-03-27", status: "unreleased", contentDeliverables: { ...DEFAULT_DELIVERABLES } },
-  { title: "Sweet Frustration", uploadDate: "2026-03-30", releaseDate: "2026-04-03", status: "unreleased", contentDeliverables: { ...DEFAULT_DELIVERABLES } },
-  { title: "Like I Did",        uploadDate: "2026-04-06", releaseDate: "2026-04-10", status: "unreleased", contentDeliverables: { ...DEFAULT_DELIVERABLES } },
-  { title: "ALL LOVE (Album)",  uploadDate: "2026-04-14", releaseDate: "2026-04-17", status: "unreleased", contentDeliverables: { ...DEFAULT_DELIVERABLES } },
+  { title: "SEE ME",            uploadDate: "2026-03-09", releaseDate: "2026-03-13", status: "live",       contentDeliverables: { ...DEFAULT_DELIVERABLES } },
+  { title: "East Side Love",    uploadDate: "2026-03-30", releaseDate: "2026-04-03", status: "unreleased", contentDeliverables: { ...DEFAULT_DELIVERABLES } },
+  { title: "Sweet Frustration", uploadDate: "2026-04-06", releaseDate: "2026-04-10", status: "unreleased", contentDeliverables: { ...DEFAULT_DELIVERABLES } },
+  { title: "Like I Did",        uploadDate: "2026-04-13", releaseDate: "2026-04-17", status: "unreleased", contentDeliverables: { ...DEFAULT_DELIVERABLES } },
+  { title: "ALL LOVE (EP)",     uploadDate: "2026-04-14", releaseDate: "2026-04-24", status: "unreleased", contentDeliverables: { ...DEFAULT_DELIVERABLES } },
 ];
 
 const RELEASES_KEY = "dynamic_releases";
 const RELEASES_VERSION_KEY = "releases_data_version";
-const RELEASE_DATA_VERSION = 14; // v14: clean 60-day sprint values, album Amuse upload pushed to Apr 14
+const RELEASE_DATA_VERSION = 15; // v15: ALL LOVE converted to EP (Apr 24), singles pushed +1wk, parked tracks removed from defaults
 
 // Read from IndexedDB, seeding defaults on first call or after version bump
 export async function getDynamicReleases(): Promise<Release[]> {
@@ -170,5 +172,8 @@ export async function shiftRelease(title: string, days: number): Promise<void> {
   await saveDynamicReleases(updated);
 }
 
-// Static album date — this is the fixed north star, doesn't shift
-export const ALBUM_RELEASE_DATE = "2026-04-17";
+// Static EP date — this is the fixed north star, doesn't shift
+// (ALL LOVE converted from album to EP on Mar 21, 2026 — 7 tracks parked for post-EP release)
+export const EP_RELEASE_DATE = "2026-04-24";
+/** @deprecated Use EP_RELEASE_DATE. Kept for any stale import references. */
+export const ALBUM_RELEASE_DATE = EP_RELEASE_DATE;

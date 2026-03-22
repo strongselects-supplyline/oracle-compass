@@ -1,6 +1,6 @@
 // marathon-data.ts
 // Source of truth for the 43-Track, 14-Week Sprint
-// Last updated: March 21, 2026
+// Last updated: March 22, 2026
 
 export type Phase = 'ALL_LOVE' | 'DELUXE' | 'CREAM' | 'FREAKSHOW';
 export type TrackStatus = 'not_started' | 'in_progress' | 'done';
@@ -9,6 +9,7 @@ export interface Track {
   id: string;
   name: string;
   phase: Phase;
+  parked?: boolean; // true = not on critical path for EP; system does NOT surface tasks for these
 }
 
 export interface SprintWeek {
@@ -31,18 +32,21 @@ export const PHASE_CONFIG: Record<Phase, { label: string; badge: string; color: 
 };
 
 export const ALL_TRACKS: Track[] = [
-  // ── ALL LOVE — 11 tracks (confirmed Mar 15, 2026) ──
-  { id: 'al-01', name: 'I Like Girls',       phase: 'ALL_LOVE' },
+  // ── ALL LOVE EP — 4 active tracks ──
   { id: 'al-02', name: 'See Me',             phase: 'ALL_LOVE' },
   { id: 'al-03', name: 'East Side Love',     phase: 'ALL_LOVE' },
-  { id: 'al-04', name: 'Want U Bad',         phase: 'ALL_LOVE' },
-  { id: 'al-05', name: 'Green Light Patient',phase: 'ALL_LOVE' },
-  { id: 'al-06', name: 'Luxury',             phase: 'ALL_LOVE' },
-  { id: 'al-07', name: 'Worth It',           phase: 'ALL_LOVE' },
   { id: 'al-08', name: 'Sweet Frustration',  phase: 'ALL_LOVE' },
   { id: 'al-09', name: 'Like I Did',         phase: 'ALL_LOVE' },
-  { id: 'al-10', name: 'Just Say So',        phase: 'ALL_LOVE' },
-  { id: 'al-11', name: 'Reconnect',          phase: 'ALL_LOVE' },
+
+  // ── ALL LOVE — 7 parked tracks (post-EP release TBD) ──
+  // System does NOT surface Kill List tasks for these. Stretch goal only.
+  { id: 'al-01', name: 'I Like Girls',        phase: 'ALL_LOVE', parked: true },
+  { id: 'al-04', name: 'Want U Bad',          phase: 'ALL_LOVE', parked: true },
+  { id: 'al-05', name: 'Green Light Patient', phase: 'ALL_LOVE', parked: true },
+  { id: 'al-06', name: 'Luxury',              phase: 'ALL_LOVE', parked: true },
+  { id: 'al-07', name: 'Worth It',            phase: 'ALL_LOVE', parked: true },
+  { id: 'al-10', name: 'Just Say So',         phase: 'ALL_LOVE', parked: true },
+  { id: 'al-11', name: 'Reconnect',           phase: 'ALL_LOVE', parked: true },
 
   // ── DELUXE — 12 tracks (pull names from catalog_marathon_tracker.md) ──
   { id: 'dl-01', name: 'All My Love (intro flip)', phase: 'DELUXE' },
@@ -92,32 +96,32 @@ export const SPRINT_WEEKS: SprintWeek[] = [
   {
     wk: 2, dates: 'Mar 14–20', startDate: '2026-03-14', endDate: '2026-03-20',
     phase: 'ALL_LOVE', phaseBadge: 'ALL LOVE', target: '7 tracks — close ALL LOVE', total: 11,
-    keyEvents: ['East Side Love drops Mar 27', 'Strong Selects restarts Mar 27', 'ALL LOVE front-load window closes Mar 28'],
+    keyEvents: ['East Side Love upload deadline Mar 30', 'ALL LOVE front-load window closes Mar 28'],
   },
   {
     wk: 3, dates: 'Mar 22–28', startDate: '2026-03-22', endDate: '2026-03-28',
     phase: 'DELUXE', phaseBadge: 'DELUXE', target: '3 tracks', total: 14,
-    keyEvents: ['Sweet Frustration drops Apr 3', 'Every CTA: "save East Side Love"', '$50 Spotify Ad Studio (Denver, Minn, Dallas, Calgary)', 'Submit to 3-5 playlist curators on Groover'],
+    keyEvents: ['East Side Love drops Apr 3', 'Upload ESL to Amuse by Mar 30', 'Every CTA: "save East Side Love"', '$50 Spotify Ad Studio (Denver, Minneapolis, Dallas, Calgary)'],
   },
   {
     wk: 4, dates: 'Mar 29–Apr 4', startDate: '2026-03-29', endDate: '2026-04-04',
     phase: 'DELUXE', phaseBadge: 'DELUXE', target: '3 tracks', total: 17,
-    keyEvents: ['Close 6 album tracks by Apr 1', 'Like I Did drops Apr 10', 'CTAs shift: "save Sweet Frustration" + Mention ALL LOVE Apr 17', '$50 ad push same city split', 'First 414 Day rehearsal (timed, recorded)'],
+    keyEvents: ['ESL Amuse upload deadline Mar 30', 'East Side Love drops Apr 3 🔥', 'SF mix/master close target Apr 1', 'LID mix/master close target Apr 1', '$50 ad push — Denver, Minneapolis, Dallas, Calgary', 'First 414 Day rehearsal (timed, recorded)'],
   },
   {
     wk: 5, dates: 'Apr 5–11', startDate: '2026-04-05', endDate: '2026-04-11',
     phase: 'DELUXE', phaseBadge: 'DELUXE', target: '3 tracks + album upload', total: 20,
-    keyEvents: ['Upload ALL LOVE to Amuse Apr 7 (pre-save build)', 'ALL LOVE drops Apr 17 🔥', '$75 ad push, add Chicago to split', 'CTAs: "save Like I Did" + "pre-save ALL LOVE"', 'Second rehearsal + gear check', 'Compliance done for all four singles'],
+    keyEvents: ['SF Amuse upload deadline Apr 6', 'Sweet Frustration drops Apr 10 🔥', 'LID Amuse upload deadline Apr 13', '$50 ad push', 'CTAs: "save Sweet Frustration" + "pre-save ALL LOVE"', 'Second 414 Day rehearsal + gear check', 'Compliance done for all four singles'],
   },
   {
     wk: 6, dates: 'Apr 12–18', startDate: '2026-04-12', endDate: '2026-04-18',
     phase: 'DELUXE', phaseBadge: 'DELUXE / CREAM', target: '3 tracks', total: 23,
-    keyEvents: ['Upload ALL LOVE to Amuse Apr 14', '414 Day performance Apr 14 🎤', 'QR code at venue straight to Spotify', '414 Day CTA: "save East Side Love, album drops in 3 days"', 'Apr 17 Marquee fires + maximum ad spend', 'All CTAs switch to "save the album"'],
+    keyEvents: ['LID Amuse upload deadline Apr 13', 'EP Amuse upload deadline Apr 14', '414 Day performance Apr 14 🎤 (GF filming)', 'QR code at venue → Spotify pre-save', 'Like I Did drops Apr 17', '$50 ad push (LID)', 'All CTAs shift to "pre-save ALL LOVE EP"'],
   },
   {
     wk: 7, dates: 'Apr 19–25', startDate: '2026-04-19', endDate: '2026-04-25',
     phase: 'CREAM', phaseBadge: 'CREAM', target: '3 tracks', total: 26,
-    keyEvents: ['First week stream check (target 25+ Discover Weekly)', 'Deploy 414 Day performance footage', 'Strong Selects strategy session', 'DELUXE planning begins'],
+    keyEvents: ['ALL LOVE EP drops Apr 24 🔥', '$75 Spotify ad push (EP — all markets)', 'First week stream check (target score 20→ 25+)', 'Deploy 414 Day performance footage', 'DELUXE planning begins'],
   },
   {
     wk: 8, dates: 'Apr 26–May 2', startDate: '2026-04-26', endDate: '2026-05-02',
@@ -162,8 +166,7 @@ export const SPRINT_RULES = [
   { label: 'Efficiency Curve', value: '8% compounding per week' },
   { label: 'Track Floor',      value: '10 hrs minimum per track' },
   { label: 'Sundays',          value: 'SACRED — no sessions' },
-  { label: 'Studio Block',     value: '10 AM – 4 PM (inviolable)' },
-  { label: 'Strong Selects',   value: '1 hr/day max, never during studio block' },
+  { label: 'Studio Block',     value: '10 AM – 2 PM (inviolable)' },
 ];
 
 export const TOTAL_TRACKS = 43;

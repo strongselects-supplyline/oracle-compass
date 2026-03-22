@@ -524,9 +524,8 @@ export async function deriveKillList(): Promise<KillTask[]> {
     });
   }
 
-  // ── 7. BUSINESS → Tasks (biz days, only after SS restart) ───────
-  const ssRestart = new Date("2026-03-27T00:00:00");
-  if (isBizDay(dayType) && now >= ssRestart) {
+  // ── 7. BUSINESS → Tasks (biz days only) ───────────────────────
+  if (isBizDay(dayType)) {
     const move = await getStoreValue<string>("engine_daily_move");
     if (!move || move.trim().length === 0) {
       tasks.push({
@@ -742,10 +741,15 @@ export async function deriveKillList(): Promise<KillTask[]> {
     }
   }
 
-  // ── 10. INSTRUMENTALS (all tracks, regardless of timeline) ───────
+  // ── 10. INSTRUMENTALS (EP tracks only — skip parked tracks) ──────
   // Sync licensing requires instrumentals. Don't gate on release date.
+  // Parked tracks are excluded — they're stretch goals, not critical path.
   for (const release of releases) {
+    // Skip if already rendered
     if (release.contentDeliverables.instrumentalRendered) continue;
+    // Skip if this is a parked track (not on EP)
+    const EP_TRACKS = ['SEE ME', 'East Side Love', 'Sweet Frustration', 'Like I Did', 'ALL LOVE (EP)'];
+    if (!EP_TRACKS.includes(release.title)) continue;
     const t = release.title;
     tasks.push({
       id: `instrumental-${t}`,
