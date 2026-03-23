@@ -279,7 +279,7 @@ export function detectConvergence(ctx: {
     ctx.daysUntilAlbum <= 10
   ) {
     events.push(
-      `414 Day in ${ctx.daysUntil414Day}d + Album in ${ctx.daysUntilAlbum}d — performance prep and release prep collide`
+      `414 Day in ${ctx.daysUntil414Day}d + EP in ${ctx.daysUntilAlbum}d — performance prep and release prep collide`
     );
   }
 
@@ -291,7 +291,7 @@ export function detectConvergence(ctx: {
 
   if (ctx.daysUntilAlbum >= 7 && ctx.daysUntilAlbum <= 14) {
     events.push(
-      `Album upload window active — Amuse submission must happen within ${ctx.daysUntilAlbum - 7} days`
+      `EP upload window active — Amuse submission must happen within ${ctx.daysUntilAlbum - 10} days`
     );
   }
 

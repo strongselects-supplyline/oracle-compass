@@ -500,6 +500,35 @@ export async function deriveKillList(): Promise<KillTask[]> {
       "Submit for review",
     ], 3, "ops", "biz");
 
+    // ── CYANITE PLAYLIST MATRIX (per single — 3-encode algorithmic exploit) ──
+    if (daysUntil <= 10 && daysUntil >= -3) {
+      const cyaniteKey = `cyanite_matrix:${t}`;
+      const cyaniteDone = await getStoreValue<boolean>(cyaniteKey);
+      if (!cyaniteDone) {
+        tasks.push({
+          id: `cyanite-${t}`,
+          title: `Run Cyanite 3-encode matrix — ${t}`,
+          subtitle: `3 encodes × 20 playlists = 60 similarity matches. Build your Core Drive.`,
+          howTo: [
+            "STEP 1 — ENCODE: Run FFmpeg to create 3 versions of the final master:",
+            "  • Original .wav (already have it)",
+            "  • Spotify sim: ffmpeg -i master.wav -c:a libvorbis -b:a 160k track_spotify.ogg",
+            "  • YouTube sim: ffmpeg -i master.wav -c:a aac -b:a 128k track_youtube.m4a",
+            "STEP 2 — UPLOAD: Upload all 3 files to cyanite.ai separately",
+            "STEP 3 — EXTRACT: Run Playlist Similarity Search on each. Screenshot or export all 60 playlists.",
+            "STEP 4 — MATRIX: List every artist that appears across 2+ of the 3 playlist sets. These are your Core Drive artists.",
+            "STEP 5 — CROSS-REF: Look up Core Drive artists on MusicStax for Spotify parameters (tempo, energy, valence, danceability).",
+            "STEP 6 — ACTIVATE: Use Core Drive artists as Meta/TikTok lookalike targets, curator pitch ammo, and YouTube/TikTok keyword tags.",
+            "See brain docs: mastering_feedback_loop_sop.md + ad_targeting_mood_strategy.md",
+          ],
+          urgency: daysUntil <= 0 ? "RED" : "AMBER",
+          pillar: "business",
+          timeBlock: "content",
+          action: async () => { await setStoreValue(cyaniteKey, true); },
+        });
+      }
+    }
+
     // Instrumental rendering handled separately in section 10 (all tracks, no timeline gate)
   }
 
@@ -772,7 +801,31 @@ export async function deriveKillList(): Promise<KillTask[]> {
     });
   }
 
-  // ── 11. ANTI-DRIFT TELEMETRY ESCALATIONS ─────────────────────────
+  // ── 11. SS MENU MAINTENANCE (Saturday only, existing clients) ────
+  const isSaturday = new Date().getDay() === 6;
+  if (isSaturday) {
+    const ssMenuKey = `ss_menu_maintenance:${weekKey}`;
+    const ssMenuDone = await getStoreValue<boolean>(ssMenuKey);
+    if (!ssMenuDone) {
+      tasks.push({
+        id: "ss-menu-maintenance",
+        title: "Update Strong Selects menu",
+        subtitle: "30 min. Existing client maintenance only — no new ops.",
+        howTo: [
+          "Check if any existing clients have reached out this week",
+          "Update product availability / pricing if anything changed",
+          "Respond to any pending client messages",
+          "This should take 30 minutes max. Do NOT expand scope.",
+        ],
+        urgency: "GREEN",
+        pillar: "business",
+        timeBlock: "any",
+        action: async () => { await setStoreValue(ssMenuKey, true); },
+      });
+    }
+  }
+
+  // ── 12. ANTI-DRIFT TELEMETRY ESCALATIONS ─────────────────────────
   // Hard deadlines
   const apr1 = new Date("2026-04-01T00:00:00");
   const apr3 = new Date("2026-04-03T00:00:00");

@@ -41,7 +41,7 @@ export const BRAND_VOICE = {
             "SEE ME — friday.",
             "this one took a long time to finish. it's done now.",
             "lake geneva, wi. 42° north.",
-            "the album is called ALL LOVE. april 10.",
+            "the ep is called ALL LOVE. april 24.",
         ],
         offBrand: [
             "NEW SINGLE OUT NOW!!! 🔥🔥🔥",
