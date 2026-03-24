@@ -53,6 +53,10 @@ export type ContentSnapshot = {
   } | null;
   totalReelsThisWeek: number;
   totalTiktoksThisWeek: number;
+  coreDrive: {
+    complete: boolean;
+    campaignKit: boolean;
+  } | null;
 };
 
 export type TimeSnapshot = {
@@ -307,6 +311,10 @@ export async function assembleContext(): Promise<OracleContext> {
     } : null,
     totalReelsThisWeek: upcomingForContent.reduce((sum, r) => sum + r.contentDeliverables.reelsPosted, 0),
     totalTiktoksThisWeek: upcomingForContent.reduce((sum, r) => sum + r.contentDeliverables.tiktoksPosted, 0),
+    coreDrive: nextForContent ? {
+      complete: nextForContent.contentDeliverables.coreDriveComplete,
+      campaignKit: nextForContent.contentDeliverables.campaignKitGenerated,
+    } : null,
   };
 
   // Time architecture snapshot

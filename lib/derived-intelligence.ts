@@ -213,6 +213,8 @@ interface ContentDeliverables {
   tiktoksPosted: number;
   tiktoksGoal: number;
   brollClips: number;
+  coreDriveComplete: boolean;
+  campaignKitGenerated: boolean;
 }
 
 export function computeContentReadiness(d: ContentDeliverables): {
@@ -253,6 +255,16 @@ export function computeContentReadiness(d: ContentDeliverables): {
   const brollPct = Math.min(d.brollClips / 5, 1);
   earned += CONTENT_WEIGHTS.brollClips * brollPct;
   if (d.brollClips === 0) missing.push("Zero B-roll clips captured");
+
+  // Core Drive Pipeline (deducts if not done)
+  if (!d.coreDriveComplete) {
+    earned = Math.max(0, earned - 15);
+    missing.push("Core Drive matrix not run — no targeting data");
+  }
+  if (d.coreDriveComplete && !d.campaignKitGenerated) {
+    earned = Math.max(0, earned - 5);
+    missing.push("Campaign kit not generated from Core Drive");
+  }
 
   return { score: Math.round(earned), missingCritical: missing };
 }

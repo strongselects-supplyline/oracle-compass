@@ -68,9 +68,12 @@ export const BRAND_VOICE = {
             "Typography: minimal, weighted, tight tracking",
         ],
         references: {
-            sonic: ["Bryson Tiller", "6LACK", "PARTYNEXTDOOR", "Daniel Caesar", "SZA", "Jhené Aiko"],
+            // Core Drive Verified (March 2026 — SEE ME pipeline)
+            sonic: ["6LACK", "Drake", "Bryson Tiller", "PARTYNEXTDOOR", "The Weeknd", "Jhené Aiko", "Summer Walker", "SZA"],
             aesthetic: ["Daniel Caesar", "Frank Ocean", "Brent Faiyaz", "SZA"],
             labelModel: ["pgLang", "XO", "OVO", "Dreamville"],
+            // Core Drive Positioning: "The independent artist who sounds like he belongs 
+            // on an OVO playlist but got there without the machine."
         },
     },
 

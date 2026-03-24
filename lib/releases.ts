@@ -43,6 +43,9 @@ export type ContentDeliverables = {
   grooverPitchesSent: boolean;
   songtoolsCampaignLive: boolean;
   unhurdDataLogged: boolean;
+  // Core Drive Pipeline
+  coreDriveComplete: boolean;        // Cyanite → Antigravity matrix pipeline has been run
+  campaignKitGenerated: boolean;     // 4-agent refinement pipeline produced a campaign kit
   // Meta
   notes: string;
 };
@@ -80,6 +83,8 @@ const DEFAULT_DELIVERABLES: ContentDeliverables = {
   grooverPitchesSent: false,
   songtoolsCampaignLive: false,
   unhurdDataLogged: false,
+  coreDriveComplete: false,
+  campaignKitGenerated: false,
   notes: "",
 };
 
@@ -106,7 +111,7 @@ const RELEASE_DEFAULTS: Release[] = [
 
 const RELEASES_KEY = "dynamic_releases";
 const RELEASES_VERSION_KEY = "releases_data_version";
-const RELEASE_DATA_VERSION = 15; // v15: ALL LOVE converted to EP (Apr 24), singles pushed +1wk, parked tracks removed from defaults
+const RELEASE_DATA_VERSION = 16; // v16: Core Drive pipeline fields added (coreDriveComplete, campaignKitGenerated)
 
 // Read from IndexedDB, seeding defaults on first call or after version bump
 export async function getDynamicReleases(): Promise<Release[]> {

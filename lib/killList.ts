@@ -500,31 +500,51 @@ export async function deriveKillList(): Promise<KillTask[]> {
       "Submit for review",
     ], 3, "ops", "biz");
 
-    // ── CYANITE PLAYLIST MATRIX (per single — 3-encode algorithmic exploit) ──
-    if (daysUntil <= 10 && daysUntil >= -3) {
-      const cyaniteKey = `cyanite_matrix:${t}`;
-      const cyaniteDone = await getStoreValue<boolean>(cyaniteKey);
-      if (!cyaniteDone) {
+    // ── CORE DRIVE PIPELINE (per single — 3-encode algorithmic exploit) ──
+    if (daysUntil <= 14 && daysUntil >= -7) {
+      // Task 1: Run Core Drive Matrix
+      if (!d.coreDriveComplete) {
         tasks.push({
-          id: `cyanite-${t}`,
-          title: `Run Cyanite 3-encode matrix — ${t}`,
-          subtitle: `3 encodes × 20 playlists = 60 similarity matches. Build your Core Drive.`,
+          id: `coredrive-${t}`,
+          title: `Run Core Drive — ${t}`,
+          subtitle: `3 encodes × 20 playlists + 10 direct matches = your targeting blueprint.`,
           howTo: [
-            "STEP 1 — ENCODE: Run FFmpeg to create 3 versions of the final master:",
-            "  • Original .wav (already have it)",
-            "  • Spotify sim: ffmpeg -i master.wav -c:a libvorbis -b:a 160k track_spotify.ogg",
-            "  • YouTube sim: ffmpeg -i master.wav -c:a aac -b:a 128k track_youtube.m4a",
-            "STEP 2 — UPLOAD: Upload all 3 files to cyanite.ai separately",
-            "STEP 3 — EXTRACT: Run Playlist Similarity Search on each. Screenshot or export all 60 playlists.",
-            "STEP 4 — MATRIX: List every artist that appears across 2+ of the 3 playlist sets. These are your Core Drive artists.",
-            "STEP 5 — CROSS-REF: Look up Core Drive artists on MusicStax for Spotify parameters (tempo, energy, valence, danceability).",
-            "STEP 6 — ACTIVATE: Use Core Drive artists as Meta/TikTok lookalike targets, curator pitch ammo, and YouTube/TikTok keyword tags.",
-            "See brain docs: mastering_feedback_loop_sop.md + ad_targeting_mood_strategy.md",
+            "ENCODE: Export your final master as .wav (already have it)",
+            "CYANITE: Upload the master to cyanite.ai → run Playlist Similarity Search → copy all ~20 playlist links",
+            "Repeat with a YouTube-compressed encode (128k AAC) and paste those ~20 links",
+            "Grab the 10 direct track matches from Cyanite's Spotify search (artist - track format)",
+            "ANTIGRAVITY: Paste everything into core-drive-builder/input/[track].txt under # MASTER, # YOUTUBE, # SPOTIFY headers",
+            "RUN: node index.mjs --input input/[track].txt --track \"" + t + "\"",
+            "Output lands in core-drive-builder/output/ — JSON + Markdown in 6 seconds",
+          ],
+          urgency: daysUntil <= 3 ? "RED" : "AMBER",
+          pillar: "business",
+          timeBlock: "content",
+          action: async () => {
+            await updateContentDeliverables(t, { coreDriveComplete: true });
+          },
+        });
+      }
+
+      // Task 2: Generate Campaign Kit (only after Core Drive is complete)
+      if (d.coreDriveComplete && !d.campaignKitGenerated) {
+        tasks.push({
+          id: `campaign-kit-${t}`,
+          title: `Generate campaign kit — ${t}`,
+          subtitle: `Run the 4-agent refinement pipeline on your Core Drive output.`,
+          howTo: [
+            "Hand the Core Drive markdown to Antigravity or Claude",
+            "Run 4-agent pipeline: Data Analyst → Brand Strategist → Cultural Critic → ECD",
+            "Output: 3 Meta Ad clusters, TikTok hooks, YouTube SEO, curator pitches",
+            "Deploy ads using the 3-cluster targeting (Void / Groove / Surge)",
+            "See .agents/workflows/campaign-refinement.md for the full protocol",
           ],
           urgency: daysUntil <= 0 ? "RED" : "AMBER",
           pillar: "business",
-          timeBlock: "content",
-          action: async () => { await setStoreValue(cyaniteKey, true); },
+          timeBlock: "biz",
+          action: async () => {
+            await updateContentDeliverables(t, { campaignKitGenerated: true });
+          },
         });
       }
     }
