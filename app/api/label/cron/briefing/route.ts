@@ -2,7 +2,6 @@
 // Vercel Cron: daily morning briefing that synthesizes all agent data
 // Runs at 7am CT, produces a digest the Oracle can consume
 import { NextResponse } from "next/server";
-import { REGISTRY } from "@/lib/registry";
 import { getDynamicReleases } from "@/lib/releases";
 
 
@@ -21,18 +20,16 @@ export async function GET() {
         : null;
 
     // Check compliance status for next release
-    const registryEntry = nextRelease
-        ? REGISTRY.find(t => t.title === nextRelease.title)
-        : null;
+    const d = nextRelease?.contentDeliverables;
 
     const complianceGaps: string[] = [];
-    if (registryEntry) {
-        if (registryEntry.ascap !== "complete") complianceGaps.push("ASCAP");
-        if (registryEntry.mlc !== "complete") complianceGaps.push("MLC");
-        if (registryEntry.songtrust !== "complete") complianceGaps.push("Songtrust");
-        if (!registryEntry.isrc) complianceGaps.push("ISRC");
-        if (!registryEntry.instrumentalRendered) complianceGaps.push("Instrumental render");
-        if (!registryEntry.splitSheetSigned && registryEntry.collaborators.length > 0) complianceGaps.push("Split sheet");
+    if (d) {
+        if (!d.ascapRegistered) complianceGaps.push("ASCAP");
+        if (!d.mlcRegistered) complianceGaps.push("MLC");
+        if (!d.songtrustRegistered) complianceGaps.push("Songtrust");
+        if (!d.isrcPulled) complianceGaps.push("ISRC");
+        if (!d.instrumentalRendered) complianceGaps.push("Instrumental render");
+        if (!d.splitSheetSigned) complianceGaps.push("Split sheet");
     }
 
     // Build the briefing
