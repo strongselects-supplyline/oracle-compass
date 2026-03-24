@@ -1,7 +1,8 @@
 "use client";
 
 import { useState, useCallback, useEffect } from "react";
-import { getStoreValue, setStoreValue, getTodayISO } from "@/lib/db";
+import { getStoreValue, setStoreValue, getTodayISO, getDailyTelemetry, type DailyTelemetry } from "@/lib/db";
+import { getDynamicReleases, type Release } from "@/lib/releases";
 import type { OracleDecree, Realignment } from "@/lib/oracle";
 import { getKillStats } from "@/lib/killList";
 import { recalibrateOracle } from "@/lib/recalibrate";
@@ -277,6 +278,8 @@ export default function OraclePage() {
   const [recalibrating, setRecalibrating] = useState(false);
   const [loading, setLoading] = useState(true);
   const [killStats, setKillStats] = useState({ active: 0, total: 0 });
+  const [telemetry, setTelemetry] = useState<DailyTelemetry | null>(null);
+  const [nextRelease, setNextRelease] = useState<Release | null>(null);
 
   const loadDecree = useCallback(async () => {
     const today = getTodayISO();
@@ -295,6 +298,12 @@ export default function OraclePage() {
 
     const clearedIds = await getStoreValue<string[]>(CLEARED_KEY) ?? [];
     const stats = await getKillStats();
+    
+    // Fetch telemetry for context snapshot
+    const tel = await getDailyTelemetry();
+    const rels = await getDynamicReleases();
+    setTelemetry(tel);
+    setNextRelease(rels.find((r) => r.status !== "live") || null);
 
     if (stored) {
       setDecree(stored);
@@ -559,6 +568,37 @@ export default function OraclePage() {
                     <p className="text-xs mt-1" style={{ color: "rgba(255,255,255,0.3)" }}>Kill list and Oracle both clear. Execute freely.</p>
                   </>
                 )}
+              </div>
+            )}
+
+            {/* ─── SYSTEM SNAPSHOT ─── */}
+            {telemetry && nextRelease && (
+              <div className="mb-8" style={fadeSlide(0.3)}>
+                <h2 className="text-xs font-mono uppercase tracking-[0.25em] mb-4" style={{ color: "rgba(255,255,255,0.2)" }}>
+                  System Snapshot
+                </h2>
+                <div className="grid grid-cols-2 gap-3">
+                  <div className="rounded-xl p-4" style={{ background: "rgba(255,255,255,0.02)", border: "1px solid rgba(255,255,255,0.06)" }}>
+                    <p className="text-[10px] font-black tracking-widest uppercase mb-1" style={{ color: "rgba(255,255,255,0.4)" }}>Core Drive matrix</p>
+                    <p className={`text-sm font-bold ${nextRelease.contentDeliverables.coreDriveComplete ? "text-green-400" : "text-amber-500"}`}>
+                      {nextRelease.contentDeliverables.coreDriveComplete ? "Generated ✓" : "Pending"}
+                    </p>
+                  </div>
+                  <div className="rounded-xl p-4" style={{ background: "rgba(255,255,255,0.02)", border: "1px solid rgba(255,255,255,0.06)" }}>
+                    <p className="text-[10px] font-black tracking-widest uppercase mb-1" style={{ color: "rgba(255,255,255,0.4)" }}>Income Bridge</p>
+                    <p className="text-sm font-bold text-white">${telemetry.doordash_earned} <span className="text-[10px] opacity-40">earned</span></p>
+                  </div>
+                  <div className="rounded-xl p-4" style={{ background: "rgba(255,255,255,0.02)", border: "1px solid rgba(255,255,255,0.06)" }}>
+                    <p className="text-[10px] font-black tracking-widest uppercase mb-1" style={{ color: "rgba(255,255,255,0.4)" }}>Campaign Kit</p>
+                    <p className={`text-sm font-bold ${nextRelease.contentDeliverables.campaignKitGenerated ? "text-green-400" : "text-amber-500"}`}>
+                      {nextRelease.contentDeliverables.campaignKitGenerated ? "Generated ✓" : "Pending"}
+                    </p>
+                  </div>
+                  <div className="rounded-xl p-4" style={{ background: "rgba(255,255,255,0.02)", border: "1px solid rgba(255,255,255,0.06)" }}>
+                    <p className="text-[10px] font-black tracking-widest uppercase mb-1" style={{ color: "rgba(255,255,255,0.4)" }}>Mixdown Engine</p>
+                    <p className="text-sm font-bold text-white">Auto-tracking</p>
+                  </div>
+                </div>
               </div>
             )}
 

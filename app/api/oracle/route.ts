@@ -333,6 +333,7 @@ TODAY: ${ctx.fuel.todayScore}/3 | Hydration: ${ctx.fuel.todayHydration ?? "not l
 -- CONTENT PIPELINE --
 ${ctx.content.nextRelease ? `NEXT RELEASE: ${ctx.content.nextRelease.title} in ${ctx.content.nextRelease.daysUntil} days (T-${ctx.content.nextRelease.daysUntil})
 READINESS: ${ctx.content.nextRelease.readinessScore}% | Visual Idea: ${ctx.content.nextRelease.deliverables.visualIdea || "EMPTY"}
+CORE DRIVE: ${ctx.content.coreDrive?.complete ? "Matrix Complete ✓" : "Pending"} | CAMPAIGN KIT: ${ctx.content.coreDrive?.campaignKit ? "Generated ✓" : "Pending"}
 Primary Video: ${ctx.content.nextRelease.deliverables.primaryVideo} | Lyric Video: ${ctx.content.nextRelease.deliverables.lyricVideo}
 Reels: ${ctx.content.nextRelease.deliverables.reelsPosted}/${ctx.content.nextRelease.deliverables.reelsGoal} | TikToks: ${ctx.content.nextRelease.deliverables.tiktoksPosted}/${ctx.content.nextRelease.deliverables.tiktoksGoal} | B-Roll: ${ctx.content.nextRelease.deliverables.brollClips} clips` : "No upcoming releases"}
 
