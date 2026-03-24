@@ -1,23 +1,45 @@
 'use client';
 
 import { useState, useEffect, useCallback } from 'react';
+import { getStoreValue, setStoreValue } from '@/lib/db';
 import {
   ALL_TRACKS,
-  getTrackStatuses,
-  updateTrackPhase,
-  TrackProductionStatus,
-  TrackPhase,
-  PHASE_ORDER,
-  nextPhase,
-  Phase,
-  SprintWeek,
   SPRINT_WEEKS,
   SPRINT_RULES,
   PHASE_CONFIG,
-  TOTAL_TRACKS
-} from '@/lib/planner';
+  TOTAL_TRACKS,
+  IDB_KEY,
+  migrateFromOldDB,
+  type Phase,
+  type TrackStatus,
+} from '@/lib/marathon-data';
 
-// For the UI rendering, we still need the generic marathon phase styles
+// ── Unified DB helpers (via db.ts — no more separate database) ───────────
+
+async function loadStatuses(): Promise<Record<string, TrackStatus>> {
+  // Try unified DB first
+  const stored = await getStoreValue<Record<string, TrackStatus>>(IDB_KEY);
+  if (stored && Object.keys(stored).length > 0) return stored;
+
+  // Migration: check old DB
+  const oldData = await migrateFromOldDB();
+  if (oldData && Object.keys(oldData).length > 0) {
+    await setStoreValue(IDB_KEY, oldData);
+    return oldData;
+  }
+
+  return {};
+}
+
+async function saveStatuses(statuses: Record<string, TrackStatus>): Promise<void> {
+  await setStoreValue(IDB_KEY, statuses);
+}
+
+// ── Constants ────────────────────────────────────────────────────────────────
+
+const STATUS_CYCLE: TrackStatus[] = ['not_started', 'in_progress', 'done'];
+const PHASES: Phase[] = ['ALL_LOVE', 'DELUXE', 'CREAM', 'FREAKSHOW'];
+
 const PHASE_BADGE_STYLE: Record<string, string> = {
   'ALL LOVE':      'bg-[#C8952A] text-black',
   'DELUXE':        'bg-[#2A1E08] text-[#C8952A] border border-[#C8952A55]',
@@ -36,36 +58,51 @@ function getCurrentWeekIndex(): number {
   return SPRINT_WEEKS.findIndex(w => today >= w.startDate && today <= w.endDate);
 }
 
+// ── Component ────────────────────────────────────────────────────────────────
+
 export default function PlannerPage() {
-  const [statuses, setStatuses]         = useState<TrackProductionStatus[]>([]);
+  const [statuses, setStatuses]         = useState<Record<string, TrackStatus>>({});
   const [loaded, setLoaded]             = useState(false);
+  const [expandedPhases, setExpandedPhases] = useState<Set<Phase>>(new Set(['ALL_LOVE']));
   const [showMatrix, setShowMatrix]     = useState(false);
   const [showRules, setShowRules]       = useState(false);
 
   useEffect(() => {
-    getTrackStatuses().then(s => { setStatuses(s); setLoaded(true); });
+    loadStatuses().then(s => { setStatuses(s); setLoaded(true); });
   }, []);
 
-  const cycleStatus = useCallback((trackName: string) => {
+  const cycleStatus = useCallback((trackId: string) => {
     setStatuses(prev => {
-      const t = prev.find(p => p.name === trackName);
-      if (!t) return prev;
-      
-      const updatedPhase = nextPhase(t.phase);
-      const nextArr = prev.map(p => p.name === trackName ? { ...p, phase: updatedPhase } : p);
-      
-      // Fire and forget IO
-      updateTrackPhase(trackName, updatedPhase);
-      
-      return nextArr;
+      const cur = prev[trackId] || 'not_started';
+      const next = STATUS_CYCLE[(STATUS_CYCLE.indexOf(cur) + 1) % STATUS_CYCLE.length];
+      const updated = { ...prev, [trackId]: next };
+      saveStatuses(updated);
+      return updated;
     });
   }, []);
 
+  const togglePhase = (phase: Phase) =>
+    setExpandedPhases(prev => {
+      const n = new Set(prev);
+      n.has(phase) ? n.delete(phase) : n.add(phase);
+      return n;
+    });
+
   // ── Derived stats ──
-  const doneCount = statuses.filter(s => s.phase === 'done').length;
-  const inProgCount = statuses.filter(s => s.phase !== 'not_started' && s.phase !== 'done').length;
-  const totalCount = statuses.length;
-  const pct = Math.round((doneCount / (totalCount || 1)) * 100);
+  const activeEPTracks = ALL_TRACKS.filter(t => t.phase === 'ALL_LOVE' && !t.parked);
+  const doneCount = Object.values(statuses).filter(s => s === 'done').length;
+  const inProgCount = Object.values(statuses).filter(s => s === 'in_progress').length;
+  const pct = Math.round((doneCount / TOTAL_TRACKS) * 100);
+
+  const phaseStats = PHASES.map(phase => {
+    const tracks = ALL_TRACKS.filter(t => t.phase === phase && !t.parked);
+    return {
+      phase,
+      total: tracks.length,
+      done: tracks.filter(t => statuses[t.id] === 'done').length,
+      inProg: tracks.filter(t => statuses[t.id] === 'in_progress').length,
+    };
+  });
 
   const currentWkIdx = getCurrentWeekIndex();
   const currentWeek = currentWkIdx >= 0 ? SPRINT_WEEKS[currentWkIdx] : null;
@@ -73,7 +110,7 @@ export default function PlannerPage() {
   if (!loaded) {
     return (
       <div className="min-h-screen bg-[#0A0A0A] flex items-center justify-center">
-        <p className="text-[#333] text-[10px] tracking-[0.3em]">LOADING SPRINT DATA...</p>
+        <p className="text-[#333] text-[10px] tracking-[0.3em]">LOADING MARATHON...</p>
       </div>
     );
   }
@@ -81,37 +118,49 @@ export default function PlannerPage() {
   return (
     <div className="min-h-screen bg-[#0A0A0A] text-white pb-32">
 
-      {/* ── HEADER + OVERALL PROGRESS ── */}
+      {/* \u2500\u2500 HEADER + OVERALL PROGRESS \u2500\u2500 */}
       <div className="px-5 pt-8 pb-5 border-b border-[#161616]">
-        <p className="text-[8px] font-black tracking-[0.3em] text-[#C8952A] mb-1">ALL LOVE SPRINT TRACKER</p>
-        <h1 className="text-[22px] font-black tracking-tight text-white mb-5">STUDIO SPRINT</h1>
+        <p className="text-[8px] font-black tracking-[0.3em] text-[#C8952A] mb-1">14-WEEK MARATHON TRACKER</p>
+        <h1 className="text-[22px] font-black tracking-tight text-white mb-5">PAST.EL NOIR SPRINT</h1>
+
+        {/* EP progress (active tracks only) */}
+        <div className="mb-4 p-3 rounded-xl border border-[#C8952A] bg-[#0D0B06]">
+          <div className="flex justify-between items-center mb-1.5">
+            <span className="text-[9px] font-black tracking-widest text-[#C8952A]">EP TRACKS (ACTIVE)</span>
+            <span className="text-[9px] font-black text-[#C8952A]">
+              {activeEPTracks.filter(t => statuses[t.id] === 'done').length} / {activeEPTracks.length}
+            </span>
+          </div>
+          <div className="h-[3px] bg-[#1A1A1A] rounded-full overflow-hidden">
+            <div
+              className="h-full bg-[#C8952A] rounded-full transition-all duration-700"
+              style={{ width: `${Math.round((activeEPTracks.filter(t => statuses[t.id] === 'done').length / activeEPTracks.length) * 100)}%` }}
+            />
+          </div>
+        </div>
 
         {/* Overall bar */}
         <div className="mb-1.5 flex justify-between">
-          <span className="text-[9px] font-black tracking-widest text-[#444]">OVERALL</span>
-          <span className="text-[9px] font-black text-[#C8952A]">{doneCount} / {totalCount} TRACKS</span>
+          <span className="text-[9px] font-black tracking-widest text-[#444]">FULL MARATHON</span>
+          <span className="text-[9px] font-black text-[#555]">{doneCount} / {TOTAL_TRACKS} TRACKS</span>
         </div>
         <div className="h-[3px] bg-[#1A1A1A] rounded-full overflow-hidden mb-2">
           <div
-            className="h-full bg-[#C8952A] rounded-full transition-all duration-700"
+            className="h-full bg-[#555] rounded-full transition-all duration-700"
             style={{ width: `${pct}%` }}
           />
         </div>
         <div className="flex gap-4">
-          <span className="text-[8px] text-[#C8952A]">● {doneCount} done</span>
-          <span className="text-[8px] text-[#666]">◐ {inProgCount} in progress</span>
-          <span className="text-[8px] text-[#333]">○ {TOTAL_TRACKS - doneCount - inProgCount} remaining</span>
+          <span className="text-[8px] text-[#C8952A]">\u25CF {doneCount} done</span>
+          <span className="text-[8px] text-[#666]">\u25D0 {inProgCount} in progress</span>
+          <span className="text-[8px] text-[#333]">\u25CB {TOTAL_TRACKS - doneCount - inProgCount} remaining</span>
         </div>
 
         {/* Phase bars */}
         <div className="grid grid-cols-4 gap-3 mt-5">
-          {PHASE_ORDER.map((phase) => {
-            const cfg = PHASE_CONFIG[phase as Phase];
-            if (!cfg) return null;
-            
-            const total = 1; // Assuming 1 target for EP phases, to simplify for now, since we only have 4 active tracks.
-            const done = statuses.filter(s => s.phase === 'done').length;
-            const p = Math.round((done / 4) * 100);
+          {phaseStats.map(({ phase, total, done }) => {
+            const cfg = PHASE_CONFIG[phase];
+            const p = total > 0 ? Math.round((done / total) * 100) : 0;
             return (
               <div key={phase}>
                 <p className="text-[7px] font-black tracking-widest mb-1.5" style={{ color: cfg.color }}>
@@ -123,14 +172,14 @@ export default function PlannerPage() {
                     style={{ width: `${p}%`, backgroundColor: cfg.color }}
                   />
                 </div>
-                <p className="text-[8px] mt-1" style={{ color: cfg.color }}>{done}/4</p>
+                <p className="text-[8px] mt-1" style={{ color: cfg.color }}>{done}/{total}</p>
               </div>
             );
           })}
         </div>
       </div>
 
-      {/* ── CURRENT WEEK CARD ── */}
+      {/* \u2500\u2500 CURRENT WEEK CARD \u2500\u2500 */}
       {currentWeek ? (
         <div className="mx-4 mt-5 p-4 rounded-2xl border border-[#C8952A] bg-[#0D0B06]">
           <div className="flex items-start justify-between mb-3">
@@ -151,10 +200,6 @@ export default function PlannerPage() {
               <p className="text-[8px] text-[#555] tracking-widest mb-0.5">WEEK TARGET</p>
               <p className="text-[12px] font-black text-white">{currentWeek.target}</p>
             </div>
-            <div className="text-right">
-              <p className="text-[8px] text-[#555] tracking-widest mb-0.5">MARATHON PACE</p>
-              <p className="text-[12px] font-black text-[#C8952A]">{currentWeek.total} / 43</p>
-            </div>
           </div>
 
           {currentWeek.keyEvents.length > 0 && (
@@ -170,67 +215,118 @@ export default function PlannerPage() {
         </div>
       ) : (
         <div className="mx-4 mt-5 p-4 rounded-2xl border border-[#1A1A1A] bg-[#0D0D0D]">
-          <p className="text-[10px] text-[#444] text-center">No active sprint week — check sprint dates</p>
+          <p className="text-[10px] text-[#444] text-center">No active sprint week \u2014 check sprint dates</p>
         </div>
       )}
 
-      {/* ── TRACK INVENTORY ── */}
+      {/* \u2500\u2500 TRACK INVENTORY \u2500\u2500 */}
       <div className="px-4 mt-7">
         <p className="text-[9px] font-black tracking-widest text-[#444] mb-1">TRACK INVENTORY</p>
-        <p className="text-[9px] text-[#333] mb-4">Tap any track to cycle phase: TRK → MIX → MAS → INST → DONE</p>
+        <p className="text-[9px] text-[#333] mb-4">Tap any track to cycle: \u25CB \u2192 \u25D0 \u2192 \u25CF</p>
 
-        <div className="mb-2.5 rounded-2xl border border-[#161616] overflow-hidden">
-          <div className="divide-y divide-[#0F0F0F]">
-            {statuses.map(track => {
-              const isDone = track.phase === 'done';
-              const isNotStarted = track.phase === 'not_started';
-              const isActive = !isDone && !isNotStarted;
+        {PHASES.map(phase => {
+          const cfg = PHASE_CONFIG[phase];
+          const tracks = ALL_TRACKS.filter(t => t.phase === phase);
+          const activeTracks = tracks.filter(t => !t.parked);
+          const parkedTracks = tracks.filter(t => t.parked);
+          const stats = phaseStats.find(s => s.phase === phase)!;
+          const isOpen = expandedPhases.has(phase);
 
-              return (
-                <button
-                  key={track.name}
-                  onClick={() => cycleStatus(track.name)}
-                  className="w-full flex items-center justify-between px-4 py-4 hover:bg-[#111] active:bg-[#151515] transition-colors text-left"
-                >
-                  <div className="flex items-center gap-3">
-                    <span
-                      className="text-[16px] flex-shrink-0 leading-none"
-                      style={{ color: isDone ? '#C8952A' : isActive ? '#C8952A' : '#2A2A2A' }}
-                    >
-                      {isDone ? '●' : isActive ? '◐' : '○'}
-                    </span>
-                    <span
-                      className={`text-[12px] ${
-                        isDone ? 'text-[#3A3A3A] line-through' : 'text-white'
-                      }`}
-                    >
-                      {track.name}
-                    </span>
-                  </div>
-                  
-                  {/* Phase Badge */}
-                  <span className={`text-[8px] font-black tracking-widest px-2 py-1 rounded 
-                    ${isNotStarted ? 'bg-[#111] text-[#333]' : 
-                      isDone ? 'bg-[#1A1A1A] text-[#C8952A]' : 
-                      'bg-[#2A1E08] text-[#C8952A] border border-[#C8952A55]'}`}
+          return (
+            <div key={phase} className="mb-2.5 rounded-2xl border border-[#161616] overflow-hidden">
+              <button
+                onClick={() => togglePhase(phase)}
+                className="w-full flex items-center justify-between px-4 py-3 bg-[#0E0E0E] active:bg-[#141414]"
+              >
+                <div className="flex items-center gap-3">
+                  <span
+                    className="text-[8px] font-black px-2 py-0.5 rounded-md"
+                    style={{ backgroundColor: `${cfg.color}18`, color: cfg.color, border: `1px solid ${cfg.color}35` }}
                   >
-                    {track.phase.toUpperCase().replace('_', ' ')}
+                    {cfg.badge}
                   </span>
-                </button>
-              );
-            })}
-          </div>
-        </div>
+                  <span className="text-[10px] text-[#555]">
+                    {stats.done}/{stats.total}
+                    {stats.inProg > 0 && (
+                      <span className="text-[#C8952A] ml-2">{stats.inProg} active</span>
+                    )}
+                  </span>
+                </div>
+                <span className="text-[10px] text-[#333]">{isOpen ? '\u25B2' : '\u25BC'}</span>
+              </button>
+
+              {isOpen && (
+                <div className="divide-y divide-[#0F0F0F]">
+                  {/* Active tracks first */}
+                  {activeTracks.map(track => {
+                    const status = statuses[track.id] || 'not_started';
+                    const isDone = status === 'done';
+                    const isActive = status === 'in_progress';
+
+                    return (
+                      <button
+                        key={track.id}
+                        onClick={() => cycleStatus(track.id)}
+                        className="w-full flex items-center gap-3 px-4 py-3 hover:bg-[#111] active:bg-[#151515] transition-colors text-left"
+                      >
+                        <span
+                          className="text-[16px] flex-shrink-0 leading-none"
+                          style={{ color: isDone ? cfg.color : isActive ? '#C8952A' : '#2A2A2A' }}
+                        >
+                          {isDone ? '\u25CF' : isActive ? '\u25D0' : '\u25CB'}
+                        </span>
+                        <span className={`text-[12px] flex-1 ${isDone ? 'text-[#3A3A3A] line-through' : 'text-white'}`}>
+                          {track.name}
+                        </span>
+                        {isActive && <span className="text-[7px] font-black tracking-widest text-[#C8952A]">ACTIVE</span>}
+                        {isDone && <span className="text-[7px] font-black tracking-widest" style={{ color: cfg.color }}>DONE</span>}
+                      </button>
+                    );
+                  })}
+
+                  {/* Parked tracks (dimmed) */}
+                  {parkedTracks.length > 0 && (
+                    <>
+                      <div className="px-4 py-2 bg-[#0A0A0A]">
+                        <span className="text-[8px] font-black tracking-widest text-[#333]">PARKED \u2014 POST-EP</span>
+                      </div>
+                      {parkedTracks.map(track => {
+                        const status = statuses[track.id] || 'not_started';
+                        const isDone = status === 'done';
+                        const isActive = status === 'in_progress';
+
+                        return (
+                          <button
+                            key={track.id}
+                            onClick={() => cycleStatus(track.id)}
+                            className="w-full flex items-center gap-3 px-4 py-3 hover:bg-[#111] active:bg-[#151515] transition-colors text-left opacity-40"
+                          >
+                            <span className="text-[16px] flex-shrink-0 leading-none" style={{ color: isDone ? cfg.color : isActive ? '#C8952A' : '#2A2A2A' }}>
+                              {isDone ? '\u25CF' : isActive ? '\u25D0' : '\u25CB'}
+                            </span>
+                            <span className={`text-[12px] flex-1 ${isDone ? 'text-[#3A3A3A] line-through' : 'text-[#555]'}`}>
+                              {track.name}
+                            </span>
+                          </button>
+                        );
+                      })}
+                    </>
+                  )}
+                </div>
+              )}
+            </div>
+          );
+        })}
       </div>
 
-      {/* ── FULL SPRINT PLAN MATRIX ── */}
+      {/* \u2500\u2500 FULL SPRINT PLAN MATRIX \u2500\u2500 */}
       <div className="px-4 mt-6">
         <button
           onClick={() => setShowMatrix(v => !v)}
           className="w-full flex items-center justify-between py-2"
         >
           <p className="text-[9px] font-black tracking-widest text-[#444]">FULL SPRINT PLAN</p>
-          <span className="text-[10px] text-[#333]">{showMatrix ? '▲ COLLAPSE' : '▼ VIEW ALL 14 WEEKS'}</span>
+          <span className="text-[10px] text-[#333]">{showMatrix ? '\u25B2 COLLAPSE' : '\u25BC VIEW ALL 14 WEEKS'}</span>
         </button>
 
         {showMatrix && (
@@ -242,11 +338,9 @@ export default function PlannerPage() {
                 <div
                   key={week.wk}
                   className={`p-3 rounded-xl border transition-all ${
-                    isCurrent
-                      ? 'border-[#C8952A] bg-[#0D0B06]'
-                      : isPast
-                      ? 'border-[#111] bg-[#080808]'
-                      : 'border-[#141414] bg-[#0A0A0A]'
+                    isCurrent ? 'border-[#C8952A] bg-[#0D0B06]'
+                    : isPast ? 'border-[#111] bg-[#080808]'
+                    : 'border-[#141414] bg-[#0A0A0A]'
                   }`}
                 >
                   <div className="flex items-center justify-between">
@@ -257,14 +351,9 @@ export default function PlannerPage() {
                       </span>
                       <span className={`text-[10px] ${isPast ? 'text-[#2A2A2A]' : 'text-[#444]'}`}>{week.dates}</span>
                     </div>
-                    <div className="flex items-center gap-2">
-                      <span className={`text-[7px] font-black px-1.5 py-0.5 rounded ${badgeClass(week.phaseBadge)}`}>
-                        {week.phaseBadge}
-                      </span>
-                      <span className={`text-[9px] font-black ${isCurrent ? 'text-[#C8952A]' : isPast ? 'text-[#333]' : 'text-[#555]'}`}>
-                        {week.total}/43
-                      </span>
-                    </div>
+                    <span className={`text-[7px] font-black px-1.5 py-0.5 rounded ${badgeClass(week.phaseBadge)}`}>
+                      {week.phaseBadge}
+                    </span>
                   </div>
 
                   <p className={`text-[10px] mt-1 pl-3.5 ${isPast ? 'text-[#2A2A2A]' : 'text-[#444]'}`}>
@@ -273,7 +362,7 @@ export default function PlannerPage() {
 
                   {week.keyEvents.map((evt, i) => (
                     <p key={i} className={`text-[9px] mt-0.5 pl-3.5 ${isPast ? 'text-[#2A2A2A]' : 'text-[#C8952A]'}`}>
-                      ↳ {evt}
+                      \u21B3 {evt}
                     </p>
                   ))}
                 </div>
@@ -283,14 +372,14 @@ export default function PlannerPage() {
         )}
       </div>
 
-      {/* ── SPRINT RULES ── */}
+      {/* \u2500\u2500 SPRINT RULES \u2500\u2500 */}
       <div className="px-4 mt-6 mb-8">
         <button
           onClick={() => setShowRules(v => !v)}
           className="w-full flex items-center justify-between py-2"
         >
           <p className="text-[9px] font-black tracking-widest text-[#444]">SPRINT RULES</p>
-          <span className="text-[10px] text-[#333]">{showRules ? '▲' : '▼'}</span>
+          <span className="text-[10px] text-[#333]">{showRules ? '\u25B2' : '\u25BC'}</span>
         </button>
 
         {showRules && (
@@ -309,7 +398,6 @@ export default function PlannerPage() {
           </div>
         )}
       </div>
-
     </div>
   );
 }

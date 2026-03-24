@@ -5,7 +5,6 @@
 import { getDailyLog, getStoreValue, getTodayISO, DailyLog, getDailyTelemetry } from "@/lib/db";
 import { getSobrietyStreak } from "@/lib/streaks";
 import { getDynamicReleases, Release, ALBUM_RELEASE_DATE, ContentDeliverables } from "@/lib/releases";
-import { REGISTRY } from "@/lib/registry";
 import { fetchDashboardIncome } from "@/lib/dashboardBridge";
 import { getDayType } from "@/lib/dayType";
 import { getSprintTarget, getTrackStatuses, getSundayChecklist, computeTrackProgress, isSundayChecklistComplete } from "@/lib/planner";
@@ -268,19 +267,16 @@ export async function assembleContext(): Promise<OracleContext> {
     ? Math.ceil((new Date(nextRelease.releaseDate).getTime() - now.getTime()) / 86400000)
     : 999;
 
-  const registryEntry = nextRelease
-    ? REGISTRY.find(t => t.title === nextRelease.title)
-    : null;
-
+  // Compliance gaps derived from contentDeliverables (single source of truth)
   const complianceGaps: string[] = [];
-  if (registryEntry) {
-    if (!registryEntry.isrc) complianceGaps.push("ISRC not assigned");
-    if (registryEntry.ascap !== "complete") complianceGaps.push(`ASCAP: ${registryEntry.ascap}`);
-    if (registryEntry.mlc !== "complete") complianceGaps.push(`MLC: ${registryEntry.mlc}`);
-    if (registryEntry.songtrust !== "complete") complianceGaps.push(`Songtrust: ${registryEntry.songtrust}`);
-    if (!registryEntry.instrumentalRendered) complianceGaps.push("Instrumental not rendered");
-    if (!registryEntry.splitSheetSigned && registryEntry.collaborators.length > 0)
-      complianceGaps.push("Split sheet not signed");
+  if (nextRelease) {
+    const d = nextRelease.contentDeliverables;
+    if (!d.isrcPulled) complianceGaps.push("ISRC not pulled");
+    if (!d.ascapRegistered) complianceGaps.push("ASCAP not registered");
+    if (!d.mlcRegistered) complianceGaps.push("MLC not registered");
+    if (!d.songtrustRegistered) complianceGaps.push("Songtrust not registered");
+    if (!d.instrumentalRendered) complianceGaps.push("Instrumental not rendered");
+    if (!d.musixmatchSubmitted) complianceGaps.push("Musixmatch lyrics not submitted");
   }
 
   const label: LabelSnapshot = {

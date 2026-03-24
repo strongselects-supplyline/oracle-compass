@@ -1,19 +1,16 @@
 // app/api/label/ops/route.ts
+// Operations & Distribution Director — compliance audit using live contentDeliverables data
 import { NextRequest, NextResponse } from "next/server";
 import { getDynamicReleases } from "@/lib/releases";
-import { REGISTRY, TrackRegistry } from "@/lib/registry";
-
 
 const SYSTEM_PROMPT = `You are the Operations & Distribution Director of past.El noir Records.
 Your ONLY job is to ensure every release is properly coded and registered on time so Ethan gets paid.
 
-You receive two inputs:
-1. The Release Schedule
-2. The Track Compliance Registry
+You receive the Release Schedule with embedded compliance status from contentDeliverables.
 
 Your logic:
 - Check each upcoming release against the compliance target deadlines.
-- Deadlines: Code (ISRC/ISWC) at Day -30, Distro (Amuse) at Day -21, PROs (ASCAP/Songtrust) at Day -14.
+- Deadlines: Code (ISRC) at Day -30, Distro (Amuse) at Day -21, PROs (ASCAP/Songtrust) at Day -14.
 - If an upcoming release violates these lead times, flag an ESCALATION.
 - Returning an escalation will alert the CEO via the Oracle immediately.
 
@@ -26,7 +23,7 @@ Return JSON ONLY matching this exact structure:
       "severity": "RED"
     }
   ],
-  "clear": true  // false if there are any escalations
+  "clear": true
 }
 No preamble.`;
 
@@ -36,23 +33,29 @@ export async function POST(req: NextRequest) {
 
     try {
         const releases = await getDynamicReleases();
-
-        // Filter to next upcoming releases (not already live)
         const upcoming = releases.filter(r => r.status !== 'live');
 
-        // Compile registry states for these releases
-        const registryData = upcoming.map(r => {
-            const registryEntry = REGISTRY.find((tr: TrackRegistry) => tr.title === r.title);
+        // Build compliance snapshot from contentDeliverables (single source of truth)
+        const complianceData = upcoming.map(r => {
+            const d = r.contentDeliverables;
             return {
                 title: r.title,
                 releaseDate: r.releaseDate,
-                registry: registryEntry || { status: "Not found in registry" }
+                uploadDate: r.uploadDate,
+                compliance: {
+                    isrcPulled: d.isrcPulled,
+                    ascapRegistered: d.ascapRegistered,
+                    mlcRegistered: d.mlcRegistered,
+                    songtrustRegistered: d.songtrustRegistered,
+                    musixmatchSubmitted: d.musixmatchSubmitted,
+                    instrumentalRendered: d.instrumentalRendered,
+                    amuseUploaded: d.amuseUploaded,
+                    spotifyPitchSubmitted: d.spotifyPitchSubmitted,
+                }
             };
         });
 
-        const userMessage = JSON.stringify({
-            upcomingReleases: registryData
-        }, null, 2);
+        const userMessage = JSON.stringify({ upcomingReleases: complianceData }, null, 2);
 
         const res = await fetch("https://api.anthropic.com/v1/messages", {
             method: "POST",
@@ -76,9 +79,18 @@ export async function POST(req: NextRequest) {
 
         const data = await res.json();
         const raw = data.content[0]?.text ?? "";
-
         const cleaned = raw.replace(/^```(?:json)?\n?/m, "").replace(/\n?```$/m, "").trim();
-        const result = JSON.parse(cleaned);
+
+        let result;
+        try {
+            result = JSON.parse(cleaned);
+        } catch {
+            console.error("[Ops Agent] Failed to parse JSON:", cleaned.slice(0, 300));
+            return NextResponse.json(
+                { error: `Ops agent returned malformed JSON. Raw: ${cleaned.slice(0, 200)}` },
+                { status: 502 }
+            );
+        }
 
         return NextResponse.json(result);
     } catch (err) {

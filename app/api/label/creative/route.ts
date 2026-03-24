@@ -92,7 +92,14 @@ export async function POST(req: NextRequest) {
     const data = await res.json();
     const raw = data.content[0]?.text ?? "";
     const cleaned = raw.replace(/^```(?:json)?\n?/m, "").replace(/\n?```$/m, "").trim();
-    const result = JSON.parse(cleaned);
+
+    let result;
+    try {
+      result = JSON.parse(cleaned);
+    } catch {
+      console.error("[Creative Agent] Failed to parse JSON:", cleaned.slice(0, 300));
+      return NextResponse.json({ error: `Creative agent returned malformed JSON. Raw: ${cleaned.slice(0, 200)}` }, { status: 502 });
+    }
 
     return NextResponse.json(result);
   } catch (err) {

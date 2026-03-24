@@ -133,7 +133,14 @@ Write copy that reflects the actual sonic identity and lyrical themes above — 
         const raw = data.content[0]?.text ?? "";
 
         const cleaned = raw.replace(/^```(?:json)?\n?/m, "").replace(/\n?```$/m, "").trim();
-        const result = JSON.parse(cleaned);
+
+        let result;
+        try {
+            result = JSON.parse(cleaned);
+        } catch {
+            console.error("[PR Agent] Failed to parse JSON:", cleaned.slice(0, 300));
+            return NextResponse.json({ error: `PR agent returned malformed JSON. Raw: ${cleaned.slice(0, 200)}` }, { status: 502 });
+        }
 
         return NextResponse.json(result);
     } catch (err) {

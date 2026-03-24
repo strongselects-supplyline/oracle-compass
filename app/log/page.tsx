@@ -175,6 +175,11 @@ export default function QuickLogPage() {
         }),
       });
       if (res.ok) {
+        // Sync to DailyTelemetry so Kill List telemetry panel stays coherent
+        const { getDailyTelemetry, saveDailyTelemetry } = await import("@/lib/db");
+        const tel = await getDailyTelemetry();
+        tel.doordash_earned += parseFloat(ddRevenue) || 0;
+        await saveDailyTelemetry(tel);
         setDdStatus("logged ✓");
         setTimeout(() => {
           setDdStatus("");

@@ -69,7 +69,14 @@ export async function POST(req: NextRequest) {
 
         // Strip markdown code fences if present
         const cleaned = raw.replace(/^```(?:json)?\n?/m, "").replace(/\n?```$/m, "").trim();
-        const result = JSON.parse(cleaned);
+
+        let result;
+        try {
+            result = JSON.parse(cleaned);
+        } catch {
+            console.error("[Guardian Agent] Failed to parse JSON:", cleaned.slice(0, 300));
+            return NextResponse.json({ error: `Guardian agent returned malformed JSON. Raw: ${cleaned.slice(0, 200)}` }, { status: 502 });
+        }
 
         return NextResponse.json(result);
     } catch (err) {

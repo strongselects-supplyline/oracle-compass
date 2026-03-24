@@ -78,7 +78,17 @@ The rollout action items and content concepts MUST reflect this specific emotion
         const raw = data.content[0]?.text ?? "";
 
         const cleaned = raw.replace(/^```(?:json)?\n?/m, "").replace(/\n?```$/m, "").trim();
-        const result = JSON.parse(cleaned);
+
+        let result;
+        try {
+            result = JSON.parse(cleaned);
+        } catch (parseErr) {
+            console.error("[Marketing Agent] Failed to parse JSON:", cleaned.slice(0, 300));
+            return NextResponse.json(
+                { error: `Marketing agent returned malformed JSON. Raw: ${cleaned.slice(0, 200)}` },
+                { status: 502 }
+            );
+        }
 
         return NextResponse.json(result);
     } catch (err) {
