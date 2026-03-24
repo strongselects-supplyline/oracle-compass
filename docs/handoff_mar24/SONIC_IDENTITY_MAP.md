@@ -1,14 +1,20 @@
-# ETHAN PAYTON — Master Sonic Identity Map
+# ETHAN PAYTON — Sonic Identity Framework (Living Document)
 ### ALL LOVE EP (4-Track) + Artist-Level Profile
-### Generated from Core Drive Builder: 5,912 total tracks analyzed
+### v4 — 4 of 4 EP tracks analyzed | 5,912 total tracks processed
+### Last updated: March 24, 2026
 
 ---
 
 ## HOW TO USE THIS DOCUMENT
 
-This document is the **central intelligence hub** for all marketing, Oracle decrees, and A&R decisions. Each track analysis feeds into the next dynamically — the overlapping artists across releases reveal Ethan Payton's true algorithmic identity, while the unique artists per track reveal each release's specific positioning.
+> [!IMPORTANT]
+> **This is a living framework, not a finished profile.** The true sonic identity crystallizes incrementally as each track is analyzed through the Core Drive pipeline. What you see below is the picture *so far* — built from 4 track analyses. Each new release analysis will expand, refine, or challenge the patterns identified here. Update this document after every new Core Drive Matrix run.
 
-**Per-track files** (campaign kits + raw matrices) sit alongside this document in `docs/handoff_mar24/`. Read them for exact ad copy, targeting clusters, and curator pitches. Read THIS document for the holistic artist strategy.
+**Per-track files** (campaign kits + raw matrices) sit alongside this document in `docs/handoff_mar24/`. Read them for exact ad copy, targeting clusters, and curator pitches. Read THIS document for emerging cross-release patterns and strategic observations.
+
+**The framework operates on two levels:**
+1. **Per-Track** — Each Campaign Kit is a standalone, actionable playbook for that specific release
+2. **Cross-Release** — This document tracks which patterns persist across tracks (those are the real identity anchors) vs. which are unique to one release (those define that track's specific lane)
 
 ---
 
