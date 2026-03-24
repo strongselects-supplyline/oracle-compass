@@ -2,7 +2,7 @@
 // Source of truth for the 43-Track, 14-Week Sprint
 // Last updated: March 22, 2026
 
-export type Phase = 'ALL_LOVE' | 'DELUXE' | 'CREAM' | 'FREAKSHOW';
+export type Phase = 'ALL_LOVE' | 'DELUXE' | 'CREAM' | 'FREAKSHOW' | 'BUFFER';
 export type TrackStatus = 'not_started' | 'in_progress' | 'done';
 
 export interface Track {
@@ -29,6 +29,7 @@ export const PHASE_CONFIG: Record<Phase, { label: string; badge: string; color: 
   DELUXE:    { label: 'DELUXE',    badge: 'DELUXE',    color: '#A07830' },
   CREAM:     { label: 'CREAM',     badge: 'CREAM',     color: '#9A9A9A' },
   FREAKSHOW: { label: 'FREAKSHOW', badge: 'FREAKSHOW', color: '#9A70C0' },
+  BUFFER:    { label: 'BUFFER',    badge: 'BUFFER',    color: '#666666' },
 };
 
 export const ALL_TRACKS: Track[] = [
@@ -95,8 +96,8 @@ export const SPRINT_WEEKS: SprintWeek[] = [
   },
   {
     wk: 2, dates: 'Mar 14–20', startDate: '2026-03-14', endDate: '2026-03-20',
-    phase: 'ALL_LOVE', phaseBadge: 'ALL LOVE', target: '7 tracks — close ALL LOVE', total: 11,
-    keyEvents: ['East Side Love upload deadline Mar 30', 'ALL LOVE front-load window closes Mar 28'],
+    phase: 'ALL_LOVE', phaseBadge: 'ALL LOVE', target: '4 tracks — close EP', total: 4,
+    keyEvents: ['East Side Love upload deadline Mar 30', 'ALL LOVE EP front-load window closes Mar 28'],
   },
   {
     wk: 3, dates: 'Mar 22–28', startDate: '2026-03-22', endDate: '2026-03-28',
@@ -161,7 +162,7 @@ export const SPRINT_WEEKS: SprintWeek[] = [
 ];
 
 export const SPRINT_RULES = [
-  { label: 'Session Length',   value: '6 hours / day' },
+  { label: 'Session Length',   value: '4 hours / day (10 AM – 2 PM)' },
   { label: 'Track Structure',  value: 'Dual-track per session' },
   { label: 'Efficiency Curve', value: '8% compounding per week' },
   { label: 'Track Floor',      value: '10 hrs minimum per track' },

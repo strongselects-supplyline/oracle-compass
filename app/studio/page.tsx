@@ -1,7 +1,7 @@
 "use client";
 
 import { useEffect, useState } from "react";
-import { getDynamicReleases, Release, ALBUM_RELEASE_DATE } from "@/lib/releases";
+import { getDynamicReleases, Release, EP_RELEASE_DATE } from "@/lib/releases";
 import { getStoreValue, setStoreValue } from "@/lib/db";
 import { PROJECTS, LOOSIES, TIMELINE_EVENTS, STATUSES, Project, Track, TrackStatus } from "@/lib/studioData";
 import { getWeekKey } from "@/lib/oracle";
@@ -182,7 +182,7 @@ export default function StudioPage() {
 
     useEffect(() => {
         const init = async () => {
-            const [y, m, d] = ALBUM_RELEASE_DATE.split("-").map(Number);
+            const [y, m, d] = EP_RELEASE_DATE.split("-").map(Number);
             const utcAlbum = Date.UTC(y, m - 1, d);
             const now = new Date();
             const utcNow = Date.UTC(now.getFullYear(), now.getMonth(), now.getDate());
@@ -212,16 +212,17 @@ export default function StudioPage() {
                         <div className={`text-3xl font-black leading-none ${albumDays <= 15 ? "text-red-500" : albumDays <= 30 ? "text-amber-500" : "text-white"}`}>
                             {albumDays}
                         </div>
-                        <div className="text-[9px] text-[#555] font-bold uppercase tracking-wider mt-0.5">days · ALL LOVE</div>
+                        <div className="text-[9px] text-[#555] font-bold uppercase tracking-wider mt-0.5">days · ALL LOVE EP</div>
                     </div>
                 </div>
 
                 {/* Timeline */}
                 <Timeline />
 
-                {/* Cycle Board — leaderboard position */}
-                <p className="text-[10px] font-black tracking-[0.2em] text-[#555] uppercase mb-3">Cycle Board</p>
+                <p className="text-[10px] font-black tracking-[0.2em] text-[#555] uppercase mb-3">EP Cycle Board</p>
                 <div className="card mb-6">
+                    <CycleRow title="SEE ME" storageKey="cycle_see_me" initialStatus="done" />
+                    <CycleRow title="EAST SIDE LOVE" storageKey="cycle_esl" initialStatus="recording" />
                     <CycleRow title="SWEET FRUSTRATION" storageKey="cycle_sf" initialStatus="mixing" />
                     <CycleRow title="LIKE I DID" storageKey="cycle_lid" initialStatus="mixing" />
                 </div>
@@ -282,7 +283,7 @@ export default function StudioPage() {
                 {/* Session log */}
                 <div className="card text-center py-5">
                     <div className="text-[10px] font-black tracking-widest text-[#666] uppercase mb-1.5">This Week&apos;s Sessions</div>
-                    <div className="text-2xl font-black mb-2">{sessions} / 4</div>
+                    <div className="text-2xl font-black mb-2">{sessions} / {new Date() <= new Date('2026-04-03') ? 6 : 4}</div>
                     <div className="text-[10px] text-[#555] font-bold">(Auto-counted from Log tab)</div>
                 </div>
 

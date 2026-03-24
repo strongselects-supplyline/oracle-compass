@@ -40,7 +40,7 @@ export default function GrindPage() {
                 <div className="text-center mb-10">
                     <div className="scoreboard text-amber-400 mb-2 animate-count-up">{streak}</div>
                     <div className="text-xs font-bold tracking-widest text-[#888] uppercase">
-                        Days Sober &middot; since Feb 28, 2026
+                        Days Sober &middot; since Mar 11, 2026
                     </div>
                 </div>
 
