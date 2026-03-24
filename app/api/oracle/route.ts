@@ -218,7 +218,16 @@ export async function POST(req: NextRequest) {
     const data = await res.json();
     const raw = data.content[0]?.text ?? "";
     const cleaned = raw.replace(/^```(?:json)?\n?/m, "").replace(/\n?```$/m, "").trim();
-    const decree: OracleDecree = JSON.parse(cleaned);
+
+    let decree: OracleDecree;
+    try {
+      decree = JSON.parse(cleaned);
+    } catch (parseErr) {
+      return NextResponse.json(
+        { error: `Oracle returned malformed JSON. Raw: ${cleaned.slice(0, 300)}` },
+        { status: 502 }
+      );
+    }
 
     // Realignment execution happens client-side in OracleTrigger.tsx
     // (Edge Runtime has no access to IndexedDB)

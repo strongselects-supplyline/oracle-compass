@@ -70,7 +70,7 @@ const placeholderTracks = (prefix: string, count: number): Track[] =>
 export const PROJECTS: Project[] = [
     {
         id: 'all-love', name: 'ALL LOVE', color: '#6ee7b7', emoji: '🔥',
-        role: 'Re-establish presence, lead project', trackCount: 11, targetDate: '2026-04-24',
+        role: 'EP — 4-track drop Apr 24 (7 album tracks parked post-EP)', trackCount: 4, targetDate: '2026-04-24',
         tracks: [
             { title: 'I Like Girls', bpm: 107, key: 'F# min', rbConf: 0.74, sexy: 0.70, chill: 0.44, romantic: 0.32, happy: 0.35, uplifting: 0.34, energetic: 0.23, isrc: '', status: 'unreleased', releaseDate: null, pitchDeadline: null, isLeadSingle: false, leadRank: null },
             { title: 'SEE ME', bpm: 120, key: 'B min', rbConf: 0.68, sexy: 0.69, chill: 0.45, romantic: 0.46, happy: 0.50, uplifting: 0.46, energetic: 0.25, isrc: '', status: 'single_live', releaseDate: '2026-03-13', pitchDeadline: '2026-03-06', isLeadSingle: true, leadRank: 1 },

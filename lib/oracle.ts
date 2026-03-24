@@ -192,6 +192,15 @@ export async function assembleContext(): Promise<OracleContext> {
   const yd = new Date();
   yd.setDate(yd.getDate() - 1);
   const yesterday = `${yd.getFullYear()}-${String(yd.getMonth() + 1).padStart(2, "0")}-${String(yd.getDate()).padStart(2, "0")}`;
+
+  const twoDaysAgo = new Date();
+  twoDaysAgo.setDate(twoDaysAgo.getDate() - 2);
+  const twoDaysAgoStr = `${twoDaysAgo.getFullYear()}-${String(twoDaysAgo.getMonth() + 1).padStart(2, "0")}-${String(twoDaysAgo.getDate()).padStart(2, "0")}`;
+
+  const threeDaysAgo = new Date();
+  threeDaysAgo.setDate(threeDaysAgo.getDate() - 3);
+  const threeDaysAgoStr = `${threeDaysAgo.getFullYear()}-${String(threeDaysAgo.getMonth() + 1).padStart(2, "0")}-${String(threeDaysAgo.getDate()).padStart(2, "0")}`;
+
   const weekKey = getWeekKey();
 
   const now = new Date();
@@ -203,8 +212,8 @@ export async function assembleContext(): Promise<OracleContext> {
   const [dailyLog, log1, log2, log3, releases, weekSessions, lastDecree, telemetry] = await Promise.all([
     getDailyLog(today),
     getDailyLog(yesterday),
-    getDailyLog(`${yd.getFullYear()}-${String(yd.getMonth() + 1).padStart(2, "0")}-${String(yd.getDate() - 1).padStart(2, "0")}`),
-    getDailyLog(`${yd.getFullYear()}-${String(yd.getMonth() + 1).padStart(2, "0")}-${String(yd.getDate() - 2).padStart(2, "0")}`),
+    getDailyLog(twoDaysAgoStr),
+    getDailyLog(threeDaysAgoStr),
     getDynamicReleases(),
     getSessionsForDateRange(toISO(start), toISO(end)),
     getStoreValue<OracleDecree>(`oracle_decree:${today}`),

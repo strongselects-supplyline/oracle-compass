@@ -46,6 +46,7 @@ export default function BottomNav() {
 
     // Flywheel order: SEE → INPUT → THINK → PLAN → CREATE → HUSTLE → SHIP
     const navs = [
+        { name: "Home", path: "/", icon: "🏠" },
         { name: "Kill", path: "/kill", icon: "🎯" },
         { name: "Log", path: "/log", icon: "⚡" },
         { name: "Oracle", path: "/oracle", icon: "🔮" },
@@ -53,6 +54,7 @@ export default function BottomNav() {
         { name: "Studio", path: "/studio", icon: "🎙️" },
         { name: "Engine", path: "/engine", icon: "⚙️" },
         { name: "Label", path: "/label", icon: "🏷️" },
+        { name: "Brain", path: "/brain", icon: "🧠" },
     ];
 
     return (

@@ -30,19 +30,13 @@ export type SundayChecklist = {
 
 // ── Default track list ──────────────────────────────────────────────────────
 
-// ALL LOVE album — 11 tracks (confirmed March 15, 2026)
+// ALL LOVE EP — 4 tracks (updated March 24, 2026)
+// Parked tracks (post-EP TBD): I LIKE GIRLS, WANT U BAD, GREEN LIGHT PATIENT, LUXURY, WORTH IT, JUST SAY SO, RECONNECT
 const ALL_LOVE_TRACKS: string[] = [
-  'I LIKE GIRLS',
   'SEE ME',
   'EAST SIDE LOVE',
-  'WANT U BAD',
-  'GREEN LIGHT PATIENT',
-  'LUXURY',
-  'WORTH IT',
   'SWEET FRUSTRATION',
   'LIKE I DID',
-  'JUST SAY SO',
-  'RECONNECT',
 ];
 
 export const ALL_TRACKS: string[] = [...ALL_LOVE_TRACKS];
@@ -71,7 +65,7 @@ function defaultSundayChecklist(weekKey: string): SundayChecklist {
 
 const TRACK_STATUS_KEY = 'planner_track_statuses';
 const TRACK_STATUS_VERSION_KEY = 'planner_track_version';
-const TRACK_DATA_VERSION = 2; // Bumped: corrected ALL LOVE tracklist Mar 15 2026
+const TRACK_DATA_VERSION = 3; // Bumped: EP model — 4 active tracks, 7 parked (Mar 24 2026)
 
 // ── Track production status ─────────────────────────────────────────────────
 

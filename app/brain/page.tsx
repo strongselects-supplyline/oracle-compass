@@ -8,7 +8,7 @@ import { PROJECTS } from "@/lib/studioData";
 
 function getPhasePercent(): number {
   const makeStart = Date.UTC(2026, 2, 1);
-  const pushEnd = Date.UTC(2026, 3, 28);
+  const pushEnd = Date.UTC(2026, 3, 24);
   const now = Date.UTC(new Date().getFullYear(), new Date().getMonth(), new Date().getDate());
   const total = pushEnd - makeStart;
   const elapsed = Math.max(0, Math.min(now - makeStart, total));
@@ -48,7 +48,7 @@ export default function BrainPage() {
           <h1 className="text-5xl font-black tracking-tight mb-2 leading-none">MAKE MODE</h1>
           <p className="text-[#666] text-sm leading-relaxed font-medium">
             Studio is primary. Everything else is Track 2.<br />
-            Mar 1 → Apr 10
+            Mar 1 → Apr 24
           </p>
         </div>
 
@@ -76,7 +76,7 @@ export default function BrainPage() {
             done={uploadedSingles >= 4}
             label={`4 singles uploaded (${uploadedSingles}/4)`}
           />
-          <ExitLine done={albumTracksReady >= 4} label={`4 album tracks recorded + mixed (${albumTracksReady}/4)`} />
+          <ExitLine done={albumTracksReady >= 4} label={`4 EP tracks uploaded (${albumTracksReady}/4)`} />
           <ExitLine done={apr3Done} label={`Apr 3 — pre-release milestone`} />
         </div>
 

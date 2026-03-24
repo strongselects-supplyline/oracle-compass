@@ -46,12 +46,7 @@ function getProtocolSteps(dayType: string): { tagline: string; steps: ProtocolSt
   return { tagline: "", steps: [] };
 }
 
-const CYCLE_TRACKS = [
-  { label: "RECONNECT", key: "cycle_reconnect" },
-  { label: "WANT U 2", key: "cycle_wantu2" },
-  { label: "WORTH IT", key: "cycle_worthit" },
-  { label: "JUST SAY SO", key: "cycle_justsayso" },
-];
+// Cycle tracks removed — all on ALL LOVE EP. Active track derived from releases.
 
 
 function HydrationSelector({ value, onChange }: { value: number | null, onChange: (v: number) => void }) {
@@ -107,9 +102,8 @@ export default function MorningMode() {
       setNextRelease(next);
       setDaysUntilRelease(Math.max(Math.ceil((new Date(next.releaseDate).getTime() - now.getTime()) / 86400000), 0));
 
-      for (const t of CYCLE_TRACKS) {
-        if (await getStoreValue<string>(t.key) === "recording") { setActiveTrack(t.label); break; }
-      }
+      // Active track = next upcoming release title
+      setActiveTrack(next?.title || "–");
 
       setDecree(await getStoreValue<OracleDecree>(`oracle_decree:${getTodayISO()}`));
     };
@@ -139,7 +133,14 @@ export default function MorningMode() {
         method: "POST", headers: { "Content-Type": "application/json" },
         body: JSON.stringify({ date: new Date().toISOString().split("T")[0], hours: parseFloat(ddHours), revenue: parseFloat(ddRevenue), gas: 0, tips: 0, miles: 0 })
       });
-      if (res.ok) { setDdStatus("V"); setTimeout(() => { setDdStatus(""); setDdHours(""); setDdRevenue(""); }, 2000); }
+      if (res.ok) {
+        // Sync to DailyTelemetry so Kill List telemetry panel stays coherent
+        const { getDailyTelemetry, saveDailyTelemetry } = await import("@/lib/db");
+        const tel = await getDailyTelemetry();
+        tel.doordash_earned += parseFloat(ddRevenue) || 0;
+        await saveDailyTelemetry(tel);
+        setDdStatus("V"); setTimeout(() => { setDdStatus(""); setDdHours(""); setDdRevenue(""); }, 2000);
+      }
       else setDdStatus("X");
     } catch { setDdStatus("X"); }
   };
