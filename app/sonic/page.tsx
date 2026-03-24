@@ -103,7 +103,7 @@ function SpectrumBar({ tracks }: { tracks: TrackProfile[] }) {
     );
 }
 
-function TrackCard({ track, index }: { track: TrackProfile; index: number }) {
+function TrackCard({ track }: { track: TrackProfile }) {
     const [expanded, setExpanded] = useState(false);
     const color = LANE_COLORS[track.lane] || "#6b7280";
 
@@ -254,7 +254,7 @@ export default function SonicPage() {
                         <p className="text-[10px] font-black tracking-[0.2em] text-[#555] uppercase mb-3">
                             Track Profiles ({perRelease.length})
                         </p>
-                        {perRelease.map((t, i) => <TrackCard key={i} track={t} index={i} />)}
+                        {perRelease.map((t, i) => <TrackCard key={i} track={t} />)}
                     </div>
                 )}
 
@@ -308,7 +308,7 @@ export default function SonicPage() {
                                 <p className="text-[10px] font-black tracking-[0.2em] text-[#555] uppercase mb-3">
                                     Track Profiles
                                 </p>
-                                {proj.tracks.map((t, i) => <TrackCard key={i} track={t} index={i} />)}
+                                {proj.tracks.map((t, i) => <TrackCard key={i} track={t} />)}
                             </div>
                         ))}
                     </div>
