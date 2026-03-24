@@ -13,6 +13,7 @@
 - **Label OS Routes:** All 6 agent routes (`marketing`, `anr`, `creative`, `pr`, `ops`, `guardian`) have JSON parse try/catch. `ops/route.ts` was rebuilt after it imported the deleted `registry.ts`.
 - **Content Factory:** `ContentFactoryAsset` types were scaffolded but lost in a commit — need re-addition when UI work begins.
 - **DoorDash Telemetry:** Both Home page and Log page sync to `DailyTelemetry`.
+- **System Deploys:** Vercel deployment is 100% green and live. Note: `tsconfig.json` enforces `strict: true`. The previous build blockers (now fixed) were caused by extra compliance fields in `releases.ts` not existing in `ContentDeliverables`, and dead imports to `registry.ts`.
 
 ### Vercel Env Vars (verified)
 | Variable | Status |
