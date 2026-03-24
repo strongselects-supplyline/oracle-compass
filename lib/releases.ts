@@ -111,19 +111,19 @@ export type Release = {
 const RELEASE_DEFAULTS: Release[] = [
   { 
     title: "SEE ME", uploadDate: "2026-03-09", releaseDate: "2026-03-13", status: "live", 
-    contentDeliverables: { ...DEFAULT_DELIVERABLES, ascap: "pending", mlc: "pending", soundExchange: "complete", songtrust: "pending", notes: "Live Mar 13. ISRC pending from Amuse — update then complete ASCAP/MLC/Songtrust." } 
+    contentDeliverables: { ...DEFAULT_DELIVERABLES, coreDriveComplete: true, campaignKitGenerated: true, ascap: "pending", mlc: "pending", soundExchange: "complete", songtrust: "pending", notes: "Live Mar 13. Core Drive: 2,713 tracks / 38 playlists. Campaign kit in docs/handoff_mar24/." } 
   },
   { 
     title: "East Side Love", uploadDate: "2026-03-30", releaseDate: "2026-04-03", status: "unreleased", 
-    contentDeliverables: { ...DEFAULT_DELIVERABLES, soundExchange: "complete" } 
+    contentDeliverables: { ...DEFAULT_DELIVERABLES, coreDriveComplete: true, campaignKitGenerated: true, soundExchange: "complete", notes: "Core Drive: 1,221 tracks / 20 playlists. Campaign kit in docs/handoff_mar24/." } 
   },
   { 
     title: "Sweet Frustration", uploadDate: "2026-04-06", releaseDate: "2026-04-10", status: "unreleased", 
-    contentDeliverables: { ...DEFAULT_DELIVERABLES, soundExchange: "complete" } 
+    contentDeliverables: { ...DEFAULT_DELIVERABLES, coreDriveComplete: true, campaignKitGenerated: true, soundExchange: "complete", notes: "Core Drive: 1,134 tracks / 20 playlists. KAYTRANADA lane. Campaign kit in docs/handoff_mar24/." } 
   },
   { 
     title: "Like I Did", uploadDate: "2026-04-13", releaseDate: "2026-04-17", status: "unreleased", 
-    contentDeliverables: { ...DEFAULT_DELIVERABLES, soundExchange: "complete" } 
+    contentDeliverables: { ...DEFAULT_DELIVERABLES, coreDriveComplete: true, campaignKitGenerated: true, soundExchange: "complete", notes: "Core Drive: via Worth It analysis (97 BPM F minor pocket). Campaign kit = worth_it_campaign_kit.md in docs/handoff_mar24/." } 
   },
   { 
     title: "ALL LOVE (EP)", uploadDate: "2026-04-14", releaseDate: "2026-04-24", status: "unreleased", 
@@ -133,7 +133,7 @@ const RELEASE_DEFAULTS: Release[] = [
 
 const RELEASES_KEY = "dynamic_releases";
 const RELEASES_VERSION_KEY = "releases_data_version";
-const RELEASE_DATA_VERSION = 17; // v17: Consolidated compliance tracking from registry.ts into releases
+const RELEASE_DATA_VERSION = 18; // v18: Core Drive + Campaign Kit marked complete for all 4 EP singles (5,912 tracks analyzed)
 
 // Read from IndexedDB, seeding defaults on first call or after version bump
 export async function getDynamicReleases(): Promise<Release[]> {

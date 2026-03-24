@@ -1,6 +1,7 @@
 import { NextResponse } from 'next/server';
 
-export const runtime = 'edge';
+// NOTE: Not using edge runtime — edge can return 405 on some Vercel deployments
+// for simple GET routes. Node runtime is fine for a diagnostic endpoint.
 
 export async function GET() {
   const hasAnthropic = !!process.env.ANTHROPIC_API_KEY;

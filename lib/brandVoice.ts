@@ -13,6 +13,7 @@ export const BRAND_VOICE = {
             "35mm grain — imperfect, intimate, real",
             "The sound of 3AM decisions you don't regret",
             "Slow-burn. The music finds you, you don't chase it.",
+            "Full-spectrum R&B — bedroom to dance floor in one EP",
         ],
         isNot: [
             "Hype culture. Never 'fire', 'banger', 'slaps'",
@@ -21,6 +22,7 @@ export const BRAND_VOICE = {
             "Meme-adjacent. The music is not content.",
             "Self-deprecating. Confidence is quiet, not absent.",
             "Over-polished mainstream R&B",
+            "One-lane. The data proves range — 90 to 124 BPM, TrapSoul to House-R&B.",
         ],
     },
 
@@ -42,6 +44,7 @@ export const BRAND_VOICE = {
             "this one took a long time to finish. it's done now.",
             "lake geneva, wi. 42° north.",
             "the ep is called ALL LOVE. april 24.",
+            "same artist. different universe.",
         ],
         offBrand: [
             "NEW SINGLE OUT NOW!!! 🔥🔥🔥",
@@ -68,12 +71,33 @@ export const BRAND_VOICE = {
             "Typography: minimal, weighted, tight tracking",
         ],
         references: {
-            // Core Drive Verified (March 24, 2026 — EAST SIDE LOVE pipeline)
-            sonic: ["Bryson Tiller", "Drake", "Chris Brown", "PARTYNEXTDOOR", "Tory Lanez", "6LACK", "The Weeknd", "Don Toliver"],
-            aesthetic: ["dvsn", "Snoh Aalegra", "Brent Faiyaz", "Giveon"], // Inherited/Cyanite
+            // Sonic Identity Map v4 — cross-release verified (March 24, 2026)
+            // Data: 5,912 tracks analyzed across 72+ playlists, 4/4 EP tracks processed
+            sonic: {
+                // Permanent anchors — appear across 3+ release analyses
+                permanentAnchors: ["Drake", "Bryson Tiller", "PARTYNEXTDOOR", "The Weeknd"],
+                // Strong recurring — appear across 2+ releases
+                recurring: ["Ty Dolla $ign", "Chris Brown", "Jhené Aiko", "Don Toliver", "Frank Ocean", "SZA", "6LACK"],
+                // Per-track primary anchors
+                perTrack: {
+                    "SEE ME": { anchors: ["6LACK", "Drake", "Bryson Tiller", "PARTYNEXTDOOR"], lane: "Dark TrapSoul / OVO", bpm: 120 },
+                    "East Side Love": { anchors: ["Bryson Tiller", "Drake", "Chris Brown", "PARTYNEXTDOOR"], lane: "Classic R&B Crossover", bpm: 98 },
+                    "Worth It": { anchors: ["Summer Walker", "T-Pain", "Ty Dolla $ign", "Eric Bellinger"], lane: "Modern TrapSoul Bounce", bpm: 97 },
+                    "Sweet Frustration": { anchors: ["KAYTRANADA", "GoldLink", "Syd", "Channel Tres"], lane: "House-R&B / Electronic Soul", bpm: 124 },
+                },
+            },
+            aesthetic: ["dvsn", "Snoh Aalegra", "Brent Faiyaz", "Giveon"],
             labelModel: ["OVO", "LVRN", "Dreamville"],
-            // Core Drive Positioning: "The independent R&B act operating with the late-night 
-            // atmospheric polish of OVO and the raw emotional grit of Snoh Aalegra."
+        },
+    },
+
+    // Flywheel strategy — verified March 24, 2026
+    flywheel: {
+        philosophy: "Top 2% Globally, Top 20% US. Exploit global positioning where conversions are cheap, let the algorithm promote upstream into saturated US pools.",
+        tiers: {
+            extendedDrive: "Niche underground + international audiences. Low CPC, high retention. Trains the algorithm.",
+            midTier: "Cyanite seed matches. Algorithm validates sonic profile here.",
+            coreDrive: "S-Tier pools (Drake, Bryson Tiller, KAYTRANADA). Algorithm graduates track here after engagement baseline established.",
         },
     },
 
@@ -83,6 +107,7 @@ export const BRAND_VOICE = {
         "Spotify editorial pitches always written in third person",
         "Merch never announced before design files exist",
         "No posting that breaks lowercase convention without explicit CEO approval",
+        "Never lead copy with another artist's name — lead with the feeling, let the sound prove the comparison",
     ],
 } as const;
 
