@@ -53,6 +53,7 @@ export default function BottomNav() {
         { name: "Oracle", path: "/oracle", icon: "🔮" },
         { name: "Plan", path: "/planner", icon: "📋" },
         { name: "Studio", path: "/studio", icon: "🎙️" },
+        { name: "Sonic", path: "/sonic", icon: "🎧" },
         { name: "Engine", path: "/engine", icon: "⚙️" },
         { name: "Label", path: "/label", icon: "🏷️" },
         { name: "Brain", path: "/brain", icon: "🧠" },
