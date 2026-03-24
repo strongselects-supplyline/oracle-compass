@@ -39,6 +39,17 @@ export type ContentDeliverables = {
   spotifyPitchSubmitted: boolean;
   musixmatchSubmitted: boolean;
   instrumentalRendered: boolean;
+  // Compliance / Registration
+  isrcPulled: boolean;
+  ascap: string;
+  ascapRegistered: boolean;
+  mlc: string;
+  mlcRegistered: boolean;
+  soundExchange: string;
+  songtrust: string;
+  songtrustRegistered: boolean;
+  copyrightOffice: string;
+  splitSheetSigned: boolean;
   // Marketing & Growth (Multiplier Engine)
   grooverPitchesSent: boolean;
   songtoolsCampaignLive: boolean;
@@ -70,23 +81,27 @@ const DEFAULT_DELIVERABLES: ContentDeliverables = {
   sourcePhotoLocked: false,
   captionsWritten: false,
   postsScheduled: false,
-  amuseUploaded: false,
-  preSaveLive: false,
-  streamingLinksVerified: false,
-  spotifyPitchSubmitted: false,
   canvasRendered: false,
   lyricsSynced: false,
   creditsWritten: false,
   folderOrganized: false,
   preSaveLinkActive: false,
-  ascap: "not_started",
-  mlc: "not_started",
-  soundExchange: "not_started",
-  songtrust: "not_started",
-  copyrightOffice: "not_started",
-  splitSheetSigned: false,
+  amuseUploaded: false,
+  preSaveLive: false,
+  streamingLinksVerified: false,
+  spotifyPitchSubmitted: false,
   musixmatchSubmitted: false,
   instrumentalRendered: false,
+  isrcPulled: false,
+  ascap: "not_started",
+  ascapRegistered: false,
+  mlc: "not_started",
+  mlcRegistered: false,
+  soundExchange: "not_started",
+  songtrust: "not_started",
+  songtrustRegistered: false,
+  copyrightOffice: "not_started",
+  splitSheetSigned: false,
   grooverPitchesSent: false,
   songtoolsCampaignLive: false,
   unhurdDataLogged: false,
