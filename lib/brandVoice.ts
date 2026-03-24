@@ -68,12 +68,12 @@ export const BRAND_VOICE = {
             "Typography: minimal, weighted, tight tracking",
         ],
         references: {
-            // Core Drive Verified (March 2026 — SEE ME pipeline)
-            sonic: ["6LACK", "Drake", "Bryson Tiller", "PARTYNEXTDOOR", "The Weeknd", "Jhené Aiko", "Summer Walker", "SZA"],
-            aesthetic: ["Daniel Caesar", "Frank Ocean", "Brent Faiyaz", "SZA"],
-            labelModel: ["pgLang", "XO", "OVO", "Dreamville"],
-            // Core Drive Positioning: "The independent artist who sounds like he belongs 
-            // on an OVO playlist but got there without the machine."
+            // Core Drive Verified (March 24, 2026 — EAST SIDE LOVE pipeline)
+            sonic: ["dvsn", "Giveon", "PARTYNEXTDOOR", "Snoh Aalegra", "The Weeknd", "Brent Faiyaz", "Daniel Caesar", "Summer Walker"],
+            aesthetic: ["dvsn", "Snoh Aalegra", "Brent Faiyaz", "Giveon"],
+            labelModel: ["OVO", "LVRN", "Dreamville"],
+            // Core Drive Positioning: "The independent R&B act operating with the late-night 
+            // atmospheric polish of OVO and the raw emotional grit of Snoh Aalegra."
         },
     },
 

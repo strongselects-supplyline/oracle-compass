@@ -1,0 +1,50 @@
+[
+  {
+    "artist": "dvsn",
+    "overlapCount": 4,
+    "representativeTracks": ["Too Deep", "Hallucinations", "A Muse", "Between Us"],
+    "playlistCount": 4
+  },
+  {
+    "artist": "Giveon",
+    "overlapCount": 3,
+    "representativeTracks": ["HEARTBREAK ANNIVERSARY", "Like I Want You", "Stuck On You"],
+    "playlistCount": 3
+  },
+  {
+    "artist": "PARTYNEXTDOOR",
+    "overlapCount": 3,
+    "representativeTracks": ["Freak In You", "Come and See Me", "Wus Good / Curious"],
+    "playlistCount": 3
+  },
+  {
+    "artist": "Snoh Aalegra",
+    "overlapCount": 3,
+    "representativeTracks": ["I Want You Around", "Fool For You", "Nothing Burns Like The Cold"],
+    "playlistCount": 3
+  },
+  {
+    "artist": "The Weeknd",
+    "overlapCount": 2,
+    "representativeTracks": ["Call Out My Name", "Earned It"],
+    "playlistCount": 2
+  },
+  {
+    "artist": "Brent Faiyaz",
+    "overlapCount": 2,
+    "representativeTracks": ["Rehab (Winter In Paris)", "Poison"],
+    "playlistCount": 2
+  },
+  {
+    "artist": "Daniel Caesar",
+    "overlapCount": 2,
+    "representativeTracks": ["Get You", "Best Part"],
+    "playlistCount": 2
+  },
+  {
+    "artist": "Summer Walker",
+    "overlapCount": 2,
+    "representativeTracks": ["Playing Games", "Session 32"],
+    "playlistCount": 2
+  }
+]

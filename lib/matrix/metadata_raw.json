@@ -1,0 +1,61 @@
+[
+  {
+    "url": "https://open.spotify.com/playlist/37i9dQZF1DX4SBhb3jqcjD",
+    "playlistId": "37i9dQZF1DX4SBhb3jqcjD",
+    "timestamp": "2026-03-24T12:00:00.000Z",
+    "name": "Are & Be",
+    "tracks": [
+      { "artist": "Snoh Aalegra", "name": "I Want You Around" },
+      { "artist": "dvsn", "name": "Too Deep" },
+      { "artist": "Giveon", "name": "HEARTBREAK ANNIVERSARY" },
+      { "artist": "Summer Walker", "name": "Playing Games" },
+      { "artist": "PARTYNEXTDOOR", "name": "Freak In You" },
+      { "artist": "Bryson Tiller", "name": "Exchange" },
+      { "artist": "6LACK", "name": "PRB" },
+      { "artist": "Daniel Caesar", "name": "Get You" }
+    ]
+  },
+  {
+    "url": "https://open.spotify.com/playlist/37i9dQZF1DWYmmr74INQcg",
+    "playlistId": "37i9dQZF1DWYmmr74INQcg",
+    "timestamp": "2026-03-24T12:00:00.000Z",
+    "name": "Late Night Vibes",
+    "tracks": [
+      { "artist": "The Weeknd", "name": "Call Out My Name" },
+      { "artist": "dvsn", "name": "Hallucinations" },
+      { "artist": "PARTYNEXTDOOR", "name": "Come and See Me" },
+      { "artist": "Giveon", "name": "Like I Want You" },
+      { "artist": "Majid Jordan", "name": "Waves of Blue" },
+      { "artist": "Chase Atlantic", "name": "Into It" },
+      { "artist": "Brent Faiyaz", "name": "Rehab (Winter In Paris)" }
+    ]
+  },
+  {
+    "url": "https://open.spotify.com/playlist/37i9dQZF1DXbSbnqxMTGx9",
+    "playlistId": "37i9dQZF1DXbSbnqxMTGx9",
+    "timestamp": "2026-03-24T12:00:00.000Z",
+    "name": "Chilled R&B",
+    "tracks": [
+      { "artist": "Sabrina Claudio", "name": "Belong to You" },
+      { "artist": "Snoh Aalegra", "name": "Fool For You" },
+      { "artist": "H.E.R.", "name": "Focus" },
+      { "artist": "Daniel Caesar", "name": "Best Part" },
+      { "artist": "dvsn", "name": "A Muse" },
+      { "artist": "Summer Walker", "name": "Session 32" }
+    ]
+  },
+  {
+    "url": "https://open.spotify.com/playlist/esl_custom_seed",
+    "playlistId": "esl_custom_seed",
+    "timestamp": "2026-03-24T12:00:00.000Z",
+    "name": "ESL Direct Sonic Neighbors",
+    "tracks": [
+      { "artist": "dvsn", "name": "Between Us" },
+      { "artist": "PARTYNEXTDOOR", "name": "Wus Good / Curious" },
+      { "artist": "Giveon", "name": "Stuck On You" },
+      { "artist": "Brent Faiyaz", "name": "Poison" },
+      { "artist": "Snoh Aalegra", "name": "Nothing Burns Like The Cold" },
+      { "artist": "The Weeknd", "name": "Earned It" }
+    ]
+  }
+]
