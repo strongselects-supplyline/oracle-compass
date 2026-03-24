@@ -212,7 +212,8 @@ export async function POST(req: NextRequest) {
 
     if (!res.ok) {
       const err = await res.text();
-      return NextResponse.json({ error: `Anthropic error: ${err}` }, { status: 502 });
+      console.error("[Oracle Engine] Anthropic API Error:", res.status, err);
+      return NextResponse.json({ error: `Anthropic API Error (Status ${res.status}): ${err}` }, { status: 502 });
     }
 
     const data = await res.json();
@@ -223,6 +224,7 @@ export async function POST(req: NextRequest) {
     try {
       decree = JSON.parse(cleaned);
     } catch (parseErr) {
+      console.error("[Oracle Engine] Failed to parse JSON decree:", cleaned);
       return NextResponse.json(
         { error: `Oracle returned malformed JSON. Raw: ${cleaned.slice(0, 300)}` },
         { status: 502 }

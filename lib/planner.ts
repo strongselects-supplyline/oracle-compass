@@ -7,6 +7,15 @@ import { getWeekKey } from '@/lib/oracle';
 
 // ── Types ───────────────────────────────────────────────────────────────────
 
+export type ContentFactoryAssetType = 'cf_reel' | 'cf_chop' | 'cf_longform' | 'ss_art' | 'ss_visualizer' | 'ss_video' | 'manual';
+
+export interface ContentFactoryAsset {
+  id: string;
+  trackName: string;
+  assetType: ContentFactoryAssetType;
+  status: 'pending' | 'in_progress' | 'done';
+}
+
 export type TrackPhase = 'not_started' | 'track' | 'mix' | 'master' | 'instrumental' | 'done';
 
 export type TrackProductionStatus = {

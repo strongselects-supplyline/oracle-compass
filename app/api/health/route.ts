@@ -1,52 +1,19 @@
-import { NextRequest, NextResponse } from 'next/server';
-import { upsertRow } from '@/lib/sheets';
+import { NextResponse } from 'next/server';
 
-export async function POST(req: NextRequest) {
-    try {
-        const {
-            date, pushups, squats, steps, sleepHours,
-            weight, protein, workout, mobility, vocal, notes,
-            fuelPre, fuelMid, fuelPost, hydration, dairyFlag,
-            conditioningType, conditioningMinutes
-        } = await req.json();
-        if (!date) return NextResponse.json({ error: 'Date required' }, { status: 400 });
+export const runtime = 'edge';
 
-        let score = 0;
-        if (workout) score++;
-        if (mobility) score++;
-        if (vocal) score++;
-        if (Number(sleepHours) >= 7) score++;
-        if (Number(steps) >= 8000) score++;
-        if (protein) score++;
-        if (fuelPre) score++;
-        if (fuelMid) score++;
-        if (fuelPost) score++;
+export async function GET() {
+  const hasAnthropic = !!process.env.ANTHROPIC_API_KEY;
+  const hasGoogleSheetId = !!process.env.GOOGLE_SHEET_ID;
+  const hasGoogleCredentials = !!process.env.GOOGLE_CREDENTIALS;
 
-        await upsertRow('HEALTH', 'Date', date, {
-            Date: date,
-            Weight: weight || '',
-            SleepHours: sleepHours || '',
-            Workout: workout ? 'Yes' : '',
-            Mobility: mobility ? 'Yes' : '',
-            Vocal: vocal ? 'Yes' : '',
-            Protein: protein ? 'Yes' : '',
-            Steps: steps || 0,
-            Pushups: pushups || 0,
-            Squats: squats || 0,
-            FuelPre: fuelPre ? 'Yes' : '',
-            FuelMid: fuelMid ? 'Yes' : '',
-            FuelPost: fuelPost ? 'Yes' : '',
-            Hydration: hydration || '',
-            DairyFlag: dairyFlag ? 'Yes' : '',
-            ConditioningType: conditioningType || '',
-            ConditioningMinutes: conditioningMinutes || '',
-            Score: score,
-            Notes: notes || '',
-        });
-
-        return NextResponse.json({ ok: true, score, date });
-    } catch (error) {
-        console.error('Health route error:', error);
-        return NextResponse.json({ error: (error as Error).message }, { status: 500 });
-    }
+  return NextResponse.json({
+    status: 'ok',
+    environment: {
+      anthropicKeySet: hasAnthropic,
+      googleSheetIdSet: hasGoogleSheetId,
+      googleCredentialsSet: hasGoogleCredentials,
+    },
+    message: 'Health check completed. Use this to verify Vercel environment variables without leaking secrets.'
+  }, { status: 200 });
 }
