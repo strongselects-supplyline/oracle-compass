@@ -69,8 +69,8 @@ export const BRAND_VOICE = {
         ],
         references: {
             // Core Drive Verified (March 24, 2026 — EAST SIDE LOVE pipeline)
-            sonic: ["dvsn", "Giveon", "PARTYNEXTDOOR", "Snoh Aalegra", "The Weeknd", "Brent Faiyaz", "Daniel Caesar", "Summer Walker"],
-            aesthetic: ["dvsn", "Snoh Aalegra", "Brent Faiyaz", "Giveon"],
+            sonic: ["Bryson Tiller", "Drake", "Chris Brown", "PARTYNEXTDOOR", "Tory Lanez", "6LACK", "The Weeknd", "Don Toliver"],
+            aesthetic: ["dvsn", "Snoh Aalegra", "Brent Faiyaz", "Giveon"], // Inherited/Cyanite
             labelModel: ["OVO", "LVRN", "Dreamville"],
             // Core Drive Positioning: "The independent R&B act operating with the late-night 
             // atmospheric polish of OVO and the raw emotional grit of Snoh Aalegra."
