@@ -21,8 +21,8 @@ Each track has its own sonic pocket, lane classification, and algorithmic anchor
 
 | Track | Project | Lane | Top Anchors | Double-Encode |
 |---|---|---|---|---|
-| **East Side Love** | ALL LOVE EP | Modern TrapSoul Bounce | Bryson Tiller, Drake, Chris Brown, PARTYNEXTDOOR | — |
-| **See Me** | ALL LOVE EP | Modern TrapSoul Bounce | 6LACK, Drake, Bryson Tiller, PARTYNEXTDOOR | 6LACK, Drake, Bryson Tiller, PARTYNEXTDOOR, Trippie Redd, Future, The Weeknd, Chris Brown, Jhené Aiko, Summer Walker, Post Malone, Don Toliver, H.E.R., SZA, Tory Lanez, XXXTENTACION, Juice WRLD, 21 Savage, Ty Dolla $ign, Swae Lee, Brent Faiyaz, J. Cole, Che Ecru, Kendrick Lamar, Wizkid, Rihanna, Trey Songz, Travis Scott, Gunna, Miguel, GIVĒON, Big Sean, PnB Rock, Rxseboy, SadBoyProlific, Internet Money, Lil Tjay, Young Thug, Jeremih, Tems, FRVRFRIDAY, Chase Shakur, Sonder, Popcaan, NO1-NOAH, Powfu, Promoting Sounds, Sarcastic Sounds, ivri, Russ, Kanye West, Jaden, Metro Boomin, Pink Sweat$, Kina, Phora, Shiloh Dynasty, Lil Tecca, mike., Lil Baby, A Boogie Wit da Hoodie, Tinashe, Roddy Ricch, RealestK, Chaitha, The-Dream, Kaash Paige, Yoko Gold, SAFE, Isaiah Falls, Halsey, Jacquees, Frank Ocean, R. Kelly, sadeyes, Thomas Reid, Kam Michael, sleep.ing, the bootleg boy, Jomie, Uche, Lithe, Trippy Ja, Page 1, HRTLSS, Alina Baraz, Rod Wave, Joyner Lucas, Lil Uzi Vert, timmies, Polo G, Yatta Bandz, Scorey, YG, 24kGoldn, Chase Atlantic |
+| **East Side Love** | ALL LOVE EP | Dark TrapSoul / OVO | Bryson Tiller, Drake, Chris Brown, PARTYNEXTDOOR | — |
+| **See Me** | ALL LOVE EP | Dark TrapSoul / OVO | 6LACK, Drake, Bryson Tiller, PARTYNEXTDOOR | 6LACK, Drake, Bryson Tiller, PARTYNEXTDOOR, Trippie Redd, Future, The Weeknd, Chris Brown, Jhené Aiko, Summer Walker, Post Malone, Don Toliver, H.E.R., SZA, Tory Lanez, XXXTENTACION, Juice WRLD, 21 Savage, Ty Dolla $ign, Swae Lee, Brent Faiyaz, J. Cole, Che Ecru, Kendrick Lamar, Wizkid, Rihanna, Trey Songz, Travis Scott, Gunna, Miguel, GIVĒON, Big Sean, PnB Rock, Rxseboy, SadBoyProlific, Internet Money, Lil Tjay, Young Thug, Jeremih, Tems, FRVRFRIDAY, Chase Shakur, Sonder, Popcaan, NO1-NOAH, Powfu, Promoting Sounds, Sarcastic Sounds, ivri, Russ, Kanye West, Jaden, Metro Boomin, Pink Sweat$, Kina, Phora, Shiloh Dynasty, Lil Tecca, mike., Lil Baby, A Boogie Wit da Hoodie, Tinashe, Roddy Ricch, RealestK, Chaitha, The-Dream, Kaash Paige, Yoko Gold, SAFE, Isaiah Falls, Halsey, Jacquees, Frank Ocean, R. Kelly, sadeyes, Thomas Reid, Kam Michael, sleep.ing, the bootleg boy, Jomie, Uche, Lithe, Trippy Ja, Page 1, HRTLSS, Alina Baraz, Rod Wave, Joyner Lucas, Lil Uzi Vert, timmies, Polo G, Yatta Bandz, Scorey, YG, 24kGoldn, Chase Atlantic |
 | **Sweet Frustration** | ALL LOVE EP | House-R&B / Electronic Soul | Drake, Buddy, OVEOUS, KAYTRANADA | Drake, Buddy, OVEOUS |
 | **Worth It** | ALL LOVE EP | Modern TrapSoul Bounce | Summer Walker, T-Pain, Eric Bellinger, NO1-NOAH | Summer Walker, T-Pain, Eric Bellinger, NO1-NOAH, T MULLA, Omarion |
 
@@ -108,7 +108,7 @@ Each track has its own sonic pocket, lane classification, and algorithmic anchor
 ```
 MOODY ◄──────────────────────────────────────────────► KINETIC
 EAST SIDE LOVE     SEE ME     WORTH IT     SWEET FRUSTRATION
-(Modern TrapSoul Bounce)  (Modern TrapSoul Bounce)  (Modern TrapSoul Bounce)  (House-R&B / Electronic Soul)
+(Dark TrapSoul / OVO)  (Dark TrapSoul / OVO)  (Modern TrapSoul Bounce)  (House-R&B / Electronic Soul)
 ```
 
 ---
