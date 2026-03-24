@@ -3,60 +3,21 @@
 import { useState, useEffect, useCallback } from 'react';
 import {
   ALL_TRACKS,
+  getTrackStatuses,
+  updateTrackPhase,
+  TrackProductionStatus,
+  TrackPhase,
+  PHASE_ORDER,
+  nextPhase,
+  Phase,
+  SprintWeek,
   SPRINT_WEEKS,
   SPRINT_RULES,
   PHASE_CONFIG,
-  TOTAL_TRACKS,
-  IDB_DB,
-  IDB_STORE,
-  IDB_KEY,
-  type Phase,
-  type TrackStatus,
-} from '@/lib/marathon-data';
+  TOTAL_TRACKS
+} from '@/lib/planner';
 
-// ── IndexedDB helpers ────────────────────────────────────────────────────────
-
-function openDB(): Promise<IDBDatabase> {
-  return new Promise((resolve, reject) => {
-    const req = indexedDB.open(IDB_DB, 1);
-    req.onupgradeneeded = (e) => {
-      const db = (e.target as IDBOpenDBRequest).result;
-      if (!db.objectStoreNames.contains(IDB_STORE)) db.createObjectStore(IDB_STORE);
-    };
-    req.onsuccess = (e) => resolve((e.target as IDBOpenDBRequest).result);
-    req.onerror = () => reject(req.error);
-  });
-}
-
-async function loadStatuses(): Promise<Record<string, TrackStatus>> {
-  try {
-    const db = await openDB();
-    return new Promise((resolve) => {
-      const tx = db.transaction(IDB_STORE, 'readonly');
-      const req = tx.objectStore(IDB_STORE).get(IDB_KEY);
-      req.onsuccess = () => resolve(req.result || {});
-      req.onerror = () => resolve({});
-    });
-  } catch { return {}; }
-}
-
-async function saveStatuses(statuses: Record<string, TrackStatus>): Promise<void> {
-  try {
-    const db = await openDB();
-    return new Promise((resolve) => {
-      const tx = db.transaction(IDB_STORE, 'readwrite');
-      tx.objectStore(IDB_STORE).put(statuses, IDB_KEY);
-      tx.oncomplete = () => resolve();
-      tx.onerror = () => resolve();
-    });
-  } catch { /* silent */ }
-}
-
-// ── Constants ────────────────────────────────────────────────────────────────
-
-const STATUS_CYCLE: TrackStatus[] = ['not_started', 'in_progress', 'done'];
-const PHASES: Phase[] = ['ALL_LOVE', 'DELUXE', 'CREAM', 'FREAKSHOW'];
-
+// For the UI rendering, we still need the generic marathon phase styles
 const PHASE_BADGE_STYLE: Record<string, string> = {
   'ALL LOVE':      'bg-[#C8952A] text-black',
   'DELUXE':        'bg-[#2A1E08] text-[#C8952A] border border-[#C8952A55]',
@@ -75,50 +36,36 @@ function getCurrentWeekIndex(): number {
   return SPRINT_WEEKS.findIndex(w => today >= w.startDate && today <= w.endDate);
 }
 
-// ── Component ────────────────────────────────────────────────────────────────
-
 export default function PlannerPage() {
-  const [statuses, setStatuses]         = useState<Record<string, TrackStatus>>({});
+  const [statuses, setStatuses]         = useState<TrackProductionStatus[]>([]);
   const [loaded, setLoaded]             = useState(false);
-  const [expandedPhases, setExpandedPhases] = useState<Set<Phase>>(new Set(['ALL_LOVE']));
   const [showMatrix, setShowMatrix]     = useState(false);
   const [showRules, setShowRules]       = useState(false);
 
   useEffect(() => {
-    loadStatuses().then(s => { setStatuses(s); setLoaded(true); });
+    getTrackStatuses().then(s => { setStatuses(s); setLoaded(true); });
   }, []);
 
-  const cycleStatus = useCallback((trackId: string) => {
+  const cycleStatus = useCallback((trackName: string) => {
     setStatuses(prev => {
-      const cur = prev[trackId] || 'not_started';
-      const next = STATUS_CYCLE[(STATUS_CYCLE.indexOf(cur) + 1) % STATUS_CYCLE.length];
-      const updated = { ...prev, [trackId]: next };
-      saveStatuses(updated);
-      return updated;
+      const t = prev.find(p => p.name === trackName);
+      if (!t) return prev;
+      
+      const updatedPhase = nextPhase(t.phase);
+      const nextArr = prev.map(p => p.name === trackName ? { ...p, phase: updatedPhase } : p);
+      
+      // Fire and forget IO
+      updateTrackPhase(trackName, updatedPhase);
+      
+      return nextArr;
     });
   }, []);
-
-  const togglePhase = (phase: Phase) =>
-    setExpandedPhases(prev => {
-      const n = new Set(prev);
-      n.has(phase) ? n.delete(phase) : n.add(phase);
-      return n;
-    });
 
   // ── Derived stats ──
-  const doneCount = Object.values(statuses).filter(s => s === 'done').length;
-  const inProgCount = Object.values(statuses).filter(s => s === 'in_progress').length;
-  const pct = Math.round((doneCount / TOTAL_TRACKS) * 100);
-
-  const phaseStats = PHASES.map(phase => {
-    const tracks = ALL_TRACKS.filter(t => t.phase === phase);
-    return {
-      phase,
-      total: tracks.length,
-      done: tracks.filter(t => statuses[t.id] === 'done').length,
-      inProg: tracks.filter(t => statuses[t.id] === 'in_progress').length,
-    };
-  });
+  const doneCount = statuses.filter(s => s.phase === 'done').length;
+  const inProgCount = statuses.filter(s => s.phase !== 'not_started' && s.phase !== 'done').length;
+  const totalCount = statuses.length;
+  const pct = Math.round((doneCount / (totalCount || 1)) * 100);
 
   const currentWkIdx = getCurrentWeekIndex();
   const currentWeek = currentWkIdx >= 0 ? SPRINT_WEEKS[currentWkIdx] : null;
@@ -126,7 +73,7 @@ export default function PlannerPage() {
   if (!loaded) {
     return (
       <div className="min-h-screen bg-[#0A0A0A] flex items-center justify-center">
-        <p className="text-[#333] text-[10px] tracking-[0.3em]">LOADING MARATHON...</p>
+        <p className="text-[#333] text-[10px] tracking-[0.3em]">LOADING SPRINT DATA...</p>
       </div>
     );
   }
@@ -136,13 +83,13 @@ export default function PlannerPage() {
 
       {/* ── HEADER + OVERALL PROGRESS ── */}
       <div className="px-5 pt-8 pb-5 border-b border-[#161616]">
-        <p className="text-[8px] font-black tracking-[0.3em] text-[#C8952A] mb-1">14-WEEK MARATHON TRACKER</p>
-        <h1 className="text-[22px] font-black tracking-tight text-white mb-5">PAST.EL NOIR SPRINT</h1>
+        <p className="text-[8px] font-black tracking-[0.3em] text-[#C8952A] mb-1">ALL LOVE SPRINT TRACKER</p>
+        <h1 className="text-[22px] font-black tracking-tight text-white mb-5">STUDIO SPRINT</h1>
 
         {/* Overall bar */}
         <div className="mb-1.5 flex justify-between">
           <span className="text-[9px] font-black tracking-widest text-[#444]">OVERALL</span>
-          <span className="text-[9px] font-black text-[#C8952A]">{doneCount} / {TOTAL_TRACKS} TRACKS</span>
+          <span className="text-[9px] font-black text-[#C8952A]">{doneCount} / {totalCount} TRACKS</span>
         </div>
         <div className="h-[3px] bg-[#1A1A1A] rounded-full overflow-hidden mb-2">
           <div
@@ -158,9 +105,13 @@ export default function PlannerPage() {
 
         {/* Phase bars */}
         <div className="grid grid-cols-4 gap-3 mt-5">
-          {phaseStats.map(({ phase, total, done }) => {
-            const cfg = PHASE_CONFIG[phase];
-            const p = Math.round((done / total) * 100);
+          {PHASE_ORDER.map((phase) => {
+            const cfg = PHASE_CONFIG[phase as Phase];
+            if (!cfg) return null;
+            
+            const total = 1; // Assuming 1 target for EP phases, to simplify for now, since we only have 4 active tracks.
+            const done = statuses.filter(s => s.phase === 'done').length;
+            const p = Math.round((done / 4) * 100);
             return (
               <div key={phase}>
                 <p className="text-[7px] font-black tracking-widest mb-1.5" style={{ color: cfg.color }}>
@@ -172,7 +123,7 @@ export default function PlannerPage() {
                     style={{ width: `${p}%`, backgroundColor: cfg.color }}
                   />
                 </div>
-                <p className="text-[8px] mt-1" style={{ color: cfg.color }}>{done}/{total}</p>
+                <p className="text-[8px] mt-1" style={{ color: cfg.color }}>{done}/4</p>
               </div>
             );
           })}
@@ -226,79 +177,50 @@ export default function PlannerPage() {
       {/* ── TRACK INVENTORY ── */}
       <div className="px-4 mt-7">
         <p className="text-[9px] font-black tracking-widest text-[#444] mb-1">TRACK INVENTORY</p>
-        <p className="text-[9px] text-[#333] mb-4">Tap any track to cycle: ○ → ◐ → ●</p>
+        <p className="text-[9px] text-[#333] mb-4">Tap any track to cycle phase: TRK → MIX → MAS → INST → DONE</p>
 
-        {PHASES.map(phase => {
-          const cfg = PHASE_CONFIG[phase];
-          const tracks = ALL_TRACKS.filter(t => t.phase === phase);
-          const stats = phaseStats.find(s => s.phase === phase)!;
-          const isOpen = expandedPhases.has(phase);
+        <div className="mb-2.5 rounded-2xl border border-[#161616] overflow-hidden">
+          <div className="divide-y divide-[#0F0F0F]">
+            {statuses.map(track => {
+              const isDone = track.phase === 'done';
+              const isNotStarted = track.phase === 'not_started';
+              const isActive = !isDone && !isNotStarted;
 
-          return (
-            <div key={phase} className="mb-2.5 rounded-2xl border border-[#161616] overflow-hidden">
-              {/* Phase header */}
-              <button
-                onClick={() => togglePhase(phase)}
-                className="w-full flex items-center justify-between px-4 py-3 bg-[#0E0E0E] active:bg-[#141414]"
-              >
-                <div className="flex items-center gap-3">
-                  <span
-                    className="text-[8px] font-black px-2 py-0.5 rounded-md"
-                    style={{ backgroundColor: `${cfg.color}18`, color: cfg.color, border: `1px solid ${cfg.color}35` }}
+              return (
+                <button
+                  key={track.name}
+                  onClick={() => cycleStatus(track.name)}
+                  className="w-full flex items-center justify-between px-4 py-4 hover:bg-[#111] active:bg-[#151515] transition-colors text-left"
+                >
+                  <div className="flex items-center gap-3">
+                    <span
+                      className="text-[16px] flex-shrink-0 leading-none"
+                      style={{ color: isDone ? '#C8952A' : isActive ? '#C8952A' : '#2A2A2A' }}
+                    >
+                      {isDone ? '●' : isActive ? '◐' : '○'}
+                    </span>
+                    <span
+                      className={`text-[12px] ${
+                        isDone ? 'text-[#3A3A3A] line-through' : 'text-white'
+                      }`}
+                    >
+                      {track.name}
+                    </span>
+                  </div>
+                  
+                  {/* Phase Badge */}
+                  <span className={`text-[8px] font-black tracking-widest px-2 py-1 rounded 
+                    ${isNotStarted ? 'bg-[#111] text-[#333]' : 
+                      isDone ? 'bg-[#1A1A1A] text-[#C8952A]' : 
+                      'bg-[#2A1E08] text-[#C8952A] border border-[#C8952A55]'}`}
                   >
-                    {cfg.badge}
+                    {track.phase.toUpperCase().replace('_', ' ')}
                   </span>
-                  <span className="text-[10px] text-[#555]">
-                    {stats.done}/{stats.total}
-                    {stats.inProg > 0 && (
-                      <span className="text-[#C8952A] ml-2">{stats.inProg} active</span>
-                    )}
-                  </span>
-                </div>
-                <span className="text-[10px] text-[#333]">{isOpen ? '▲' : '▼'}</span>
-              </button>
-
-              {/* Track list */}
-              {isOpen && (
-                <div className="divide-y divide-[#0F0F0F]">
-                  {tracks.map(track => {
-                    const status = statuses[track.id] || 'not_started';
-                    const isDone = status === 'done';
-                    const isActive = status === 'in_progress';
-
-                    return (
-                      <button
-                        key={track.id}
-                        onClick={() => cycleStatus(track.id)}
-                        className="w-full flex items-center gap-3 px-4 py-3 hover:bg-[#111] active:bg-[#151515] transition-colors text-left"
-                      >
-                        <span
-                          className="text-[16px] flex-shrink-0 leading-none"
-                          style={{ color: isDone ? cfg.color : isActive ? '#C8952A' : '#2A2A2A' }}
-                        >
-                          {isDone ? '●' : isActive ? '◐' : '○'}
-                        </span>
-                        <span
-                          className={`text-[12px] flex-1 ${
-                            isDone ? 'text-[#3A3A3A] line-through' : 'text-white'
-                          }`}
-                        >
-                          {track.name}
-                        </span>
-                        {isActive && (
-                          <span className="text-[7px] font-black tracking-widest text-[#C8952A]">ACTIVE</span>
-                        )}
-                        {isDone && (
-                          <span className="text-[7px] font-black tracking-widest" style={{ color: cfg.color }}>DONE</span>
-                        )}
-                      </button>
-                    );
-                  })}
-                </div>
-              )}
-            </div>
-          );
-        })}
+                </button>
+              );
+            })}
+          </div>
+        </div>
       </div>
 
       {/* ── FULL SPRINT PLAN MATRIX ── */}

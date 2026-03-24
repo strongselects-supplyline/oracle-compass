@@ -27,16 +27,16 @@ export type ContentDeliverables = {
   sourcePhotoLocked: boolean;
   captionsWritten: boolean;
   postsScheduled: boolean;
+  canvasRendered: boolean;
+  lyricsSynced: boolean;
+  creditsWritten: boolean;
+  folderOrganized: boolean;
+  preSaveLinkActive: boolean;
   // Distribution
   amuseUploaded: boolean;
   preSaveLive: boolean;
   streamingLinksVerified: boolean;
   spotifyPitchSubmitted: boolean;
-  // Registrations (per-track)
-  isrcPulled: boolean;
-  ascapRegistered: boolean;
-  mlcRegistered: boolean;
-  songtrustRegistered: boolean;
   musixmatchSubmitted: boolean;
   instrumentalRendered: boolean;
   // Marketing & Growth (Multiplier Engine)
@@ -74,10 +74,17 @@ const DEFAULT_DELIVERABLES: ContentDeliverables = {
   preSaveLive: false,
   streamingLinksVerified: false,
   spotifyPitchSubmitted: false,
-  isrcPulled: false,
-  ascapRegistered: false,
-  mlcRegistered: false,
-  songtrustRegistered: false,
+  canvasRendered: false,
+  lyricsSynced: false,
+  creditsWritten: false,
+  folderOrganized: false,
+  preSaveLinkActive: false,
+  ascap: "not_started",
+  mlc: "not_started",
+  soundExchange: "not_started",
+  songtrust: "not_started",
+  copyrightOffice: "not_started",
+  splitSheetSigned: false,
   musixmatchSubmitted: false,
   instrumentalRendered: false,
   grooverPitchesSent: false,
@@ -102,16 +109,31 @@ export type Release = {
 // EP tracks only: SEE ME, East Side Love, Sweet Frustration, Like I Did, ALL LOVE (EP)
 // 7 parked album tracks are NOT in this list — they do not drive Kill List tasks
 const RELEASE_DEFAULTS: Release[] = [
-  { title: "SEE ME",            uploadDate: "2026-03-09", releaseDate: "2026-03-13", status: "live",       contentDeliverables: { ...DEFAULT_DELIVERABLES } },
-  { title: "East Side Love",    uploadDate: "2026-03-30", releaseDate: "2026-04-03", status: "unreleased", contentDeliverables: { ...DEFAULT_DELIVERABLES } },
-  { title: "Sweet Frustration", uploadDate: "2026-04-06", releaseDate: "2026-04-10", status: "unreleased", contentDeliverables: { ...DEFAULT_DELIVERABLES } },
-  { title: "Like I Did",        uploadDate: "2026-04-13", releaseDate: "2026-04-17", status: "unreleased", contentDeliverables: { ...DEFAULT_DELIVERABLES } },
-  { title: "ALL LOVE (EP)",     uploadDate: "2026-04-14", releaseDate: "2026-04-24", status: "unreleased", contentDeliverables: { ...DEFAULT_DELIVERABLES } },
+  { 
+    title: "SEE ME", uploadDate: "2026-03-09", releaseDate: "2026-03-13", status: "live", 
+    contentDeliverables: { ...DEFAULT_DELIVERABLES, ascap: "pending", mlc: "pending", soundExchange: "complete", songtrust: "pending", notes: "Live Mar 13. ISRC pending from Amuse — update then complete ASCAP/MLC/Songtrust." } 
+  },
+  { 
+    title: "East Side Love", uploadDate: "2026-03-30", releaseDate: "2026-04-03", status: "unreleased", 
+    contentDeliverables: { ...DEFAULT_DELIVERABLES, soundExchange: "complete" } 
+  },
+  { 
+    title: "Sweet Frustration", uploadDate: "2026-04-06", releaseDate: "2026-04-10", status: "unreleased", 
+    contentDeliverables: { ...DEFAULT_DELIVERABLES, soundExchange: "complete" } 
+  },
+  { 
+    title: "Like I Did", uploadDate: "2026-04-13", releaseDate: "2026-04-17", status: "unreleased", 
+    contentDeliverables: { ...DEFAULT_DELIVERABLES, soundExchange: "complete" } 
+  },
+  { 
+    title: "ALL LOVE (EP)", uploadDate: "2026-04-14", releaseDate: "2026-04-24", status: "unreleased", 
+    contentDeliverables: { ...DEFAULT_DELIVERABLES, notes: "EP entity. Upload to Amuse by Apr 14. Drops Apr 24. Needs: EP cover art, track sequencing, UPC, EP-level Spotify pitch." } 
+  },
 ];
 
 const RELEASES_KEY = "dynamic_releases";
 const RELEASES_VERSION_KEY = "releases_data_version";
-const RELEASE_DATA_VERSION = 16; // v16: Core Drive pipeline fields added (coreDriveComplete, campaignKitGenerated)
+const RELEASE_DATA_VERSION = 17; // v17: Consolidated compliance tracking from registry.ts into releases
 
 // Read from IndexedDB, seeding defaults on first call or after version bump
 export async function getDynamicReleases(): Promise<Release[]> {
