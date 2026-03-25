@@ -178,11 +178,15 @@ html, body {
   border-top: 1px solid var(--border);
   display: flex;
   align-items: flex-end;
-  justify-content: space-around;
   padding-bottom: max(env(safe-area-inset-bottom, 8px), 8px);
   padding-top: 10px;
   z-index: 50;
+  overflow-x: auto;
+  -ms-overflow-style: none;
+  scrollbar-width: none;
+  gap: 0;
 }
+.bottom-nav::-webkit-scrollbar { display: none; }
 
 .nav-item {
   display: flex;

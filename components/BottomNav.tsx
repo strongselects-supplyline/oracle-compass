@@ -21,48 +21,43 @@ export default function BottomNav() {
 
     useEffect(() => {
         setBizDay(isBizDay(getDayType()));
-        // Show dot on Oracle tab if there's a RED/AMBER decree today
         getStoreValue<OracleDecree>(`oracle_decree:${getTodayISO()}`).then(d => {
             if (d?.severity === "RED" || d?.severity === "AMBER") {
                 setOracleSeverity(d.severity);
             }
         });
-        // Show dot on Label tab if there are unreviewed items in Copy Vault
         getStoreValue<number>("label_vault_unreviewed").then(n => {
             setUnreviewedCopy(n ? n > 0 : false);
         });
-        // Show amber dot on Plan tab if it's Sunday and checklist is incomplete
         if (new Date().getDay() === 0) {
             getSundayChecklist(getWeekKey()).then(c => {
                 setPlannerDot(!isSundayChecklistComplete(c));
             });
         }
-        // Kill list badge — RED tasks remaining
         getKillStats().then(s => {
             setKillRed(s.redRemaining > 0);
             setKillCount(s.total - s.cleared);
         });
     }, []);
 
-    // Flywheel order: SEE → INPUT → THINK → PLAN → CREATE → HUSTLE → SHIP
+    // 10 tabs — SONIC merged into Studio page (accessible at /sonic via link in Studio)
     const navs = [
-        { name: "Home", path: "/", icon: "🏠" },
-        { name: "Kill", path: "/kill", icon: "🎯" },
-        { name: "Log", path: "/log", icon: "⚡" },
-        { name: "Grind", path: "/grind", icon: "💪" },
-        { name: "Oracle", path: "/oracle", icon: "🔮" },
-        { name: "Plan", path: "/planner", icon: "📋" },
-        { name: "Studio", path: "/studio", icon: "🎙️" },
-        { name: "Sonic", path: "/sonic", icon: "🎧" },
-        { name: "Engine", path: "/engine", icon: "⚙️" },
-        { name: "Label", path: "/label", icon: "🏷️" },
-        { name: "Brain", path: "/brain", icon: "🧠" },
+        { name: "Home",   path: "/",         icon: "\uD83C\uDFE0" },
+        { name: "Kill",   path: "/kill",     icon: "\uD83C\uDFAF" },
+        { name: "Log",    path: "/log",      icon: "\u26A1" },
+        { name: "Grind",  path: "/grind",    icon: "\uD83D\uDCAA" },
+        { name: "Oracle", path: "/oracle",   icon: "\uD83D\uDD2E" },
+        { name: "Plan",   path: "/planner",  icon: "\uD83D\uDCCB" },
+        { name: "Studio", path: "/studio",   icon: "\uD83C\uDFA4" },
+        { name: "Engine", path: "/engine",   icon: "\u2699\uFE0F" },
+        { name: "Label",  path: "/label",    icon: "\uD83C\uDFF7\uFE0F" },
+        { name: "Brain",  path: "/brain",    icon: "\uD83E\uDDE0" },
     ];
 
     return (
         <nav className="bottom-nav">
             {navs.map((n) => {
-                const active = pathname === n.path;
+                const active = pathname === n.path || (n.name === "Studio" && pathname === "/sonic");
                 const dotColor =
                     n.name === "Plan" && plannerDot ? "bg-amber-500" :
                         n.name === "Engine" && bizDay ? "bg-amber-500" :

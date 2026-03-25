@@ -280,6 +280,15 @@ export default function StudioPage() {
 
 
 
+                {/* Sonic Identity — link to dedicated page */}
+                <a href="/sonic" className="card mb-6 flex items-center justify-between p-4 border border-[#252525] hover:border-amber-500/30 transition-colors active:scale-[0.98]">
+                    <div>
+                        <p className="text-xs font-black tracking-wider uppercase text-amber-500">🎧 Sonic Identity</p>
+                        <p className="text-[10px] text-[#555] mt-0.5">v4 · 5,912 tracks analyzed · 4/4 EP singles</p>
+                    </div>
+                    <span className="text-[#555] text-sm">›</span>
+                </a>
+
                 {/* Session log */}
                 <div className="card text-center py-5">
                     <div className="text-[10px] font-black tracking-widest text-[#666] uppercase mb-1.5">This Week&apos;s Sessions</div>
