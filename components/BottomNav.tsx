@@ -49,9 +49,10 @@ export default function BottomNav() {
         { name: "Oracle", path: "/oracle",   icon: "\uD83D\uDD2E" },
         { name: "Plan",   path: "/planner",  icon: "\uD83D\uDCCB" },
         { name: "Studio", path: "/studio",   icon: "\uD83C\uDFA4" },
-        { name: "Engine", path: "/engine",   icon: "\u2699\uFE0F" },
-        { name: "Label",  path: "/label",    icon: "\uD83C\uDFF7\uFE0F" },
-        { name: "Brain",  path: "/brain",    icon: "\uD83E\uDDE0" },
+        { name: "Engine", path: "/engine",   icon: "⚙️" },
+        { name: "Label",  path: "/label",    icon: "🏷️" },
+        { name: "CRM",    path: "/crm",      icon: "🤝" },
+        { name: "Brain",  path: "/brain",    icon: "🧠" },
     ];
 
     return (
@@ -66,6 +67,22 @@ export default function BottomNav() {
                                     n.name === "Kill" && killRed ? "bg-red-500" :
                                         n.name === "Kill" && killCount > 0 ? "bg-amber-500" :
                                             n.name === "Label" && unreviewedCopy ? "bg-amber-500" : null;
+
+                const isExternal = n.path === "/crm";
+                
+                if (isExternal) {
+                    return (
+                        <a key={n.name} href={n.path} className={`nav-item ${active ? "active" : ""}`}>
+                            <div className="text-2xl relative">
+                                {n.icon}
+                                {dotColor && (
+                                    <span className={`absolute -top-1 -right-2 w-2.5 h-2.5 ${dotColor} rounded-full border border-[#0a0a0a]`} />
+                                )}
+                            </div>
+                            <span>{n.name.toUpperCase()}</span>
+                        </a>
+                    );
+                }
 
                 return (
                     <Link key={n.name} href={n.path} className={`nav-item ${active ? "active" : ""}`}>
