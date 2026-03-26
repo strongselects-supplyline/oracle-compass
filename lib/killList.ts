@@ -466,7 +466,7 @@ export async function deriveKillList(): Promise<KillTask[]> {
       "The ISRC code looks like: US-XX1-23-45678",
       "If you can't find it: open Amuse app → My Releases → tap the song → ISRC",
       "Copy this code — you'll paste it into ASCAP, MLC, and Songtrust",
-    ], 7, "ops", "biz");
+    ], -4, "ops", "biz");
 
     toggle("reg-ascap", "ascapRegistered", "Register song on ASCAP", `Collects your performance royalties${!d.isrcPulled ? " (get ISRC code first ↑)" : ""}`, [
       "Go to ascap.com and log in",
@@ -474,7 +474,7 @@ export async function deriveKillList(): Promise<KillTask[]> {
       "Enter: song title, your name as writer/publisher, ISRC code",
       "Set ownership split (100% if you're the only writer)",
       "Submit — ASCAP will confirm via email",
-    ], 5, "ops", "biz");
+    ], -4, "ops", "biz");
 
     toggle("reg-mlc", "mlcRegistered", "Register song on MLC", `Collects mechanical royalties from streaming${!d.isrcPulled ? " (get ISRC code first ↑)" : ""}`, [
       "Go to themlc.com and log in",
@@ -482,14 +482,14 @@ export async function deriveKillList(): Promise<KillTask[]> {
       "Enter: song title, ISRC code, your info",
       "This captures royalties ASCAP doesn't cover",
       "Submit and confirm",
-    ], 5, "ops", "biz");
+    ], -4, "ops", "biz");
 
     toggle("reg-songtrust", "songtrustRegistered", "Register song on Songtrust", `International royalty collection${!d.isrcPulled ? " (get ISRC code first ↑)" : ""}`, [
       "Go to songtrust.com and log in",
       "If you can't log in: check if account transferred during UMG changes",
       "Add the new song with title and ISRC",
       "Songtrust handles royalty collection in 60+ countries",
-    ], 5, "ops", "biz");
+    ], -4, "ops", "biz");
 
     toggle("reg-musixmatch", "musixmatchSubmitted", "Submit lyrics to Musixmatch", "Gets your lyrics to show on Spotify, Apple Music, etc.", [
       openApp("musixmatch"),
@@ -502,6 +502,28 @@ export async function deriveKillList(): Promise<KillTask[]> {
 
     // ── CORE DRIVE PIPELINE (per single — 3-encode algorithmic exploit) ──
     if (daysUntil <= 14 && daysUntil >= -7) {
+      // Task 0: New Age Mastering Quality Control (Transcript Protocol)
+      if (!d.masteringVerified) {
+        tasks.push({
+          id: `mastering-qc-${t}`,
+          title: `New Age Mastering QC — ${t}`,
+          subtitle: `Verify protocol: -18dBFS peaks, +3.5dB side boost, and "Depth Cut".`,
+          howTo: [
+            "PEAK: Ensure master hits analog gear at -18dBFS peak for the sweet spot.",
+            "SIDES: Apply +3.5dB shelf/boost on sides @ 120-140Hz for 3D width.",
+            "SIGNATURE: Apply 'Depth Cut' (creative saturation/dirt) if the vibe needs it.",
+            "LOUDNESS: Target -14 LUFS (Spotify optimized) — don't over-smash.",
+            "Tap ✓ once audio is locked and exported for distribution.",
+          ],
+          urgency: daysUntil <= 8 ? "RED" : "AMBER",
+          pillar: "creative",
+          timeBlock: "studio",
+          action: async () => {
+            await updateContentDeliverables(t, { masteringVerified: true } as any);
+          },
+        });
+      }
+
       // Task 1: Run Core Drive Matrix
       if (!d.coreDriveComplete) {
         tasks.push({
@@ -522,6 +544,28 @@ export async function deriveKillList(): Promise<KillTask[]> {
           timeBlock: "content",
           action: async () => {
             await updateContentDeliverables(t, { coreDriveComplete: true });
+          },
+        });
+      }
+
+      // Task 1.5: Execute Gorilla Geo Pipeline
+      if (d.coreDriveComplete && !d.gorillaGeoComplete) {
+        tasks.push({
+          id: `gorillageo-${t}`,
+          title: `Execute Gorilla Geo — ${t}`,
+          subtitle: `Tier classification and geographic arbitrage for ${t}.`,
+          howTo: [
+            "Open Gorilla Geo terminal/tab.",
+            "Input the Core Drive playlist links curated for this release.",
+            "Run tier classification to identify 'Void' vs 'Groove' targets.",
+            "This identifies the high-ROI locations for your campaign launch.",
+            "Tap ✓ once geographic targets are saved to the campaign doc.",
+          ],
+          urgency: daysUntil <= 5 ? "RED" : "AMBER",
+          pillar: "business",
+          timeBlock: "biz",
+          action: async () => {
+             await updateContentDeliverables(t, { gorillaGeoComplete: true } as any);
           },
         });
       }
