@@ -1,35 +1,32 @@
-# Gorilla Geo V2.1 // Handoff - March 27 2026
+# Gorilla Geo V2.5 // Handoff - March 27 2026
 
-## 🚀 OVERVIEW: CREATIVE INTELLIGENCE HUB
-The Gorilla Geo dashboard has been evolved from a static data visualization tool into an **actionable intelligence hub** for the Label OS.
+## 🔱 OVERVIEW: "GOD SHINOBI" INTELLIGENCE HUB
+The Gorilla Geo project has reached Its final production state of the sprint. It has transitioned from a React-based data visualizer into a **Native, high-performance "God Shinobi" Creative Intelligence Hub (V2.5)**.
 
 ### KEY SYSTEMS DEPLOYED:
-1. **Spotify Integration (V2.1)**:
-   - Every artist in the 5,000+ artist database is now enriched with a `spotifyId` and `popularity` score.
-   - **Dashboard UI**: Artist pills are now clickable `<a>` links and feature external `↗` icons.
-   - **Sonic DNA**: "Top Sonic Anchors" and "Double Encode" artists are also now fully linked.
-   - **Action**: All data is live on Vercel (`/geo/`).
+1. **Native Architecture (V2.5)**:
+   - **Performance**: Replaced the React-vite shell with a native HTML/JS/CSS architecture for maximum speed and 100% aesthetic control.
+   - **God Shinobi Design**: Implemented a "World Class" Zinc-950 design system featuring Glassmorphism, stylized artist grids, and color-coded metric cards.
+   - **Navigation**: Integrated a native bottom navigation bar for seamless switching between Dashboard, Releases, Sonic DNA, and Outreach.
 
-2. **The "Mega-Matrix" Architecture**:
-   - **Kill List Bridge**: Gorilla Geo `crossTrack` overlaps are now autonomously derived as "Sonic Connector" outreach tasks in `oracle-compass/lib/killList.ts`.
-   - **Playlist Automation**: A new script `gorilla-geo/scripts/playlist-generator.js` allows for 1-click Spotify playlist creation from track-specific Core Drive lists.
+2. **Full Data Restoration**:
+   - **Metadata Enhancement**: Forced the "Catalog" schema for all track types, ensuring "Suggested Tracks" are visible for every artist in the matrix.
+   - **Hardened UI**: Replaced the fragile MutationObserver with a native DOM engine for "COPY LIST" actions and Spotify "↗" link injection.
 
-3. **God-Tier Quick Copy**:
-   - Injected a React-DOM `MutationObserver` in `public/geo/index.html` to retroactively add "COPY LIST" buttons to the compiled Vite app.
-   - Allows instant extraction of target lists for manual playlist routing.
+3. **Stitch AI Design Blueprint**:
+   - Delivered a specialized prompt for Google's Stitch AI to allow for future UI iterations based on this functional core.
+   - **Path**: [stitch_prompt.md](file:///Users/ethanpayton/.gemini/antigravity/brain/9ce5e1ea-be00-4aa0-ae7a-0229c6fb2058/stitch_prompt.md)
+
+4. **The "Mega-Matrix" Architecture**:
+   - **Kill List Bridge**: Gorilla Geo `crossTrack` overlaps are autonomously derived as "Sonic Connector" tasks in `oracle-compass/lib/killList.ts`.
+   - **Playlist Automation**: `gorilla-geo/scripts/playlist-generator.js` allows for 1-click Spotify playlist creation from track-specific Core Drive lists.
 
 ## 🛠️ TECH STACK / DIRECTORY:
 - **Engine**: `/gorilla-geo/generate-dashboard-data.js` (Hardened with 429 rate-limit backoffs).
 - **Automation**: `/gorilla-geo/scripts/playlist-generator.js` (Requires a User Auth Token).
-- **Label OS Bridge**: `/oracle-compass/lib/killList.ts` (Section 1.5).
+- **UI (V2.5 Native)**: `/oracle-compass/public/geo/index.html` & `index.css`.
 - **Production Asset**: `/oracle-compass/public/geo/geo-dashboard.json`.
 
-## ⏭️ NEXT STEPS FOR CLAUDE:
-1. **Verify Vercel Propagation**: Ensure that the latest `geo-dashboard.json` (1MB) is correctly reflected in the live environment.
-2. **Handle Rate Limit Gaps**: If any obscure artists still return "null" IDs, re-run the `generate-dashboard-data.js` script sequentially.
-3. **Playlist Execution**: Assist the user in generating a Spotify Access Token to run the `playlist-generator.js` script for their next release (`East Side Love`).
-4. **CRM Injection**: Future work can involve bridging this data further into a dedicated music CRM if the "Leads Ledger" logic is ever ported to the Label OS.
-
 ---
-**Status**: Gorilla Geo V2.1 is fully operational and bridged into the Label OS.
+**Status**: Gorilla Geo V2.5 "God Shinobi" is fully operational and bridged into the Label OS.
 **Handoff Complete.**

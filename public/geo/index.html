@@ -30,11 +30,17 @@
     <div class="nav-item" onclick="switchTab('outreach')">Outreach</div>
   </nav>
 
+  <script src="geo-data.js"></script>
   <script>
     let dashboardData = null;
     let activeTab = 'dashboard';
 
     async function init() {
+      if (window.embeddedData) {
+        dashboardData = window.embeddedData;
+        renderActiveTab();
+        return;
+      }
       try {
         const response = await fetch('geo-dashboard.json');
         dashboardData = await response.json();
