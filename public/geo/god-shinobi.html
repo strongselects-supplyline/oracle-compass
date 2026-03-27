@@ -77888,7 +77888,7 @@ h1 {
       container.innerHTML = `
         <div class="animate-fade">
           <h2 class="section-title">Strategic Release Tiers</h2>
-          <div style="display:flex; flex-direction:column; gap:24px;">
+          <div style="display:flex; flex-direction:column; gap:32px;">
             ${dashboardData.tracks.map(t => {
               const core = t.coreDrive || [];
               const reachable = t.extendedDrive || [];
@@ -77916,10 +77916,43 @@ h1 {
                   </div>
                 </div>
 
-                <div style="margin-top:20px; display:flex; gap:8px; overflow-x:auto; padding-bottom:8px;">
-                   ${core.slice(0, 10).map(a => `<span style="background:rgba(255,255,255,0.05); padding:4px 10px; border-radius:6px; font-size:0.75rem; white-space:nowrap;">${a.name}</span>`).join('')}
-                   <span style="color:var(--text-secondary); font-size:0.75rem; align-self:center;">+${Math.max(0, core.length - 10)} more</span>
+                ${core.length > 0 ? `
+                <div style="margin-top:24px; overflow-x:auto;">
+                  <h4 style="font-size:1.125rem; font-weight:700; margin-bottom:16px;">Core Drive Artists</h4>
+                  <table style="width:100%; text-align:left; border-collapse:collapse; min-width:800px;">
+                    <thead>
+                      <tr style="border-bottom:1px solid var(--border-color); color:var(--text-secondary); font-size:0.75rem; text-transform:uppercase;">
+                        <th style="padding:12px; font-weight:600;">Artist</th>
+                        <th style="padding:12px; font-weight:600;">Playlists</th>
+                        <th style="padding:12px; font-weight:600;">Groups</th>
+                        <th style="padding:12px; font-weight:600;">Tracks</th>
+                        <th style="padding:12px; font-weight:600;">Reference Tracks</th>
+                      </tr>
+                    </thead>
+                    <tbody>
+                      ${core.slice(0, 50).map(a => `
+                        <tr style="border-bottom:1px solid rgba(255,255,255,0.05); vertical-align:top;">
+                          <td style="padding:16px 12px; font-weight:700; max-width:200px;">
+                            <div style="display:flex; align-items:center; gap:12px;">
+                              <div class="artist-image" style="width:32px; height:32px; font-size:0.75rem; flex-shrink:0;">${a.name.charAt(0)}</div>
+                              <span style="white-space:nowrap; overflow:hidden; text-overflow:ellipsis;" title="${a.name}">${a.name}</span>
+                            </div>
+                          </td>
+                          <td style="padding:16px 12px; font-variant-numeric:tabular-nums;">${a.playlistAppearances || 0}</td>
+                          <td style="padding:16px 12px; font-variant-numeric:tabular-nums;">${a.encodeGroups || 0}</td>
+                          <td style="padding:16px 12px; color:var(--spotify-green); font-weight:700; font-variant-numeric:tabular-nums;">${a.trackAppearances || a.overlapCount || 1}</td>
+                          <td style="padding:16px 12px;">
+                            <div style="display:flex; flex-wrap:wrap; gap:6px;">
+                              ${(a.topTracks || []).map(track => `<span style="background:rgba(255,255,255,0.05); border:1px solid rgba(255,255,255,0.1); padding:4px 8px; border-radius:4px; font-size:0.75rem; white-space:nowrap; max-width:200px; overflow:hidden; text-overflow:ellipsis;" title="${track}">${track}</span>`).join('')}
+                            </div>
+                          </td>
+                        </tr>
+                      `).join('')}
+                    </tbody>
+                  </table>
+                  ${core.length > 50 ? `<div style="text-align:center; padding:16px; font-size:0.875rem; color:var(--text-secondary); background:rgba(255,255,255,0.02); margin-top:8px; border-radius:8px;">+ ${core.length - 50} more overlapping artists available for export</div>` : ''}
                 </div>
+                ` : ''}
               </div>
             `}).join('')}
           </div>
@@ -77952,27 +77985,72 @@ h1 {
 
     function renderOutreach(container) {
       container.innerHTML = `
+        <style>
+          @keyframes slowSpin { 100% { transform: rotate(360deg); } }
+          @keyframes slowSpinReverse { 100% { transform: rotate(-360deg); } }
+        </style>
         <div class="animate-fade">
-          <h2 class="section-title">Strategic Outreach Engine</h2>
-          <div class="glass" style="padding:24px; margin-bottom:32px; min-height:200px; display:flex; align-items:center; justify-content:center; background: url('data:image/svg+xml,%3Csvg width=\"800\" height=\"400\" viewBox=\"0 0 800 400\" xmlns=\"http://www.w3.org/2000/svg\"%3E%3Ccircle cx=\"200\" cy=\"150\" r=\"80\" fill=\"rgba(29,185,84,0.1)\" /%3E%3Ccircle cx=\"600\" cy=\"250\" r=\"120\" fill=\"rgba(59,130,246,0.1)\" /%3E%3Ccircle cx=\"400\" cy=\"100\" r=\"60\" fill=\"rgba(139,92,246,0.1)\" /%3E%3C/svg%3E'); background-size: cover;">
-             <div style="text-align:center; background:rgba(0,0,0,0.6); padding:16px 32px; border-radius:12px; backdrop-filter:blur(8px);">
-               <div style="font-size:1.5rem; font-weight:800;">Geographic Overlaps</div>
-               <div style="color:var(--spotify-green); font-weight:600;"> Denver • Milwaukee • Minneapolis • Dallas</div>
-             </div>
-          </div>
-
-          <h3 class="section-title" style="font-size:1.125rem;">Priority Outreach Tasks</h3>
-          <div style="display:flex; flex-direction:column; gap:12px;">
-             ${dashboardData.crossTrack.slice(0, 5).map(a => `
-               <div class="glass" style="display:flex; align-items:center; gap:16px; padding:16px;">
-                 <div class="artist-image" style="width:48px; height:48px;">${a.name.charAt(0)}</div>
-                 <div>
-                   <div style="font-weight:700;">${a.name}</div>
-                   <div style="font-size:0.75rem; color:var(--text-secondary);">Suggested Track for Curation: <strong style="color:white;">${window.trackMap[a.tracks[0]] || a.tracks[0]}</strong></div>
-                 </div>
-                 <button onclick="copyToClipboard(event, '${a.name}')" class="glass" style="margin-left:auto; padding:6px 12px; font-size:0.75rem; color:var(--spotify-green); border-color:var(--spotify-green); cursor:pointer;">COPY FOR CRM</button>
-               </div>
-             `).join('')}
+          <div style="display:flex; flex-wrap:wrap; gap:32px; margin-bottom:40px;">
+            <div style="flex:1; min-width:300px;">
+              <h2 class="section-title">Rings of Influence</h2>
+              <p style="color:var(--text-secondary); margin-bottom:24px;">Concentric view of your sonic overlap across Core, Extended, and Peripheral zones.</p>
+              
+              <div class="glass" style="position:relative; overflow:hidden; display:flex; align-items:center; justify-content:center; aspect-ratio:1/1; max-width:400px; margin:0 auto; border-radius:50%; background:radial-gradient(circle, rgba(29,185,84,0.1) 0%, rgba(9,9,11,0.5) 70%); border:1px solid var(--border-color);">
+                <!-- Rings of Influence -->
+                <div style="position:absolute; inset:20px; border:1px solid rgba(234, 179, 8, 0.4); border-radius:50%; animation:slowSpin 60s linear infinite; box-shadow:inset 0 0 20px rgba(234,179,8,0.1);">
+                  <div style="position:absolute; top:-4px; left:50%; width:8px; height:8px; background:var(--accent-yellow); border-radius:50%; box-shadow:0 0 10px var(--accent-yellow);"></div>
+                </div>
+                <div style="position:absolute; inset:60px; border:1px solid rgba(59, 130, 246, 0.4); border-radius:50%; animation:slowSpinReverse 45s linear infinite; box-shadow:inset 0 0 20px rgba(59,130,246,0.1);">
+                  <div style="position:absolute; bottom:-4px; left:30%; width:8px; height:8px; background:var(--accent-blue); border-radius:50%; box-shadow:0 0 10px var(--accent-blue);"></div>
+                </div>
+                <div style="position:absolute; inset:100px; border:1px solid rgba(29, 185, 84, 0.4); border-radius:50%; animation:slowSpin 30s linear infinite; box-shadow:inset 0 0 20px rgba(29,185,84,0.1);">
+                  <div style="position:absolute; top:50%; right:-4px; width:8px; height:8px; background:var(--spotify-green); border-radius:50%; box-shadow:0 0 10px var(--spotify-green);"></div>
+                </div>
+                
+                <div style="z-index:1; background:var(--bg-color); border:1px solid var(--border-color); padding:24px; border-radius:50%; text-align:center; box-shadow:0 10px 30px rgba(0,0,0,0.5);">
+                  <div style="font-size:2rem; font-weight:900; line-height:1; background:linear-gradient(to right, #fff, #a1a1aa); -webkit-background-clip:text; -webkit-text-fill-color:transparent;">${dashboardData.summary.crossTrackOverlaps}</div>
+                  <div style="font-size:0.65rem; color:var(--text-secondary); text-transform:uppercase; letter-spacing:0.1em; margin-top:6px; font-weight:700;">Connectors</div>
+                </div>
+              </div>
+            </div>
+            
+            <div style="flex:2; min-width:400px;">
+              <h3 class="section-title" style="font-size:1.125rem;">Cross-Track Connectors</h3>
+              <div class="glass" style="overflow-x:auto;">
+                <table style="width:100%; text-align:left; border-collapse:collapse; min-width:500px;">
+                  <thead>
+                    <tr style="border-bottom:1px solid var(--border-color); color:var(--text-secondary); font-size:0.75rem; text-transform:uppercase;">
+                      <th style="padding:16px 20px; font-weight:600;">Artist</th>
+                      <th style="padding:16px 20px; font-weight:600;">Track Overlap</th>
+                      <th style="padding:16px 20px; font-weight:600; text-align:right;">Action</th>
+                    </tr>
+                  </thead>
+                  <tbody>
+                    ${dashboardData.crossTrack.slice(0, 100).map(a => `
+                      <tr style="border-bottom:1px solid rgba(255,255,255,0.05); transition:background 0.2s;" onmouseover="this.style.background='rgba(255,255,255,0.02)'" onmouseout="this.style.background='transparent'">
+                        <td style="padding:16px 20px;">
+                          <div style="display:flex; align-items:center; gap:12px;">
+                            <div class="artist-image" style="width:40px; height:40px; font-size:1rem;">${a.name.charAt(0)}</div>
+                            <div>
+                              <div style="font-weight:700; font-size:1rem;">${a.name}</div>
+                              <div style="font-size:0.75rem; color:var(--text-secondary); margin-top:2px;">Curation Match: <span style="color:white; font-weight:500;">${(window.trackMap && window.trackMap[a.tracks[0]]) ? window.trackMap[a.tracks[0]] : a.tracks[0]}</span></div>
+                            </div>
+                          </div>
+                        </td>
+                        <td style="padding:16px 20px;">
+                          <div style="display:inline-flex; align-items:center; justify-content:center; background:rgba(29, 185, 84, 0.1); border:1px solid rgba(29, 185, 84, 0.2); padding:4px 12px; border-radius:99px; font-variant-numeric:tabular-nums; color:var(--spotify-green); font-weight:800; font-size:1rem;">
+                            ${a.trackCount} Tracks
+                          </div>
+                        </td>
+                        <td style="padding:16px 20px; text-align:right;">
+                           <button onclick="copyToClipboard(event, '${a.name}')" class="glass" style="padding:8px 16px; font-size:0.75rem; font-weight:700; color:var(--text-primary); cursor:pointer; background:transparent; transition:all 0.2s;" onmouseover="this.style.background='white'; this.style.color='black';" onmouseout="this.style.background='transparent'; this.style.color='var(--text-primary)';">Copy for CRM</button>
+                        </td>
+                      </tr>
+                    `).join('')}
+                  </tbody>
+                </table>
+              </div>
+            </div>
           </div>
         </div>
       `;
