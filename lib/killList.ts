@@ -65,6 +65,34 @@ export async function deriveKillList(): Promise<KillTask[]> {
     }
   }
 
+  // ── 1.5 GORILLA GEO → Outreach Tasks ─────────────────────────────
+  try {
+    const geoRes = await fetch('/geo/geo-dashboard.json');
+    if (geoRes.ok) {
+        const geoData = await geoRes.json();
+        const connectors = (geoData.crossTrack || []).slice(0, 3);
+        for (const artist of connectors) {
+            tasks.push({
+                id: `geo-outreach-${hashStr(artist.name)}`,
+                title: `Contact ${artist.name} (Sonic Connector)`,
+                subtitle: `Overlap: ${artist.trackCount} tracks. This artist is perfectly aligned with your DNA.`,
+                howTo: [
+                    `Find ${artist.name} on Instagram or Spotify via the Gorilla Geo dashboard.`,
+                    `Pitch Angle: "Yo, I've noticed our sonic DNA is perfectly aligned on ${artist.trackCount} of my upcoming releases."`,
+                    `Ask for a collab or feedback. This is a high-probability conversion.`,
+                    "Tap ✓ once you have sent the initial message."
+                ],
+                urgency: "AMBER",
+                pillar: "business",
+                timeBlock: "biz",
+                action: async () => {} // Purely a tracking task
+            });
+        }
+    }
+  } catch (e) {
+      // Silence if geo dashboard not yet generated
+  }
+
   // ── 2. FUEL → Tasks ──────────────────────────────────────────────
   if (isStudioDay(dayType as any)) {
     if (!dailyLog.fuelPreSession && hour < 16) {
