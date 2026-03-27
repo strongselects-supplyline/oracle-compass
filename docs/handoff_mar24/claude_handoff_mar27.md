@@ -21,12 +21,10 @@ The Gorilla Geo project has reached Its final production state of the sprint. It
    - **Kill List Bridge**: Gorilla Geo `crossTrack` overlaps are autonomously derived as "Sonic Connector" tasks in `oracle-compass/lib/killList.ts`.
    - **Playlist Automation**: `gorilla-geo/scripts/playlist-generator.js` allows for 1-click Spotify playlist creation from track-specific Core Drive lists.
 
-## 🛠️ TECH STACK / DIRECTORY:
-- **Engine**: `/gorilla-geo/generate-dashboard-data.js` (Hardened with 429 rate-limit backoffs).
-- **Automation**: `/gorilla-geo/scripts/playlist-generator.js` (Requires a User Auth Token).
-- **UI (V2.5 Native)**: `/oracle-compass/public/geo/index.html` & `index.css`.
-- **Production Asset**: `/oracle-compass/public/geo/geo-dashboard.json`.
+### 🏛️ V2.5 // UNIVERSAL ZEN ARCHITECTURE
+- **Build**: Single-File Native SPA (`public/geo/god-shinobi.html`).
+- **Assets**: 100% Internalized. CSS and Data (1.8MB JSON) are bundled into the HTML to prevent 404s and CORS blocks.
+- **Routing**: Root domain (`/`) is hard-wired via `vercel.json` to serve the finalized dashboard.
+- **Portability**: The system is now a standalone "War Room" file that works instantly in any browser.
 
----
-**Status**: Gorilla Geo V2.5 "God Shinobi" is fully operational and bridged into the Label OS.
-**Handoff Complete.**
+**God Shinobi Status: ASCENDED // MISSION COMPLETE.** 🥷🦍⛩️
