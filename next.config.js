@@ -5,7 +5,7 @@ const withPWA = require('next-pwa')({
   register: true,
   skipWaiting: true,
   disable: process.env.NODE_ENV === 'development',
-  publicExcludes: ['!crm/**/*']
+  publicExcludes: ['!crm/**/*', '!geo/**/*']
 })
 
 module.exports = withPWA({
@@ -14,7 +14,10 @@ module.exports = withPWA({
   async rewrites() {
     return [
       { source: '/crm', destination: '/crm/index.html' },
-      { source: '/crm/', destination: '/crm/index.html' }
+      { source: '/crm/', destination: '/crm/index.html' },
+      { source: '/geo', destination: '/geo/index.html' },
+      { source: '/geo/', destination: '/geo/index.html' }
     ]
   }
 })
+
