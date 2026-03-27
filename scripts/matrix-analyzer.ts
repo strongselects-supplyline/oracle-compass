@@ -13,6 +13,7 @@ const OUTPUT_FILE = path.join(__dirname, '../lib/matrix/core_drive_results.json'
 interface Track {
   artist: string;
   name: string;
+  id?: string | null;
 }
 
 interface PlaylistResult {
@@ -28,7 +29,7 @@ async function main() {
   }
 
   const data: PlaylistResult[] = JSON.parse(fs.readFileSync(INPUT_FILE, 'utf-8'));
-  const artistFreq: Record<string, { count: number; tracks: string[]; playlists: string[] }> = {};
+  const artistFreq: Record<string, { count: number; tracks: {name: string, id: string | null}[]; playlists: string[] }> = {};
 
   for (const playlist of data) {
     for (const track of playlist.tracks) {
@@ -36,8 +37,9 @@ async function main() {
         artistFreq[track.artist] = { count: 0, tracks: [], playlists: [] };
       }
       artistFreq[track.artist].count += 1;
-      if (!artistFreq[track.artist].tracks.includes(track.name)) {
-        artistFreq[track.artist].tracks.push(track.name);
+      const trackExists = artistFreq[track.artist].tracks.some(t => typeof t === 'string' ? t === track.name : t.name === track.name);
+      if (!trackExists) {
+        artistFreq[track.artist].tracks.push({ name: track.name, id: track.id || null } as any);
       }
       if (!artistFreq[track.artist].playlists.includes(playlist.playlistId)) {
         artistFreq[track.artist].playlists.push(playlist.playlistId);

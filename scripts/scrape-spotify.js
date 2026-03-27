@@ -34,10 +34,12 @@ const chromePath = '/Applications/Google Chrome.app/Contents/MacOS/Google Chrome
                 trackNodes.forEach(rn => {
                     const nameNode = rn.querySelector('a[data-testid="internal-track-link"]');
                     const name = nameNode ? nameNode.innerText : null;
+                    const href = nameNode ? nameNode.getAttribute('href') : null;
+                    const trackId = href ? href.split('/track/')[1]?.split('?')[0] : null;
                     const artistsNodes = rn.querySelectorAll('a[href^="/artist/"]');
                     const numArtists = artistsNodes.length;
-                    const artists = Array.from(artistsNodes).slice(Math.max(0, numArtists - 2)).map(an => an.innerText); // Usually track artist is first or last depending on DOM
-                    if (name) tList.push({ name, artist: artists[0] || "Unknown" });
+                    const artists = Array.from(artistsNodes).slice(Math.max(0, numArtists - 2)).map(an => an.innerText);
+                    if (name) tList.push({ name, artist: artists[0] || "Unknown", id: trackId });
                 });
                 return tList;
             });
