@@ -77856,7 +77856,7 @@ h1 {
               <span class="stat-label">Tracks</span>
             </div>
             <div class="stat-card glass" style="border-color:var(--accent-yellow)">
-              <span class="stat-value" style="color:var(--accent-yellow)">${summary.uniqueArtists}</span>
+              <span class="stat-value" style="color:var(--accent-yellow)">${summary.totalUniqueArtists}</span>
               <span class="stat-label">Unique Artists</span>
             </div>
             <div class="stat-card glass" style="border-color:var(--accent-blue)">
@@ -77934,7 +77934,7 @@ h1 {
           <div class="glass" style="max-width:500px; margin:0 auto; padding:40px; aspect-ratio:1/1; border-radius:50%; display:flex; align-items:center; justify-content:center; position:relative; overflow:hidden;">
              <div style="position:absolute; inset:0; background:conic-gradient(var(--accent-purple), var(--accent-blue), var(--spotify-green), var(--accent-yellow), var(--accent-purple)); opacity:0.2; filter:blur(40px);"></div>
              <div style="z-index:1; text-align:center;">
-               <div style="font-size:3rem; font-weight:900;">${dashboardData.summary.uniqueArtists}</div>
+               <div style="font-size:3rem; font-weight:900;">${dashboardData.summary.totalUniqueArtists}</div>
                <div style="color:var(--text-secondary); text-transform:uppercase; letter-spacing:0.2em; font-size:0.75rem;">Connected Nodes</div>
              </div>
           </div>
@@ -77968,7 +77968,7 @@ h1 {
                  <div class="artist-image" style="width:48px; height:48px;">${a.name.charAt(0)}</div>
                  <div>
                    <div style="font-weight:700;">${a.name}</div>
-                   <div style="font-size:0.75rem; color:var(--text-secondary);">Suggested Track for Curation: "${a.tracks[0]}"</div>
+                   <div style="font-size:0.75rem; color:var(--text-secondary);">Suggested Track for Curation: <strong style="color:white;">${window.trackMap[a.tracks[0]] || a.tracks[0]}</strong></div>
                  </div>
                  <button onclick="copyToClipboard(event, '${a.name}')" class="glass" style="margin-left:auto; padding:6px 12px; font-size:0.75rem; color:var(--spotify-green); border-color:var(--spotify-green); cursor:pointer;">COPY FOR CRM</button>
                </div>
