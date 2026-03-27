@@ -6,82 +6,206 @@
   <title>Gorilla Geo — Artist Tier Intelligence</title>
   <link rel="preconnect" href="https://fonts.googleapis.com" />
   <link href="https://fonts.googleapis.com/css2?family=Inter:wght@400;500;600;700;800;900&display=swap" rel="stylesheet" />
-  <script type="module" crossorigin src="/geo/assets/index-DdaaFMLa.js"></script>
-  <link rel="stylesheet" crossorigin href="/geo/assets/index-C8HJXA5L.css">
-<link rel="manifest" href="/geo/manifest.webmanifest"><script id="vite-plugin-pwa:register-sw" src="/geo/registerSW.js"></script></head>
+  <link rel="stylesheet" href="index.css">
+</head>
 <body>
-  <div id="root"></div>
+  <div id="app" class="container">
+    <header>
+      <h1>Gorilla Geo</h1>
+      <p style="color:var(--text-secondary); font-size:0.875rem;">Creative Intelligence Hub // V2.5 God-Tier</p>
+    </header>
+
+    <div id="content">
+      <!-- Dynamic Content Injected Here -->
+      <div class="loading" style="text-align:center; padding:100px; color:var(--text-secondary);">
+        Propagating Neural Matrix...
+      </div>
+    </div>
+  </div>
+
+  <nav id="bottom-nav" class="bottom-nav glass">
+    <div class="nav-item active" onclick="switchTab('dashboard')">Dashboard</div>
+    <div class="nav-item" onclick="switchTab('releases')">By Release</div>
+    <div class="nav-item" onclick="switchTab('sonic')">Sonic DNA</div>
+    <div class="nav-item" onclick="switchTab('outreach')">Outreach</div>
+  </nav>
+
   <script>
-    // Gorilla Geo UI Hardener — Restores missing features via DOM Injection
-    const UI_HARDENER_IDENTIFIER = 'geo-hardened';
+    let dashboardData = null;
+    let activeTab = 'dashboard';
 
-    function hardenUI() {
-      // 1. "COPY LIST" Restoration
-      const headers = Array.from(document.querySelectorAll('h2, h3, h4, [class*="text-2xl"], [class*="text-xl"]'));
-      headers.forEach(header => {
-        if (header.dataset[UI_HARDENER_IDENTIFIER]) return;
-        const text = header.textContent.toUpperCase();
-        if (text.includes('CORE DRIVE') || text.includes('EXTENDED DRIVE') || text.includes('REACHABLE ARTISTS') || text.includes('SONIC ANCHORS')) {
-          header.dataset[UI_HARDENER_IDENTIFIER] = 'true';
-          const btn = document.createElement('button');
-          btn.innerHTML = `📋 COPY LIST`;
-          btn.style.cssText = "margin-left:auto; background:rgba(29,185,84,0.1); color:#1DB954; font-size:10px; border:1px solid rgba(29,185,84,0.3); padding:4px 8px; border-radius:4px; cursor:pointer;";
-          
-          header.style.display = 'flex';
-          header.style.alignItems = 'center';
-          header.style.width = '100%';
-          
-          btn.onclick = (e) => {
-            e.stopPropagation();
-            let parent = header.closest('div[class*="rounded-"], section, .bg-zinc-900, [class*="p-"]');
-            if (!parent || parent === header) parent = header.parentElement.parentElement;
-            
-            // Look for any element that looks like an artist name (Spotify links or bold text)
-            const elements = Array.from(parent.querySelectorAll('a, span[class*="font-bold"], div[class*="text-white"]'));
-            const artists = elements
-              .map(el => el.textContent.replace('↗', '').replace('📋 COPY LIST', '').trim())
-              .filter(t => t.length > 2 && isNaN(t.charAt(0)) && !t.includes('Drive') && !t.includes('Artists') && !t.includes('matched'))
-              .map(t => t.split(' x')[0].replace(/^\d+\s+/, '').trim())
-              .reduce((acc, curr) => { if (!acc.includes(curr)) acc.push(curr); return acc; }, []);
-
-            if (artists.length > 0) {
-              navigator.clipboard.writeText(artists.join('\n')).then(() => {
-                btn.innerHTML = '✅ COPIED!';
-                btn.style.background = '#1DB954';
-                btn.style.color = '#000';
-                setTimeout(() => {
-                  btn.innerHTML = '📋 COPY LIST';
-                  btn.style.background = 'rgba(29,185,84,0.1)';
-                  btn.style.color = '#1DB954';
-                }, 2000);
-              });
-            } else {
-              btn.innerHTML = '❌ NO NAMES';
-              setTimeout(() => btn.innerHTML = '📋 COPY LIST', 1000);
-            }
-          };
-          header.appendChild(btn);
-        }
-      });
-
-      // 2. SONIC DNA Link Injection
-      const dnaArtists = document.querySelectorAll('.bg-black\\/20 span, .space-y-2 div');
-      dnaArtists.forEach(el => {
-        if (el.dataset[UI_HARDENER_IDENTIFIER]) return;
-        const text = el.textContent.trim();
-        if (text.length > 2 && !text.includes('REFERENCE') && !text.includes('ANCHORS')) {
-            el.dataset[UI_HARDENER_IDENTIFIER] = 'true';
-            el.style.cursor = 'pointer';
-            el.innerHTML = `${text} <span style="color:#1DB954; font-size:10px; margin-left:4px;">↗</span>`;
-            el.onclick = () => window.open(`https://open.spotify.com/search/${encodeURIComponent(text)}`, '_blank');
-        }
-      });
+    async function init() {
+      try {
+        const response = await fetch('geo-dashboard.json');
+        dashboardData = await response.json();
+        renderActiveTab();
+      } catch (e) {
+        document.getElementById('content').innerHTML = `<div class="p-8 text-center text-red-500">Failed to load Geo Matrix. Check console.</div>`;
+        console.error(e);
+      }
     }
 
-    const observer = new MutationObserver(hardenUI);
-    observer.observe(document.body, { childList: true, subtree: true });
-    hardenUI(); // Initial run
+    function switchTab(tab) {
+      activeTab = tab;
+      document.querySelectorAll('.nav-item').forEach(el => {
+        el.classList.toggle('active', el.innerText.toLowerCase().includes(tab));
+      });
+      renderActiveTab();
+      window.scrollTo(0,0);
+    }
 
+    function renderActiveTab() {
+      const content = document.getElementById('content');
+      if (activeTab === 'dashboard') renderDashboard(content);
+      else if (activeTab === 'releases') renderReleases(content);
+      else if (activeTab === 'sonic') renderSonic(content);
+      else if (activeTab === 'outreach') renderOutreach(content);
+    }
+
+    function renderDashboard(container) {
+      const summary = dashboardData.summary;
+      const overlaps = dashboardData.crossTrack.slice(0, 12); // Top Fingerprint Artists
+
+      container.innerHTML = `
+        <div class="animate-fade">
+          <div class="stats-grid">
+            <div class="stat-card glass">
+              <span class="stat-value">${summary.totalTracks}</span>
+              <span class="stat-label">Tracks</span>
+            </div>
+            <div class="stat-card glass" style="border-color:var(--accent-yellow)">
+              <span class="stat-value" style="color:var(--accent-yellow)">${summary.uniqueArtists}</span>
+              <span class="stat-label">Unique Artists</span>
+            </div>
+            <div class="stat-card glass" style="border-color:var(--accent-blue)">
+              <span class="stat-value" style="color:var(--accent-blue)">${summary.crossTrackOverlaps}</span>
+              <span class="stat-label">Crossovers</span>
+            </div>
+          </div>
+
+          <h2 class="section-title">Your Sonic Fingerprint</h2>
+          <p style="color:var(--text-secondary); margin-bottom:24px; font-size:0.875rem;">Artists who consistently match your sonic profile across multiple releases.</p>
+          
+          <div class="fingerprint-grid">
+            ${overlaps.map(a => `
+              <a href="https://open.spotify.com/search/${encodeURIComponent(a.name)}" target="_blank" class="artist-card glass">
+                <div class="artist-image">${a.name.charAt(0)}</div>
+                <div class="artist-info">
+                  <h3>${a.name}</h3>
+                  <span class="release-badge">${a.trackCount} releases</span>
+                </div>
+                <div style="margin-left:auto; color:var(--spotify-green); font-size:1.25rem;">↗</div>
+              </a>
+            `).join('')}
+          </div>
+        </div>
+      `;
+    }
+
+    function renderReleases(container) {
+      container.innerHTML = `
+        <div class="animate-fade">
+          <h2 class="section-title">Strategic Release Tiers</h2>
+          <div style="display:flex; flex-direction:column; gap:24px;">
+            ${dashboardData.tracks.map(t => {
+              const core = t.coreDrive || [];
+              const reachable = t.extendedDrive || [];
+              const priority = t.peripheral || [];
+              
+              return `
+              <div class="release-card glass" style="padding:24px;">
+                <div style="display:flex; align-items:center; gap:12px; margin-bottom:20px;">
+                  <h3 style="font-size:1.5rem; font-weight:800;">${t.title}</h3>
+                  <span style="background:rgba(255,255,255,0.1); padding:2px 8px; border-radius:4px; font-size:0.75rem;">${t.releaseDate}</span>
+                </div>
+                
+                <div class="stats-grid" style="margin-bottom:0;">
+                  <div class="stat-card glass" style="background:rgba(234, 179, 8, 0.1); border-color:rgba(234, 179, 8, 0.3);">
+                    <span class="stat-value" style="color:var(--accent-yellow)">${core.length}</span>
+                    <span class="stat-label">Core Drive</span>
+                  </div>
+                  <div class="stat-card glass" style="background:rgba(59, 130, 246, 0.1); border-color:rgba(59, 130, 246, 0.3);">
+                    <span class="stat-value" style="color:var(--accent-blue)">${reachable.length}</span>
+                    <span class="stat-label">Reachable</span>
+                  </div>
+                  <div class="stat-card glass" style="background:rgba(34, 197, 94, 0.1); border-color:rgba(34, 197, 94, 0.3);">
+                    <span class="stat-value" style="color:#22c55e">${priority.length}</span>
+                    <span class="stat-label">Priority</span>
+                  </div>
+                </div>
+
+                <div style="margin-top:20px; display:flex; gap:8px; overflow-x:auto; padding-bottom:8px;">
+                   ${core.slice(0, 10).map(a => `<span style="background:rgba(255,255,255,0.05); padding:4px 10px; border-radius:6px; font-size:0.75rem; white-space:nowrap;">${a.name}</span>`).join('')}
+                   <span style="color:var(--text-secondary); font-size:0.75rem; align-self:center;">+${Math.max(0, core.length - 10)} more</span>
+                </div>
+              </div>
+            `}).join('')}
+          </div>
+        </div>
+      `;
+    }
+
+    function renderSonic(container) {
+      container.innerHTML = `
+        <div class="animate-fade" style="text-align:center; padding:40px;">
+          <h2 class="section-title">Sonic DNA Spectrum</h2>
+          <div class="glass" style="max-width:500px; margin:0 auto; padding:40px; aspect-ratio:1/1; border-radius:50%; display:flex; align-items:center; justify-content:center; position:relative; overflow:hidden;">
+             <div style="position:absolute; inset:0; background:conic-gradient(var(--accent-purple), var(--accent-blue), var(--spotify-green), var(--accent-yellow), var(--accent-purple)); opacity:0.2; filter:blur(40px);"></div>
+             <div style="z-index:1; text-align:center;">
+               <div style="font-size:3rem; font-weight:900;">${dashboardData.summary.uniqueArtists}</div>
+               <div style="color:var(--text-secondary); text-transform:uppercase; letter-spacing:0.2em; font-size:0.75rem;">Connected Nodes</div>
+             </div>
+          </div>
+          <div style="margin-top:40px; display:grid; grid-template-columns:1fr 1fr; gap:16px; text-align:left;">
+             ${dashboardData.tracks.slice(0, 4).map(t => `
+               <div class="glass" style="padding:16px;">
+                 <div style="font-weight:700; margin-bottom:4px;">${t.title}</div>
+                 <div style="font-size:0.75rem; color:var(--text-secondary);">${t.moodTags.join(' • ')}</div>
+               </div>
+             `).join('')}
+          </div>
+        </div>
+      `;
+    }
+
+    function renderOutreach(container) {
+      container.innerHTML = `
+        <div class="animate-fade">
+          <h2 class="section-title">Strategic Outreach Engine</h2>
+          <div class="glass" style="padding:24px; margin-bottom:32px; min-height:200px; display:flex; align-items:center; justify-content:center; background: url('data:image/svg+xml,<svg width=\"800\" height=\"400\" viewBox=\"0 0 800 400\" xmlns=\"http://www.w3.org/2000/svg\"><circle cx=\"200\" cy=\"150\" r=\"80\" fill=\"rgba(29,185,84,0.1)\" /><circle cx=\"600\" cy=\"250\" r=\"120\" fill=\"rgba(59,130,246,0.1)\" /><circle cx=\"400\" cy=\"100\" r=\"60\" fill=\"rgba(139,92,246,0.1)\" /></svg>'); background-size: cover;">
+             <div style="text-align:center; background:rgba(0,0,0,0.6); padding:16px 32px; border-radius:12px; backdrop-filter:blur(8px);">
+               <div style="font-size:1.5rem; font-weight:800;">Geographic Overlaps</div>
+               <div style="color:var(--spotify-green); font-weight:600;"> Denver • Milwaukee • Minneapolis • Dallas</div>
+             </div>
+          </div>
+
+          <h3 class="section-title" style="font-size:1.125rem;">Priority Outreach Tasks</h3>
+          <div style="display:flex; flex-direction:column; gap:12px;">
+             ${dashboardData.crossTrack.slice(0, 5).map(a => `
+               <div class="glass" style="display:flex; align-items:center; gap:16px; padding:16px;">
+                 <div class="artist-image" style="width:48px; height:48px;">${a.name.charAt(0)}</div>
+                 <div>
+                   <div style="font-weight:700;">${a.name}</div>
+                   <div style="font-size:0.75rem; color:var(--text-secondary);">Suggested Track for Curation: "${a.tracks[0]}"</div>
+                 </div>
+                 <button onclick="copyToClipboard('${a.name}')" class="glass" style="margin-left:auto; padding:6px 12px; font-size:0.75rem; color:var(--spotify-green); border-color:var(--spotify-green); cursor:pointer;">COPY FOR CRM</button>
+               </div>
+             `).join('')}
+          </div>
+        </div>
+      `;
+    }
+
+    function copyToClipboard(text) {
+      navigator.clipboard.writeText(text);
+      // Feedback could go here
+      const btn = event.target;
+      const originalText = btn.innerText;
+      btn.innerText = '✅ COPIED';
+      setTimeout(() => btn.innerText = originalText, 2000);
+    }
+
+    init();
   </script>
 </body>
 </html>
