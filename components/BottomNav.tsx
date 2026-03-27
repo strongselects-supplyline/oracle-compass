@@ -52,6 +52,7 @@ export default function BottomNav() {
         { name: "Engine", path: "/engine",   icon: "⚙️" },
         { name: "Label",  path: "/label",    icon: "🏷️" },
         { name: "CRM",    path: "/crm",      icon: "🤝" },
+        { name: "Geo",    path: "/geo/",     icon: "\uD83E\uDDBD" },
         { name: "Brain",  path: "/brain",    icon: "🧠" },
     ];
 
@@ -68,7 +69,7 @@ export default function BottomNav() {
                                         n.name === "Kill" && killCount > 0 ? "bg-amber-500" :
                                             n.name === "Label" && unreviewedCopy ? "bg-amber-500" : null;
 
-                const isExternal = n.path === "/crm";
+                const isExternal = n.path === "/crm" || n.path === "/geo/";
                 
                 if (isExternal) {
                     return (
