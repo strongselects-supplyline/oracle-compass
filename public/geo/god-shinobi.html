@@ -77810,6 +77810,12 @@ h1 {
   <script>
     let dashboardData = null;
     let activeTab = 'dashboard';
+    let currentReleaseId = null;
+
+    function viewRelease(id) {
+      currentReleaseId = id;
+      switchTab('releases');
+    }
 
     async function init() {
       if (window.embeddedData) {
@@ -77828,6 +77834,7 @@ h1 {
     }
 
     function switchTab(tab) {
+      if (tab !== 'releases') currentReleaseId = null;
       activeTab = tab;
       document.querySelectorAll('.nav-item').forEach(el => {
         el.classList.toggle('active', el.innerText.toLowerCase().includes(tab));
@@ -77885,79 +77892,107 @@ h1 {
     }
 
     function renderReleases(container) {
-      container.innerHTML = `
-        <div class="animate-fade">
-          <h2 class="section-title">Strategic Release Tiers</h2>
-          <div style="display:flex; flex-direction:column; gap:32px;">
-            ${dashboardData.tracks.map(t => {
-              const core = t.coreDrive || [];
-              const reachable = t.extendedDrive || [];
-              const priority = t.peripheral || [];
-              
-              return `
-              <div class="release-card glass" style="padding:24px;">
-                <div style="display:flex; align-items:center; gap:12px; margin-bottom:20px;">
-                  <h3 style="font-size:1.5rem; font-weight:800;">${t.title}</h3>
-                  <span style="background:rgba(255,255,255,0.1); padding:2px 8px; border-radius:4px; font-size:0.75rem;">${t.releaseDate}</span>
-                </div>
-                
-                <div class="stats-grid" style="margin-bottom:0;">
-                  <div class="stat-card glass" style="background:rgba(234, 179, 8, 0.1); border-color:rgba(234, 179, 8, 0.3);">
-                    <span class="stat-value" style="color:var(--accent-yellow)">${core.length}</span>
-                    <span class="stat-label">Core Drive</span>
-                  </div>
-                  <div class="stat-card glass" style="background:rgba(59, 130, 246, 0.1); border-color:rgba(59, 130, 246, 0.3);">
-                    <span class="stat-value" style="color:var(--accent-blue)">${reachable.length}</span>
-                    <span class="stat-label">Reachable</span>
-                  </div>
-                  <div class="stat-card glass" style="background:rgba(34, 197, 94, 0.1); border-color:rgba(34, 197, 94, 0.3);">
-                    <span class="stat-value" style="color:#22c55e">${priority.length}</span>
-                    <span class="stat-label">Priority</span>
-                  </div>
-                </div>
+      if (currentReleaseId) {
+        const t = dashboardData.tracks.find(tr => tr.id === currentReleaseId);
+        if (!t) { currentReleaseId = null; return renderReleases(container); }
+        
+        const core = t.coreDrive || [];
+        const reachable = t.extendedDrive || [];
+        const priority = t.peripheral || [];
 
-                ${core.length > 0 ? `
-                <div style="margin-top:24px; overflow-x:auto;">
-                  <h4 style="font-size:1.125rem; font-weight:700; margin-bottom:16px;">Core Drive Artists</h4>
-                  <table style="width:100%; text-align:left; border-collapse:collapse; min-width:800px;">
-                    <thead>
-                      <tr style="border-bottom:1px solid var(--border-color); color:var(--text-secondary); font-size:0.75rem; text-transform:uppercase;">
-                        <th style="padding:12px; font-weight:600;">Artist</th>
-                        <th style="padding:12px; font-weight:600;">Playlists</th>
-                        <th style="padding:12px; font-weight:600;">Groups</th>
-                        <th style="padding:12px; font-weight:600;">Tracks</th>
-                        <th style="padding:12px; font-weight:600;">Reference Tracks</th>
-                      </tr>
-                    </thead>
-                    <tbody>
-                      ${core.slice(0, 50).map(a => `
-                        <tr style="border-bottom:1px solid rgba(255,255,255,0.05); vertical-align:top;">
-                          <td style="padding:16px 12px; font-weight:700; max-width:200px;">
-                            <div style="display:flex; align-items:center; gap:12px;">
-                              <div class="artist-image" style="width:32px; height:32px; font-size:0.75rem; flex-shrink:0;">${a.name.charAt(0)}</div>
-                              <span style="white-space:nowrap; overflow:hidden; text-overflow:ellipsis;" title="${a.name}">${a.name}</span>
-                            </div>
-                          </td>
-                          <td style="padding:16px 12px; font-variant-numeric:tabular-nums;">${a.playlistAppearances || 0}</td>
-                          <td style="padding:16px 12px; font-variant-numeric:tabular-nums;">${a.encodeGroups || 0}</td>
-                          <td style="padding:16px 12px; color:var(--spotify-green); font-weight:700; font-variant-numeric:tabular-nums;">${a.trackAppearances || a.overlapCount || 1}</td>
-                          <td style="padding:16px 12px;">
-                            <div style="display:flex; flex-wrap:wrap; gap:6px;">
-                              ${(a.topTracks || []).map(track => `<span style="background:rgba(255,255,255,0.05); border:1px solid rgba(255,255,255,0.1); padding:4px 8px; border-radius:4px; font-size:0.75rem; white-space:nowrap; max-width:200px; overflow:hidden; text-overflow:ellipsis;" title="${track}">${track}</span>`).join('')}
-                            </div>
-                          </td>
-                        </tr>
-                      `).join('')}
-                    </tbody>
-                  </table>
-                  ${core.length > 50 ? `<div style="text-align:center; padding:16px; font-size:0.875rem; color:var(--text-secondary); background:rgba(255,255,255,0.02); margin-top:8px; border-radius:8px;">+ ${core.length - 50} more overlapping artists available for export</div>` : ''}
-                </div>
-                ` : ''}
-              </div>
-            `}).join('')}
+        container.innerHTML = `
+          <div class="animate-fade">
+            <button onclick="viewRelease(null)" class="glass" style="margin-bottom:24px; padding:8px 16px; cursor:pointer; background:transparent; border-color:var(--border-color); color:var(--text-secondary); font-weight:700;">← Back to Catalog</button>
+            <div style="display:flex; align-items:baseline; gap:16px; margin-bottom:32px;">
+              <h1 style="font-size:3rem; font-weight:900; margin:0;">${t.title}</h1>
+              <span style="background:rgba(255,255,255,0.1); padding:4px 12px; border-radius:6px; font-size:0.875rem; font-weight:700;">catalog</span>
+            </div>
+            
+            <div class="stats-grid" style="grid-template-columns:repeat(3, 1fr); gap:20px; margin-bottom:48px;">
+               <div class="stat-card glass" style="background:rgba(234, 179, 8, 0.05); border-color:rgba(234, 179, 8, 0.2); padding:32px;">
+                 <span class="stat-value" style="color:var(--accent-yellow); font-size:3rem;">${core.length}</span>
+                 <span class="stat-label">Core Drive</span>
+               </div>
+               <div class="stat-card glass" style="background:rgba(59, 130, 246, 0.05); border-color:rgba(59, 130, 246, 0.2); padding:32px;">
+                 <span class="stat-value" style="color:var(--accent-blue); font-size:3rem;">${reachable.length}</span>
+                 <span class="stat-label">Reachable</span>
+               </div>
+               <div class="stat-card glass" style="background:rgba(34, 197, 94, 0.05); border-color:rgba(34, 197, 94, 0.2); padding:32px;">
+                 <span class="stat-value" style="color:var(--spotify-green); font-size:3rem;">${priority.length}</span>
+                 <span class="stat-label">Priority</span>
+               </div>
+            </div>
+
+            ${core.length > 0 ? `
+            <div style="margin-top:24px; overflow-x:auto;">
+              <h4 style="font-size:1.125rem; font-weight:700; margin-bottom:16px;">Core Drive Artists</h4>
+              <table style="width:100%; text-align:left; border-collapse:collapse; min-width:800px;">
+                <thead>
+                  <tr style="border-bottom:1px solid var(--border-color); color:var(--text-secondary); font-size:0.75rem; text-transform:uppercase;">
+                    <th style="padding:16px; font-weight:800;">Artist</th>
+                    <th style="padding:16px; font-weight:800;">Playlists</th>
+                    <th style="padding:16px; font-weight:800;">Groups</th>
+                    <th style="padding:16px; font-weight:800;">Tracks</th>
+                    <th style="padding:16px; font-weight:800;">Reference Tracks</th>
+                  </tr>
+                </thead>
+                <tbody>
+                  ${core.map(a => `
+                    <tr style="border-bottom:1px solid rgba(255,255,255,0.05); vertical-align:middle; transition:background 0.2s;" onmouseover="this.style.background='rgba(255,255,255,0.02)'" onmouseout="this.style.background='transparent'">
+                      <td style="padding:20px 16px; font-weight:800; max-width:250px;">
+                        <div style="display:flex; align-items:center; gap:16px;">
+                          <div class="artist-image" style="width:40px; height:40px; font-size:1rem; flex-shrink:0; background:var(--accent-purple); color:white;">${a.name.charAt(0)}</div>
+                          <span style="white-space:nowrap; overflow:hidden; text-overflow:ellipsis; font-size:1.1rem;">${a.name}</span>
+                        </div>
+                      </td>
+                      <td style="padding:20px 16px; font-variant-numeric:tabular-nums; font-size:1.25rem; font-weight:600;">${a.playlistAppearances || 0}</td>
+                      <td style="padding:20px 16px; font-variant-numeric:tabular-nums; font-size:1.25rem; font-weight:600;">${a.encodeGroups || 0}</td>
+                      <td style="padding:20px 16px; color:var(--spotify-green); font-weight:800; font-variant-numeric:tabular-nums; font-size:1.25rem;">${a.trackAppearances || a.overlapCount || 1}</td>
+                      <td style="padding:20px 16px;">
+                        <div style="display:flex; flex-wrap:wrap; gap:8px;">
+                          ${(a.topTracks || []).map(track => `<span style="background:rgba(255,255,255,0.08); border:1px solid rgba(255,255,255,0.15); padding:6px 12px; border-radius:6px; font-size:0.8rem; white-space:nowrap; max-width:220px; overflow:hidden; text-overflow:ellipsis;" title="${track}">${track}</span>`).join('')}
+                        </div>
+                      </td>
+                    </tr>
+                  `).join('')}
+                </tbody>
+              </table>
+            </div>
+            ` : `<div style="padding:24px; color:var(--text-secondary);">No Core Drive artists analyzed for this track.</div>`}
           </div>
-        </div>
-      `;
+        `;
+      } else {
+        container.innerHTML = `
+          <div class="animate-fade">
+            <h2 class="section-title">Strategic Catalog Overview</h2>
+            <div style="display:grid; grid-template-columns:repeat(auto-fill, minmax(320px, 1fr)); gap:24px; margin-top:32px;">
+               ${dashboardData.tracks.map(t => {
+                 const coreCount = (t.coreDrive || []).length;
+                 const priorityCount = (t.peripheral || []).length;
+                 return `
+                 <div class="glass" style="padding:32px; cursor:pointer; transition:all 0.3s cubic-bezier(0.4, 0, 0.2, 1); border:1px solid var(--border-color); position:relative;" onmouseover="this.style.borderColor='var(--spotify-green)'; this.style.transform='translateY(-6px)';" onmouseout="this.style.borderColor='var(--border-color)'; this.style.transform='translateY(0)';" onclick="viewRelease('${t.id}')">
+                   <div style="font-size:1.75rem; font-weight:900; margin-bottom:8px; line-height:1.2;">${t.title}</div>
+                   <div style="font-size:0.75rem; color:var(--text-secondary); text-transform:uppercase; letter-spacing:0.1em; margin-bottom:32px; font-weight:700;">Deployed: ${t.releaseDate || 'Catalog'}</div>
+                   <div style="display:flex; justify-content:space-between; align-items:center;">
+                     <div style="display:flex; gap:16px;">
+                       <div>
+                         <div style="color:var(--accent-yellow); font-size:1.5rem; font-weight:900; line-height:1;">${coreCount}</div>
+                         <div style="font-size:0.65rem; color:var(--text-secondary); text-transform:uppercase; margin-top:4px; font-weight:800;">Core</div>
+                       </div>
+                       <div>
+                         <div style="color:var(--spotify-green); font-size:1.5rem; font-weight:900; line-height:1;">${priorityCount}</div>
+                         <div style="font-size:0.65rem; color:var(--text-secondary); text-transform:uppercase; margin-top:4px; font-weight:800;">Prio</div>
+                       </div>
+                     </div>
+                     <span style="color:var(--text-secondary); font-size:0.75rem; max-width:120px; text-align:right;">${t.moodTags.slice(0,2).join(' • ')}</span>
+                   </div>
+                 </div>
+                 `;
+               }).join('')}
+            </div>
+          </div>
+        `;
+      }
     }
 
     function renderSonic(container) {
@@ -78026,27 +78061,30 @@ h1 {
                     </tr>
                   </thead>
                   <tbody>
-                    ${dashboardData.crossTrack.slice(0, 100).map(a => `
+                    ${dashboardData.crossTrack.slice(0, 100).map(a => {
+                      const spotifyUrl = a.spotifyId ? \`https://open.spotify.com/artist/\${a.spotifyId}\` : \`https://open.spotify.com/search/\${encodeURIComponent(a.name)}\`;
+                      const copyPayload = \`\${a.name}\\n\${spotifyUrl}\`;
+                      return \`
                       <tr style="border-bottom:1px solid rgba(255,255,255,0.05); transition:background 0.2s;" onmouseover="this.style.background='rgba(255,255,255,0.02)'" onmouseout="this.style.background='transparent'">
                         <td style="padding:16px 20px;">
                           <div style="display:flex; align-items:center; gap:12px;">
-                            <div class="artist-image" style="width:40px; height:40px; font-size:1rem;">${a.name.charAt(0)}</div>
+                            <div class="artist-image" style="width:40px; height:40px; font-size:1rem;">\${a.name.charAt(0)}</div>
                             <div>
-                              <div style="font-weight:700; font-size:1rem;">${a.name}</div>
-                              <div style="font-size:0.75rem; color:var(--text-secondary); margin-top:2px;">Curation Match: <span style="color:white; font-weight:500;">${(window.trackMap && window.trackMap[a.tracks[0]]) ? window.trackMap[a.tracks[0]] : a.tracks[0]}</span></div>
+                              <div style="font-weight:700; font-size:1rem;"><a href="\${spotifyUrl}" target="_blank" style="color:white; text-decoration:none; transition:color 0.2s;" onmouseover="this.style.color='var(--spotify-green)'" onmouseout="this.style.color='white'">\${a.name}</a></div>
+                              <div style="font-size:0.75rem; color:var(--text-secondary); margin-top:2px;">Curation Match: <span style="color:white; font-weight:500;">\${(window.trackMap && window.trackMap[a.tracks[0]]) ? window.trackMap[a.tracks[0]] : a.tracks[0]}</span></div>
                             </div>
                           </div>
                         </td>
                         <td style="padding:16px 20px;">
                           <div style="display:inline-flex; align-items:center; justify-content:center; background:rgba(29, 185, 84, 0.1); border:1px solid rgba(29, 185, 84, 0.2); padding:4px 12px; border-radius:99px; font-variant-numeric:tabular-nums; color:var(--spotify-green); font-weight:800; font-size:1rem;">
-                            ${a.trackCount} Tracks
+                            \${a.trackCount} Tracks
                           </div>
                         </td>
                         <td style="padding:16px 20px; text-align:right;">
-                           <button onclick="copyToClipboard(event, '${a.name}')" class="glass" style="padding:8px 16px; font-size:0.75rem; font-weight:700; color:var(--text-primary); cursor:pointer; background:transparent; transition:all 0.2s;" onmouseover="this.style.background='white'; this.style.color='black';" onmouseout="this.style.background='transparent'; this.style.color='var(--text-primary)';">Copy for CRM</button>
+                           <button onclick="copyToClipboard(event, \`\${copyPayload}\`)" class="glass" style="padding:8px 16px; font-size:0.75rem; font-weight:700; color:var(--text-primary); cursor:pointer; background:transparent; transition:all 0.2s;" onmouseover="this.style.background='var(--spotify-green)'; this.style.color='black'; this.style.borderColor='var(--spotify-green)';" onmouseout="this.style.background='transparent'; this.style.color='var(--text-primary)'; this.style.borderColor='var(--border-color)';">Copy for CRM</button>
                         </td>
                       </tr>
-                    `).join('')}
+                    \`}).join('')}
                   </tbody>
                 </table>
               </div>
