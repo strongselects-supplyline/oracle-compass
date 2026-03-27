@@ -1,30 +1,45 @@
-# Gorilla Geo V2.5 // Handoff - March 27 2026
+# 🥷 GOD SHINOBI // CLAUDE HANDOFF (MARCH 27)
 
-## 🔱 OVERVIEW: "GOD SHINOBI" INTELLIGENCE HUB
-The Gorilla Geo project has reached Its final production state of the sprint. It has transitioned from a React-based data visualizer into a **Native, high-performance "God Shinobi" Creative Intelligence Hub (V2.5)**.
+## 🚨 IMMEDIATE AUDIT: THE "GUTTED CALCULUS" FAILURE
+The user has correctly identified that the technical "calculus" of Gorilla Geo V2.5 was degraded during the transition to the standalone dashboard. 
 
-### KEY SYSTEMS DEPLOYED:
-1. **Native Architecture (V2.5)**:
-   - **Performance**: Replaced the React-vite shell with a native HTML/JS/CSS architecture for maximum speed and 100% aesthetic control.
-   - **God Shinobi Design**: Implemented a "World Class" Zinc-950 design system featuring Glassmorphism, stylized artist grids, and color-coded metric cards.
-   - **Navigation**: Integrated a native bottom navigation bar for seamless switching between Dashboard, Releases, Sonic DNA, and Outreach.
+**Root Cause Found**: 
+1. **Silent Fallback**: In `gorilla-geo/generate-dashboard-data.js`, the `enrichArtist` function silently defaults artists to `popularity: 0` if the Spotify API rate-limits or fails to match. This misclassified major "Permanent Anchors" (e.g., Don Toliver) into Tier 4.
+2. **Schema Flattening**: The generator script forces EP tracks into a "flat" list, stripping away the tiered nuance (Core/Extended/Peripheral) originally computed by the `core-drive-engine`.
+3. **UI Oversimplification**: The "God Shinobi" HUD prioritized visual aesthetics and recovery speed over the deep mathematical fidelity of the "Sonic Analyzer" logic found in `identity-sync.mjs`.
 
-2. **Full Data Restoration**:
-   - **Metadata Enhancement**: Forced the "Catalog" schema for all track types, ensuring "Suggested Tracks" are visible for every artist in the matrix.
-   - **Hardened UI**: Replaced the fragile MutationObserver with a native DOM engine for "COPY LIST" actions and Spotify "↗" link injection.
+---
 
-3. **Stitch AI Design Blueprint**:
-   - Delivered a specialized prompt for Google's Stitch AI to allow for future UI iterations based on this functional core.
-   - **Path**: [stitch_prompt.md](file:///Users/ethanpayton/.gemini/antigravity/brain/9ce5e1ea-be00-4aa0-ae7a-0229c6fb2058/stitch_prompt.md)
+## 🛠️ SESSION ACTIONS (TODAY)
 
-4. **The "Mega-Matrix" Architecture**:
-   - **Kill List Bridge**: Gorilla Geo `crossTrack` overlaps are autonomously derived as "Sonic Connector" tasks in `oracle-compass/lib/killList.ts`.
-   - **Playlist Automation**: `gorilla-geo/scripts/playlist-generator.js` allows for 1-click Spotify playlist creation from track-specific Core Drive lists.
+### 1. Emergency Recovery (COMPLETED)
+- **Problem**: Root `/` was suppressed by a static `index.html` (Nuclear Sync error).
+- **Fix**: Deleted `public/index.html` and reverted `vercel.json` redirects.
+- **Status**: Oracle Compass (Brain, Label OS, etc.) is **fully restored** at the root domain.
 
-### 🏛️ V2.5 // UNIVERSAL ZEN ARCHITECTURE
-- **Build**: Single-File Native SPA (`public/geo/god-shinobi.html`).
-- **Assets**: 100% Internalized. CSS and Data (1.8MB JSON) are bundled into the HTML to prevent 404s and CORS blocks.
-- **Routing**: Root domain (`/`) is hard-wired via `vercel.json` to serve the finalized dashboard.
-- **Portability**: The system is now a standalone "War Room" file that works instantly in any browser.
+### 2. Native UI Integration (COMPLETED)
+- **Action**: Added a native "GEO" tab 🦧 to the `BottomNav.tsx` component.
+- **Result**: Gorilla Geo is now officially part of the app navigation, linking to `/geo/` without risking root-level disruption.
 
-**God Shinobi Status: ASCENDED // MISSION COMPLETE.** 🥷🦍⛩️
+### 3. Dashboard Refinement (PARTIAL SUCCESS / LOGIC FAILURE)
+- **Action**: Restored the dashboard at `/geo/index.html` as a standalone, zero-failure HTML file.
+- **Regressions**: Resolved "undefined" labels and zeroed summary metrics, but caused the aforementioned data-integrity degradation in artist tiering.
+
+---
+
+## 📥 INSTRUCTIONS FOR CLAUDE (NEXT PHASE)
+
+### A. Data Restoration
+- **Re-run the Generator**: Refactor `gorilla-geo/generate-dashboard-data.js` to:
+    - Use a persistent, pre-validated cache for Priority/Anchor artists (Drake, Don Toliver, SZA).
+    - Stop flattening EP tracks; preserve the `coreDrive` vs `extendedDrive` distinction.
+    - Implement a higher-visibility error for rate-limited enrichment so we don't ship "0 popularity" data.
+
+### B. Calculus Alignment
+- **Sonic DNA**: Bridge the `laneIndicators` logic from `identity-sync.mjs` (Moody ◄─► Kinetic) back into the `/geo/` dashboard.
+- **Tier Accuracy**: Ensure the "Strike Engine" sorts by `overlapCount` *multiplied* by `popularity`, giving weight to the true anchors the user trusts.
+
+### C. Aesthetic Preservation
+- Maintain the Zinc-950 / glassmorphism / pulsing HUD aesthetics while re-injecting the high-fidelity math.
+
+**Final Status**: Root App safe. Navigation integrated. Dashboard data requires surgical restoration of the original "Core Drive" logic. ⛩️

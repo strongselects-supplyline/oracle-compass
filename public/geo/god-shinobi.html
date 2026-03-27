@@ -77950,9 +77950,14 @@ h1 {
                       <td style="padding:20px 16px; color:var(--spotify-green); font-weight:800; font-variant-numeric:tabular-nums; font-size:1.25rem;">${a.trackAppearances || a.overlapCount || 1}</td>
                       <td style="padding:20px 16px;">
                         <div style="display:flex; flex-wrap:wrap; gap:8px;">
-                          ${(a.topTracks || []).map(track => {
-                            const searchUrl = \`https://open.spotify.com/search/\${encodeURIComponent(a.name + ' ' + track)}\`;
-                            return \`<a href="\${searchUrl}" target="_blank" style="background:rgba(255,255,255,0.08); border:1px solid rgba(255,255,255,0.15); padding:6px 12px; border-radius:6px; font-size:0.8rem; white-space:nowrap; max-width:220px; overflow:hidden; text-overflow:ellipsis; color:var(--text-primary); text-decoration:none; transition:all 0.2s;" onmouseover="this.style.borderColor='var(--spotify-green)'; this.style.color='var(--spotify-green)';" onmouseout="this.style.borderColor='rgba(255,255,255,0.15)'; this.style.color='var(--text-primary)'; "\ title="\${track}">\${track}</a>\`;
+                          ${(a.topTracks || []).map(trackItem => {
+                            const isObj = typeof trackItem === 'object' && trackItem !== null;
+                            const trackName = isObj ? trackItem.name : trackItem;
+                            const trackId = isObj ? trackItem.id : null;
+                            const targetUrl = trackId 
+                              ? \`https://open.spotify.com/track/\${trackId}\`
+                              : \`https://open.spotify.com/search/\${encodeURIComponent(a.name + ' ' + trackName)}\`;
+                            return \`<a href="\${targetUrl}" target="_blank" style="background:rgba(255,255,255,0.08); border:1px solid rgba(255,255,255,0.15); padding:6px 12px; border-radius:6px; font-size:0.8rem; white-space:nowrap; max-width:220px; overflow:hidden; text-overflow:ellipsis; color:var(--text-primary); text-decoration:none; transition:all 0.2s;" onmouseover="this.style.borderColor='var(--spotify-green)'; this.style.color='var(--spotify-green)';" onmouseout="this.style.borderColor='rgba(255,255,255,0.15)'; this.style.color='var(--text-primary)';" title="\${trackName}">\${trackName}</a>\`;
                           }).join('')}
                         </div>
                       </td>
@@ -78010,11 +78015,14 @@ h1 {
              </div>
           </div>
           <div style="margin-top:40px; display:grid; grid-template-columns:1fr 1fr; gap:16px; text-align:left;">
-             ${dashboardData.tracks.slice(0, 4).map(t => `
-               <div class="glass" style="padding:16px;">
-                 <div style="font-weight:700; margin-bottom:4px;">${t.title}</div>
-                 <div style="font-size:0.75rem; color:var(--text-secondary);">${t.moodTags.join(' • ')}</div>
-               </div>
+             ${dashboardData.crossTrack.slice(0, 4).map(a => `
+               <a href="https://open.spotify.com/search/${encodeURIComponent(a.name)}" target="_blank" class="glass" style="padding:16px; display:flex; align-items:center; gap:16px; text-decoration:none; color:inherit; transition:transform 0.2s;" onmouseover="this.style.transform='translateY(-4px)'" onmouseout="this.style.transform='translateY(0)'">
+                 <div class="artist-image" style="width:48px; height:48px; font-size:1.2rem; flex-shrink:0;">${a.name.charAt(0)}</div>
+                 <div>
+                   <div style="font-weight:800; font-size:1.1rem; margin-bottom:4px;">${a.name}</div>
+                   <div style="font-size:0.75rem; color:var(--text-secondary); text-transform:uppercase; letter-spacing:0.05em; font-weight:700;"><span style="color:var(--spotify-green); font-size:1rem; font-variant-numeric:tabular-nums;">${a.trackCount}</span> Tracks Connected</div>
+                 </div>
+               </a>
              `).join('')}
           </div>
         </div>
