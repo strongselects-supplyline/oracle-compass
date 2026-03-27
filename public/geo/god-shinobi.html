@@ -77950,7 +77950,10 @@ h1 {
                       <td style="padding:20px 16px; color:var(--spotify-green); font-weight:800; font-variant-numeric:tabular-nums; font-size:1.25rem;">${a.trackAppearances || a.overlapCount || 1}</td>
                       <td style="padding:20px 16px;">
                         <div style="display:flex; flex-wrap:wrap; gap:8px;">
-                          ${(a.topTracks || []).map(track => `<span style="background:rgba(255,255,255,0.08); border:1px solid rgba(255,255,255,0.15); padding:6px 12px; border-radius:6px; font-size:0.8rem; white-space:nowrap; max-width:220px; overflow:hidden; text-overflow:ellipsis;" title="${track}">${track}</span>`).join('')}
+                          ${(a.topTracks || []).map(track => {
+                            const searchUrl = \`https://open.spotify.com/search/\${encodeURIComponent(a.name + ' ' + track)}\`;
+                            return \`<a href="\${searchUrl}" target="_blank" style="background:rgba(255,255,255,0.08); border:1px solid rgba(255,255,255,0.15); padding:6px 12px; border-radius:6px; font-size:0.8rem; white-space:nowrap; max-width:220px; overflow:hidden; text-overflow:ellipsis; color:var(--text-primary); text-decoration:none; transition:all 0.2s;" onmouseover="this.style.borderColor='var(--spotify-green)'; this.style.color='var(--spotify-green)';" onmouseout="this.style.borderColor='rgba(255,255,255,0.15)'; this.style.color='var(--text-primary)'; "\ title="\${track}">\${track}</a>\`;
+                          }).join('')}
                         </div>
                       </td>
                     </tr>
