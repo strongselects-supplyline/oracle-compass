@@ -8,12 +8,5 @@
       "path": "/api/label/cron/briefing",
       "schedule": "0 12 * * *"
     }
-  ],
-  "redirects": [
-    {
-      "source": "/",
-      "destination": "/geo/index.html",
-      "permanent": false
-    }
   ]
 }
