@@ -3,24 +3,73 @@
 <head>
   <meta charset="UTF-8" />
   <meta name="viewport" content="width=device-width, initial-scale=1.0" />
-  <title>Gorilla Geo — Your Sonic Universe</title>
+  <title>Gorilla Geo — Artist Tier Intelligence</title>
   <link rel="preconnect" href="https://fonts.googleapis.com" />
   <link href="https://fonts.googleapis.com/css2?family=Inter:wght@400;500;600;700;800;900&display=swap" rel="stylesheet" />
-  <script>
-    // Kill any stale service workers from v1
-    if ('serviceWorker' in navigator) {
-      navigator.serviceWorker.getRegistrations().then(function(registrations) {
-        for (let registration of registrations) {
-          registration.unregister();
-        }
-      });
-      caches.keys().then(function(names) {
-        for (let name of names) caches.delete(name);
-      });
-    }
-  </script>
   <script type="module" crossorigin src="/geo/assets/index-DdaaFMLa.js"></script>
   <link rel="stylesheet" crossorigin href="/geo/assets/index-C8HJXA5L.css">
-</head>
-<body><div id="root"></div></body>
+<link rel="manifest" href="/geo/manifest.webmanifest"><script id="vite-plugin-pwa:register-sw" src="/geo/registerSW.js"></script></head>
+<body>
+  <div id="root"></div>
+  <script>
+    // Dynamically inject "COPY LIST" buttons into the React bundle DOM without needing source
+    const observer = new MutationObserver((mutations) => {
+      // Find elements that contain specific header text but aren't massive wrapper divs
+      const allTextNodes = Array.from(document.querySelectorAll('h2, h3, h4, div, span'));
+      const hdrs = allTextNodes.filter(el => {
+        const text = el.textContent.toUpperCase();
+        // Match headers and ensure this element is the narrowest container (not a top-level app wrapper)
+        const isHeader = text.includes('CORE DRIVE') || text.includes('EXTENDED DRIVE') || text.includes('REACHABLE ARTISTS') || text.includes('TOP SONIC ANCHORS');
+        const hasLittleContent = text.length < 50;
+        return isHeader && hasLittleContent;
+      });
+      
+      hdrs.forEach(header => {
+        if (!header.querySelector('.copy-btn') && !header.nextElementSibling?.classList.contains('copy-btn')) {
+          const btn = document.createElement('button');
+          btn.className = 'copy-btn';
+          btn.innerHTML = `<svg xmlns="http://www.w3.org/2000/svg" width="12" height="12" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2"><rect x="9" y="9" width="13" height="13" rx="2" ry="2"></rect><path d="M5 15H4a2 2 0 0 1-2-2V4a2 2 0 0 1 2-2h9a2 2 0 0 1 2 2v1"></path></svg> COPY LIST`;
+          
+          btn.style.cssText = "margin-left:auto; background:rgba(29, 185, 84, 0.1); color:#1DB954; cursor:pointer; font-size:10px; border:1px solid rgba(29,185,84,0.3); padding:2px 6px; border-radius:4px; display:inline-flex; align-items:center; gap:4px; transition:all 0.2s;";
+          
+          header.style.display = 'flex';
+          header.style.alignItems = 'center';
+          header.style.whiteSpace = 'nowrap';
+          header.style.gap = '8px';
+          
+          btn.onclick = (e) => {
+            e.stopPropagation();
+            // Find the closest list of artists: look at parent or siblings.
+            const container = header.parentElement.parentElement; 
+            const links = container.querySelectorAll('a.artist-link, a[href*="spotify"], li, div[class*="flex"] > span'); 
+            
+            // Extract the strings
+            let artists = Array.from(links)
+              .map(l => l.textContent.replace('↗', '').replace('×', '').trim())
+              .filter(name => name.length > 2 && isNaN(name.charAt(0)) && !name.includes('+'))
+              .reduce((acc, current) => { if (!acc.includes(current)) acc.push(current); return acc; }, []);
+
+            // Handle the numbered list pattern in Reachable Artists ("1 Bruno Mars x1")
+            artists = artists.map(a => a.replace(/^\\d+\\s+/, '').trim());
+
+            if (artists.length > 0) {
+              navigator.clipboard.writeText(artists.join('\\n'));
+              const originalText = btn.innerHTML;
+              btn.innerHTML = `✅ COPIED!`;
+              btn.style.background = '#1DB954';
+              btn.style.color = '#000';
+              setTimeout(() => {
+                btn.innerHTML = originalText;
+                btn.style.background = 'rgba(29, 185, 84, 0.1)';
+                btn.style.color = '#1DB954';
+              }, 2000);
+            }
+          };
+          header.appendChild(btn);
+        }
+      });
+    });
+    observer.observe(document.body, { childList: true, subtree: true });
+  </script>
+</body>
 </html>
