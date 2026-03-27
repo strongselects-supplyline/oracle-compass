@@ -1,0 +1,98 @@
+{
+  "spotify": {
+    "clientId": "87263baf8b5342bca64c7cbdb20ffef2",
+    "clientSecret": "6c7663b1c1a443e99c399acbb534786c"
+  },
+  "instagram": {
+    "username": "YOUR_IG_USERNAME",
+    "password": "YOUR_IG_PASSWORD",
+    "sessionFile": "./data/ig-session.json"
+  },
+  "tiers": {
+    "T1": { "minPopularity": 80, "label": "Unreachable", "description": "1M+ followers — skip" },
+    "T2": { "minPopularity": 60, "label": "Hard", "description": "200K–1M — monitor only" },
+    "T3": { "minPopularity": 35, "label": "Target", "description": "20K–200K — primary DM pool" },
+    "T4": { "minPopularity": 0,  "label": "Priority", "description": "1K–20K — highest conversion" }
+  },
+  "scraping": {
+    "followersPerArtist": 400,
+    "delayBetweenFollowersMs": 1500,
+    "delayBetweenArtistsSec": 45,
+    "maxDMTargetsPerArtist": 25,
+    "minFollowerEngagementScore": 100
+  },
+  "geo": {
+    "minCityCount": 2,
+    "crossoverBonus": 0.6,
+    "topCitiesOutput": 15
+  },
+  "tracks": [
+    {
+      "id": "see_me",
+      "title": "SEE ME",
+      "releaseDate": "2026-03-13",
+      "coreDriveFile": "./data/core-drive-see-me.json",
+      "contentAngle": "vulnerable confidence, late night drive energy",
+      "moodTags": ["reflective", "atmospheric", "confident"]
+    },
+    {
+      "id": "east_side_love",
+      "title": "East Side Love",
+      "releaseDate": "2026-04-03",
+      "coreDriveFile": "./data/core-drive-esl.json",
+      "contentAngle": "neighborhood nostalgia, place-based romance",
+      "moodTags": ["warm", "nostalgic", "grounded"]
+    },
+    {
+      "id": "sweet_frustration",
+      "title": "Sweet Frustration",
+      "releaseDate": "2026-04-10",
+      "coreDriveFile": "./data/core-drive-sf.json",
+      "contentAngle": "sensual tension, unresolved want",
+      "moodTags": ["sensual", "moody", "tension"]
+    },
+    {
+      "id": "like_i_did",
+      "title": "Like I Did",
+      "releaseDate": "2026-04-17",
+      "coreDriveFile": "./data/core-drive-lid.json",
+      "contentAngle": "post-relationship clarity, grown energy",
+      "moodTags": ["retrospective", "smooth", "mature"]
+    },
+    {
+      "id": "i_like_girls",
+      "title": "I Like Girls",
+      "releaseDate": "catalog",
+      "coreDriveFile": "./data/core-drive-ilg.json",
+      "contentAngle": "playful attraction, confident nightlife energy",
+      "moodTags": ["playful", "confident", "vibrant"]
+    },
+    {
+      "id": "just_say_so",
+      "title": "Just Say So",
+      "releaseDate": "catalog",
+      "coreDriveFile": "./data/core-drive-jss.json",
+      "contentAngle": "direct honesty, emotional clarity under pressure",
+      "moodTags": ["direct", "emotional", "smooth"]
+    },
+    {
+      "id": "origami",
+      "title": "Origami",
+      "releaseDate": "catalog",
+      "coreDriveFile": "./data/core-drive-origami.json",
+      "contentAngle": "intricate layers, folding and unfolding vulnerability",
+      "moodTags": ["layered", "electronic", "dynamic"]
+    },
+    {
+      "id": "dance_with_him",
+      "title": "Dance With Him",
+      "releaseDate": "catalog",
+      "coreDriveFile": "./data/core-drive-dwh.json",
+      "contentAngle": "jealousy, letting go of control on the dance floor",
+      "moodTags": ["sensual", "rhythmic", "emotional"]
+    }
+  ],
+  "knownMarkets": ["Denver", "Milwaukee", "Minneapolis", "Dallas"],
+  "adBudgetPerCity": 25,
+  "adBudgetCurrency": "USD"
+}
