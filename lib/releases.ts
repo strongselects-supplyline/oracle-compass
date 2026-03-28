@@ -133,8 +133,8 @@ const RELEASE_DEFAULTS: Release[] = [
     contentDeliverables: { ...DEFAULT_DELIVERABLES, coreDriveComplete: true, campaignKitGenerated: true, ascap: "pending", mlc: "pending", soundExchange: "complete", songtrust: "pending", notes: "Live Mar 13. Core Drive: 2,713 tracks / 38 playlists. Campaign kit in docs/handoff_mar24/." } 
   },
   { 
-    title: "East Side Love", uploadDate: "2026-03-26", releaseDate: "2026-04-03", status: "unreleased", 
-    contentDeliverables: { ...DEFAULT_DELIVERABLES, coreDriveComplete: true, campaignKitGenerated: true, soundExchange: "complete", notes: "Core Drive: 1,221 tracks / 20 playlists. Campaign kit in docs/handoff_mar24/." } 
+    title: "East Side Love", uploadDate: "2026-03-31", releaseDate: "2026-04-03", status: "unreleased", 
+    contentDeliverables: { ...DEFAULT_DELIVERABLES, coreDriveComplete: true, campaignKitGenerated: true, soundExchange: "complete", notes: "Core Drive: 1,221 tracks / 20 playlists. Campaign kit in docs/handoff_mar24/. Upload Mon Mar 31, shorter Amuse window." } 
   },
   { 
     title: "Sweet Frustration", uploadDate: "2026-04-06", releaseDate: "2026-04-10", status: "unreleased", 
@@ -152,7 +152,7 @@ const RELEASE_DEFAULTS: Release[] = [
 
 const RELEASES_KEY = "dynamic_releases";
 const RELEASES_VERSION_KEY = "releases_data_version";
-const RELEASE_DATA_VERSION = 19; // v19: ESL upload accelerated to Mar 26 (tonight) per user request
+const RELEASE_DATA_VERSION = 20; // v20: ESL upload moved to Mon Mar 31 (shorter Amuse window, release still Apr 3)
 
 // Read from IndexedDB, seeding defaults on first call or after version bump
 export async function getDynamicReleases(): Promise<Release[]> {

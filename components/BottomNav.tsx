@@ -51,6 +51,7 @@ export default function BottomNav() {
         { name: "Studio", path: "/studio",   icon: "\uD83C\uDFA4" },
         { name: "Engine", path: "/engine",   icon: "⚙️" },
         { name: "Label",  path: "/label",    icon: "🏷️" },
+        { name: "Flow",   path: "/velocity",  icon: "📈" },
         { name: "CRM",    path: "/crm",      icon: "🤝" },
         { name: "Geo",    path: "/geo",      icon: "🗺️" },
         { name: "Brain",  path: "/brain",    icon: "🧠" },

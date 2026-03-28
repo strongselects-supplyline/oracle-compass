@@ -990,6 +990,133 @@ export async function deriveKillList(): Promise<KillTask[]> {
     });
   }
 
+  // ── 13. ESL EDITORIAL PITCH — URGENT ────────────────────────────
+  // Standard 7-day window expired Mar 24 (ESL release Apr 3).
+  // Spotify still reviews late submissions — must submit same-day as Amuse upload (Mar 31).
+  const eslRelease = releases.find(r => r.title === "East Side Love");
+  if (eslRelease && eslRelease.status !== "live" && !eslRelease.contentDeliverables.spotifyPitchSubmitted) {
+    const mar31 = new Date("2026-03-31T00:00:00");
+    if (now >= mar31) {
+      tasks.push({
+        id: "esl-pitch-same-day",
+        title: "Submit ESL editorial pitch — SAME DAY AS UPLOAD",
+        subtitle: "7-day window expired Mar 24. Submit immediately after Amuse accepts the upload.",
+        howTo: [
+          "Upload ESL to Amuse first — Spotify needs the release to exist as 'upcoming' before pitching.",
+          "Open Spotify for Artists (app or web) — wait 2-6 hrs after Amuse confirms.",
+          "Go to Music → East Side Love → tap 'Pitch a song'.",
+          "Genre: R&B / Soul. Mood: Romantic, Melancholic. Instruments: 808, Piano, Synth.",
+          "Culture: TrapSoul. Song description: 'Cinematic OVO-pocket R&B in the Bryson Tiller / Drake lane. Built for late-night editorial playlists and Release Radar discovery.'",
+          "Release date: April 3. Check all fields are filled. Submit.",
+          "The standard window has passed — editorial still reviews. A compelling pitch can still land Release Radar.",
+          "Tap ✓ when submitted.",
+        ],
+        urgency: "RED",
+        pillar: "ops",
+        timeBlock: "biz",
+        action: async () => {
+          await updateContentDeliverables("East Side Love", { spotifyPitchSubmitted: true });
+        },
+      });
+    } else {
+      // Pre-Mar-31: AMBER reminder to pitch on the day of upload
+      const daysToUpload = Math.ceil((mar31.getTime() - now.getTime()) / 86400000);
+      if (daysToUpload <= 3) {
+        tasks.push({
+          id: "esl-pitch-prep",
+          title: `Prep ESL editorial pitch — submit in ${daysToUpload}d`,
+          subtitle: "Pitch goes in same-day as upload on Mar 31. Write the pitch copy now.",
+          howTo: [
+            "Write your pitch copy NOW so you're not fumbling on upload day.",
+            "Genre: R&B / Soul. Mood: Romantic, Melancholic.",
+            "Description: 'Cinematic OVO-pocket R&B in the Bryson Tiller / Drake lane. Late-night, emotional, built for editorial discovery.'",
+            "Save it in Notes — you'll paste it into Spotify for Artists on Mar 31 right after upload.",
+          ],
+          urgency: "AMBER",
+          pillar: "ops",
+          timeBlock: "biz",
+          action: async () => {
+            await setStoreValue("esl_pitch_prep_done", true);
+          },
+        });
+      }
+    }
+  }
+
+  // ── 14. SPOTIFY AD STUDIO — GEO TARGETS ──────────────────────────
+  // Fire when a release is 0-3 days from release date.
+  // Sources city allocation from Gorilla Geo + routing playbook.
+  for (const release of releases) {
+    if (release.status === "live") continue;
+    const rDate = new Date(release.releaseDate + "T00:00:00");
+    const rDays = Math.ceil((rDate.getTime() - now.getTime()) / 86400000);
+    if (rDays > 3 || rDays < -5) continue;
+
+    const adKey = `ad_studio_deployed:${release.title}`;
+    const adDeployed = await getStoreValue<boolean>(adKey);
+    if (!adDeployed) {
+      const isReleaseDay = rDays <= 0;
+      tasks.push({
+        id: `ad-studio-${hashStr(release.title)}`,
+        title: `Launch Spotify Ad Studio — ${release.title}`,
+        subtitle: isReleaseDay
+          ? `${release.title} is out. Deploy ads now to prime the algorithm.`
+          : `${release.title} drops in ${rDays} day${rDays === 1 ? "" : "s"}. Set up the campaign.`,
+        howTo: [
+          "Go to ads.spotify.com → Create Ad → Audio Ad.",
+          "Select: Spotify for Artists (use your track audio).",
+          `Budget: $50 total. Geo split: Denver $20, Minneapolis $15, Dallas $15.`,
+          "Target: Fans of R&B/Soul. Ages 18-34. All genders.",
+          `CTA copy: 'Save ${release.title} on Spotify — out now.'`,
+          "Run dates: Release day + 5 days after.",
+          "Denver = your #1 market (372 Spotify users). Non-negotiable.",
+          "Minneapolis = #2 metro (323 combined). Midwest corridor — drivable for shows.",
+          "Tap ✓ when campaign is live.",
+        ],
+        urgency: isReleaseDay ? "RED" : "AMBER",
+        pillar: "business",
+        timeBlock: "biz",
+        action: async () => {
+          await setStoreValue(adKey, true);
+        },
+      });
+    }
+  }
+
+  // ── 15. STREAMING VELOCITY — LOG DAILY STREAMS ───────────────────
+  // Fires in the evening (8PM+) for live tracks with no entry today.
+  // Reminds to pull numbers from Spotify for Artists and log to /velocity.
+  if (hour >= 20) {
+    for (const release of releases) {
+      if (release.status !== "live") continue;
+      const velAckKey = `velocity_ack:${today}:${hashStr(release.title)}`;
+      const velAcked = await getStoreValue<boolean>(velAckKey);
+      // Check if today entry exists via the known key pattern
+      const streamEntryKey = `stream:${release.title.toLowerCase().replace(/\s+/g, "_").replace(/[^a-z0-9_]/g, "")}:${today}`;
+      const hasEntry = await getStoreValue(streamEntryKey);
+      if (!hasEntry && !velAcked) {
+        tasks.push({
+          id: `velocity-log-${hashStr(release.title)}`,
+          title: `Log streams — ${release.title}`,
+          subtitle: "Open Spotify for Artists and record today's numbers. Feeds the 28-day model.",
+          howTo: [
+            "Open Spotify for Artists app.",
+            `Tap Music → ${release.title} → Stats.`,
+            "Note: streams today + saves (if visible).",
+            "Open Oracle Compass → Velocity tab → tap '+ Log Today's Streams'.",
+            "Enter the numbers. 30 seconds. Keeps your momentum model accurate.",
+          ],
+          urgency: "GREEN",
+          pillar: "ops",
+          timeBlock: "evening",
+          action: async () => {
+            await setStoreValue(velAckKey, true);
+          },
+        });
+      }
+    }
+  }
+
   // ── Filter by cleared ────────────────────────────────────────────
   const cleared = await getStoreValue<string[]>(`kill_cleared:${today}`) || [];
   const filtered = tasks.filter(t => !cleared.includes(t.id));
