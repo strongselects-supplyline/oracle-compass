@@ -306,6 +306,11 @@ export default function MorningMode() {
 
           </>
         )}
+
+        {/* Build stamp — always know which deploy you're looking at */}
+        <div className="text-center text-[10px] text-zinc-600 py-4 select-all">
+          build {process.env.NEXT_PUBLIC_VERCEL_GIT_COMMIT_SHA?.slice(0, 7) || "local"} · {process.env.NEXT_PUBLIC_VERCEL_GIT_COMMIT_MESSAGE?.slice(0, 40) || "dev"}
+        </div>
       </div>
     </main>
   );

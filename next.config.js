@@ -5,7 +5,7 @@ const withPWA = require('next-pwa')({
   register: true,
   skipWaiting: true,
   disable: process.env.NODE_ENV === 'development',
-  publicExcludes: ['!crm/**/*', '!geo/**/*']
+  publicExcludes: ['!crm/**/*']
 })
 
 module.exports = withPWA({

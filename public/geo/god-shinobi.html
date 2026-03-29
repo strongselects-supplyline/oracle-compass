@@ -223,9 +223,23 @@ h1 {
       }
       try {
         const response = await fetch('geo-dashboard.json');
+        if (!response.ok) throw new Error('HTTP ' + response.status);
         dashboardData = await response.json();
+        // Cache to localStorage on every successful fetch
+        try { localStorage.setItem('geo_dashboard_cache', JSON.stringify(dashboardData)); } catch(x) {}
         renderActiveTab();
       } catch (e) {
+        console.warn('Network fetch failed, trying localStorage fallback...', e);
+        try {
+          const cached = localStorage.getItem('geo_dashboard_cache');
+          if (cached) {
+            dashboardData = JSON.parse(cached);
+            renderActiveTab();
+            document.getElementById('content').insertAdjacentHTML('afterbegin',
+              '<div style="background:#332200;color:#fbbf24;padding:6px 12px;text-align:center;font-size:12px;border-radius:6px;margin:8px">Showing cached data \u2014 pull down to refresh</div>');
+            return;
+          }
+        } catch(x) {}
         document.getElementById('content').innerHTML = `<div class="p-8 text-center text-red-500">Failed to load Geo Matrix. Check console.</div>`;
         console.error(e);
       }
