@@ -222,7 +222,10 @@ h1 {
         return;
       }
       try {
-        const response = await fetch('geo-dashboard.json');
+        const controller = new AbortController();
+        const timeout = setTimeout(() => controller.abort(), 8000);
+        const response = await fetch('geo-dashboard.json', { signal: controller.signal });
+        clearTimeout(timeout);
         if (!response.ok) throw new Error('HTTP ' + response.status);
         dashboardData = await response.json();
         // Cache to localStorage on every successful fetch
