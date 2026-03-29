@@ -82,7 +82,7 @@ export const BRAND_VOICE = {
                 perTrack: {
                     "SEE ME": { anchors: ["6LACK", "Drake", "Bryson Tiller", "PARTYNEXTDOOR"], lane: "Dark TrapSoul / OVO", bpm: 120 },
                     "East Side Love": { anchors: ["Bryson Tiller", "Drake", "Chris Brown", "PARTYNEXTDOOR"], lane: "Classic R&B Crossover", bpm: 98 },
-                    "Worth It": { anchors: ["Summer Walker", "T-Pain", "Ty Dolla $ign", "Eric Bellinger"], lane: "Modern TrapSoul Bounce", bpm: 97 },
+                    "Like I Did": { anchors: ["Summer Walker", "T-Pain", "Ty Dolla $ign", "Eric Bellinger"], lane: "Modern TrapSoul Bounce", bpm: 110 },
                     "Sweet Frustration": { anchors: ["KAYTRANADA", "GoldLink", "Syd", "Channel Tres"], lane: "House-R&B / Electronic Soul", bpm: 124 },
                 },
             },

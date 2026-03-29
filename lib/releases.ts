@@ -142,7 +142,7 @@ const RELEASE_DEFAULTS: Release[] = [
   },
   { 
     title: "Like I Did", uploadDate: "2026-04-13", releaseDate: "2026-04-17", status: "unreleased", 
-    contentDeliverables: { ...DEFAULT_DELIVERABLES, coreDriveComplete: true, campaignKitGenerated: true, soundExchange: "complete", notes: "Core Drive: via Worth It analysis (97 BPM F minor pocket). Campaign kit = worth_it_campaign_kit.md in docs/handoff_mar24/." } 
+    contentDeliverables: { ...DEFAULT_DELIVERABLES, coreDriveComplete: true, campaignKitGenerated: true, soundExchange: "complete", notes: "Core Drive: via Like I Did analysis (110 BPM D minor pocket). Campaign kit = worth_it_campaign_kit.md in docs/handoff_mar24/." } 
   },
   { 
     title: "ALL LOVE (EP)", uploadDate: "2026-04-14", releaseDate: "2026-04-24", status: "unreleased", 
