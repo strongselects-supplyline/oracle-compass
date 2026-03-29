@@ -496,28 +496,31 @@ export async function deriveKillList(): Promise<KillTask[]> {
       "Copy this code — you'll paste it into ASCAP, MLC, and Songtrust",
     ], -4, "ops", "biz");
 
-    toggle("reg-ascap", "ascapRegistered", "Register song on ASCAP", `Collects your performance royalties${!d.isrcPulled ? " (get ISRC code first ↑)" : ""}`, [
-      "Go to ascap.com and log in",
-      "Click 'Register a Work' or 'Add Work'",
-      "Enter: song title, your name as writer/publisher, ISRC code",
-      "Set ownership split (100% if you're the only writer)",
-      "Submit — ASCAP will confirm via email",
-    ], -4, "ops", "biz");
+    // Registration tasks only surface AFTER release day — song must be live first
+    if (daysUntil <= 0) {
+      toggle("reg-ascap", "ascapRegistered", "Register song on ASCAP", `Collects your performance royalties${!d.isrcPulled ? " (get ISRC code first ↑)" : ""}`, [
+        "Go to ascap.com and log in",
+        "Click 'Register a Work' or 'Add Work'",
+        "Enter: song title, your name as writer/publisher, ISRC code",
+        "Set ownership split (100% if you're the only writer)",
+        "Submit — ASCAP will confirm via email",
+      ], -4, "ops", "biz");
 
-    toggle("reg-mlc", "mlcRegistered", "Register song on MLC", `Collects mechanical royalties from streaming${!d.isrcPulled ? " (get ISRC code first ↑)" : ""}`, [
-      "Go to themlc.com and log in",
-      "Click 'Register Works' or 'Add a Work'",
-      "Enter: song title, ISRC code, your info",
-      "This captures royalties ASCAP doesn't cover",
-      "Submit and confirm",
-    ], -4, "ops", "biz");
+      toggle("reg-mlc", "mlcRegistered", "Register song on MLC", `Collects mechanical royalties from streaming${!d.isrcPulled ? " (get ISRC code first ↑)" : ""}`, [
+        "Go to themlc.com and log in",
+        "Click 'Register Works' or 'Add a Work'",
+        "Enter: song title, ISRC code, your info",
+        "This captures royalties ASCAP doesn't cover",
+        "Submit and confirm",
+      ], -4, "ops", "biz");
 
-    toggle("reg-songtrust", "songtrustRegistered", "Register song on Songtrust", `International royalty collection${!d.isrcPulled ? " (get ISRC code first ↑)" : ""}`, [
-      "Go to songtrust.com and log in",
-      "If you can't log in: check if account transferred during UMG changes",
-      "Add the new song with title and ISRC",
-      "Songtrust handles royalty collection in 60+ countries",
-    ], -4, "ops", "biz");
+      toggle("reg-songtrust", "songtrustRegistered", "Register song on Songtrust", `International royalty collection${!d.isrcPulled ? " (get ISRC code first ↑)" : ""}`, [
+        "Go to songtrust.com and log in",
+        "If you can't log in: check if account transferred during UMG changes",
+        "Add the new song with title and ISRC",
+        "Songtrust handles royalty collection in 60+ countries",
+      ], -4, "ops", "biz");
+    }
 
     toggle("reg-musixmatch", "musixmatchSubmitted", "Submit lyrics to Musixmatch", "Gets your lyrics to show on Spotify, Apple Music, etc.", [
       openApp("musixmatch"),
