@@ -223,8 +223,8 @@ h1 {
       }
       try {
         const controller = new AbortController();
-        const timeout = setTimeout(() => controller.abort(), 8000);
-        const response = await fetch('geo-dashboard.json', { signal: controller.signal });
+        const timeout = setTimeout(() => controller.abort(), 4000);
+        const response = await fetch('/geo/geo-dashboard.json', { signal: controller.signal });
         clearTimeout(timeout);
         if (!response.ok) throw new Error('HTTP ' + response.status);
         dashboardData = await response.json();
@@ -243,7 +243,7 @@ h1 {
             return;
           }
         } catch(x) {}
-        document.getElementById('content').innerHTML = `<div class="p-8 text-center text-red-500">Failed to load Geo Matrix. Check console.</div>`;
+        document.getElementById('content').innerHTML = `<div style="padding:32px; text-align:center; color:#ef4444; font-weight:700;">Failed to load Geo Matrix. Pull down to refresh.</div>`;
         console.error(e);
       }
     }

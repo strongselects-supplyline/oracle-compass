@@ -14,9 +14,7 @@ module.exports = withPWA({
   async rewrites() {
     return [
       { source: '/crm', destination: '/crm/index.html' },
-      { source: '/crm/', destination: '/crm/index.html' },
-      { source: '/geo', destination: '/geo/index.html' },
-      { source: '/geo/', destination: '/geo/index.html' }
+      { source: '/crm/', destination: '/crm/index.html' }
     ]
   }
 })
