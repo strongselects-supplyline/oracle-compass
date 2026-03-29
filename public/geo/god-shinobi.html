@@ -248,14 +248,24 @@ h1 {
         return;
       }
       try {
+        const contentDiv = document.getElementById('content');
+        if(contentDiv) contentDiv.innerHTML = '<div style="padding:100px;text-align:center;">Preparing Matrix Fetch...</div>';
+        
         const controller = new AbortController();
         const timeout = setTimeout(() => controller.abort(), 4000);
-        const response = await fetch('/geo/geo-dashboard.json', { signal: controller.signal });
-        clearTimeout(timeout);
+        if(contentDiv) contentDiv.innerHTML = '<div style="padding:100px;text-align:center;">Fetching Data...</div>';
+        
+        const response = await fetch('/geo/geo-dashboard.json?v=' + Date.now(), { signal: controller.signal });
+        
+        if(contentDiv) contentDiv.innerHTML = '<div style="padding:100px;text-align:center;">Response received. Parsing...</div>';
         if (!response.ok) throw new Error('HTTP ' + response.status);
         dashboardData = await response.json();
-        // Cache to localStorage on every successful fetch
+        clearTimeout(timeout);
+        
+        if(contentDiv) contentDiv.innerHTML = '<div style="padding:100px;text-align:center;">Checking Local Storage...</div>';
         try { localStorage.setItem('geo_dashboard_cache', JSON.stringify(dashboardData)); } catch(x) {}
+        
+        if(contentDiv) contentDiv.innerHTML = '<div style="padding:100px;text-align:center;">Rendering View...</div>';
         renderActiveTab();
       } catch (e) {
         console.warn('Network fetch failed, trying localStorage fallback...', e);
@@ -269,7 +279,7 @@ h1 {
             return;
           }
         } catch(x) {}
-        document.getElementById('content').innerHTML = `<div style="padding:32px; text-align:center; color:#ef4444; font-weight:700;">Failed to load Geo Matrix. Pull down to refresh.</div>`;
+        document.getElementById('content').innerHTML = `<div style="padding:32px; text-align:center; color:#ef4444; font-weight:700;">Failed: ${e.message || 'Unknown Error'}</div>`;
         console.error(e);
       }
     }
