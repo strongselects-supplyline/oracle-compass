@@ -184,13 +184,27 @@ export default function MorningMode() {
         ) : (
           <>
             {/* ONE THING */}
-            <section className="mb-6 card !py-5 text-center" onClick={() => !isEditingOneThing && setIsEditingOneThing(true)}>
-              <p className="text-[9px] font-black tracking-[0.2em] text-amber-500 uppercase mb-2">Today{"'"}s One Thing</p>
+            <section
+              className={`mb-6 card !py-6 text-center transition-all active:scale-[0.98] cursor-pointer ${!log.oneThing ? 'border-dashed border-amber-500/30 bg-amber-500/[0.02]' : ''}`}
+              onClick={() => !isEditingOneThing && setIsEditingOneThing(true)}
+              aria-label="Set today's one thing"
+            >
+              <p className="text-[10px] font-black tracking-[0.2em] text-amber-500 uppercase mb-3">Today{"'"}s One Thing</p>
               {isEditingOneThing ? (
-                <input autoFocus type="text" className="w-full bg-transparent text-xl font-black text-center text-white outline-none placeholder-[#333]"
-                  value={oneThingInput} onChange={e => setOneThingInput(e.target.value)} onKeyDown={e => e.key === "Enter" && handleSaveOneThing()} onBlur={handleSaveOneThing} placeholder="The single move..." />
+                <input
+                  autoFocus
+                  type="text"
+                  className="w-full bg-transparent text-xl font-black text-center text-white outline-none placeholder-[#333]"
+                  value={oneThingInput}
+                  onChange={e => setOneThingInput(e.target.value)}
+                  onKeyDown={e => e.key === "Enter" && handleSaveOneThing()}
+                  onBlur={handleSaveOneThing}
+                  placeholder="The single move..."
+                />
               ) : (
-                <p className={`text-xl font-black leading-tight tracking-tight ${log.oneThing ? 'text-white' : 'text-[#444] italic gap-0'}`}>{log.oneThing || "[ tap to set ]"}</p>
+                <p className={`text-xl font-black leading-tight tracking-tight px-4 ${log.oneThing ? 'text-white' : 'text-[#555] opacity-60'}`}>
+                  {log.oneThing || "Tap to define the single move \u2192"}
+                </p>
               )}
             </section>
 

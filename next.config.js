@@ -11,6 +11,18 @@ const withPWA = require('next-pwa')({
 module.exports = withPWA({
   reactStrictMode: true,
   serverExternalPackages: ['googleapis'],
+  async headers() {
+    return [
+      {
+        // Force fresh fetch on geo files — bypass SW cache and CDN cache entirely
+        source: '/geo/:path*',
+        headers: [
+          { key: 'Cache-Control', value: 'no-store, no-cache, must-revalidate' },
+          { key: 'Pragma', value: 'no-cache' },
+        ],
+      },
+    ]
+  },
   async rewrites() {
     return [
       { source: '/crm', destination: '/crm/index.html' },

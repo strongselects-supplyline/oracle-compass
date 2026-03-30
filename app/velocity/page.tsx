@@ -191,8 +191,9 @@ function EPFlywheel() {
               style={{ left: `${toPct(r.releaseDate)}%` }}
             >
               <div
-                className="w-4 h-4 rounded-full border-2 border-[#080808]"
+                className="w-6 h-6 rounded-full border-[3px] border-[#080808] flex items-center justify-center transition-all hover:scale-125"
                 style={{ background: isLive ? r.color : "#0f0f0f", borderColor: r.color }}
+                aria-label={`${r.title} release dot`}
               />
             </div>
           );
@@ -297,14 +298,32 @@ function VelocityCard({
         {[
           { label: "Total", value: fmt(d.totalStreams) },
           { label: "7d avg/day", value: fmt(d.sevenDayAvg) },
-          { label: "Proj. Day28", value: fmt(d.projectedDay28) },
+          { 
+             label: "Proj. Day28", 
+             value: fmt(d.projectedDay28),
+             alert: d.projectedDay28 < POPULARITY_THRESHOLDS.algorithmic && d.daysSinceRelease < 28
+          },
         ].map((m) => (
-          <div key={m.label} className="bg-[#0f0f0f] rounded-xl p-2.5 text-center">
-            <div className="text-base font-black text-white">{m.value}</div>
+          <div key={m.label} className="bg-[#0f0f0f] rounded-xl p-2.5 text-center relative overflow-hidden">
+            <div className={`text-base font-black ${m.alert ? "text-red-400" : "text-white"}`}>{m.value}</div>
             <div className="text-[8px] text-[#555] font-bold uppercase">{m.label}</div>
+            {m.alert && (
+              <div className="absolute top-0 right-0 p-1">
+                <span className="flex h-1.5 w-1.5 rounded-full bg-red-500 animate-pulse" />
+              </div>
+            )}
           </div>
         ))}
       </div>
+
+      {d.projectedDay28 < POPULARITY_THRESHOLDS.algorithmic && d.daysSinceRelease < 28 && (
+        <div className="bg-red-500/5 border border-red-500/10 rounded-xl px-3 py-2 mb-3">
+          <p className="text-[8px] font-black text-red-400 uppercase tracking-widest mb-1">Low Algorithmic Signal</p>
+          <p className="text-[8px] text-[#555] leading-relaxed">
+            Projected D-28 is under {fmt(POPULARITY_THRESHOLDS.algorithmic)}. Algorithmic activation (Discover Weekly) requires higher velocity before the window closes.
+          </p>
+        </div>
+      )}
 
       {d.saveRate > 0 && (
         <div

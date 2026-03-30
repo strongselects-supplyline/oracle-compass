@@ -46,7 +46,7 @@ export default function BrainPage() {
         {/* ── Mode Declaration ── */}
         <div className="mb-10">
           <h1 className="text-5xl font-black tracking-tight mb-2 leading-none">MAKE MODE</h1>
-          <p className="text-[#666] text-sm leading-relaxed font-medium">
+          <p className="text-[var(--text-secondary)] text-sm leading-relaxed font-medium">
             Studio is primary. Everything else is Track 2.<br />
             Mar 1 → Apr 24
           </p>
@@ -87,17 +87,17 @@ export default function BrainPage() {
           <Anchor text="The anesthesia phase is over." />
           <div>
             <Anchor text="You are the Jinchuriki." />
-            <p className="text-[#555] text-base font-medium leading-relaxed mt-3 ml-1">
+            <p className="text-[#888] text-base font-medium leading-relaxed mt-3 ml-1">
               Master the seal.<br />
               Channel the power.<br />
-              <span className="text-[#444] mt-1 block">ALL LOVE is the output.</span>
+              <span className="text-[#666] mt-1 block">ALL LOVE is the output.</span>
             </p>
           </div>
         </div>
 
         {/* ── Mission Statement ── */}
         <div className="border-t border-[#1e1e1e] pt-8 pb-4">
-          <p className="text-[10px] font-black tracking-[0.15em] text-[#333] uppercase leading-relaxed">
+          <p className="text-[10px] font-black tracking-[0.15em] text-[#666] uppercase leading-relaxed">
             Sovereign Creator. Zero Dependency.<br />
             Zero-Cost Stack. S-Tier standard.<br />
             Every move compounds relentlessly into the next.

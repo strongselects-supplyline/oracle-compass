@@ -1,0 +1,990 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+<meta charset="UTF-8">
+<meta name="viewport" content="width=device-width, initial-scale=1.0">
+<title>Release Asset Reference — Ethan Payton</title>
+<style>
+  :root {
+    --bg: #0a0a0a;
+    --surface: #111111;
+    --surface2: #1a1a1a;
+    --border: #2a2a2a;
+    --amber: #FFB347;
+    --amber-dim: rgba(255,179,71,0.12);
+    --amber-border: rgba(255,179,71,0.3);
+    --red: #ff4f4f;
+    --yellow: #f5c518;
+    --green: #4ade80;
+    --blue: #60a5fa;
+    --muted: #555;
+    --text: #e4e4e7;
+    --text-dim: #888;
+    --text-faint: #444;
+  }
+  * { box-sizing: border-box; margin: 0; padding: 0; }
+  body {
+    background: var(--bg);
+    color: var(--text);
+    font-family: 'SF Mono', 'Fira Code', 'Consolas', monospace;
+    font-size: 13px;
+    line-height: 1.5;
+    padding: 32px 24px;
+    max-width: 1100px;
+    margin: 0 auto;
+  }
+
+  /* HEADER */
+  .header {
+    border-bottom: 1px solid var(--border);
+    padding-bottom: 20px;
+    margin-bottom: 32px;
+  }
+  .header h1 {
+    font-size: 18px;
+    font-weight: 700;
+    letter-spacing: 0.04em;
+    color: var(--amber);
+    text-transform: uppercase;
+  }
+  .header p {
+    color: var(--text-dim);
+    font-size: 11px;
+    margin-top: 4px;
+    text-transform: uppercase;
+    letter-spacing: 0.08em;
+  }
+
+  /* SECTION */
+  .section {
+    margin-bottom: 40px;
+  }
+  .section-header {
+    display: flex;
+    align-items: center;
+    gap: 10px;
+    margin-bottom: 14px;
+  }
+  .section-header h2 {
+    font-size: 11px;
+    font-weight: 700;
+    text-transform: uppercase;
+    letter-spacing: 0.12em;
+    color: var(--text-dim);
+  }
+  .section-header .pill {
+    font-size: 9px;
+    padding: 2px 8px;
+    border-radius: 20px;
+    font-weight: 700;
+    letter-spacing: 0.08em;
+    text-transform: uppercase;
+  }
+  .pill-pre { background: rgba(96,165,250,0.15); color: var(--blue); border: 1px solid rgba(96,165,250,0.3); }
+  .pill-launch { background: rgba(255,179,71,0.15); color: var(--amber); border: 1px solid var(--amber-border); }
+  .pill-post { background: rgba(74,222,128,0.12); color: var(--green); border: 1px solid rgba(74,222,128,0.3); }
+  .pill-weekly { background: rgba(255,255,255,0.06); color: var(--text-dim); border: 1px solid var(--border); }
+
+  /* ASSET CARDS GRID */
+  .asset-grid {
+    display: grid;
+    grid-template-columns: repeat(auto-fill, minmax(320px, 1fr));
+    gap: 12px;
+  }
+  .asset-card {
+    background: var(--surface);
+    border: 1px solid var(--border);
+    border-radius: 8px;
+    padding: 16px;
+    position: relative;
+  }
+  .asset-card:hover {
+    border-color: var(--amber-border);
+  }
+  .asset-card.priority-1 { border-left: 3px solid var(--red); }
+  .asset-card.priority-2 { border-left: 3px solid var(--amber); }
+  .asset-card.priority-3 { border-left: 3px solid var(--yellow); }
+  .asset-card.priority-4 { border-left: 3px solid var(--green); }
+
+  .card-top {
+    display: flex;
+    justify-content: space-between;
+    align-items: flex-start;
+    margin-bottom: 10px;
+  }
+  .card-title {
+    font-size: 13px;
+    font-weight: 700;
+    color: var(--text);
+    line-height: 1.3;
+  }
+  .card-priority {
+    font-size: 9px;
+    font-weight: 700;
+    padding: 2px 6px;
+    border-radius: 4px;
+    text-transform: uppercase;
+    letter-spacing: 0.06em;
+    flex-shrink: 0;
+    margin-left: 8px;
+  }
+  .p1 { background: rgba(255,79,79,0.15); color: var(--red); }
+  .p2 { background: rgba(255,179,71,0.15); color: var(--amber); }
+  .p3 { background: rgba(245,197,24,0.12); color: var(--yellow); }
+  .p4 { background: rgba(74,222,128,0.1); color: var(--green); }
+
+  .spec-row {
+    display: flex;
+    gap: 6px;
+    flex-wrap: wrap;
+    margin-bottom: 8px;
+  }
+  .spec-tag {
+    font-size: 10px;
+    padding: 2px 7px;
+    background: var(--surface2);
+    border: 1px solid var(--border);
+    border-radius: 4px;
+    color: var(--text-dim);
+    white-space: nowrap;
+  }
+  .spec-tag.highlight {
+    border-color: var(--amber-border);
+    color: var(--amber);
+  }
+
+  .card-meta {
+    display: grid;
+    grid-template-columns: auto 1fr;
+    gap: 3px 10px;
+    font-size: 11px;
+    color: var(--text-dim);
+    margin-top: 8px;
+  }
+  .meta-label {
+    color: var(--text-faint);
+    text-transform: uppercase;
+    font-size: 9px;
+    letter-spacing: 0.06em;
+    padding-top: 2px;
+  }
+  .meta-val {
+    color: var(--text-dim);
+  }
+
+  .card-note {
+    margin-top: 10px;
+    padding-top: 10px;
+    border-top: 1px solid var(--border);
+    font-size: 11px;
+    color: var(--text-dim);
+    line-height: 1.6;
+  }
+  .card-note strong {
+    color: var(--amber);
+    font-weight: 600;
+  }
+
+  /* TEMPLATE SECTION */
+  .template-grid {
+    display: grid;
+    grid-template-columns: repeat(auto-fill, minmax(280px, 1fr));
+    gap: 12px;
+  }
+  .template-card {
+    background: var(--surface);
+    border: 1px solid var(--border);
+    border-radius: 8px;
+    padding: 16px;
+  }
+  .template-title {
+    font-size: 12px;
+    font-weight: 700;
+    color: var(--text);
+    margin-bottom: 6px;
+  }
+  .template-roi {
+    font-size: 10px;
+    color: var(--amber);
+    margin-bottom: 12px;
+  }
+
+  /* CHECKLIST */
+  .checklist {
+    list-style: none;
+  }
+  .checklist li {
+    display: flex;
+    align-items: flex-start;
+    gap: 8px;
+    padding: 4px 0;
+    font-size: 11px;
+    color: var(--text-dim);
+    border-bottom: 1px solid var(--surface2);
+  }
+  .checklist li:last-child { border-bottom: none; }
+  .checklist li::before {
+    content: '○';
+    color: var(--text-faint);
+    flex-shrink: 0;
+    margin-top: 1px;
+  }
+
+  /* TIMELINE */
+  .timeline {
+    display: grid;
+    grid-template-columns: 60px 1fr;
+    gap: 0;
+  }
+  .tl-day {
+    padding: 10px 12px 10px 0;
+    font-size: 10px;
+    font-weight: 700;
+    color: var(--text-faint);
+    text-align: right;
+    border-right: 2px solid var(--border);
+    position: relative;
+  }
+  .tl-day.today {
+    color: var(--amber);
+    border-right-color: var(--amber);
+  }
+  .tl-day::after {
+    content: '';
+    position: absolute;
+    right: -5px;
+    top: 50%;
+    transform: translateY(-50%);
+    width: 8px;
+    height: 8px;
+    border-radius: 50%;
+    background: var(--border);
+    border: 2px solid var(--bg);
+  }
+  .tl-day.today::after {
+    background: var(--amber);
+  }
+  .tl-content {
+    padding: 10px 0 10px 16px;
+    border-bottom: 1px solid var(--surface2);
+    font-size: 11px;
+    color: var(--text-dim);
+  }
+  .tl-content .action {
+    color: var(--text);
+    font-weight: 600;
+    margin-bottom: 2px;
+  }
+  .tl-content .sub {
+    font-size: 10px;
+    color: var(--text-faint);
+  }
+
+  /* GO-LIVE SEQUENCE */
+  .sequence {
+    display: flex;
+    flex-direction: column;
+    gap: 6px;
+  }
+  .seq-item {
+    display: flex;
+    align-items: center;
+    gap: 12px;
+    background: var(--surface);
+    border: 1px solid var(--border);
+    border-radius: 6px;
+    padding: 10px 14px;
+  }
+  .seq-num {
+    width: 22px;
+    height: 22px;
+    border-radius: 50%;
+    background: var(--surface2);
+    border: 1px solid var(--border);
+    display: flex;
+    align-items: center;
+    justify-content: center;
+    font-size: 10px;
+    font-weight: 700;
+    color: var(--text-dim);
+    flex-shrink: 0;
+  }
+  .seq-action {
+    font-size: 12px;
+    color: var(--text);
+    font-weight: 600;
+  }
+  .seq-note {
+    font-size: 10px;
+    color: var(--text-dim);
+    margin-left: auto;
+    text-align: right;
+  }
+  .seq-item.critical { border-left: 3px solid var(--amber); }
+  .seq-item.critical .seq-num { background: var(--amber-dim); color: var(--amber); border-color: var(--amber-border); }
+
+  /* TYPOGRAPHY RULE */
+  .rule-box {
+    background: var(--amber-dim);
+    border: 1px solid var(--amber-border);
+    border-radius: 8px;
+    padding: 14px 18px;
+    margin-bottom: 32px;
+    display: flex;
+    align-items: center;
+    gap: 14px;
+  }
+  .rule-box .rule-label {
+    font-size: 9px;
+    text-transform: uppercase;
+    letter-spacing: 0.1em;
+    color: var(--amber);
+    font-weight: 700;
+    white-space: nowrap;
+  }
+  .rule-box .rule-text {
+    font-size: 12px;
+    color: var(--text);
+  }
+  .rule-box .rule-sub {
+    font-size: 11px;
+    color: var(--text-dim);
+    margin-top: 2px;
+  }
+
+  /* CAPTION BLOCK */
+  .caption-grid {
+    display: grid;
+    grid-template-columns: repeat(auto-fill, minmax(240px, 1fr));
+    gap: 10px;
+  }
+  .caption-card {
+    background: var(--surface);
+    border: 1px solid var(--border);
+    border-radius: 8px;
+    padding: 14px;
+  }
+  .caption-platform {
+    font-size: 9px;
+    text-transform: uppercase;
+    letter-spacing: 0.1em;
+    color: var(--text-faint);
+    margin-bottom: 6px;
+  }
+  .caption-body {
+    font-size: 11px;
+    color: var(--text-dim);
+    line-height: 1.7;
+    white-space: pre-wrap;
+  }
+  .caption-body .var {
+    color: var(--amber);
+  }
+
+  /* WEEKLY CADENCE */
+  .week-grid {
+    display: grid;
+    grid-template-columns: repeat(7, 1fr);
+    gap: 8px;
+  }
+  .day-card {
+    background: var(--surface);
+    border: 1px solid var(--border);
+    border-radius: 8px;
+    padding: 10px 8px;
+    text-align: center;
+  }
+  .day-name {
+    font-size: 9px;
+    text-transform: uppercase;
+    letter-spacing: 0.08em;
+    color: var(--text-faint);
+    margin-bottom: 6px;
+  }
+  .day-jutsu {
+    font-size: 10px;
+    color: var(--text-dim);
+    font-weight: 600;
+    line-height: 1.4;
+    margin-bottom: 4px;
+  }
+  .day-effort {
+    font-size: 9px;
+    color: var(--text-faint);
+  }
+  .effort-low { color: var(--green); }
+  .effort-mid { color: var(--yellow); }
+  .effort-high { color: var(--red); }
+
+  /* DIVIDER */
+  .divider {
+    border: none;
+    border-top: 1px solid var(--border);
+    margin: 32px 0;
+  }
+
+  /* FOOTER */
+  .footer {
+    text-align: center;
+    font-size: 10px;
+    color: var(--text-faint);
+    padding-top: 20px;
+    border-top: 1px solid var(--border);
+  }
+</style>
+</head>
+<body>
+
+<div class="header">
+  <h1>Release Asset Reference — Ethan Payton</h1>
+  <p>ALL LOVE EP Sprint · ESL → SF → LID → Apr 24 · v1.0 · Mar 2026</p>
+</div>
+
+<!-- GLOBAL RULE -->
+<div class="rule-box">
+  <div class="rule-label">Type Rule</div>
+  <div>
+    <div class="rule-text">CreamCityBlock is the only approved typeface. Always.</div>
+    <div class="rule-sub">Clean → titles, headers, primary display &nbsp;|&nbsp; Rough → textured treatments, gritty stylization &nbsp;|&nbsp; Never: system fonts, Canva defaults</div>
+  </div>
+</div>
+
+<!-- PRE-RELEASE ASSETS -->
+<div class="section">
+  <div class="section-header">
+    <h2>Pre-Release Assets</h2>
+    <span class="pill pill-pre">T-7 → T-1</span>
+  </div>
+  <div class="asset-grid">
+
+    <div class="asset-card priority-1">
+      <div class="card-top">
+        <div class="card-title">Spotify Canvas</div>
+        <div class="card-priority p1">Priority 1</div>
+      </div>
+      <div class="spec-row">
+        <span class="spec-tag highlight">720 × 1280</span>
+        <span class="spec-tag">9:16</span>
+        <span class="spec-tag">MP4 H.264</span>
+        <span class="spec-tag">3–8 sec loop</span>
+        <span class="spec-tag">&lt; 4MB</span>
+      </div>
+      <div class="card-meta">
+        <div class="meta-label">Platform</div><div class="meta-val">Spotify</div>
+        <div class="meta-label">Tool</div><div class="meta-val">After Effects</div>
+        <div class="meta-label">When</div><div class="meta-val">T-6</div>
+        <div class="meta-label">Audio</div><div class="meta-val">None — Spotify adds track</div>
+      </div>
+      <div class="card-note">Ambient motion in track's Synesthesia color palette. Slow gradient, particle, or abstract texture. <strong>No text. No branding.</strong> Must loop seamlessly. Art should feel like the sound looks.</div>
+    </div>
+
+    <div class="asset-card priority-1">
+      <div class="card-top">
+        <div class="card-title">Pre-Release Teaser Clip</div>
+        <div class="card-priority p1">Priority 1</div>
+      </div>
+      <div class="spec-row">
+        <span class="spec-tag highlight">1080 × 1920</span>
+        <span class="spec-tag">9:16</span>
+        <span class="spec-tag">MP4</span>
+        <span class="spec-tag">≤ 15 sec</span>
+      </div>
+      <div class="card-meta">
+        <div class="meta-label">Platform</div><div class="meta-val">Instagram / TikTok</div>
+        <div class="meta-label">Tool</div><div class="meta-val">After Effects</div>
+        <div class="meta-label">When</div><div class="meta-val">T-5</div>
+      </div>
+      <div class="card-note">Hook section only. Creates anticipation. <strong>No "out now" yet.</strong> Late drive / night aesthetic works best here. Drop text at 0:10–0:12 — not before.</div>
+    </div>
+
+    <div class="asset-card priority-1">
+      <div class="card-top">
+        <div class="card-title">Release Announcement Post</div>
+        <div class="card-priority p1">Priority 1</div>
+      </div>
+      <div class="spec-row">
+        <span class="spec-tag highlight">1080 × 1080</span>
+        <span class="spec-tag">1:1</span>
+        <span class="spec-tag">JPG / PNG</span>
+        <span class="spec-tag">Static</span>
+      </div>
+      <div class="card-meta">
+        <div class="meta-label">Platform</div><div class="meta-val">Instagram / X</div>
+        <div class="meta-label">Tool</div><div class="meta-val">Canva</div>
+        <div class="meta-label">When</div><div class="meta-val">T-4</div>
+        <div class="meta-label">Layers</div><div class="meta-val">BG → Track title → Date → "out now" / link</div>
+      </div>
+      <div class="card-note">Minimal. Dark BG + track color accent. CreamCityBlock Clean for title. Must pass the <strong>signed artist test</strong> — if it looks like a Canva template, it doesn't ship.</div>
+    </div>
+
+    <div class="asset-card priority-1">
+      <div class="card-top">
+        <div class="card-title">Quote-On-Screen Reels (×10–15)</div>
+        <div class="card-priority p1">Priority 1</div>
+      </div>
+      <div class="spec-row">
+        <span class="spec-tag highlight">1080 × 1920</span>
+        <span class="spec-tag">9:16</span>
+        <span class="spec-tag">MP4</span>
+        <span class="spec-tag">8–15 sec</span>
+      </div>
+      <div class="card-meta">
+        <div class="meta-label">Platform</div><div class="meta-val">TikTok / Reels</div>
+        <div class="meta-label">Tool</div><div class="meta-val">CapCut Template 1</div>
+        <div class="meta-label">Audio</div><div class="meta-val">Hook section (8–15s)</div>
+        <div class="meta-label">Post from</div><div class="meta-val">Secondary / anonymous accounts</div>
+      </div>
+      <div class="card-note"><strong>Highest ROI format.</strong> Relationship quote over your audio. Soft ambient BG — not your face, not promo. Goal: "what song is this?" in comments. <strong>No artist name. No CTA. No Spotify link.</strong> Seed anonymously → validate algorithmically → amplify from main.</div>
+    </div>
+
+    <div class="asset-card priority-2">
+      <div class="card-top">
+        <div class="card-title">YouTube Visualizer</div>
+        <div class="card-priority p2">Priority 2</div>
+      </div>
+      <div class="spec-row">
+        <span class="spec-tag highlight">1920 × 1080</span>
+        <span class="spec-tag">16:9</span>
+        <span class="spec-tag">MP4 H.264</span>
+        <span class="spec-tag">Full track length</span>
+      </div>
+      <div class="card-meta">
+        <div class="meta-label">Platform</div><div class="meta-val">YouTube</div>
+        <div class="meta-label">Tool</div><div class="meta-val">After Effects</div>
+        <div class="meta-label">When</div><div class="meta-val">T-5</div>
+        <div class="meta-label">Style</div><div class="meta-val">Loop or evolving visual — track palette</div>
+      </div>
+      <div class="card-note">Full track plays over ambient visual. Can be a slow evolving scene or a perfect loop. Synesthesia color palette applied.</div>
+    </div>
+
+    <div class="asset-card priority-2">
+      <div class="card-top">
+        <div class="card-title">YouTube Thumbnail</div>
+        <div class="card-priority p2">Priority 2</div>
+      </div>
+      <div class="spec-row">
+        <span class="spec-tag highlight">1280 × 720</span>
+        <span class="spec-tag">16:9</span>
+        <span class="spec-tag">PNG</span>
+        <span class="spec-tag">≤ 2MB</span>
+        <span class="spec-tag">Static</span>
+      </div>
+      <div class="card-meta">
+        <div class="meta-label">Platform</div><div class="meta-val">YouTube</div>
+        <div class="meta-label">Tool</div><div class="meta-val">Canva</div>
+        <div class="meta-label">When</div><div class="meta-val">T-4</div>
+      </div>
+      <div class="card-note">Pair with Visualizer upload. Real photography only. No stock face thumbnails.</div>
+    </div>
+
+    <div class="asset-card priority-2">
+      <div class="card-top">
+        <div class="card-title">CF4 Promo Reels (×3–5)</div>
+        <div class="card-priority p2">Priority 2</div>
+      </div>
+      <div class="spec-row">
+        <span class="spec-tag highlight">1080 × 1920</span>
+        <span class="spec-tag">9:16</span>
+        <span class="spec-tag">MP4</span>
+        <span class="spec-tag">Auto-ranked</span>
+      </div>
+      <div class="card-meta">
+        <div class="meta-label">Platform</div><div class="meta-val">Instagram / TikTok</div>
+        <div class="meta-label">Tool</div><div class="meta-val">Content Factory V4</div>
+        <div class="meta-label">When</div><div class="meta-val">T-3</div>
+        <div class="meta-label">Command</div><div class="meta-val">bash run.sh --multi</div>
+      </div>
+      <div class="card-note">Drop recording footage into <code>input/</code>. Run multi. Output auto-copies to Desktop. Deploy best reel T-0, remaining across T+1 to T+3. Use <code>--chop</code> if FL Studio playlist section is strong.</div>
+    </div>
+
+    <div class="asset-card priority-3">
+      <div class="card-top">
+        <div class="card-title">Cover Art</div>
+        <div class="card-priority p3">Priority 3</div>
+      </div>
+      <div class="spec-row">
+        <span class="spec-tag highlight">3000 × 3000</span>
+        <span class="spec-tag">1:1</span>
+        <span class="spec-tag">JPG / PNG</span>
+        <span class="spec-tag">RGB</span>
+        <span class="spec-tag">No compression</span>
+      </div>
+      <div class="card-meta">
+        <div class="meta-label">Platform</div><div class="meta-val">Spotify + Apple Music + Amuse</div>
+        <div class="meta-label">When</div><div class="meta-val">Before Amuse upload (T-2)</div>
+        <div class="meta-label">Safe zone</div><div class="meta-val">Text in center 80%</div>
+      </div>
+      <div class="card-note">Must be locked before Amuse submission. Same file serves Spotify + Apple Music. No text bleeding to edges.</div>
+    </div>
+
+  </div>
+</div>
+
+<!-- LAUNCH DAY SEQUENCE -->
+<div class="section">
+  <div class="section-header">
+    <h2>Release Day Go-Live Sequence</h2>
+    <span class="pill pill-launch">T-0</span>
+  </div>
+  <div class="sequence">
+    <div class="seq-item">
+      <div class="seq-num">1</div>
+      <div class="seq-action">Confirm live on Spotify + Apple Music</div>
+      <div class="seq-note">Before anything else</div>
+    </div>
+    <div class="seq-item">
+      <div class="seq-num">2</div>
+      <div class="seq-action">Post Instagram announcement (static feed post)</div>
+    </div>
+    <div class="seq-item">
+      <div class="seq-num">3</div>
+      <div class="seq-action">Post Instagram Story</div>
+      <div class="seq-note">1080×1920 motion asset</div>
+    </div>
+    <div class="seq-item">
+      <div class="seq-num">4</div>
+      <div class="seq-action">Upload YouTube Visualizer + Thumbnail</div>
+    </div>
+    <div class="seq-item">
+      <div class="seq-num">5</div>
+      <div class="seq-action">Deploy best CF4 reel (first one)</div>
+      <div class="seq-note">Best ranked from T-3 run</div>
+    </div>
+    <div class="seq-item critical">
+      <div class="seq-num">6</div>
+      <div class="seq-action">Send IG Collab invite to featured artist / anyone tagged</div>
+      <div class="seq-note">Zero cost · doubles reach · 30 sec · DO NOT SKIP</div>
+    </div>
+  </div>
+</div>
+
+<!-- POST-RELEASE ASSETS -->
+<div class="section">
+  <div class="section-header">
+    <h2>Post-Release Assets</h2>
+    <span class="pill pill-post">T+1 → T+7</span>
+  </div>
+  <div class="asset-grid">
+
+    <div class="asset-card priority-2">
+      <div class="card-top">
+        <div class="card-title">Remaining CF4 Reels (×2–4)</div>
+        <div class="card-priority p2">Priority 1</div>
+      </div>
+      <div class="spec-row">
+        <span class="spec-tag highlight">1080 × 1920</span>
+        <span class="spec-tag">9:16</span>
+        <span class="spec-tag">MP4</span>
+      </div>
+      <div class="card-meta">
+        <div class="meta-label">Deploy</div><div class="meta-val">T+1, T+2, T+3 — don't dump all at once</div>
+        <div class="meta-label">Platform</div><div class="meta-val">Instagram Reels / TikTok</div>
+      </div>
+      <div class="card-note">Already built at T-3. Stagger deployment to extend the release window. Space them out — one per day.</div>
+    </div>
+
+    <div class="asset-card priority-2">
+      <div class="card-top">
+        <div class="card-title">Instagram Story (Release Day)</div>
+        <div class="card-priority p2">Priority 1</div>
+      </div>
+      <div class="spec-row">
+        <span class="spec-tag highlight">1080 × 1920</span>
+        <span class="spec-tag">9:16</span>
+        <span class="spec-tag">MP4</span>
+        <span class="spec-tag">≤ 15 sec</span>
+      </div>
+      <div class="card-meta">
+        <div class="meta-label">Tool</div><div class="meta-val">After Effects</div>
+        <div class="meta-label">Text safe zone</div><div class="meta-val">Center 80% only</div>
+        <div class="meta-label">Text overlay</div><div class="meta-val">[SONG] / out now / link in bio</div>
+      </div>
+      <div class="card-note">Post same day as release. Built at T-5. Re-post at T+3 if streams are building.</div>
+    </div>
+
+    <div class="asset-card priority-3">
+      <div class="card-top">
+        <div class="card-title">Post-Release Engagement Graphic</div>
+        <div class="card-priority p3">Priority 2</div>
+      </div>
+      <div class="spec-row">
+        <span class="spec-tag highlight">1080 × 1080</span>
+        <span class="spec-tag">1:1</span>
+        <span class="spec-tag">JPG / PNG</span>
+      </div>
+      <div class="card-meta">
+        <div class="meta-label">Platform</div><div class="meta-val">Instagram</div>
+        <div class="meta-label">Tool</div><div class="meta-val">Canva</div>
+        <div class="meta-label">When</div><div class="meta-val">T+3 to T+7</div>
+        <div class="meta-label">Copy</div><div class="meta-val">Stream milestone or "still going" post</div>
+      </div>
+      <div class="card-note">Milestone moment — X streams, charting on a playlist, etc. Or simply a "still going" reminder drop. Keeps the song alive in the feed past release week.</div>
+    </div>
+
+    <div class="asset-card priority-3">
+      <div class="card-top">
+        <div class="card-title">Bait-and-Switch Reel</div>
+        <div class="card-priority p3">Priority 3</div>
+      </div>
+      <div class="spec-row">
+        <span class="spec-tag highlight">1080 × 1920</span>
+        <span class="spec-tag">9:16</span>
+        <span class="spec-tag">MP4</span>
+        <span class="spec-tag">15–25 sec</span>
+      </div>
+      <div class="card-meta">
+        <div class="meta-label">Tool</div><div class="meta-val">CapCut Template 3</div>
+        <div class="meta-label">Platform</div><div class="meta-val">TikTok / Reels / Shorts</div>
+        <div class="meta-label">Part 1</div><div class="meta-val">3–8s lo-fi phone quality</div>
+        <div class="meta-label">Part 2</div><div class="meta-val">4K studio · HARD CUT · no transition</div>
+      </div>
+      <div class="card-note">Pattern interrupt. Bad quality → hard cut → premium quality. The bigger the gap, the bigger the hook. End Part 2 on a strong vocal moment.</div>
+    </div>
+
+    <div class="asset-card priority-4">
+      <div class="card-top">
+        <div class="card-title">Late Drive / Night Aesthetic Reel</div>
+        <div class="card-priority p4">Priority 4</div>
+      </div>
+      <div class="spec-row">
+        <span class="spec-tag highlight">1080 × 1920</span>
+        <span class="spec-tag">9:16</span>
+        <span class="spec-tag">MP4</span>
+        <span class="spec-tag">12–15 sec</span>
+      </div>
+      <div class="card-meta">
+        <div class="meta-label">Tool</div><div class="meta-val">CapCut Template 2</div>
+        <div class="meta-label">Visual</div><div class="meta-val">Dashcam / window / rain / streetlights</div>
+        <div class="meta-label">Audio</div><div class="meta-val">Vocal drop — no intro</div>
+        <div class="meta-label">Text</div><div class="meta-val">1 line · bottom corner · appears at 0:10</div>
+      </div>
+      <div class="card-note">ESL text: "it's late. play this." — No artist name, no CTA. 35mm grain overlay. Warm amber grade for ESL.</div>
+    </div>
+
+  </div>
+</div>
+
+<!-- TEMPLATE SPECS -->
+<hr class="divider">
+<div class="section">
+  <div class="section-header">
+    <h2>CapCut Template Build Specs</h2>
+    <span class="pill pill-weekly">3 templates → ~52 assets</span>
+  </div>
+  <div class="template-grid">
+
+    <div class="template-card">
+      <div class="template-title">Template 1 — Quote-On-Screen</div>
+      <div class="template-roi">⭐ Highest ROI · Chaotic Good playbook · 500M+ views on the format</div>
+      <ul class="checklist">
+        <li>Project at 1080×1920</li>
+        <li>Import soft-focus ambient background video</li>
+        <li>Color grade to track palette</li>
+        <li>Audio: trim to hook (8–15s best moment)</li>
+        <li>Text: serif or minimal sans, white/off-white, slight shadow, centered</li>
+        <li>Animation: fade in 0:02 → hold → fade out at end</li>
+        <li>Export 1080p → Save as template → duplicate per track</li>
+        <li>Post from secondary / anon accounts only</li>
+        <li>No artist name, no "out now," no Spotify link</li>
+      </ul>
+    </div>
+
+    <div class="template-card">
+      <div class="template-title">Template 2 — Late Drive / Night Aesthetic</div>
+      <div class="template-roi">Both SEE ME and ESL campaign kits use this</div>
+      <ul class="checklist">
+        <li>Film or source dashcam / window night footage</li>
+        <li>Apply 35mm grain overlay (CapCut filter or texture)</li>
+        <li>Apply track-specific color grade (ESL = warm amber)</li>
+        <li>Audio: start from vocal entry, skip instrumental intro</li>
+        <li>Text: small white, bottom-left or bottom-center</li>
+        <li>Text timing: invisible until 0:10 → fade in → hold to end</li>
+        <li>No artist name, no CTA</li>
+        <li>Export → Save as template</li>
+      </ul>
+    </div>
+
+    <div class="template-card">
+      <div class="template-title">Template 3 — Bait-and-Switch / 4K Reveal</div>
+      <div class="template-roi">Jutsu #4 · Pattern interrupt · drives shares + rewatches</div>
+      <ul class="checklist">
+        <li>Record Part 1: iPhone front cam, casual bad lighting</li>
+        <li>Record Part 2: primary cam, studio lighting, Apollo monitoring</li>
+        <li>Place Part 1 → Place Part 2 → NO transition (hard cut only)</li>
+        <li>Part 1: add noise filter, lower saturation (intentionally degrade)</li>
+        <li>Part 2: full color grade, sharpen, track palette applied</li>
+        <li>Audio: lipsync in Part 1 → full studio audio in Part 2</li>
+        <li>End on strong vocal moment (sustain, riff, or silence)</li>
+        <li>Export → Save as template</li>
+      </ul>
+    </div>
+
+  </div>
+</div>
+
+<!-- CAPTION TEMPLATES -->
+<hr class="divider">
+<div class="section">
+  <div class="section-header">
+    <h2>Caption Templates</h2>
+    <span class="pill pill-weekly">Swap vars per release</span>
+  </div>
+  <div class="caption-grid">
+
+    <div class="caption-card">
+      <div class="caption-platform">Instagram / X — Announcement</div>
+      <div class="caption-body"><span class="var">[SONG]</span> is out now.
+
+<span class="var">[HOOK — 1 sentence. Emotional, not promotional.]</span>
+
+Link in bio → <span class="var">[LINK]</span>
+
+<span class="var">[HASHTAGS]</span></div>
+    </div>
+
+    <div class="caption-card">
+      <div class="caption-platform">Instagram Story — Text Overlay</div>
+      <div class="caption-body"><span class="var">[SONG]</span>
+out now
+<span class="var">[short link or "link in bio"]</span></div>
+    </div>
+
+    <div class="caption-card">
+      <div class="caption-platform">TikTok / Reels</div>
+      <div class="caption-body"><span class="var">[SONG]</span> — <span class="var">[HOOK in 5 words or less]</span>
+<span class="var">[HASHTAGS]</span></div>
+    </div>
+
+    <div class="caption-card">
+      <div class="caption-platform">Post-Release Engagement (T+3 to T+7)</div>
+      <div class="caption-body"><span class="var">[stream count or milestone]</span>
+<span class="var">[SONG]</span> — still going.
+<span class="var">[LINK]</span></div>
+    </div>
+
+  </div>
+</div>
+
+<!-- PRODUCTION TIMELINE -->
+<hr class="divider">
+<div class="section">
+  <div class="section-header">
+    <h2>Production Timeline (per release)</h2>
+    <span class="pill pill-weekly">T = release date</span>
+  </div>
+  <div class="timeline">
+    <div class="tl-day">T-7</div>
+    <div class="tl-content">
+      <div class="action">Lock source photography. Fill Variable Swap Sheet.</div>
+      <div class="sub">Song name · date · palette · hook copy · CF4 footage path</div>
+    </div>
+    <div class="tl-day">T-6</div>
+    <div class="tl-content">
+      <div class="action">Build Spotify Canvas</div>
+      <div class="sub">After Effects · 720×1280 · 3–8s loop · track palette · no text</div>
+    </div>
+    <div class="tl-day">T-5</div>
+    <div class="tl-content">
+      <div class="action">Build IG Story teaser + YouTube Visualizer</div>
+      <div class="sub">Both in After Effects · Story = 1080×1920 ≤15s · Visualizer = 1920×1080 full track</div>
+    </div>
+    <div class="tl-day">T-4</div>
+    <div class="tl-content">
+      <div class="action">Build Announcement Post + YouTube Thumbnail</div>
+      <div class="sub">Both in Canva · Post = 1080×1080 · Thumbnail = 1280×720</div>
+    </div>
+    <div class="tl-day">T-3</div>
+    <div class="tl-content">
+      <div class="action">Run Content Factory V4</div>
+      <div class="sub">Drop footage → bash run.sh --multi → review ranked reels → pick best</div>
+    </div>
+    <div class="tl-day">T-2</div>
+    <div class="tl-content">
+      <div class="action">QC all assets. Write all captions. Schedule posts.</div>
+      <div class="sub">Every asset checked against specs before scheduling</div>
+    </div>
+    <div class="tl-day">T-1</div>
+    <div class="tl-content">
+      <div class="action">Final review. Amuse upload confirmed. Everything scheduled.</div>
+      <div class="sub">Nothing left to build. Just execute tomorrow.</div>
+    </div>
+    <div class="tl-day today">T-0</div>
+    <div class="tl-content">
+      <div class="action">GO-LIVE SEQUENCE ↑</div>
+      <div class="sub">Follow the 6-step sequence above exactly</div>
+    </div>
+    <div class="tl-day">T+1</div>
+    <div class="tl-content">
+      <div class="action">Deploy CF4 reel #2</div>
+    </div>
+    <div class="tl-day">T+2</div>
+    <div class="tl-content">
+      <div class="action">Deploy CF4 reel #3 · Bait-and-switch reel</div>
+    </div>
+    <div class="tl-day">T+3</div>
+    <div class="tl-content">
+      <div class="action">Deploy CF4 reel #4 · Re-post Story if gaining traction</div>
+    </div>
+    <div class="tl-day">T+7</div>
+    <div class="tl-content">
+      <div class="action">Post-release engagement graphic</div>
+      <div class="sub">Stream milestone · "still going" · keep it alive</div>
+    </div>
+  </div>
+</div>
+
+<!-- WEEKLY CADENCE -->
+<hr class="divider">
+<div class="section">
+  <div class="section-header">
+    <h2>Weekly Content Cadence (Between Releases)</h2>
+    <span class="pill pill-weekly">Jutsu System</span>
+  </div>
+  <div class="week-grid">
+    <div class="day-card">
+      <div class="day-name">Mon</div>
+      <div class="day-jutsu">Talk to 'Em</div>
+      <div class="day-effort effort-low">🟢 Low</div>
+    </div>
+    <div class="day-card">
+      <div class="day-name">Tue</div>
+      <div class="day-jutsu">Trend Reaction</div>
+      <div class="day-effort effort-low">🟢 Low</div>
+    </div>
+    <div class="day-card">
+      <div class="day-name">Wed</div>
+      <div class="day-jutsu">Bait + Switch</div>
+      <div class="day-effort effort-mid">🟡 Mid</div>
+    </div>
+    <div class="day-card">
+      <div class="day-name">Thu</div>
+      <div class="day-jutsu">Talk to 'Em</div>
+      <div class="day-effort effort-low">🟢 Low</div>
+    </div>
+    <div class="day-card">
+      <div class="day-name">Fri</div>
+      <div class="day-jutsu">Pick-Your-Story A/B</div>
+      <div class="day-effort effort-mid">🟡 Mid</div>
+    </div>
+    <div class="day-card">
+      <div class="day-name">Sat</div>
+      <div class="day-jutsu">B-Roll Studio + Vignette Batch</div>
+      <div class="day-effort effort-high">🔴 High</div>
+    </div>
+    <div class="day-card">
+      <div class="day-name">Sun</div>
+      <div class="day-jutsu">Synesthesia or Rest</div>
+      <div class="day-effort">—</div>
+    </div>
+  </div>
+  <div style="margin-top: 12px; font-size: 11px; color: var(--text-dim);">
+    <strong style="color: var(--amber)">Talk to 'Em fills any gap.</strong> Phone, tripod, no script, 30–90 sec. Never have a zero content day if you have a phone.
+  </div>
+</div>
+
+<div class="footer">
+  Ethan Payton Label OS · release_asset_reference.html · v1.0 · March 2026
+</div>
+
+</body>
+</html>

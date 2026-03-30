@@ -35,11 +35,10 @@ export async function deriveKillList(): Promise<KillTask[]> {
   const hour = new Date().getHours();
   const weekKey = getWeekKey();
 
-  const [dailyLog, releases, flags, sessions, telemetry] = await Promise.all([
+  const [dailyLog, releases, flags, telemetry] = await Promise.all([
     getDailyLog(today),
     getDynamicReleases(),
     getStoreValue<OracleFlag[]>(`oracle_flags:${today}`),
-    getStoreValue<number>(`weekly_sessions:${weekKey}`),
     getDailyTelemetry()
   ]);
 

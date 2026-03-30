@@ -98,40 +98,42 @@ function TaskRow({
         {/* Tap target: expand/collapse instructions */}
         <button
           onClick={() => setExpanded(!expanded)}
-          className="flex-1 min-w-0 mr-3 text-left"
+          className="flex-1 min-w-0 mr-3 text-left py-2 flex items-center gap-2"
+          aria-expanded={expanded}
+          aria-label={`${expanded ? "Collapse" : "Expand"} instructions for ${displayTitle}`}
+          style={{ minHeight: "48px" }}
         >
-          <div className="flex items-center gap-2">
-            <span
-              className="text-[9px] transition-transform duration-200 flex-shrink-0"
-              style={{
-                color: "rgba(255,255,255,0.2)",
-                transform: expanded ? "rotate(90deg)" : "rotate(0deg)",
-              }}
-            >
-              ▶
-            </span>
-            <div className="min-w-0">
-              <p className="text-[12px] font-semibold text-white leading-snug">
-                {displayTitle}
-              </p>
-              <p className="text-[10px] leading-relaxed mt-0.5" style={{ color: "rgba(255,255,255,0.3)" }}>
-                {task.subtitle}
-              </p>
-            </div>
+          <span
+            className="text-[9px] transition-transform duration-200 flex-shrink-0"
+            style={{
+              color: "rgba(255,255,255,0.4)",
+              transform: expanded ? "rotate(90deg)" : "rotate(0deg)",
+            }}
+          >
+            ▶
+          </span>
+          <div className="min-w-0">
+            <p className="text-[13px] font-bold text-white leading-snug">
+              {displayTitle}
+            </p>
+            <p className="text-[11px] leading-relaxed mt-0.5" style={{ color: "rgba(255,255,255,0.45)" }}>
+              {task.subtitle}
+            </p>
           </div>
         </button>
 
         {/* Tap target: complete the task */}
-        <div className="flex items-center gap-2 flex-shrink-0">
-          <span className="text-[8px] font-black tracking-widest" style={{ color: style.color, opacity: 0.5 }}>
+        <div className="flex items-center gap-3 flex-shrink-0">
+          <span className="text-[9px] font-black tracking-[0.15em] px-2 py-1 rounded-md bg-white/5 border border-white/5" style={{ color: style.color }}>
             {PILLAR_LABELS[task.pillar]}
           </span>
           <button
             onClick={handleComplete}
-            className="w-7 h-7 rounded-full flex items-center justify-center active:scale-90 transition-transform"
-            style={{ border: `1.5px solid ${style.color}40`, background: `${style.color}10` }}
+            className="w-10 h-10 rounded-full flex items-center justify-center active:scale-90 transition-transform"
+            style={{ border: `1.5px solid ${style.color}60`, background: `${style.color}15` }}
+            aria-label={`Mark task ${displayTitle} as complete`}
           >
-            <svg width="12" height="12" viewBox="0 0 24 24" fill="none" stroke={style.color} strokeWidth="2.5" strokeLinecap="round" strokeLinejoin="round" style={{ opacity: 0.5 }}>
+            <svg width="16" height="16" viewBox="0 0 24 24" fill="none" stroke={style.color} strokeWidth="3" strokeLinecap="round" strokeLinejoin="round">
               <polyline points="20 6 9 17 4 12" />
             </svg>
           </button>
@@ -203,7 +205,10 @@ function ReleaseGroup({
       {/* Header — tap to toggle */}
       <button
         onClick={() => setOpen(!open)}
-        className="w-full flex items-center justify-between px-4 py-3.5 transition-all"
+        className="w-full flex items-center justify-between px-4 py-4 transition-all"
+        aria-expanded={open}
+        aria-label={`${open ? "Collapse" : "Expand"} release group: ${name}`}
+        style={{ minHeight: "48px" }}
       >
         <div className="flex items-center gap-3">
           <div

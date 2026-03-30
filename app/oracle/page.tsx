@@ -443,9 +443,9 @@ export default function OraclePage() {
                 Assessment
               </h2>
               <p
-                className="text-sm leading-relaxed"
+                className="text-sm leading-relaxed whitespace-pre-wrap"
                 style={{
-                  color: "rgba(255,255,255,0.6)",
+                  color: "rgba(255,255,255,0.7)",
                   animation: recalibrating ? "recalPulse 0.6s ease infinite" : "statusShift 0.5s ease",
                 }}
               >

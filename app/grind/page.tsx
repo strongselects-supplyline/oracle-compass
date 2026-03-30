@@ -164,6 +164,25 @@ export default function GrindPage() {
                     {syncStatus || "SYNC TO CLOUD"}
                 </button>
 
+                {/* ── RECOVERY PROTOCOL (M9) ── */}
+                <div className="mt-12 pb-12">
+                  <p className="text-[9px] font-black tracking-[0.3em] text-center text-[#555] uppercase mb-5">Recovery Protocol</p>
+                  <div className="grid grid-cols-3 gap-4">
+                    <div className="card flex flex-col items-center p-3 opacity-60">
+                      <div className="text-2xl mb-1">💧</div>
+                      <span className="text-[10px] font-bold text-[#666]">HYDRO</span>
+                    </div>
+                    <div className="card flex flex-col items-center p-3 opacity-60">
+                      <div className="text-2xl mb-1">🧘</div>
+                      <span className="text-[10px] font-bold text-[#666]">MWO</span>
+                    </div>
+                    <div className="card flex flex-col items-center p-3 opacity-60">
+                      <div className="text-2xl mb-1">📵</div>
+                      <span className="text-[10px] font-bold text-[#666]">OFF-GRID</span>
+                    </div>
+                  </div>
+                </div>
+
             </div>
         </main>
     );

@@ -20,6 +20,13 @@ export const metadata: Metadata = {
   },
 };
 
+export const viewport = {
+  themeColor: "#080808",
+  width: "device-width",
+  initialScale: 1,
+  viewportFit: "cover",
+};
+
 export default function RootLayout({
   children,
 }: Readonly<{ children: React.ReactNode }>) {
@@ -28,19 +35,17 @@ export default function RootLayout({
       <head>
         <link rel="manifest" href="/manifest.json" />
         <link rel="apple-touch-icon" href="/icon-192.png" />
-        <meta name="apple-mobile-web-app-capable" content="yes" />
-        <meta name="apple-mobile-web-app-status-bar-style" content="black-translucent" />
-        <meta name="theme-color" content="#080808" />
-        <meta name="viewport" content="width=device-width, initial-scale=1, viewport-fit=cover" />
       </head>
       <body className={`${geist.variable}`}>
+        <a href="#main-content" className="skip-link">Skip to main content</a>
         <ErrorBoundary>
           <OracleTrigger />
-          {children}
+          <main id="main-content">
+            {children}
+          </main>
           <BottomNav />
         </ErrorBoundary>
       </body>
     </html>
   );
 }
-

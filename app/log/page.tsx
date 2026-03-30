@@ -580,8 +580,8 @@ export default function QuickLogPage() {
         </section>
 
         {/* RECALIBRATE */}
-        <section className="mb-6">
-          <p className="text-[9px] font-black tracking-[0.2em] text-[#444] uppercase mb-3 px-1">Oracle</p>
+        <div className="mt-12 mb-6 pt-10 border-t border-[#1a1a1a]">
+          <p className="text-[10px] font-black tracking-[0.3em] text-[#555] text-center uppercase mb-6 px-1">Oracle Recalibration</p>
 
           <button
             onClick={handleRecalibrate}
@@ -646,8 +646,7 @@ export default function QuickLogPage() {
               )}
             </div>
           )}
-        </section>
-
+        </div>
       </div>
     </main>
   );

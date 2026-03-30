@@ -45,14 +45,15 @@ function Timeline() {
         "all-love": "#6ee7b7", "all-love-deluxe": "#fbbf24",
         "cream": "#f472b6", "freakshow": "#c084fc", "loosies": "#60a5fa",
     };
-    const yearStart = new Date("2026-02-01T00:00:00");
-    const yearEnd = new Date("2026-12-31T00:00:00");
+    // Focusing on the MOVE window (Mar-Apr/May) for better mobile visibility
+    const yearStart = new Date("2026-03-01T00:00:00");
+    const yearEnd = new Date("2026-05-01T00:00:00");
     const totalMs = yearEnd.getTime() - yearStart.getTime();
     const now = new Date(); now.setHours(0, 0, 0, 0);
 
     return (
         <div className="card mb-6">
-            <p className="text-[10px] font-black tracking-[0.2em] text-[#555] uppercase mb-3">2026 Timeline</p>
+            <p className="text-[10px] font-black tracking-[0.2em] text-[#555] uppercase mb-3">Sprinting Window</p>
             <div className="relative h-14">
                 {/* Track */}
                 <div className="absolute top-6 left-0 right-0 h-0.5 bg-[#222]" />
@@ -65,6 +66,7 @@ function Timeline() {
                 )}
                 {TIMELINE_EVENTS.map((ev, i) => {
                     const evDate = new Date(ev.date + "T00:00:00");
+                    if (evDate < yearStart || evDate > yearEnd) return null;
                     const pos = ((evDate.getTime() - yearStart.getTime()) / totalMs) * 100;
                     const c = projectColors[ev.project] || "#475569";
                     const isAlbum = ev.type === "album";
@@ -82,8 +84,9 @@ function Timeline() {
                     );
                 })}
                 {/* Month labels */}
-                {["Feb", "Mar", "Apr", "May", "Jun", "Jul", "Aug", "Sep", "Oct", "Nov", "Dec"].map((m, i) => {
-                    const ms = new Date(`2026-${String(i + 2).padStart(2, "0")}-01T00:00:00`);
+                {["Mar", "Apr", "May"].map((m, i) => {
+                    const ms = new Date(`2026-0${i + 3}-01T00:00:00`);
+                    if (ms < yearStart || ms > yearEnd) return null;
                     const pos = ((ms.getTime() - yearStart.getTime()) / totalMs) * 100;
                     return <div key={m} style={{ left: `${pos}%` }} className="absolute bottom-0 text-[8px] text-[#444] font-semibold">{m}</div>;
                 })}
@@ -277,8 +280,6 @@ export default function StudioPage() {
                         </div>
                     ))}
                 </div>
-
-
 
                 {/* Sonic Identity — link to dedicated page */}
                 <a href="/sonic" className="card mb-6 flex items-center justify-between p-4 border border-[#252525] hover:border-amber-500/30 transition-colors active:scale-[0.98]">

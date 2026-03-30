@@ -93,14 +93,14 @@ export default function LabelPage() {
                                         </div>
 
                                         {/* Tab pills — scrollable */}
-                                        <div className="flex gap-2 px-4 pb-3 overflow-x-auto hide-scrollbar">
+                                        <div className="flex gap-2 px-4 py-2 mb-2 overflow-x-auto hide-scrollbar">
                                             {TABS.map(tab => (
                                                 <button
                                                     key={tab.id}
                                                     onClick={() => setActiveTab(tab.id)}
                                                     className={`flex items-center gap-1.5 px-4 py-2.5 rounded-xl text-[11px] font-bold tracking-wider uppercase shrink-0 transition-all ${activeTab === tab.id
-                                                        ? 'bg-[#d4a853] text-black shadow-lg shadow-[#d4a853]/20'
-                                                        : 'bg-[#1a1a1a] text-[#666] border border-[#252525]'
+                                                        ? 'bg-[#d4a853] text-black shadow-lg shadow-[#d4a853]/20 scale-105'
+                                                        : 'bg-[#1a1a1a] text-[#777] border border-[#252525] hover:border-[#333]'
                                                         }`}
                                                 >
                                                     <span className="text-sm">{tab.emoji}</span>

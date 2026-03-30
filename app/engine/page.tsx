@@ -91,10 +91,14 @@ export default function EnginePage() {
   if (dayState === "sacred") {
     return (
       <main className="page flex flex-col items-center justify-center text-center animate-fade-in">
-        <div className="px-8 py-16 select-none">
-          <div className="text-6xl mb-8 opacity-20">{"🛑"}</div>
-          <h2 className="text-xl font-black tracking-tight mb-3">Sunday is sacred.</h2>
-          <p className="text-[#555] text-sm">Rest. Zero building. No override.</p>
+        <div className="px-8 py-16 select-none max-w-sm">
+          <div className="text-7xl mb-8 opacity-40 grayscale">{"🛑"}</div>
+          <h2 className="text-2xl font-black tracking-tight mb-4 text-white">Sunday is sacred.</h2>
+          <div className="h-px w-12 bg-red-900/50 mx-auto mb-6" />
+          <p className="text-[var(--text-secondary)] font-medium leading-relaxed">
+            Engine is offline for weekly maintenance and spiritual rest. Zero building permitted.
+          </p>
+          <p className="text-red-500/50 text-[10px] font-black tracking-[0.2em] uppercase mt-8">No Override</p>
         </div>
       </main>
     );
@@ -104,15 +108,20 @@ export default function EnginePage() {
     return (
       <main className="page flex flex-col items-center justify-center text-center animate-fade-in">
         <div
-          className="cursor-pointer select-none px-8 py-16"
+          className="cursor-pointer select-none px-10 py-20 rounded-[32px] border border-white/5 bg-white/[0.02] hover:bg-white/[0.04] transition-colors"
           onPointerDown={startPress}
           onPointerUp={endPress}
           onPointerLeave={endPress}
         >
-          <div className="text-6xl mb-8 opacity-20">{"⚙️"}</div>
-          <h2 className="text-xl font-black tracking-tight mb-3">Studio Day.</h2>
-          <p className="text-[#555] text-sm">Business resumes Tuesday.</p>
-          <p className="text-[#333] text-xs mt-4">hold to override</p>
+          <div className="text-7xl mb-8 opacity-30">{"⚙️"}</div>
+          <h2 className="text-2xl font-black tracking-tight mb-2 text-white">Studio Day.</h2>
+          <p className="text-[var(--text-secondary)] font-medium">Business resumes Tuesday.</p>
+          <div className="mt-10 flex flex-col items-center gap-2">
+            <div className="w-8 h-8 rounded-full border-2 border-white/10 flex items-center justify-center">
+              <div className="w-1 h-1 bg-white/40 rounded-full animate-pulse" />
+            </div>
+            <p className="text-[var(--text-muted)] text-[10px] font-black tracking-[0.15em] uppercase">Hold to Force Entry</p>
+          </div>
         </div>
       </main>
     );
