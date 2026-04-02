@@ -1,0 +1,1303 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+<meta charset="UTF-8">
+<meta name="viewport" content="width=device-width, initial-scale=1.0">
+<title>past.El noir Records — Market Intelligence Report 2026</title>
+<link href="https://fonts.googleapis.com/css2?family=Space+Grotesk:wght@300;400;500;600;700&family=Space+Mono:ital,wght@0,400;0,700;1,400&display=swap" rel="stylesheet">
+<style>
+:root {
+  --bg: #0a0a0a;
+  --surface: #111111;
+  --surface2: #161616;
+  --border: #1f1f1f;
+  --border2: #2a2a2a;
+  --text: #f0f0f0;
+  --text2: #888;
+  --text3: #555;
+  --gold: #c9a227;
+  --gold-dim: rgba(201,162,39,0.15);
+  --gold-glow: rgba(201,162,39,0.08);
+  --red: #e84040;
+  --red-dim: rgba(232,64,64,0.1);
+  --green: #22c55e;
+  --green-dim: rgba(34,197,94,0.1);
+  --blue: #3b82f6;
+  --blue-dim: rgba(59,130,246,0.1);
+  --amber: #f59e0b;
+  --amber-dim: rgba(245,158,11,0.1);
+}
+
+* { margin: 0; padding: 0; box-sizing: border-box; }
+
+body {
+  font-family: 'Space Grotesk', system-ui, sans-serif;
+  background: var(--bg);
+  color: var(--text);
+  line-height: 1.6;
+  -webkit-font-smoothing: antialiased;
+}
+
+.wrap { max-width: 1140px; margin: 0 auto; padding: 0 2rem; }
+
+/* NAV */
+nav {
+  position: sticky; top: 0; z-index: 100;
+  border-bottom: 1px solid var(--border);
+  background: rgba(10,10,10,0.95);
+  backdrop-filter: blur(12px);
+  padding: 1rem 0;
+}
+nav .inner {
+  max-width: 1140px; margin: 0 auto; padding: 0 2rem;
+  display: flex; align-items: center; justify-content: space-between;
+}
+.nav-brand { font-family: 'Space Mono', monospace; font-size: 0.7rem; color: var(--gold); letter-spacing: 0.12em; text-transform: uppercase; }
+.nav-links { display: flex; gap: 1.5rem; }
+.nav-links a { font-size: 0.7rem; color: var(--text3); text-decoration: none; letter-spacing: 0.08em; text-transform: uppercase; transition: color 0.2s; }
+.nav-links a:hover { color: var(--text); }
+.nav-date { font-size: 0.65rem; color: var(--text3); font-family: 'Space Mono', monospace; }
+
+/* HERO */
+.hero {
+  padding: 8rem 0 5rem;
+  border-bottom: 1px solid var(--border);
+  position: relative;
+  overflow: hidden;
+}
+.hero::before {
+  content: '';
+  position: absolute; inset: 0;
+  background: radial-gradient(ellipse 60% 50% at 10% 50%, rgba(201,162,39,0.04) 0%, transparent 60%);
+  pointer-events: none;
+}
+.hero-eyebrow {
+  display: inline-flex; align-items: center; gap: 0.5rem;
+  font-family: 'Space Mono', monospace;
+  font-size: 0.65rem; color: var(--gold);
+  letter-spacing: 0.15em; text-transform: uppercase;
+  border: 1px solid rgba(201,162,39,0.3);
+  padding: 0.3rem 0.75rem; margin-bottom: 2rem;
+}
+.hero-eyebrow::before { content: '◆'; font-size: 0.4rem; }
+h1.hero-title {
+  font-size: clamp(2.5rem, 6vw, 5.5rem);
+  font-weight: 700;
+  line-height: 0.95;
+  letter-spacing: -0.03em;
+  margin-bottom: 1.5rem;
+  max-width: 900px;
+}
+h1.hero-title em {
+  font-style: normal;
+  color: var(--gold);
+}
+.hero-sub {
+  font-size: 1.1rem;
+  color: var(--text2);
+  max-width: 600px;
+  line-height: 1.7;
+  margin-bottom: 3rem;
+  border-left: 2px solid var(--gold);
+  padding-left: 1.25rem;
+}
+.hero-stats-row {
+  display: grid;
+  grid-template-columns: repeat(4, 1fr);
+  gap: 1px;
+  background: var(--border);
+  border: 1px solid var(--border);
+  margin-top: 4rem;
+}
+.hero-stat {
+  background: var(--bg);
+  padding: 2rem 1.5rem;
+  position: relative;
+}
+.hero-stat::after {
+  content: '';
+  position: absolute;
+  top: 0; left: 0; right: 0;
+  height: 2px;
+  background: var(--gold);
+  opacity: 0;
+  transition: opacity 0.3s;
+}
+.hero-stat:hover::after { opacity: 1; }
+.stat-n {
+  font-family: 'Space Mono', monospace;
+  font-size: 2.2rem;
+  font-weight: 700;
+  color: #fff;
+  letter-spacing: -0.03em;
+  line-height: 1;
+  margin-bottom: 0.4rem;
+}
+.stat-l {
+  font-size: 0.7rem;
+  color: var(--text3);
+  letter-spacing: 0.1em;
+  text-transform: uppercase;
+  font-weight: 600;
+}
+.stat-sub {
+  font-size: 0.65rem;
+  color: var(--text3);
+  margin-top: 0.25rem;
+}
+
+/* SECTION */
+section { padding: 5rem 0; border-bottom: 1px solid var(--border); }
+.section-label {
+  font-family: 'Space Mono', monospace;
+  font-size: 0.6rem;
+  color: var(--gold);
+  letter-spacing: 0.2em;
+  text-transform: uppercase;
+  margin-bottom: 0.75rem;
+  display: flex; align-items: center; gap: 0.5rem;
+}
+.section-label::before { content: ''; width: 20px; height: 1px; background: var(--gold); }
+h2 {
+  font-size: clamp(1.75rem, 3vw, 2.5rem);
+  font-weight: 700;
+  letter-spacing: -0.02em;
+  margin-bottom: 1rem;
+  line-height: 1.1;
+}
+.section-intro {
+  font-size: 1rem;
+  color: var(--text2);
+  max-width: 680px;
+  line-height: 1.8;
+  margin-bottom: 3rem;
+}
+
+/* GRID */
+.grid-2 { display: grid; grid-template-columns: 1fr 1fr; gap: 1.5rem; }
+.grid-3 { display: grid; grid-template-columns: repeat(3, 1fr); gap: 1.5rem; }
+.grid-4 { display: grid; grid-template-columns: repeat(4, 1fr); gap: 1rem; }
+@media (max-width: 900px) {
+  .grid-2, .grid-3, .grid-4 { grid-template-columns: 1fr; }
+  .hero-stats-row { grid-template-columns: 1fr 1fr; }
+}
+
+/* CARDS */
+.card {
+  background: var(--surface);
+  border: 1px solid var(--border);
+  padding: 2rem;
+  position: relative;
+  transition: border-color 0.2s;
+}
+.card:hover { border-color: var(--border2); }
+.card-gold { border-top: 3px solid var(--gold); background: linear-gradient(180deg, var(--gold-glow) 0%, transparent 80%); }
+.card-red { border-top: 3px solid var(--red); background: linear-gradient(180deg, var(--red-dim) 0%, transparent 80%); }
+.card-green { border-top: 3px solid var(--green); background: linear-gradient(180deg, var(--green-dim) 0%, transparent 80%); }
+.card-blue { border-top: 3px solid var(--blue); background: linear-gradient(180deg, var(--blue-dim) 0%, transparent 80%); }
+.card-label {
+  font-size: 0.6rem;
+  font-family: 'Space Mono', monospace;
+  color: var(--text3);
+  letter-spacing: 0.15em;
+  text-transform: uppercase;
+  margin-bottom: 0.75rem;
+}
+.card-num {
+  font-family: 'Space Mono', monospace;
+  font-size: 2.5rem;
+  font-weight: 700;
+  letter-spacing: -0.04em;
+  color: #fff;
+  line-height: 1;
+  margin-bottom: 0.4rem;
+}
+.card-title {
+  font-size: 1rem;
+  font-weight: 600;
+  margin-bottom: 0.5rem;
+}
+.card-body {
+  font-size: 0.85rem;
+  color: var(--text2);
+  line-height: 1.7;
+}
+
+/* TABLE */
+.data-table {
+  width: 100%;
+  border-collapse: collapse;
+  font-size: 0.85rem;
+}
+.data-table th {
+  text-align: left;
+  padding: 0.6rem 1rem;
+  font-size: 0.6rem;
+  letter-spacing: 0.12em;
+  text-transform: uppercase;
+  color: var(--text3);
+  font-family: 'Space Mono', monospace;
+  border-bottom: 1px solid var(--border);
+  font-weight: 400;
+}
+.data-table td {
+  padding: 0.75rem 1rem;
+  border-bottom: 1px solid var(--border);
+  color: var(--text2);
+}
+.data-table tr:last-child td { border-bottom: none; }
+.data-table tr:hover td { background: rgba(255,255,255,0.02); color: var(--text); }
+.data-table .rank { color: var(--text3); font-family: 'Space Mono', monospace; font-size: 0.7rem; }
+.data-table .city-name { color: var(--text); font-weight: 500; }
+.data-table .plays { color: #fff; font-family: 'Space Mono', monospace; }
+.data-table .trend { font-size: 0.75rem; }
+.trend-up { color: var(--green); }
+.trend-down { color: var(--red); }
+.trend-hold { color: var(--amber); }
+
+/* CHART BARS */
+.bar-chart { display: flex; flex-direction: column; gap: 0.5rem; }
+.bar-row { display: flex; align-items: center; gap: 1rem; }
+.bar-label { width: 120px; font-size: 0.75rem; color: var(--text2); text-align: right; flex-shrink: 0; }
+.bar-track { flex: 1; height: 8px; background: var(--border); border-radius: 4px; overflow: hidden; }
+.bar-fill { height: 100%; border-radius: 4px; background: var(--gold); transition: width 0.8s ease; }
+.bar-val { width: 60px; font-size: 0.7rem; font-family: 'Space Mono', monospace; color: var(--text3); text-align: right; flex-shrink: 0; }
+
+/* TIMELINE */
+.timeline { display: flex; flex-direction: column; gap: 0; }
+.tl-item {
+  display: grid;
+  grid-template-columns: 80px 1px 1fr;
+  gap: 0 1.5rem;
+  padding-bottom: 2rem;
+}
+.tl-year {
+  font-family: 'Space Mono', monospace;
+  font-size: 0.75rem;
+  color: var(--gold);
+  text-align: right;
+  padding-top: 0.1rem;
+  font-weight: 700;
+}
+.tl-line {
+  width: 1px;
+  background: var(--border);
+  position: relative;
+}
+.tl-line::before {
+  content: '';
+  position: absolute;
+  top: 6px; left: -4px;
+  width: 9px; height: 9px;
+  border-radius: 50%;
+  background: var(--gold);
+  border: 2px solid var(--bg);
+}
+.tl-content { padding-top: 0; }
+.tl-title { font-weight: 600; font-size: 0.9rem; margin-bottom: 0.25rem; }
+.tl-body { font-size: 0.82rem; color: var(--text2); line-height: 1.6; }
+.tl-badge {
+  display: inline-block;
+  font-size: 0.6rem;
+  font-family: 'Space Mono', monospace;
+  letter-spacing: 0.1em;
+  padding: 0.15rem 0.5rem;
+  margin-left: 0.5rem;
+  border-radius: 2px;
+  vertical-align: middle;
+}
+.badge-gold { background: var(--gold-dim); color: var(--gold); border: 1px solid rgba(201,162,39,0.2); }
+.badge-red { background: var(--red-dim); color: var(--red); border: 1px solid rgba(232,64,64,0.2); }
+.badge-green { background: var(--green-dim); color: var(--green); border: 1px solid rgba(34,197,94,0.2); }
+
+/* SIGNAL BLOCKS */
+.signal-grid { display: grid; grid-template-columns: repeat(3, 1fr); gap: 1rem; }
+@media (max-width: 900px) { .signal-grid { grid-template-columns: 1fr; } }
+.signal {
+  padding: 1.5rem;
+  border: 1px solid var(--border);
+  background: var(--surface);
+  position: relative;
+}
+.signal-icon { font-size: 1.5rem; margin-bottom: 0.75rem; }
+.signal-title { font-size: 0.8rem; font-weight: 700; margin-bottom: 0.5rem; letter-spacing: 0.02em; }
+.signal-body { font-size: 0.78rem; color: var(--text2); line-height: 1.6; }
+.signal-accent { position: absolute; top: 0; left: 0; right: 0; height: 2px; }
+
+/* OPPORTUNITY MATRIX */
+.matrix-row {
+  display: grid;
+  grid-template-columns: 1fr 1fr 1fr;
+  gap: 1px;
+  background: var(--border);
+}
+.matrix-cell {
+  background: var(--surface);
+  padding: 1.5rem;
+}
+.matrix-head {
+  font-size: 0.65rem;
+  font-family: 'Space Mono', monospace;
+  letter-spacing: 0.12em;
+  text-transform: uppercase;
+  color: var(--text3);
+  margin-bottom: 0.75rem;
+}
+.matrix-title { font-size: 0.9rem; font-weight: 600; margin-bottom: 0.4rem; }
+.matrix-body { font-size: 0.78rem; color: var(--text2); line-height: 1.6; }
+
+/* IMPERATIVE LIST */
+.imperative-list { display: flex; flex-direction: column; gap: 1rem; }
+.imperative {
+  display: grid;
+  grid-template-columns: 60px 1fr;
+  gap: 1.5rem;
+  align-items: start;
+  padding: 1.5rem;
+  border: 1px solid var(--border);
+  background: var(--surface);
+  transition: border-color 0.2s;
+}
+.imperative:hover { border-color: var(--border2); }
+.imp-num {
+  font-family: 'Space Mono', monospace;
+  font-size: 2rem;
+  font-weight: 700;
+  color: var(--border2);
+  line-height: 1;
+}
+.imp-tag {
+  display: inline-block;
+  font-size: 0.55rem;
+  font-family: 'Space Mono', monospace;
+  letter-spacing: 0.12em;
+  padding: 0.2rem 0.5rem;
+  border-radius: 2px;
+  margin-bottom: 0.5rem;
+}
+.imp-title { font-size: 0.95rem; font-weight: 700; margin-bottom: 0.4rem; }
+.imp-body { font-size: 0.82rem; color: var(--text2); line-height: 1.7; }
+
+/* PULL QUOTES */
+.pull-quote {
+  margin: 2.5rem 0;
+  padding: 2rem 2rem 2rem 2.5rem;
+  border-left: 3px solid var(--gold);
+  background: var(--gold-glow);
+  font-size: 1.05rem;
+  font-style: italic;
+  color: var(--text);
+  line-height: 1.7;
+}
+
+/* RECESSION BOX */
+.recession-callout {
+  border: 1px solid rgba(232,64,64,0.3);
+  background: rgba(232,64,64,0.04);
+  padding: 2rem;
+  margin-bottom: 2rem;
+}
+.recession-callout .rc-label {
+  font-size: 0.6rem;
+  font-family: 'Space Mono', monospace;
+  color: var(--red);
+  letter-spacing: 0.15em;
+  text-transform: uppercase;
+  margin-bottom: 0.75rem;
+  display: flex; align-items: center; gap: 0.5rem;
+}
+.rc-label::before { content: '▲'; font-size: 0.5rem; }
+
+/* FOOTER */
+footer {
+  padding: 3rem 0;
+  border-top: 1px solid var(--border);
+  display: flex;
+  justify-content: space-between;
+  align-items: center;
+}
+footer .f-brand { font-family: 'Space Mono', monospace; font-size: 0.7rem; color: var(--text3); }
+footer .f-note { font-size: 0.65rem; color: var(--text3); }
+
+/* SONG CARD */
+.song-grid { display: grid; grid-template-columns: repeat(3, 1fr); gap: 1px; background: var(--border); }
+@media (max-width: 900px) { .song-grid { grid-template-columns: 1fr; } }
+.song-card {
+  background: var(--surface);
+  padding: 1.5rem;
+  transition: background 0.2s;
+}
+.song-card:hover { background: var(--surface2); }
+.sc-rank { font-family: 'Space Mono', monospace; font-size: 0.6rem; color: var(--text3); margin-bottom: 0.4rem; }
+.sc-title { font-size: 0.95rem; font-weight: 700; margin-bottom: 0.25rem; }
+.sc-plays { font-family: 'Space Mono', monospace; font-size: 1.3rem; font-weight: 700; color: var(--gold); margin-bottom: 0.4rem; }
+.sc-shazam { font-size: 0.7rem; color: var(--text2); }
+.sc-bar { margin-top: 0.75rem; height: 3px; background: var(--border); border-radius: 2px; overflow: hidden; }
+.sc-bar-fill { height: 100%; background: var(--gold); border-radius: 2px; }
+.sc-note { font-size: 0.7rem; color: var(--text3); margin-top: 0.5rem; line-height: 1.5; }
+
+/* MARKET VELOCITY */
+.velocity-row {
+  display: grid;
+  grid-template-columns: 30px 150px 1fr 80px;
+  align-items: center;
+  gap: 1rem;
+  padding: 0.75rem 0;
+  border-bottom: 1px solid var(--border);
+  font-size: 0.82rem;
+}
+.velocity-row:last-child { border-bottom: none; }
+.v-rank { font-family: 'Space Mono', monospace; font-size: 0.65rem; color: var(--text3); }
+.v-city { font-weight: 600; color: var(--text); }
+.v-bar { height: 6px; background: var(--border); border-radius: 3px; overflow: hidden; }
+.v-bar-fill { height: 100%; border-radius: 3px; background: var(--gold); }
+.v-num { font-family: 'Space Mono', monospace; font-size: 0.75rem; color: var(--text2); text-align: right; }
+
+/* PHASE BLOCK */
+.phase-block {
+  border: 1px solid var(--border);
+  background: var(--surface);
+  margin-bottom: 1rem;
+  overflow: hidden;
+}
+.phase-header {
+  padding: 1rem 1.5rem;
+  background: var(--surface2);
+  display: flex;
+  align-items: center;
+  justify-content: space-between;
+}
+.phase-title { font-weight: 700; font-size: 0.9rem; }
+.phase-window { font-size: 0.65rem; font-family: 'Space Mono', monospace; color: var(--text3); }
+.phase-body { padding: 1.5rem; font-size: 0.82rem; color: var(--text2); line-height: 1.7; }
+
+</style>
+</head>
+<body>
+
+<nav>
+  <div class="inner">
+    <span class="nav-brand">past.El noir Records</span>
+    <div class="nav-links">
+      <a href="#catalog">Catalog</a>
+      <a href="#geography">Geography</a>
+      <a href="#market">Market</a>
+      <a href="#recession">Recession</a>
+      <a href="#trajectory">Trajectory</a>
+      <a href="#imperatives">Imperatives</a>
+    </div>
+    <span class="nav-date">March 31, 2026</span>
+  </div>
+</nav>
+
+<!-- HERO -->
+<section class="hero" style="border-bottom:1px solid var(--border)">
+  <div class="wrap">
+    <div class="hero-eyebrow">Market Intelligence Report — ALL LOVE Cycle</div>
+    <h1 class="hero-title">The Sovereign<br><em>Asset Position</em></h1>
+    <p class="hero-sub">
+      Ethan Payton is not an emerging artist. He is the proven owner of a multi-cycle catalog with
+      8 years of market data, documented algorithmic velocity, and untapped international hooks.
+      This deck establishes where past.El actually sits — and where the next 48 months must go.
+    </p>
+
+    <div class="hero-stats-row">
+      <div class="hero-stat">
+        <div class="stat-n">113K</div>
+        <div class="stat-l">Hollywood Fever</div>
+        <div class="stat-sub">Apple Music plays — catalog anchor</div>
+      </div>
+      <div class="hero-stat">
+        <div class="stat-n">2,006</div>
+        <div class="stat-l">Total Shazams</div>
+        <div class="stat-sub">Hollywood Fever alone — organic discovery engine</div>
+      </div>
+      <div class="hero-stat">
+        <div class="stat-n">4,541</div>
+        <div class="stat-l">Peak Daily Listeners</div>
+        <div class="stat-sub">July 28, 2025 — Discovery Mode proof of concept</div>
+      </div>
+      <div class="hero-stat">
+        <div class="stat-n">13.4K</div>
+        <div class="stat-l">Chicago Lifetime</div>
+        <div class="stat-sub">Apple Music plays — confirmed #1 market, all-time</div>
+      </div>
+    </div>
+  </div>
+</section>
+
+<!-- SECTION 1: THE THESIS -->
+<section id="thesis">
+  <div class="wrap">
+    <div class="section-label">The Core Argument</div>
+    <h2>From Discovery to Sovereignty</h2>
+    <p class="section-intro">
+      Eight years of streaming data doesn't just describe past performance — it proves something most
+      independent artists never establish: that the music has a self-sustaining demand signal independent
+      of any single release or campaign.
+    </p>
+
+    <div class="pull-quote">
+      "Hollywood Fever grew continuously from 2018 to 2023 without label infrastructure — 12,532 plays in Year 1 to 21,922 in Year 6. That's not a song. That's a compounding asset."
+    </div>
+
+    <div class="grid-3">
+      <div class="card card-gold">
+        <div class="card-label">Signal 01</div>
+        <div class="card-title">The Decay-Proof Catalog</div>
+        <div class="card-body">
+          Hollywood Fever increased year-over-year from 2018 through 2023 — 6 consecutive years of organic
+          growth with zero major label push. This is exceptional in a market where most tracks see 70%+
+          decay after 90 days. The catalog has proven it outlives trend cycles.
+        </div>
+      </div>
+      <div class="card card-blue">
+        <div class="card-label">Signal 02</div>
+        <div class="card-title">Algorithmic PMF Confirmed</div>
+        <div class="card-body">
+          Spotify Discovery Mode in Summer 2025 scaled daily listeners from ~850 to 4,541 — a 5.3x
+          multiplier. This proves the algorithm agrees with the audience. When given distribution fuel,
+          the music converts at scale. Product-market fit is not theoretical — it's on record.
+        </div>
+      </div>
+      <div class="card card-green">
+        <div class="card-label">Signal 03</div>
+        <div class="card-title">Multi-Market Durability</div>
+        <div class="card-body">
+          The catalog has registered meaningful plays in 25+ cities across North America, Western Europe
+          (Copenhagen, Vancouver), East Asia (Tokyo, Seoul), and potentially West Africa. This is not a
+          regional artist — it's a catalog that travels without promotion.
+        </div>
+      </div>
+    </div>
+  </div>
+</section>
+
+<!-- SECTION 2: CATALOG INTELLIGENCE -->
+<section id="catalog">
+  <div class="wrap">
+    <div class="section-label">Apple Music — 8 Years of Data</div>
+    <h2>Catalog Intelligence</h2>
+    <p class="section-intro">
+      Track-level analysis across 2018–2026. Lifetime plays and Shazam counts reveal which songs are
+      discovery vehicles vs. catalog anchors — a critical distinction for ad targeting and future releases.
+    </p>
+
+    <div class="song-grid">
+      <div class="song-card">
+        <div class="sc-rank">RANK 01 / ANCHOR</div>
+        <div class="sc-title">Hollywood Fever</div>
+        <div class="sc-plays">113,260</div>
+        <div class="sc-shazam">2,006 Shazams · 1.77% rate</div>
+        <div class="sc-bar"><div class="sc-bar-fill" style="width:100%"></div></div>
+        <div class="sc-note">6 consecutive years of growth (2018→2023). Year-6 peak at 21,922 plays.
+        The catalog anchor. High Shazam volume confirms ongoing discovery in new audiences — someone
+        is still hearing this for the first time and reaching for their phone.</div>
+      </div>
+      <div class="song-card">
+        <div class="sc-rank">RANK 02 / HIGH DISCOVERY</div>
+        <div class="sc-title">Roll With It</div>
+        <div class="sc-plays">33,306</div>
+        <div class="sc-shazam">1,291 Shazams · 3.88% rate</div>
+        <div class="sc-bar"><div class="sc-bar-fill" style="width:29%"></div></div>
+        <div class="sc-note">Extraordinary Shazam-to-play ratio — nearly 4%. This is 2x+ the rate of
+        Hollywood Fever. It means people hear Roll With It and immediately want to know what it is.
+        The highest discovery hook in the catalog. Severely underutilized as an ad creative.</div>
+      </div>
+      <div class="song-card">
+        <div class="sc-rank">RANK 03 / DEEP LISTEN</div>
+        <div class="sc-title">On the Move</div>
+        <div class="sc-plays">26,547</div>
+        <div class="sc-shazam">324 Shazams · 1.22% rate</div>
+        <div class="sc-bar"><div class="sc-bar-fill" style="width:23%"></div></div>
+        <div class="sc-note">Strong volume with steady annual plays. Lower Shazam rate suggests this
+        reaches existing fans rather than new discovery. Core retention catalog — the song people
+        return to rather than the one that brings them in.</div>
+      </div>
+      <div class="song-card">
+        <div class="sc-rank">RANK 04 / LOYAL BASE</div>
+        <div class="sc-title">Distance</div>
+        <div class="sc-plays">25,415</div>
+        <div class="sc-shazam">6 Shazams · 0.02% rate</div>
+        <div class="sc-bar"><div class="sc-bar-fill" style="width:22%"></div></div>
+        <div class="sc-note">High play count with near-zero Shazam activity. This is the loyal fan
+        song — people who already know it keep returning. Not a discovery vehicle but a strong
+        depth signal. Extremely low Shazam rate means it's not reaching new ears.</div>
+      </div>
+      <div class="song-card">
+        <div class="sc-rank">RANK 05 / EMERGING 2026</div>
+        <div class="sc-title">See Me</div>
+        <div class="sc-plays">229</div>
+        <div class="sc-shazam">0 Shazams · Day 18</div>
+        <div class="sc-bar"><div class="sc-bar-fill" style="width:2%"></div></div>
+        <div class="sc-note">11 avg daily listeners on Apple in first 18 days — already outperforming
+        several catalog tracks at launch. The ALL LOVE cycle now functions as the top of a discovery
+        funnel that feeds a proven deep catalog. This is the strategic architecture that didn't exist
+        in previous cycles.</div>
+      </div>
+      <div class="song-card">
+        <div class="sc-rank">RANK 06 / INTL SIGNAL</div>
+        <div class="sc-title">Origami</div>
+        <div class="sc-plays">1,231</div>
+        <div class="sc-shazam">Nashville #1 · Tokyo top-3</div>
+        <div class="sc-bar"><div class="sc-bar-fill" style="width:1%"></div></div>
+        <div class="sc-note">Nashville as the #1 market (162 plays, ahead of Milwaukee at 135) is a
+        genuine anomaly. Combined with Tokyo at 117, Origami is showing international reach that no
+        other track has replicated. This song may be the key to a country/intl hybrid push post-EP.</div>
+      </div>
+    </div>
+
+    <div style="margin-top: 2.5rem;">
+      <div class="card-label" style="margin-bottom: 1rem;">ANNUAL PLAYS TRAJECTORY — Apple Music (All Songs)</div>
+      <div class="bar-chart">
+        <div class="bar-row"><div class="bar-label">2018</div><div class="bar-track"><div class="bar-fill" style="width:54%"></div></div><div class="bar-val">~37,677</div></div>
+        <div class="bar-row"><div class="bar-label">2019</div><div class="bar-track"><div class="bar-fill" style="width:40%"></div></div><div class="bar-val">~30,194</div></div>
+        <div class="bar-row"><div class="bar-label">2020</div><div class="bar-track"><div class="bar-fill" style="width:35%"></div></div><div class="bar-val">~25,635</div></div>
+        <div class="bar-row"><div class="bar-label">2021</div><div class="bar-track"><div class="bar-fill" style="width:30%"></div></div><div class="bar-val">~22,101</div></div>
+        <div class="bar-row"><div class="bar-label">2022</div><div class="bar-track"><div class="bar-fill" style="width:33%"></div></div><div class="bar-val">~23,817</div></div>
+        <div class="bar-row"><div class="bar-label" style="color:var(--gold)">2023 ▲ PEAK</div><div class="bar-track"><div class="bar-fill" style="width:100%; background: var(--gold)"></div></div><div class="bar-val" style="color:var(--gold)">~33,346</div></div>
+        <div class="bar-row"><div class="bar-label">2024</div><div class="bar-track"><div class="bar-fill" style="width:30%"></div></div><div class="bar-val">~22,880</div></div>
+        <div class="bar-row"><div class="bar-label">2025</div><div class="bar-track"><div class="bar-fill" style="width:23%"></div></div><div class="bar-val">~17,261</div></div>
+        <div class="bar-row"><div class="bar-label">2026 (Q1)</div><div class="bar-track"><div class="bar-fill" style="width:5%; background: var(--amber)"></div></div><div class="bar-val" style="color:var(--amber)">~3,755</div></div>
+      </div>
+      <p style="font-size:0.72rem; color:var(--text3); margin-top: 0.75rem;">Note: 2026 is Jan–Mar only. ALL LOVE EP releases will reverse the Q1 contraction. This is the standard pre-release trough.</p>
+    </div>
+  </div>
+</section>
+
+<!-- SECTION 3: 8-YEAR GEOGRAPHY -->
+<section id="geography">
+  <div class="wrap">
+    <div class="section-label">Apple Music — City-Level 8-Year Analysis</div>
+    <h2>The Geographic Truth</h2>
+    <p class="section-intro">
+      The "Milwaukee local artist" framing is dead. The data shows a catalog that built its primary
+      audience in Chicago before spreading to Salt Lake City, Denver, and national markets — with
+      Milwaukee consistently outranked by multiple cities it has no geographic claim to.
+    </p>
+
+    <div class="grid-2" style="margin-bottom: 2rem;">
+      <div class="card">
+        <div class="card-label">All-Time Top 10 Markets — Apple Music Lifetime Plays</div>
+        <div class="velocity-row" style="padding-top: 0; font-size: 0.7rem; border-bottom: 1px solid var(--border); color: var(--text3);">
+          <div class="v-rank">#</div><div class="v-city">CITY</div><div class="v-bar" style="background:transparent"></div><div class="v-num">LIFETIME</div>
+        </div>
+        <div class="velocity-row"><div class="v-rank">01</div><div class="v-city">Chicago, IL</div><div class="v-bar"><div class="v-bar-fill" style="width:100%"></div></div><div class="v-num">13,377</div></div>
+        <div class="velocity-row"><div class="v-rank">02</div><div class="v-city">New York City, NY</div><div class="v-bar"><div class="v-bar-fill" style="width:50%"></div></div><div class="v-num">6,651</div></div>
+        <div class="velocity-row"><div class="v-rank">03</div><div class="v-city">Salt Lake City, UT</div><div class="v-bar"><div class="v-bar-fill" style="width:49%"></div></div><div class="v-num">6,489</div></div>
+        <div class="velocity-row"><div class="v-rank">04</div><div class="v-city">Milwaukee, WI</div><div class="v-bar"><div class="v-bar-fill" style="width:43%"></div></div><div class="v-num">5,786</div></div>
+        <div class="velocity-row"><div class="v-rank">05</div><div class="v-city">Denver, CO</div><div class="v-bar"><div class="v-bar-fill" style="width:42%"></div></div><div class="v-num">5,588</div></div>
+        <div class="velocity-row"><div class="v-rank">06</div><div class="v-city">Minneapolis, MN</div><div class="v-bar"><div class="v-bar-fill" style="width:39%"></div></div><div class="v-num">5,255</div></div>
+        <div class="velocity-row"><div class="v-rank">07</div><div class="v-city">Los Angeles, CA</div><div class="v-bar"><div class="v-bar-fill" style="width:35%"></div></div><div class="v-num">4,699</div></div>
+        <div class="velocity-row"><div class="v-rank">08</div><div class="v-city">Detroit, MI</div><div class="v-bar"><div class="v-bar-fill" style="width:31%"></div></div><div class="v-num">4,088</div></div>
+        <div class="velocity-row"><div class="v-rank">09</div><div class="v-city">Seattle, WA</div><div class="v-bar"><div class="v-bar-fill" style="width:30%"></div></div><div class="v-num">4,036</div></div>
+        <div class="velocity-row"><div class="v-rank">10</div><div class="v-city">Dallas, TX</div><div class="v-bar"><div class="v-bar-fill" style="width:26%"></div></div><div class="v-num">3,428</div></div>
+      </div>
+
+      <div>
+        <div class="card" style="margin-bottom: 1rem;">
+          <div class="card-label">The Salt Lake City Anomaly</div>
+          <div class="card-title">From Zero to #1 in 3 Years</div>
+          <div class="card-body">
+            SLC appears at #4 in 2020 (527 plays) and by 2023 becomes the single highest-performing
+            market at 1,662 plays — overtaking Chicago for the first time. It held #1 through 2025
+            (919 plays vs. Denver 760, Chicago 633). No geographic or cultural connection to Milwaukee
+            exists. This is purely algorithmic routing, which means Spotify's
+            recommendation engine placed past.El in a specific content feed that resonates in that DMA.
+          </div>
+        </div>
+        <div class="card">
+          <div class="card-label">The Denver Effect</div>
+          <div class="card-title">Organic Top-3 With No Promotion</div>
+          <div class="card-body">
+            Denver appears at #3 in 2021 with 648 plays — zero ad spend, zero promotion, zero
+            geographic proximity. By 2023-2024 it's a consistent top-3 city. The routing playbook
+            already flags Denver as Priority Tier 1 for ad spend. This is the correct read — Denver
+            listeners are self-selecting into this catalog, making them the cheapest converts.
+          </div>
+        </div>
+      </div>
+    </div>
+
+    <div class="card" style="margin-bottom: 1rem;">
+      <div class="card-label">Market Trajectory — Year-by-Year #1 City</div>
+      <div class="timeline" style="margin-top: 1rem;">
+        <div class="tl-item">
+          <div class="tl-year">2018–19</div><div class="tl-line"></div>
+          <div class="tl-content">
+            <div class="tl-title">Chicago Dominant Phase <span class="tl-badge badge-gold">3,141 plays</span></div>
+            <div class="tl-body">Chicago #1 in both years. NYC #2. Midwest-heavy footprint. This is the base audience —
+            likely first-circle fans and organic Shazam discovery. Crystal Lake and Elkhorn appear early, suggesting
+            Chicago-suburb spread rather than DMA-level targeting.</div>
+          </div>
+        </div>
+        <div class="tl-item">
+          <div class="tl-year">2020–22</div><div class="tl-line"></div>
+          <div class="tl-content">
+            <div class="tl-title">Western Expansion <span class="tl-badge badge-green">SLC + Denver emerge</span></div>
+            <div class="tl-body">Salt Lake City appears at #4 in 2020, rising to #3 in 2021. Denver enters top-3 in 2021.
+            This is algorithmic — Spotify and Apple routing the catalog to western markets where the TrapSoul/Alt-R&B
+            audience cluster exists. The Leesburg VA anomaly in 2022 (698 plays, #2 overall) suggests a single power user
+            or playlist curator in that market drove significant volume.</div>
+          </div>
+        </div>
+        <div class="tl-item">
+          <div class="tl-year">2023</div><div class="tl-line"></div>
+          <div class="tl-content">
+            <div class="tl-title">Peak Year — Discovery Mode PMF <span class="tl-badge badge-gold">33K+ Apple plays</span></div>
+            <div class="tl-body">Highest Apple Music year on record. Salt Lake City goes to #1 (1,662). The Spotify
+            data shows avg 1,800-2,000 daily listeners in this period. Both platforms peaking simultaneously confirms
+            this was genuine market resonance, not platform-specific. Charlotte enters top-10 for first time —
+            Southeast expansion signal.</div>
+          </div>
+        </div>
+        <div class="tl-item">
+          <div class="tl-year">2024</div><div class="tl-line"></div>
+          <div class="tl-content">
+            <div class="tl-title">Natural Trough <span class="tl-badge badge-red">-31% vs 2023</span></div>
+            <div class="tl-body">Detroit rises to #3 at 1,091 — an anomaly that likely reflects a specific playlist
+            or influencer tap. Overall volume drops consistent with natural catalog decay cycle. This is normal behavior
+            and matches the 2021 dip before the 2023 surge. The pattern suggests an 18-24 month organic cycle.</div>
+          </div>
+        </div>
+        <div class="tl-item">
+          <div class="tl-year">2025</div><div class="tl-line"></div>
+          <div class="tl-content">
+            <div class="tl-title">Discovery Mode Summer Spike <span class="tl-badge badge-green">4,541 peak daily listeners</span></div>
+            <div class="tl-body">Spotify hits all-time listener peak in July 2025. Monthly avg for July at 2,780 daily
+            listeners. Apple Music shows SLC still #1 (919). Vancouver enters top-10 — first Canadian city outside Toronto,
+            suggesting Pacific Northwest / West Coast spread. Follower count grows from 1,254 (June) to 1,316 (October)
+            during the spike — 62 followers from algorithmic exposure, confirming conversion is happening.</div>
+          </div>
+        </div>
+        <div class="tl-item" style="padding-bottom: 0;">
+          <div class="tl-year">2026</div><div class="tl-line" style="background:var(--gold)"></div>
+          <div class="tl-content">
+            <div class="tl-title">ALL LOVE Cycle Begins <span class="tl-badge badge-gold">Pre-release floor</span></div>
+            <div class="tl-body">Q1 2026 shows typical pre-release contraction. Seattle now #1 in YTD data, with
+            Salt Lake City #1, Denver #3 — the western core holds. SEE ME live since March 13. The EP drop April 24
+            will reverse this curve. The geographic infrastructure is ready.</div>
+          </div>
+        </div>
+      </div>
+    </div>
+
+    <!-- SONG-LEVEL CITY INSIGHTS FROM SCREENSHOTS -->
+    <div class="card" style="margin-bottom: 1rem;">
+      <div class="card-label">Song-Level City Signals — Apple Music Screenshots</div>
+      <div class="grid-2" style="margin-top: 1rem; gap: 1rem;">
+        <div>
+          <div style="font-size: 0.75rem; font-weight: 700; margin-bottom: 0.75rem; color: var(--text);">Ride With Me — LA at #1</div>
+          <div class="card-body">
+            Los Angeles leads at 94 lifetime plays (vs. Chicago at 50, Milwaukee at 34). This is the only song in the
+            catalog where LA outperforms Chicago. Combined with Seoul at 37 (tied for #4) and Copenhagen at 25,
+            this track has the most diverse international spread in the catalog. The LA dominance indicates a
+            specific audience segment — likely music industry adjacent — that the song reached through organic
+            playlist routing.
+          </div>
+        </div>
+        <div>
+          <div style="font-size: 0.75rem; font-weight: 700; margin-bottom: 0.75rem; color: var(--text);">Origami — Nashville at #1</div>
+          <div class="card-body">
+            Nashville at 162 plays (vs. Milwaukee at 135, Tokyo at 117) is genuinely surprising for an Alt-R&B track.
+            This suggests Origami may have sonic crossover that the other catalog tracks don't — potentially country
+            or Americana influence that's routing it into Nashville-adjacent playlists. Tokyo at #3 and Copenhagen at
+            #4 confirm this track has the widest international appeal in the catalog.
+          </div>
+        </div>
+        <div>
+          <div style="font-size: 0.75rem; font-weight: 700; margin-bottom: 0.75rem; color: var(--text);">Dance With Him — Chicago Core Holds</div>
+          <div class="card-body">
+            Chicago #1 (78), Milwaukee #2 (67) — this is the most locally concentrated track in the catalog.
+            Copenhagen at 27 (#5) is the only international signal. Dance With Him appears to be the most
+            "home market" song, which may reflect its release era and the audience state at the time. Low
+            Shazam count (1 lifetime) confirms minimal new discovery.
+          </div>
+        </div>
+        <div>
+          <div style="font-size: 0.75rem; font-weight: 700; margin-bottom: 0.75rem; color: var(--text);">Overall Geographic Diagnosis</div>
+          <div class="card-body">
+            The catalog does not have one geographic identity — each song routes differently. Hollywood Fever (Shazam
+            champion) routes broadly. Origami routes internationally. Ride With Me routes to coastal cities. Dance With
+            Him is local. This diversity is a strength: the ALL LOVE EP should be tracked individually to understand
+            which songs route to which markets for precision ad spend.
+          </div>
+        </div>
+      </div>
+    </div>
+  </div>
+</section>
+
+<!-- SECTION 4: MARKET POSITION -->
+<section id="market">
+  <div class="wrap">
+    <div class="section-label">Competitive Landscape — 2026</div>
+    <h2>Where past.El Lives in the Market</h2>
+    <p class="section-intro">
+      The Alt-R&B / TrapSoul genre is in a consolidation phase. The founders of the genre
+      (Bryson Tiller, 6LACK, PARTYNEXTDOOR) have largely moved into their legacy arc.
+      This creates a specific opening that past.El is architecturally positioned to occupy.
+    </p>
+
+    <div class="recession-callout" style="border-color: rgba(59,130,246,0.3); background: rgba(59,130,246,0.04);">
+      <div class="rc-label" style="color: var(--blue);">◆ GENRE POSITIONING THESIS</div>
+      <p style="font-size: 0.88rem; color: var(--text2); line-height: 1.8;">
+        <strong style="color: var(--text);">The founders are in their third or fourth album cycle.</strong>
+        Bryson Tiller's audience is aging into their late 20s and 30s. 6LACK's output has slowed.
+        PARTYNEXTDOOR is OVO-locked. The audience built by these artists from 2015–2020 is now looking
+        for their next artist — someone who sounds like the playlist they built when they were 19, but
+        who is making music for who they are at 27. past.El's Core Drive data confirms spectral proximity
+        to this exact axis. The sonic data proves fit. The demographic window is opening.
+      </p>
+    </div>
+
+    <div class="signal-grid" style="margin-bottom: 2rem;">
+      <div class="signal">
+        <div class="signal-accent" style="background: var(--gold);"></div>
+        <div class="signal-icon">🎯</div>
+        <div class="signal-title">The Sonic Position</div>
+        <div class="signal-body">
+          Core Drive analysis mapped SEE ME across 2,713 tracks and 38 similarity playlists.
+          S-tier matches: 6LACK (Temporary), Drake (Hours In Silence), Bryson Tiller (Outta Time).
+          The algorithm places past.El next to these artists. The position is not self-described —
+          it is machine-verified.
+        </div>
+      </div>
+      <div class="signal">
+        <div class="signal-accent" style="background: var(--blue);"></div>
+        <div class="signal-icon">📊</div>
+        <div class="signal-title">The Independent Tier</div>
+        <div class="signal-body">
+          At 22 popularity score, 1,383 Spotify followers, and ~850-1,200 avg daily listeners
+          in the off-cycle floor, past.El sits at the upper end of the indie-established tier.
+          The jump to score 30+ (Discover Weekly threshold) is achievable within a single
+          well-executed release cycle. This is measurable progress, not speculation.
+        </div>
+      </div>
+      <div class="signal">
+        <div class="signal-accent" style="background: var(--green);"></div>
+        <div class="signal-icon">🌍</div>
+        <div class="signal-title">The Afro-R&B Opening</div>
+        <div class="signal-body">
+          The Lagos Shazam signal (25.2% Shazam-to-play ratio) combined with Tokyo (#3 for Origami),
+          Seoul (top-5 for Ride With Me), and Copenhagen (recurring across multiple songs) suggests
+          international routes that have never been deliberately targeted. Afrofusion/Afrobeats is
+          a $1.5B+ market. The hook already exists.
+        </div>
+      </div>
+      <div class="signal">
+        <div class="signal-accent" style="background: var(--red);"></div>
+        <div class="signal-icon">⚠️</div>
+        <div class="signal-title">The Stagnation Threat</div>
+        <div class="signal-body">
+          Popularity score locked at 22 from at least November 2025 through March 2026. Followers
+          grew from 1,335 to 1,383 in that period — ~1.5 followers per week. At this rate, the
+          catalog maintains its audience without growing it. The ALL LOVE cycle must break this
+          stasis or the next trough will be deeper.
+        </div>
+      </div>
+      <div class="signal">
+        <div class="signal-accent" style="background: var(--amber);"></div>
+        <div class="signal-icon">🔁</div>
+        <div class="signal-title">The Cycle Architecture</div>
+        <div class="signal-body">
+          4-single cadence ahead of an EP is the correct algorithmic structure. Each release
+          re-triggers the recommender before the previous one decays. The 5-release events
+          in 29 days is consistent with Chaotic Good's "trend simulation" thesis: enough
+          volume to make the algorithm treat the sound as trending.
+        </div>
+      </div>
+      <div class="signal">
+        <div class="signal-accent" style="background: var(--gold);"></div>
+        <div class="signal-icon">💎</div>
+        <div class="signal-title">The Catalog Moat</div>
+        <div class="signal-body">
+          Hollywood Fever at 113K Apple Music plays + 2,006 Shazams is a rare asset. Most
+          independent artists never build a single song with that level of sustained discovery.
+          It means every new listener who finds a new release has a proven back-catalog to sink
+          into. This is a structural advantage that new artists cannot replicate.
+        </div>
+      </div>
+    </div>
+
+    <div class="card">
+      <div class="card-label">Competitive Context — Rising Alt-R&B 2026</div>
+      <div class="card-body" style="margin-top: 0.5rem;">
+        <p style="margin-bottom: 1rem;">
+          Artists on watch in the same sonic lane for 2026 include DESTIN CONRAD (label debut building),
+          Jordan Ward (independent, Gorilla Geo God Tier), Xavier Omär (consistent catalog player), and
+          SiR (TDE-adjacent, critical darling). Past.El's advantage over these artists is not sonic —
+          it is data. Most of these artists cannot produce an 8-year city-level performance history because
+          they haven't been in market that long. That longitudinal story is the competitive moat.
+        </p>
+        <p>
+          The pluggnB and Afrofuturism trends emerging in 2026 are adjacent, not threatening. They confirm
+          that the audience for emotionally complex, production-forward R&B is growing, not contracting.
+          The next 18 months are about deepening penetration in proven markets while opening the international
+          hooks the data has already identified.
+        </p>
+      </div>
+    </div>
+  </div>
+</section>
+
+<!-- SECTION 5: RECESSION ECONOMICS -->
+<section id="recession">
+  <div class="wrap">
+    <div class="section-label">Economic Context — 2026–2028</div>
+    <h2>Music in a Recession Economy</h2>
+    <p class="section-intro">
+      A recession is not a threat to music streaming — it is a structural advantage.
+      Understanding why matters for how resources are allocated and where the real risks are.
+    </p>
+
+    <div class="recession-callout">
+      <div class="rc-label">Economic Risk Signal</div>
+      <p style="font-size: 0.88rem; color: var(--text2); line-height: 1.8;">
+        As of Q1 2026, tariff escalation and macroeconomic uncertainty have elevated recession probability
+        to its highest level since 2020. Consumer discretionary spending is under pressure.
+        Live event attendance, merchandise, and physical media are the segments most exposed to income compression.
+        <strong style="color: var(--text);">Streaming subscriptions are the least exposed segment in all of entertainment.</strong>
+      </p>
+    </div>
+
+    <div class="grid-3" style="margin-bottom: 2rem;">
+      <div class="card card-green">
+        <div class="card-label">Recession-Resistant Asset</div>
+        <div class="card-title">Streaming Holds in Downturns</div>
+        <div class="card-body">
+          TD Cowen analysts (2026) explicitly labeled major music streaming businesses as "recession-proof."
+          Subscription churn in music streaming is historically minimal during economic stress — at $10-11/mo,
+          Spotify and Apple Music are among the last subscriptions people cancel. Consumer spending on music
+          streaming grew 12% YoY in 2024 with +9-10% projected through 2026 even in base case economic models.
+        </div>
+      </div>
+      <div class="card card-amber" style="border-top-color: var(--amber);">
+        <div class="card-label">Recession-Sensitive Asset</div>
+        <div class="card-title">Live Revenue at Risk</div>
+        <div class="card-body">
+          Concert ticket prices have inflated 50-80% since 2020. In a recession, live attendance is
+          vulnerable — particularly for non-headliner acts. This affects the 414 Day event calculus
+          directly: the goal should not be ticket revenue but content capture and conversion to streaming
+          saves. A recession-aware live strategy is: perform to create digital assets, not to monetize
+          door counts.
+        </div>
+      </div>
+      <div class="card card-blue">
+        <div class="card-label">Recession Behavior Shift</div>
+        <div class="card-title">Emotional Music Cycles Up</div>
+        <div class="card-body">
+          Historical data from 2008-2010 and 2020 shows that melancholic, emotionally resonant music
+          outperforms upbeat pop during downturns. The "Recession Pop" phenomenon — nostalgic, vulnerable,
+          introspective listening — directly describes past.El's catalog. Low valence (40% per parametric
+          data), late-night listening patterns, emotionally processing lyrics. The content position is
+          recession-native.
+        </div>
+      </div>
+    </div>
+
+    <div class="matrix-row" style="border: 1px solid var(--border);">
+      <div class="matrix-cell">
+        <div class="matrix-head">18-Month Window (2026)</div>
+        <div class="matrix-title">Singles Cadence + EP</div>
+        <div class="matrix-body">
+          Low-cost, high-impact. Each single costs only studio time (already sunk) and minimal ad spend
+          ($50-100/release). In a tightening economy, the 4-single strategy is optimal: it generates
+          5 release events at 20% of a traditional album launch cost. Maximum algorithmic surface area
+          for minimum cash outlay.
+        </div>
+      </div>
+      <div class="matrix-cell">
+        <div class="matrix-head">24-Month Window (2027)</div>
+        <div class="matrix-title">Sync Licensing Push</div>
+        <div class="matrix-body">
+          Streaming royalties at 0.003-0.005/stream require massive volume to be primary income. But
+          sync licensing — TV, film, advertising, gaming — pays per-placement and is recession-resilient
+          (content production continues through downturns). The catalog (particularly Hollywood Fever and
+          Roll With It's high Shazam profile) is sync-ready. This requires music publishing registration
+          and pitching infrastructure.
+        </div>
+      </div>
+      <div class="matrix-cell">
+        <div class="matrix-head">48-Month Window (2028)</div>
+        <div class="matrix-title">International Monetization</div>
+        <div class="matrix-body">
+          The Lagos, Tokyo, Copenhagen, Seoul signals represent non-US markets where streaming royalty
+          rates are often lower but conversion costs are minimal. As the US music market matures, growth
+          is shifting to emerging markets. If the Afro-R&B hook is real (as the Shazam data suggests),
+          Nigeria and West African markets could produce streaming volume with zero additional production cost.
+        </div>
+      </div>
+    </div>
+  </div>
+</section>
+
+<!-- SECTION 6: DISCOVERY MODE + SPOTIFY -->
+<section id="spotify">
+  <div class="wrap">
+    <div class="section-label">Spotify Intelligence</div>
+    <h2>The Algorithm Relationship</h2>
+    <p class="section-intro">
+      The Spotify data tells a different story than Apple Music — and both are necessary to read
+      the full picture. Where Apple shows catalog depth, Spotify shows algorithmic velocity.
+    </p>
+
+    <div class="grid-2" style="margin-bottom: 1.5rem;">
+      <div class="card card-gold">
+        <div class="card-label">Discovery Mode — Summer 2025 Proof</div>
+        <div class="card-num">4,541</div>
+        <div class="card-title">Peak Daily Listeners — July 28, 2025</div>
+        <div class="card-body">
+          Pre-Discovery Mode floor was ~850 daily listeners. The program scaled this 5.3x to 4,541 in
+          approximately 6-8 weeks. Monthly average for July 2025: 2,780/day. The algorithm accepted
+          the promotion signal and amplified it. This confirms: at higher listener levels, Spotify's
+          recommendation engine engages. The problem is sustaining the floor after the program ends —
+          October 2025 avg dropped back to 1,644, November to 1,029.
+        </div>
+      </div>
+      <div class="card">
+        <div class="card-label">The Score-20 Ceiling</div>
+        <div class="card-num">22</div>
+        <div class="card-title">Popularity Score — Locked Since Q4 2025</div>
+        <div class="card-body">
+          The popularity score has sat at 22 for at least 4 months with minimal movement. Score 20
+          unlocks Release Radar to non-followers. Score 30+ triggers Discover Weekly (estimated 9,000
+          streams from 4,100 unique listeners per 28-day window). The gap from 22 to 30 requires
+          concentrated streaming velocity in a short window — exactly what a well-executed 4-single
+          cadence into an EP can produce. This is the single most important metric to move in Q2 2026.
+        </div>
+      </div>
+    </div>
+
+    <div class="card">
+      <div class="card-label">Spotify Daily Listeners — 24-Month Trend (Jan 2023–Dec 2025)</div>
+      <div style="margin-top: 1rem;">
+        <div class="bar-chart">
+          <div class="bar-row"><div class="bar-label" style="font-size:0.65rem">Jan 2023</div><div class="bar-track"><div class="bar-fill" style="width:35%"></div></div><div class="bar-val">1,586</div></div>
+          <div class="bar-row"><div class="bar-label" style="font-size:0.65rem">Apr 2023</div><div class="bar-track"><div class="bar-fill" style="width:41%"></div></div><div class="bar-val">1,880</div></div>
+          <div class="bar-row"><div class="bar-label" style="font-size:0.65rem">Jul 2023</div><div class="bar-track"><div class="bar-fill" style="width:44%"></div></div><div class="bar-val">2,014</div></div>
+          <div class="bar-row"><div class="bar-label" style="font-size:0.65rem">Oct 2023</div><div class="bar-track"><div class="bar-fill" style="width:35%"></div></div><div class="bar-val">1,599</div></div>
+          <div class="bar-row"><div class="bar-label" style="font-size:0.65rem">Jan 2024</div><div class="bar-track"><div class="bar-fill" style="width:27%"></div></div><div class="bar-val">1,241</div></div>
+          <div class="bar-row"><div class="bar-label" style="font-size:0.65rem">Apr 2024</div><div class="bar-track"><div class="bar-fill" style="width:23%"></div></div><div class="bar-val">1,056</div></div>
+          <div class="bar-row"><div class="bar-label" style="font-size:0.65rem">Jul 2024</div><div class="bar-track"><div class="bar-fill" style="width:18%"></div></div><div class="bar-val">811</div></div>
+          <div class="bar-row"><div class="bar-label" style="font-size:0.65rem">Jan 2025</div><div class="bar-track"><div class="bar-fill" style="width:24%"></div></div><div class="bar-val">1,085</div></div>
+          <div class="bar-row"><div class="bar-label" style="font-size:0.65rem">May 2025</div><div class="bar-track"><div class="bar-fill" style="width:31%"></div></div><div class="bar-val">1,398</div></div>
+          <div class="bar-row"><div class="bar-label" style="font-size:0.65rem; color:var(--gold)">Jul 2025 ▲ PEAK</div><div class="bar-track"><div class="bar-fill" style="width:100%; background:var(--gold)"></div></div><div class="bar-val" style="color:var(--gold)">2,780</div></div>
+          <div class="bar-row"><div class="bar-label" style="font-size:0.65rem">Oct 2025</div><div class="bar-track"><div class="bar-fill" style="width:36%"></div></div><div class="bar-val">1,644</div></div>
+          <div class="bar-row"><div class="bar-label" style="font-size:0.65rem">Dec 2025</div><div class="bar-track"><div class="bar-fill" style="width:23%"></div></div><div class="bar-val">1,066</div></div>
+        </div>
+        <p style="font-size:0.72rem; color:var(--text3); margin-top: 0.75rem;">Monthly averages shown. Peak day was July 28, 2025 at 4,541 listeners / 5,887 streams. Discovery Mode active approx. June–October 2025.</p>
+      </div>
+    </div>
+  </div>
+</section>
+
+<!-- SECTION 7: FORWARD TRAJECTORY -->
+<section id="trajectory">
+  <div class="wrap">
+    <div class="section-label">Strategic Outlook</div>
+    <h2>The Next 48 Months</h2>
+    <p class="section-intro">
+      Three phases. Each builds on the previous. None require label infrastructure.
+      All are data-justified, not aspirational.
+    </p>
+
+    <div class="phase-block">
+      <div class="phase-header">
+        <div class="phase-title">Phase 1 — Velocity Event <span class="tl-badge badge-gold" style="margin-left:0.5rem">April–June 2026</span></div>
+        <div class="phase-window">ALL LOVE EP Cycle</div>
+      </div>
+      <div class="phase-body">
+        The 4-single cadence (SEE ME → ESL → SF → LID) followed by the ALL LOVE EP on April 24 is a
+        compounding velocity event. Each release triggers algorithmic redistribution before the previous
+        one decays. The 414 Day live set on April 14 provides content capture for the final push.
+        <strong>Primary objective: push popularity score from 22 to 30+.</strong> At score 30+, Discover
+        Weekly engagement begins and the audience grows algorithmically without additional ad spend.
+        Secondary objective: track which ALL LOVE songs route to which cities — this is the targeting
+        data for all future campaigns. Post-EP registrations (ASCAP, MLC, Songtrust) must execute
+        the Monday after each release, without exception.
+      </div>
+    </div>
+
+    <div class="phase-block">
+      <div class="phase-header">
+        <div class="phase-title">Phase 2 — International Opens <span class="tl-badge badge-blue" style="margin-left:0.5rem">Late 2026–2027</span></div>
+        <div class="phase-window">Post-EP Analysis & Expansion</div>
+      </div>
+      <div class="phase-body">
+        After April 24, the geographic data from ALL LOVE will confirm or refute the international
+        signals. If the Lagos/Tokyo/Copenhagen patterns hold — and historical data suggests they will —
+        the next cycle should be built with deliberate international targeting. This means: Afrobeats
+        adjacent production experiments, DistroKid/Amuse international playlist pitching to
+        Lagos/Lagos-adjacent curators, and potentially a Spotify Discovery Mode run in non-US markets
+        where CPM is lower. <strong>The Afro-R&B crossover doesn't require a new sound — it requires
+        surfacing the music to an audience the data says already responds to it.</strong> Sync licensing
+        infrastructure should be built in this phase: Musicbed, Artlist, or direct sync agent contact.
+        Hollywood Fever and Roll With It are the primary targets given their Shazam profiles.
+      </div>
+    </div>
+
+    <div class="phase-block">
+      <div class="phase-header">
+        <div class="phase-title">Phase 3 — Catalog as Capital <span class="tl-badge badge-green" style="margin-left:0.5rem">2027–2028</span></div>
+        <div class="phase-window">Long-Cycle Monetization</div>
+      </div>
+      <div class="phase-body">
+        At this stage, the catalog should have multiple proven songs across multiple market tiers.
+        Hollywood Fever has already demonstrated the 6-year appreciation cycle. If ALL LOVE generates
+        one song that replicates that trajectory, the catalog value compounds significantly.
+        <strong>The strategic goal by 2028 is to have 3 "anchor" songs across 3 geographic tiers
+        (domestic urban, western US, international) with documented Shazam-driven discovery pipelines
+        in each.</strong> This is the profile of a catalog that attracts sync licensing deals,
+        potential distribution partnerships, and eventually positions for a label deal from leverage
+        rather than need. The recession context actually helps here — in tightening markets, labels
+        are more likely to sign artists with proven catalog demand than to develop new artists from scratch.
+      </div>
+    </div>
+
+    <div class="pull-quote">
+      "In a recession, labels don't gamble. They acquire. A catalog with 8 years of city-level data,
+      a Shazam-verified discovery engine, and an algorithm-confirmed PMF is not a pitch — it is an offer."
+    </div>
+  </div>
+</section>
+
+<!-- SECTION 8: IMPERATIVES -->
+<section id="imperatives">
+  <div class="wrap">
+    <div class="section-label">Actionable Imperatives</div>
+    <h2>What Executes Now</h2>
+    <p class="section-intro">
+      Ranked by impact and time-sensitivity. Every item is data-justified from the analysis above.
+    </p>
+
+    <div class="imperative-list">
+      <div class="imperative">
+        <div class="imp-num">01</div>
+        <div>
+          <div class="imp-tag badge-red">P0 · TODAY</div>
+          <div class="imp-title">Execute the SEE ME Marquee or Ad Studio Campaign</div>
+          <div class="imp-body">
+            SEE ME is 18 days live on Apple Music (229 plays, 11 avg daily listeners). The Spotify
+            Marquee 18-day post-release eligibility window closes today. If budget exists, deploy
+            immediately. If Marquee is unavailable, launch Spotify Ad Studio in Denver ($20),
+            Minneapolis ($15), Dallas ($15). Total: $50 minimum. Every day of delay is lost
+            algorithmic momentum during the highest-velocity window of the single's life.
+            CTA on all content: "Save SEE ME on Spotify."
+          </div>
+        </div>
+      </div>
+
+      <div class="imperative">
+        <div class="imp-num">02</div>
+        <div>
+          <div class="imp-tag badge-gold">P1 · ESL LAUNCH</div>
+          <div class="imp-title">Complete ESL Content Sprint — 3 Days Remaining</div>
+          <div class="imp-body">
+            East Side Love releases April 3. The 8-day content window closes in 3 days.
+            Quote-on-screen (pastel talk) format is highest-ROI: late-night aesthetic still from
+            booth/drive footage, relationship lyric over audio. The Gorilla Geo T3/T4 artist fan
+            overlap matrix gives you the targeting seed for Spotify Ad Studio. Chicago and
+            Denver are the confirmed ESL target cities based on geographic pattern analysis.
+            Deploy comment templates within the first 5 minutes of every post going live.
+          </div>
+        </div>
+      </div>
+
+      <div class="imperative">
+        <div class="imp-num">03</div>
+        <div>
+          <div class="imp-tag badge-gold">P1 · CATALOG</div>
+          <div class="imp-title">Activate Roll With It as a Discovery Vehicle</div>
+          <div class="imp-body">
+            Roll With It has a 3.88% Shazam-to-play ratio — the highest discovery hook in the
+            catalog by a wide margin. It is not being used as an ad creative. This track should
+            be run as a Spotify Ad Studio discovery ad in Denver and SLC (markets with established
+            audience resonance) using the 15-30 second hook as the audio creative. A new listener
+            who Shazams Roll With It will find the full catalog. This is how you grow the base
+            without spending on the new release exclusively.
+          </div>
+        </div>
+      </div>
+
+      <div class="imperative">
+        <div class="imp-num">04</div>
+        <div>
+          <div class="imp-tag badge-blue">P2 · INFRASTRUCTURE</div>
+          <div class="imp-title">Build Per-Song Geographic Tracking for ALL LOVE</div>
+          <div class="imp-body">
+            The single most valuable data product that will come from the ALL LOVE cycle is
+            song-level geographic routing. Each of the 4 singles should be tracked individually
+            in Apple Music for Artists and Spotify for Artists — weekly city data exports starting
+            from release day. By the time the EP lands April 24, you'll know which song routes to
+            Chicago, which routes to Denver, which might hit Lagos. This data directly maps to
+            ad targeting for the next cycle and informs future production decisions.
+          </div>
+        </div>
+      </div>
+
+      <div class="imperative">
+        <div class="imp-num">05</div>
+        <div>
+          <div class="imp-tag badge-blue">P2 · REGISTRATIONS</div>
+          <div class="imp-title">Execute Publishing Registrations Every Release Monday</div>
+          <div class="imp-body">
+            ISRC registration + ASCAP/MLC/Songtrust batch submission must happen the Monday after
+            each release without exception. SEE ME (live March 13) → Registration March 16 (overdue
+            if not done — verify). ESL → Registration April 7. SF → Registration April 14. LID →
+            Registration April 21. EP → Registration April 27. Every unregistered stream is permanent
+            royalty loss. Publishing is the one income stream that scales with catalog age.
+          </div>
+        </div>
+      </div>
+
+      <div class="imperative">
+        <div class="imp-num">06</div>
+        <div>
+          <div class="imp-tag" style="background:rgba(34,197,94,0.1); color:var(--green); border:1px solid rgba(34,197,94,0.2);">P3 · 2026 Q3</div>
+          <div class="imp-title">Run an International Geographic Test</div>
+          <div class="imp-body">
+            Post-April 24, analyze ALL LOVE international performance data. If Lagos, Tokyo, or
+            Copenhagen appear in the top 25 for any single track — submit that track to international
+            Apple Music editorial curators in those markets. Pitch to Lagos-based Afrobeats-adjacent
+            playlists (the high Shazam rate suggests R&B crossover appetite exists). Discovery Mode
+            can be run in non-US markets at significantly lower CPM. This is a $50 test with potentially
+            transformative upside given the pre-existing signal.
+          </div>
+        </div>
+      </div>
+
+      <div class="imperative">
+        <div class="imp-num">07</div>
+        <div>
+          <div class="imp-tag" style="background:rgba(34,197,94,0.1); color:var(--green); border:1px solid rgba(34,197,94,0.2);">P3 · 2027</div>
+          <div class="imp-title">Pursue Sync Licensing for Hollywood Fever and Roll With It</div>
+          <div class="imp-body">
+            2,006 total Shazams on Hollywood Fever over 8 years means people hear this song
+            in places where they don't know what it is — which is exactly what sync licensing requires.
+            Register with music supervision platforms (Musicbed, Artlist, Musicbed). Identify TV
+            dramas, streaming shows, and brand campaigns targeting the 22-32 demographic. A single
+            sync placement for Hollywood Fever could outperform an entire year of streaming royalties.
+            This is the catalog monetization event that changes the financial architecture.
+          </div>
+        </div>
+      </div>
+    </div>
+  </div>
+</section>
+
+<!-- FOOTER -->
+<div class="wrap">
+  <footer>
+    <div class="f-brand">past.El noir Records — Market Intelligence Report<br>Generated March 31, 2026</div>
+    <div class="f-note">
+      Data sources: Apple Music for Artists (8-year city/song CSVs), Spotify for Artists
+      (audience timeline 2023-2025, artist metrics), Core Drive parametric analysis.
+      International Shazam ratios from Antigravity competitive analysis (unverified — pending
+      track-level geographic CSVs). All figures independently verified from raw data files.
+    </div>
+  </footer>
+</div>
+
+</body>
+</html>

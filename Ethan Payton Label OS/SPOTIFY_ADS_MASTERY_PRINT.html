@@ -1,0 +1,930 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+<meta charset="UTF-8">
+<meta name="viewport" content="width=device-width, initial-scale=1.0">
+<title>Spotify Ads Manager — Sage-Level Mastery · Print Version</title>
+<link href="https://fonts.googleapis.com/css2?family=Inter:wght@400;500;600;700;800&family=JetBrains+Mono:wght@500;600&display=swap" rel="stylesheet">
+<style>
+:root {
+  --bg: #ffffff;
+  --pagebg: #f4f5f7;
+  --card: #ffffff;
+  --border: #d1d5db;
+  --text: #1a1d2e;
+  --muted: #52576e;
+  --spotify: #1a7a3a;
+  --gold: #8a6a1a;
+  --purple: #5a3fb5;
+  --blue: #1d4ed8;
+  --green: #166534;
+  --pink: #9d174d;
+  --red: #991b1b;
+  --orange: #9a3412;
+}
+
+* { box-sizing: border-box; margin: 0; padding: 0; }
+
+body {
+  font-family: 'Inter', sans-serif;
+  background: var(--pagebg);
+  color: var(--text);
+  line-height: 1.75;
+  -webkit-font-smoothing: antialiased;
+}
+
+.page {
+  max-width: 860px;
+  margin: 0 auto;
+  padding: 3rem 2.5rem 6rem;
+  background: var(--bg);
+  box-shadow: 0 0 0 1px var(--border);
+}
+
+/* HERO */
+.hero {
+  text-align: left;
+  padding: 2.5rem 0 2.5rem;
+  border-bottom: 3px solid var(--text);
+  margin-bottom: 3rem;
+}
+.eyebrow {
+  font-size: 11px;
+  letter-spacing: 3px;
+  text-transform: uppercase;
+  color: var(--muted);
+  font-weight: 600;
+  margin-bottom: 10px;
+}
+.hero h1 {
+  font-size: 36px;
+  font-weight: 800;
+  line-height: 1.1;
+  margin-bottom: 12px;
+  color: var(--text);
+}
+.hero h1 span { color: var(--spotify); }
+.hero-sub {
+  font-size: 15px;
+  color: var(--muted);
+  max-width: 620px;
+  border-left: 4px solid var(--spotify);
+  padding-left: 14px;
+  margin-top: 14px;
+}
+.verified-tag {
+  display: inline-block;
+  margin-top: 16px;
+  background: #f0fdf4;
+  border: 1px solid #bbf7d0;
+  border-radius: 6px;
+  padding: 7px 14px;
+  font-size: 12px;
+  color: var(--green);
+  font-weight: 700;
+}
+
+/* SECTION */
+.section { margin-top: 3.5rem; }
+.sec-label {
+  font-size: 10px;
+  letter-spacing: 3px;
+  text-transform: uppercase;
+  color: var(--spotify);
+  font-weight: 700;
+  margin-bottom: 6px;
+  border-left: 3px solid var(--spotify);
+  padding-left: 10px;
+}
+h2 {
+  font-size: 24px;
+  font-weight: 800;
+  color: var(--text);
+  line-height: 1.2;
+  margin-bottom: 16px;
+  border-bottom: 2px solid var(--border);
+  padding-bottom: 10px;
+}
+h3 {
+  font-size: 15px;
+  font-weight: 700;
+  color: var(--text);
+  margin-bottom: 8px;
+  margin-top: 26px;
+}
+p {
+  font-size: 14px;
+  color: var(--text);
+  margin-bottom: 1.1rem;
+  line-height: 1.8;
+}
+strong { color: #0a0c18; font-weight: 700; }
+em { color: var(--muted); font-style: italic; }
+ul, ol { padding-left: 20px; margin-bottom: 1.1rem; }
+li {
+  font-size: 14px;
+  color: var(--text);
+  margin-bottom: 6px;
+  line-height: 1.7;
+}
+li strong { color: #0a0c18; }
+
+/* CALLOUT CARDS */
+.callout {
+  border-radius: 8px;
+  padding: 18px 22px;
+  margin: 20px 0;
+  border: 1px solid var(--border);
+  background: var(--card);
+}
+.callout.gold   { border-left: 5px solid #d97706; background: #fffbeb; }
+.callout.purple { border-left: 5px solid #7c3aed; background: #f5f3ff; }
+.callout.pink   { border-left: 5px solid #db2777; background: #fdf2f8; }
+.callout.blue   { border-left: 5px solid #2563eb; background: #eff6ff; }
+.callout.green  { border-left: 5px solid #16a34a; background: #f0fdf4; }
+.callout.red    { border-left: 5px solid #dc2626; background: #fef2f2; }
+.callout.spotify{ border-left: 5px solid #1DB954; background: #f0fdf4; }
+.callout.orange { border-left: 5px solid #ea580c; background: #fff7ed; }
+
+.callout-label {
+  font-size: 10px;
+  letter-spacing: 2px;
+  text-transform: uppercase;
+  font-weight: 800;
+  margin-bottom: 8px;
+  display: block;
+}
+.callout.gold   .callout-label { color: #92400e; }
+.callout.purple .callout-label { color: #5b21b6; }
+.callout.pink   .callout-label { color: #9d174d; }
+.callout.blue   .callout-label { color: #1e40af; }
+.callout.green  .callout-label { color: #166534; }
+.callout.red    .callout-label { color: #991b1b; }
+.callout.spotify .callout-label { color: #166534; }
+.callout.orange .callout-label { color: #9a3412; }
+.callout p  { margin-bottom: 0; font-size: 14px; color: var(--text); }
+.callout p+p { margin-top: 8px; }
+.callout ul { margin-bottom: 0; }
+.callout li { font-size: 14px; color: var(--text); }
+
+/* REAL UI NOTICE */
+.real-ui {
+  background: #f0fdf4;
+  border: 1px solid #bbf7d0;
+  border-left: 5px solid #16a34a;
+  border-radius: 8px;
+  padding: 14px 18px;
+  margin: 14px 0;
+  display: flex;
+  gap: 12px;
+  align-items: flex-start;
+}
+.real-ui-icon { font-size: 16px; flex-shrink: 0; margin-top: 2px; }
+.real-ui-label {
+  font-size: 10px;
+  font-weight: 800;
+  letter-spacing: 1.5px;
+  text-transform: uppercase;
+  color: var(--green);
+  margin-bottom: 5px;
+}
+.real-ui-text { font-size: 13px; color: var(--text); line-height: 1.6; }
+
+/* WARNING REAL UI */
+.real-ui.warn {
+  background: #fff7ed;
+  border-color: #fed7aa;
+  border-left-color: #ea580c;
+}
+.real-ui.warn .real-ui-label { color: var(--orange); }
+
+/* COMPARE TABLE */
+.compare-table {
+  width: 100%;
+  border-collapse: collapse;
+  margin: 20px 0;
+  font-size: 13px;
+}
+.compare-table th {
+  background: #f3f4f6;
+  color: var(--muted);
+  font-weight: 700;
+  font-size: 11px;
+  letter-spacing: 1px;
+  text-transform: uppercase;
+  padding: 10px 14px;
+  text-align: left;
+  border: 1px solid var(--border);
+}
+.compare-table td {
+  padding: 10px 14px;
+  border: 1px solid var(--border);
+  color: var(--text);
+  vertical-align: top;
+  line-height: 1.6;
+}
+.compare-table tr:nth-child(even) td { background: #f9fafb; }
+.tag-good { display:inline-block;padding:2px 8px;border-radius:4px;font-size:11px;font-weight:700;background:#dcfce7;color:#166534;border:1px solid #bbf7d0; }
+.tag-warn { display:inline-block;padding:2px 8px;border-radius:4px;font-size:11px;font-weight:700;background:#fee2e2;color:#991b1b;border:1px solid #fecaca; }
+.tag-neu  { display:inline-block;padding:2px 8px;border-radius:4px;font-size:11px;font-weight:700;background:#f3f4f6;color:#52576e;border:1px solid #d1d5db; }
+.tag-gold { display:inline-block;padding:2px 8px;border-radius:4px;font-size:11px;font-weight:700;background:#fef9c3;color:#713f12;border:1px solid #fde68a; }
+
+/* BUYING CARDS */
+.buy-grid { display:grid;grid-template-columns:1fr 1fr;gap:14px;margin:20px 0; }
+@media(max-width:600px){.buy-grid{grid-template-columns:1fr}}
+.buy-card {
+  border: 2px solid var(--border);
+  border-radius: 10px;
+  padding: 18px 20px;
+  background: var(--card);
+}
+.buy-card.recommended { border-color: #16a34a; background: #f0fdf4; }
+.buy-tag {
+  font-size: 10px;
+  font-weight: 800;
+  letter-spacing: 1.5px;
+  text-transform: uppercase;
+  padding: 3px 8px;
+  border-radius: 4px;
+  display: inline-block;
+  margin-bottom: 10px;
+}
+.buy-tag.use   { background:#dcfce7;color:#166534;border:1px solid #bbf7d0; }
+.buy-tag.skip  { background:#f3f4f6;color:#52576e;border:1px solid #d1d5db; }
+.buy-tag.later { background:#fef9c3;color:#713f12;border:1px solid #fde68a; }
+.buy-name  { font-size:16px;font-weight:800;color:var(--text);margin-bottom:6px; }
+.buy-min   { font-family:'JetBrains Mono',monospace;font-size:12px;color:var(--orange);margin-bottom:8px;font-weight:700; }
+.buy-detail{ font-size:13px;color:var(--muted);line-height:1.6; }
+
+/* FORMAT CARDS */
+.fmt-grid { display:grid;grid-template-columns:1fr 1fr 1fr;gap:10px;margin:20px 0; }
+@media(max-width:600px){.fmt-grid{grid-template-columns:1fr}}
+.fmt-card {
+  border: 1px solid var(--border);
+  border-radius: 8px;
+  padding: 14px 16px;
+  background: var(--card);
+}
+.fmt-card.best { border-color: #16a34a; background: #f0fdf4; }
+.fmt-name { font-size:13px;font-weight:700;color:var(--text);margin-bottom:5px; }
+.fmt-cpm  { font-family:'JetBrains Mono',monospace;font-size:12px;font-weight:700;margin-bottom:5px; }
+.fmt-cpm.audio   { color: var(--blue); }
+.fmt-cpm.display { color: var(--purple); }
+.fmt-why  { font-size:12px;color:var(--muted);line-height:1.5; }
+
+/* TARGETING TABLE */
+.targ-section {
+  border: 1px solid var(--border);
+  border-radius: 10px;
+  overflow: hidden;
+  margin: 20px 0;
+}
+.targ-header {
+  background: #f3f4f6;
+  border-bottom: 1px solid var(--border);
+  padding: 10px 18px;
+  font-size: 11px;
+  font-weight: 800;
+  letter-spacing: 1.5px;
+  text-transform: uppercase;
+  color: var(--muted);
+}
+.targ-row {
+  padding: 12px 18px;
+  border-bottom: 1px solid var(--border);
+  display: grid;
+  grid-template-columns: 160px 1fr;
+  gap: 14px;
+  align-items: flex-start;
+}
+.targ-row:nth-child(even) { background: #f9fafb; }
+.targ-row:last-child { border-bottom: none; }
+.targ-field { font-size:13px;font-weight:700;color:var(--text); }
+.targ-note  { font-size:11px;color:var(--muted); }
+.targ-val   { font-size:13px;color:var(--text);line-height:1.6; }
+
+/* SPEC TABLE */
+.spec-wrap {
+  border: 1px solid var(--border);
+  border-radius: 10px;
+  overflow: hidden;
+  margin: 20px 0;
+}
+.spec-row {
+  display: flex;
+  justify-content: space-between;
+  align-items: flex-start;
+  padding: 11px 18px;
+  border-bottom: 1px solid var(--border);
+  gap: 20px;
+}
+.spec-row:nth-child(even) { background: #f9fafb; }
+.spec-row:last-child { border-bottom: none; }
+.spec-key { color:var(--muted);font-size:13px;font-weight:600;flex-shrink:0; }
+.spec-val-wrap { text-align:right; }
+.spec-val  { color:var(--text);font-weight:700;font-family:'JetBrains Mono',monospace;font-size:12px; }
+.spec-note { font-size:11px;color:var(--muted);font-family:'Inter',sans-serif;margin-top:2px; }
+
+/* SCRIPT BOX */
+.script-box {
+  border: 2px solid var(--border);
+  border-radius: 10px;
+  overflow: hidden;
+  margin: 22px 0;
+}
+.script-header {
+  background: #f0fdf4;
+  border-bottom: 1px solid var(--border);
+  padding: 12px 20px;
+  display: flex;
+  justify-content: space-between;
+  align-items: center;
+}
+.script-title { font-size:12px;font-weight:800;color:var(--green);letter-spacing:1px;text-transform:uppercase; }
+.script-meta  { font-size:11px;color:var(--muted); }
+.script-body  { padding:20px 24px; }
+.script-line  { display:flex;gap:14px;margin-bottom:16px;align-items:flex-start; }
+.script-time  { font-family:'JetBrains Mono',monospace;font-size:11px;color:var(--muted);padding-top:3px;min-width:34px;flex-shrink:0;font-weight:600; }
+.script-text  { font-size:14px;color:var(--text);line-height:1.7; }
+.script-text em { color:var(--green);font-style:normal;font-weight:700; }
+.script-annotation { font-size:12px;color:var(--muted);font-style:italic;margin-top:4px;border-left:2px solid var(--border);padding-left:10px; }
+
+/* STEP */
+.step { display:flex;gap:16px;margin-bottom:22px;align-items:flex-start; }
+.step-num {
+  width:28px;height:28px;border-radius:50%;
+  background:#dcfce7;border:2px solid #16a34a;
+  color:#166534;font-weight:800;font-size:12px;
+  display:flex;align-items:center;justify-content:center;
+  flex-shrink:0;margin-top:3px;
+  font-family:'JetBrains Mono',monospace;
+}
+.step-body h3 { margin-top:0;margin-bottom:4px;font-size:14px;font-weight:700; }
+.step-body p  { margin-bottom:0;font-size:13px;color:var(--muted);line-height:1.6; }
+
+/* KPI */
+.kpi-grid { display:grid;grid-template-columns:repeat(3,1fr);gap:10px;margin:20px 0; }
+@media(max-width:600px){.kpi-grid{grid-template-columns:1fr 1fr}}
+.kpi-box {
+  border: 1px solid var(--border);
+  border-radius: 8px;
+  padding: 14px 16px;
+  text-align: center;
+  background: var(--card);
+}
+.kpi-label  { font-size:10px;color:var(--muted);font-weight:700;letter-spacing:1px;text-transform:uppercase;margin-bottom:5px; }
+.kpi-val    { font-size:18px;font-weight:800;font-family:'JetBrains Mono',monospace;color:var(--text); }
+.kpi-context{ font-size:11px;color:var(--muted);margin-top:4px;line-height:1.4; }
+
+/* BUDGET ROW */
+.budget-row {
+  border: 1px solid var(--border);
+  border-radius: 8px;
+  padding: 13px 18px;
+  margin-bottom: 8px;
+  display: grid;
+  grid-template-columns: 1fr auto;
+  align-items: center;
+  gap: 12px;
+  background: var(--card);
+}
+.budget-market { font-size:14px;font-weight:700;color:var(--text); }
+.budget-why    { font-size:12px;color:var(--muted);margin-top:2px; }
+.budget-amt    { font-family:'JetBrains Mono',monospace;font-size:16px;font-weight:800;color:var(--green);white-space:nowrap; }
+
+/* PRINT DIVIDER */
+hr { border:0;height:2px;background:var(--border);margin:3rem 0; }
+
+code {
+  font-family:'JetBrains Mono',monospace;
+  font-size:12px;
+  background:#f3f4f6;
+  padding:2px 6px;
+  border-radius:4px;
+  color:var(--purple);
+  font-weight:600;
+  border:1px solid var(--border);
+}
+
+/* PRINT STYLES */
+@media print {
+  body { background: white; }
+  .page { box-shadow: none; padding: 1.5rem 1.5rem 3rem; }
+  h2 { page-break-after: avoid; }
+  .callout, .real-ui, .buy-card, .script-box { page-break-inside: avoid; }
+  .section { page-break-before: auto; }
+}
+</style>
+</head>
+<body>
+<div class="page">
+
+<!-- HERO -->
+<div class="hero">
+  <div class="eyebrow">past.El noir Records — Paid Growth Playbook · Print Edition</div>
+  <h1>Spotify Ads Manager<br><span>Sage-Level Mastery</span></h1>
+  <p class="hero-sub">Built from the actual interface — verified against Ethan Payton LLC's live Ads Manager account. All CPM ranges, minimums, and UI structure sourced from live screenshots taken March 31, 2026.</p>
+  <div class="verified-tag">✓ Verified against live adsmanager.spotify.com · March 31, 2026 · Confidential</div>
+</div>
+
+<!-- GROUND TRUTH -->
+<div class="section">
+  <div class="sec-label">Ground Truth</div>
+  <h2>What Your Real Interface Taught Us</h2>
+  <p>You went into the actual platform and tested it. That's the move. Here's what the screenshots corrected and confirmed — these override anything from external documentation.</p>
+
+  <div class="real-ui">
+    <div class="real-ui-icon">✓</div>
+    <div>
+      <div class="real-ui-label">Confirmed — Auction Minimum Is Low (~$18/day)</div>
+      <div class="real-ui-text">Your auction interface ran at a <strong>$18/day</strong> daily budget with valid estimated results. The "$250 minimum" from Spotify's help articles is outdated or market-specific. Auction is accessible at a much lower entry point.</div>
+    </div>
+  </div>
+
+  <div class="real-ui">
+    <div class="real-ui-icon">✓</div>
+    <div>
+      <div class="real-ui-label">Confirmed — Reserved Requires $5,000 Lifetime Budget</div>
+      <div class="real-ui-text">The Reserved interface explicitly states: <em>"For budgets less than $5,000.00, try auction buying."</em> Reserved = fixed CPM of $10.00, impressions-only delivery. This is a major label tool. Nothing to do with SEE ME right now.</div>
+    </div>
+  </div>
+
+  <div class="real-ui warn">
+    <div class="real-ui-icon">⚠</div>
+    <div>
+      <div class="real-ui-label">Critical — "Streams" Delivery Goal Is Greyed Out Until You Link Your Music</div>
+      <div class="real-ui-text">In your screenshots, "Streams" is unavailable — only "Clicks" is selectable. Fix: go to <strong>"Your content on Spotify" → Music → Search for artists → add Ethan Payton.</strong> Once linked, the Streams delivery goal unlocks. This is the most important step before launching. Streams optimization = algorithm finds people most likely to actually listen. Clicks optimization = people who click and may bounce. The difference in campaign quality is significant.</div>
+    </div>
+  </div>
+
+  <div class="real-ui">
+    <div class="real-ui-icon">✓</div>
+    <div>
+      <div class="real-ui-label">Confirmed — Fan Bases + Interests Are Stackable in the Same Ad Set</div>
+      <div class="real-ui-text">Both appear in "Detailed targeting" — they're not mutually exclusive. You can target fans of 6LACK AND add R&B interest filters in the same ad set. More powerful than originally described.</div>
+    </div>
+  </div>
+
+  <div class="real-ui">
+    <div class="real-ui-icon">✓</div>
+    <div>
+      <div class="real-ui-label">Confirmed — Real CPM Ranges from Your Account</div>
+      <div class="real-ui-text"><strong>Audio (Auction): $8.43–$9.38 CPM</strong> · Display (Auction): $4.35–$4.88 CPM · Reserved Fixed: $10.00 flat. Audio costs ~2× display per impression but reaches listeners mid-song with full attention — far higher quality context.</div>
+    </div>
+  </div>
+
+  <table class="compare-table">
+    <thead>
+      <tr>
+        <th>Factor</th>
+        <th>What Was Said Previously</th>
+        <th>Reality (Verified)</th>
+      </tr>
+    </thead>
+    <tbody>
+      <tr>
+        <td>Platform Name</td>
+        <td>Spotify Ad Studio</td>
+        <td><span class="tag-warn">Rebranded</span> Now called Spotify Ads Manager</td>
+      </tr>
+      <tr>
+        <td>Auction Minimum</td>
+        <td>$250</td>
+        <td><span class="tag-good">Corrected</span> ~$18/day — much lower</td>
+      </tr>
+      <tr>
+        <td>Reserved Minimum</td>
+        <td>Not specified</td>
+        <td><span class="tag-warn">$5,000 lifetime</span> — not for us right now</td>
+      </tr>
+      <tr>
+        <td>Targeting Structure</td>
+        <td>One advanced mode per ad set</td>
+        <td><span class="tag-good">Corrected</span> Fan Bases + Interests stack in one ad set</td>
+      </tr>
+      <tr>
+        <td>Streams Delivery Goal</td>
+        <td>Available immediately</td>
+        <td><span class="tag-warn">Requires</span> linking your artist music content first</td>
+      </tr>
+      <tr>
+        <td>Marquee Eligibility</td>
+        <td>Below threshold</td>
+        <td><span class="tag-good">Still Correct</span> Need 5K+ MAL. Currently ~850–1,200</td>
+      </tr>
+    </tbody>
+  </table>
+</div>
+
+<!-- PART 1: BUYING TYPES -->
+<div class="section">
+  <div class="sec-label">Part 1</div>
+  <h2>Auction vs. Reserved — Exactly What Each Is</h2>
+
+  <div class="buy-grid">
+    <div class="buy-card recommended">
+      <div class="buy-tag use">✓ Use This — Always</div>
+      <div class="buy-name">Auction Buying</div>
+      <div class="buy-min">~$18/day minimum · Dynamic CPM</div>
+      <div class="buy-detail">You bid for impressions in real-time. Spotify's algorithm finds the right audience within your targeting at the best available price. Adjust, pause, or reallocate anytime. <strong>Audio CPM: $8.43–$9.38.</strong> Every dollar optimized by the algorithm toward your delivery goal (Streams, once unlocked). The tool for all independent artist campaigns at every scale you'll operate at for the foreseeable future.</div>
+    </div>
+    <div class="buy-card">
+      <div class="buy-tag skip">Not for Us — $5K+ Only</div>
+      <div class="buy-name">Reserved Buying</div>
+      <div class="buy-min">$5,000 lifetime minimum · Fixed CPM $10.00</div>
+      <div class="buy-detail">Pre-book guaranteed impression inventory at a locked flat rate. Delivery goal is impressions only — you pay for eyeballs, not engagement. No algorithmic optimization. $10 CPM regardless of audience quality. Designed for brand campaigns with predictable quarterly budgets, not stream-growth campaigns. Don't touch this until budget is $5K+ and it makes strategic sense.</div>
+    </div>
+  </div>
+
+  <div class="callout gold">
+    <span class="callout-label">The Decision Is Simple</span>
+    <p><strong>Even at $5,000 budget, Auction is superior for music growth</strong> — the algorithm actively optimizes toward streams and saves, while Reserved passively delivers flat impressions. Auction is the correct choice at every budget level for what we're trying to build.</p>
+  </div>
+</div>
+
+<!-- PART 2: FORMAT -->
+<div class="section">
+  <div class="sec-label">Part 2</div>
+  <h2>Ad Format — Audio vs. Video vs. Display</h2>
+
+  <div class="fmt-grid">
+    <div class="fmt-card best">
+      <div class="fmt-name">🎵 Audio Ad ← Use This</div>
+      <div class="fmt-cpm audio">CPM: $8.43–$9.38</div>
+      <div class="fmt-why">Plays before/during listening sessions. Listener is in audio mode — ears open, mentally receptive to music. Companion image shows on screen during playback. Highest attention quality of any format. <strong>Start here for SEE ME.</strong></div>
+    </div>
+    <div class="fmt-card">
+      <div class="fmt-name">📱 Display Ad</div>
+      <div class="fmt-cpm display">CPM: $4.35–$4.88</div>
+      <div class="fmt-why">Visual banner — half the CPM but the listener sees it while browsing the app, not while actively listening. Lower intent for music discovery. Use as secondary test in campaign 2, not campaign 1.</div>
+    </div>
+    <div class="fmt-card">
+      <div class="fmt-name">🎬 Video Ad</div>
+      <div class="fmt-cpm display">CPM: Varies</div>
+      <div class="fmt-why">Plays when screen is open. Powerful if you have a Canvas loop or lyric clip. Worth testing in iteration 2 if you have a strong visual creative asset ready.</div>
+    </div>
+  </div>
+
+  <div class="callout spotify">
+    <span class="callout-label">Start With Audio + Companion Image</span>
+    <p>Audio is where attention quality is highest for music promotion. The companion image (SEE ME artwork, 640×640) appears on screen during playback. Together they hit two senses simultaneously. Audio format is the correct choice for the SEE ME launch campaign — then test Display in campaign 2 once you have audio benchmarks to compare against.</p>
+  </div>
+</div>
+
+<!-- PART 3: UNLOCK STREAMS -->
+<div class="section">
+  <div class="sec-label">Part 3 — Do This First</div>
+  <h2>Unlocking the "Streams" Delivery Goal</h2>
+
+  <div class="callout red">
+    <span class="callout-label">Why "Clicks" ≠ "Streams" — Critical Distinction</span>
+    <p><strong>Clicks optimization:</strong> Spotify finds people most likely to click the ad — they go to your profile or track page, and may or may not listen. Many clicks result in 5-second bounces that generate zero stream signal.</p>
+    <p><strong>Streams optimization:</strong> Spotify finds people most likely to stream the track for 30+ seconds — the full engagement signal the algorithm needs to amplify the song. For music promotion, Streams is always the superior delivery goal. It's the one you need active before launching.</p>
+  </div>
+
+  <h3>How to Unlock Streams — Step by Step</h3>
+
+  <div class="step">
+    <div class="step-num">1</div>
+    <div class="step-body">
+      <h3>In Ad Set setup → "Your content on Spotify" → click Music</h3>
+      <p>At the top of the ad set targeting section, find the Podcast · Music toggle. Select <strong>Music</strong>.</p>
+    </div>
+  </div>
+  <div class="step">
+    <div class="step-num">2</div>
+    <div class="step-body">
+      <h3>Search for "Ethan Payton" → select your artist profile</h3>
+      <p>This declares to Spotify that you own the content you're promoting and have the rights to advertise it. Required before Streams unlocks.</p>
+    </div>
+  </div>
+  <div class="step">
+    <div class="step-num">3</div>
+    <div class="step-body">
+      <h3>Delivery section → select "Streams" (now available)</h3>
+      <p>Once the artist content is linked, Streams becomes selectable. <strong>Select Streams.</strong> The algorithm now optimizes toward listening behavior, not click behavior.</p>
+    </div>
+  </div>
+  <div class="step">
+    <div class="step-num">4</div>
+    <div class="step-body">
+      <h3>Bid Strategy → Maximum Bid → set at ~$9.50</h3>
+      <p>Your interface showed recommended range <code>$8.27–$9.92</code>. Start at the midpoint-to-upper end (~$9.50). Bidding nearer the upper end improves delivery likelihood while the algorithm learns your audience in the first 48 hours. You can reduce after 2 days if spend is moving too fast.</p>
+    </div>
+  </div>
+
+  <div class="callout green">
+    <span class="callout-label">What This Does to Your Algorithm — The Compounding Effect</span>
+    <p>Streams optimization feeds your campaign data back into the same algorithm powering Discover Weekly and Radio. Every paid stream adds a listener's profile to Spotify's model of "who listens to Ethan Payton." That model influences organic recommendations for weeks after the campaign ends. <strong>Every stream you buy has compounding organic value beyond the immediate result.</strong></p>
+  </div>
+</div>
+
+<!-- PART 4: TARGETING -->
+<div class="section">
+  <div class="sec-label">Part 4</div>
+  <h2>Targeting — Field-by-Field Configuration</h2>
+  <p>Based on what you actually saw in the real interface — here's exactly what to enter in each field for the SEE ME campaign:</p>
+
+  <div class="targ-section">
+    <div class="targ-header">Location</div>
+    <div class="targ-row">
+      <div><div class="targ-field">Country</div><div class="targ-note">Top level</div></div>
+      <div class="targ-val"><strong>United States</strong> — all Apple Music historical data is US-based. No reason to expand internationally until MAL exceeds 10K.</div>
+    </div>
+    <div class="targ-row">
+      <div><div class="targ-field">Specific Locations</div><div class="targ-note">City / ZIP / State</div></div>
+      <div class="targ-val">Add: <strong>Denver, CO · Minneapolis, MN · Dallas, TX</strong> — your Tier 1 Apple Music markets with 8+ years of streaming data. Run one ad set without location filters to discover new cities.</div>
+    </div>
+  </div>
+
+  <div class="targ-section">
+    <div class="targ-header">Demographics</div>
+    <div class="targ-row">
+      <div><div class="targ-field">Age</div><div class="targ-note">13–65+ or age groups</div></div>
+      <div class="targ-val">Select <strong>Age groups → 18–34</strong>. Your primary streaming demographic based on Apple Music data. The 13–65+ default is too wide.</div>
+    </div>
+    <div class="targ-row">
+      <div><div class="targ-field">Gender</div><div class="targ-note">All / Men / Women</div></div>
+      <div class="targ-val"><strong>Leave on "All (includes non-binary and more)"</strong> — do not filter to Women. The gender flip strategy works by attracting female listeners through the right creative and contextual targeting, not a hard demographic filter. Let the algorithm find who actually engages. Check Spotify for Artists audience breakdown after the campaign for movement.</div>
+    </div>
+  </div>
+
+  <div class="targ-section">
+    <div class="targ-header">Detailed Targeting — Where the Precision Lives (Fan Bases + Interests stack here)</div>
+    <div class="targ-row">
+      <div><div class="targ-field">Interests</div><div class="targ-note">Consumption + behavior</div></div>
+      <div class="targ-val">Search: <strong>R&B, Soul, Alternative R&B</strong>. Broad genre receptiveness signal. Stack on top of Fan bases — they combine as an AND condition, narrowing to listeners who are both R&B listeners AND fans of specific artists.</div>
+    </div>
+    <div class="targ-row">
+      <div><div class="targ-field">Fan Bases</div><div class="targ-note">Target fans of an artist</div></div>
+      <div class="targ-val">Add: <strong>6LACK, Bryson Tiller, PARTYNEXTDOOR, Daniel Caesar, Smino</strong>. Your Core Drive S-tier matches. Spotify identifies users who actively stream, follow, or playlist-add these artists — not just casual hearers.</div>
+    </div>
+    <div class="targ-row">
+      <div><div class="targ-field">Language</div></div>
+      <div class="targ-val"><strong>English</strong></div>
+    </div>
+    <div class="targ-row">
+      <div><div class="targ-field">Device</div></div>
+      <div class="targ-val"><strong>Keep all checked</strong> — iOS, Android, Desktop. No reason to exclude any device at this budget level.</div>
+    </div>
+  </div>
+
+  <div class="callout purple">
+    <span class="callout-label">Stacking Strategy — Interests + Fan Bases Together</span>
+    <p>Set <strong>Interests: R&B</strong> + <strong>Fan Base: 6LACK / Tiller / Caesar / Smino</strong> in the same ad set. This creates an AND condition — Spotify finds people who are R&B listeners AND fans of those artists. Tighter, higher-intent audience. Estimated reach shrinks but stream rate climbs. Quality over quantity at this scale.</p>
+  </div>
+</div>
+
+<!-- PART 5: BUDGET -->
+<div class="section">
+  <div class="sec-label">Part 5</div>
+  <h2>Budget, Schedule, and Bidding</h2>
+
+  <h3>If budget is $18/day ($126/week · ~$252 over 14 days):</h3>
+
+  <div class="budget-row">
+    <div>
+      <div class="budget-market">Single Ad Set — Fan Base + Interests + Denver / Minneapolis</div>
+      <div class="budget-why">Put all $18/day into one focused ad set. Don't split a small budget — concentration beats spread.</div>
+    </div>
+    <div class="budget-amt">$18/day</div>
+  </div>
+
+  <div class="callout blue">
+    <span class="callout-label">What $18/day Gets You Over 14 Days</span>
+    <p>At $9 CPM (midpoint of your audio range) and $18/day: ~2,000 audio impressions/day → 28,000 over 14 days. At a 15% stream rate, that's ~4,200 streams from the campaign. The direct paid impact is moderate — but 4,200 engaged streams in targeted markets seeds the algorithm in those cities, improving Discovery Mode performance and organic Autoplay reach for weeks afterward.</p>
+  </div>
+
+  <h3>If budget allows $50/day (~$700 over 14 days):</h3>
+
+  <div class="budget-row">
+    <div>
+      <div class="budget-market">Ad Set A — Fan Base + R&B Interest · Denver + Minneapolis</div>
+      <div class="budget-why">Highest intent · Proven markets from Apple Music data</div>
+    </div>
+    <div class="budget-amt">$25/day</div>
+  </div>
+  <div class="budget-row">
+    <div>
+      <div class="budget-market">Ad Set B — Fan Base only · Dallas + Nashville + US Broad</div>
+      <div class="budget-why">Market discovery · Find new cities and test gender flip signal</div>
+    </div>
+    <div class="budget-amt">$25/day</div>
+  </div>
+
+  <div class="callout gold">
+    <span class="callout-label">Bid Strategy — Start at Upper-Middle of Recommended Range</span>
+    <p>Your interface showed recommended bid: <code>$8.27–$9.92</code> with the note: <em>"Bidding near the middle to upper end of the range often improves performance."</em> Set maximum bid at <strong>$9.50</strong> to start. After 48 hours: if hitting daily budget easily, reduce to $9.00. If delivery is slower than expected, bump to $9.92. The platform's own guidance is to bid nearer the upper end for better delivery in the first week of a new campaign.</p>
+  </div>
+
+  <h3>Lifetime vs. Daily Budget:</h3>
+  <p>Use <strong>Lifetime budget</strong> for a fixed campaign window (e.g., April 3–17) — Spotify paces spend automatically to avoid burning it all early. Use Daily budget for open-ended campaigns with no hard end date. For the April waterfall tied to specific drop dates, Lifetime budget with a hard end date is cleaner.</p>
+</div>
+
+<!-- PART 6: CREATIVE -->
+<div class="section">
+  <div class="sec-label">Part 6</div>
+  <h2>Audio Ad Creative — Verified Specs + The Script</h2>
+
+  <div class="spec-wrap">
+    <div class="spec-row">
+      <span class="spec-key">Audio Length</span>
+      <div class="spec-val-wrap"><div class="spec-val">30 seconds max</div></div>
+    </div>
+    <div class="spec-row">
+      <span class="spec-key">File Format</span>
+      <div class="spec-val-wrap"><div class="spec-val">MP3, OGG, or WAV</div></div>
+    </div>
+    <div class="spec-row">
+      <span class="spec-key">File Size</span>
+      <div class="spec-val-wrap"><div class="spec-val">1MB maximum</div></div>
+    </div>
+    <div class="spec-row">
+      <span class="spec-key">Loudness</span>
+      <div class="spec-val-wrap"><div class="spec-val">-16 LUFS · -2.0 dBTP true peak</div><div class="spec-note">Will be rejected if too loud or too quiet — export at these specs exactly</div></div>
+    </div>
+    <div class="spec-row">
+      <span class="spec-key">Word Count</span>
+      <div class="spec-val-wrap"><div class="spec-val">65 words max for 30 sec</div></div>
+    </div>
+    <div class="spec-row">
+      <span class="spec-key">Companion Image</span>
+      <div class="spec-val-wrap"><div class="spec-val">640×640px · JPEG/PNG · 200KB max</div><div class="spec-note">Displays on screen while audio plays — use SEE ME artwork</div></div>
+    </div>
+    <div class="spec-row">
+      <span class="spec-key">CTA Button</span>
+      <div class="spec-val-wrap"><div class="spec-val">"Listen Now" (recommended)</div><div class="spec-note">Chosen from Spotify's pre-defined list</div></div>
+    </div>
+    <div class="spec-row">
+      <span class="spec-key">Destination URL</span>
+      <div class="spec-val-wrap"><div class="spec-val">HTTPS Spotify track link for SEE ME</div><div class="spec-note">Link directly to the track — reduce friction vs. artist profile</div></div>
+    </div>
+    <div class="spec-row">
+      <span class="spec-key">Free Creative Tool</span>
+      <div class="spec-val-wrap"><div class="spec-val">Built into Ads Manager</div><div class="spec-note">Background music library + voiceover builder at $0 — use if no studio time</div></div>
+    </div>
+  </div>
+
+  <h3>SEE ME — The 30-Second Ad Script</h3>
+  <p>Written for Ethan's voice, over a low-volume bed of SEE ME instrumental at ~15–20% volume. Calm, direct, present. Not an ad voice — your actual voice in one take if possible.</p>
+
+  <div class="script-box">
+    <div class="script-header">
+      <span class="script-title">SEE ME · 30-Second Audio Ad Script</span>
+      <span class="script-meta">~55 words · Measured pace · Don't rush</span>
+    </div>
+    <div class="script-body">
+      <div class="script-line">
+        <span class="script-time">0:00</span>
+        <div>
+          <div class="script-text"><em>[SEE ME instrumental opens at ~15% volume — 2 full seconds before any voice]</em></div>
+          <div class="script-annotation">The music does the first impression. Don't rush the intro.</div>
+        </div>
+      </div>
+      <div class="script-line">
+        <span class="script-time">0:02</span>
+        <div>
+          <div class="script-text">"I made this one about a feeling most people don't say out loud."</div>
+          <div class="script-annotation">Opens with a reason to keep listening, not a pitch. Curiosity hook.</div>
+        </div>
+      </div>
+      <div class="script-line">
+        <span class="script-time">0:08</span>
+        <div>
+          <div class="script-text">"That feeling of being right there — and still not being seen."</div>
+          <div class="script-annotation">The emotional core. Anyone who has felt unseen in a relationship registers this. Gender-neutral — but indexes disproportionately with women navigating ambiguity.</div>
+        </div>
+      </div>
+      <div class="script-line">
+        <span class="script-time">0:13</span>
+        <div>
+          <div class="script-text"><em>[Music comes up slightly — let the hook play for 12 seconds. Trust the song.]</em></div>
+          <div class="script-annotation">The actual song converts the listener here. Don't talk over it.</div>
+        </div>
+      </div>
+      <div class="script-line">
+        <span class="script-time">0:25</span>
+        <div>
+          <div class="script-text">"SEE ME. I'm Ethan Payton. Save it if it stays with you."</div>
+          <div class="script-annotation">CTA is "save" — not stream, not follow. Save is the highest-intent algorithmic signal. You're telling them exactly what action benefits both them and your algorithm.</div>
+        </div>
+      </div>
+      <div class="script-line">
+        <span class="script-time">0:29</span>
+        <div>
+          <div class="script-text"><em>[Music fades to silence over 1 second]</em></div>
+        </div>
+      </div>
+    </div>
+  </div>
+
+  <div class="callout pink">
+    <span class="callout-label">Why This Script Feeds the Gender Flip</span>
+    <p>"Being right there and not being seen" is the emotional territory that indexes highest with women processing ambiguous relationship dynamics — which is the dominant emotional context for late-night and chill playlist listening. You're not targeting women with the copy. You're speaking emotional truth. The demographic that saves emotional truth in R&B at 2–3× average rate is female. The algorithm will find them if the creative is real.</p>
+  </div>
+</div>
+
+<!-- PART 7: KPIs -->
+<div class="section">
+  <div class="sec-label">Part 7</div>
+  <h2>What to Watch — KPIs After Launch</h2>
+
+  <div class="kpi-grid">
+    <div class="kpi-box">
+      <div class="kpi-label">Cost Per Stream</div>
+      <div class="kpi-val">&lt;$0.30</div>
+      <div class="kpi-context">Target. At your CPM with 15% stream rate, expect $0.07–$0.12. Above $0.50 = wrong audience or weak creative.</div>
+    </div>
+    <div class="kpi-box">
+      <div class="kpi-label">Stream Rate</div>
+      <div class="kpi-val">15%+</div>
+      <div class="kpi-context">% of ad listeners who streamed the track. Below 8% = targeting miss. Above 20% = strong match.</div>
+    </div>
+    <div class="kpi-box">
+      <div class="kpi-label">Save Rate</div>
+      <div class="kpi-val">20%+</div>
+      <div class="kpi-context">Check Spotify for Artists during campaign. Climbing saves alongside ad spend = gender flip working.</div>
+    </div>
+    <div class="kpi-box">
+      <div class="kpi-label">Frequency</div>
+      <div class="kpi-val">3–5×</div>
+      <div class="kpi-context">Avg impressions per person per week. Under 3 = underexposed. Over 7 = ad fatigue. Set a frequency cap.</div>
+    </div>
+    <div class="kpi-box">
+      <div class="kpi-label">CPM Actual</div>
+      <div class="kpi-val">$8–10</div>
+      <div class="kpi-context">Compare actual to the $8.43–$9.38 estimated after 48 hours to validate delivery efficiency.</div>
+    </div>
+    <div class="kpi-box">
+      <div class="kpi-label">MAL Delta</div>
+      <div class="kpi-val">+20%</div>
+      <div class="kpi-context">Monthly listener count in Spotify for Artists before vs. 7 days after launch. The headline impact.</div>
+    </div>
+  </div>
+
+  <div class="callout spotify">
+    <span class="callout-label">The 7-Day Check Protocol</span>
+    <p><strong>Day 7:</strong> Ads Manager → Reports → compare ad set Stream Rate and Cost Per Stream. Best performer wins — pause the worst, shift its remaining budget to the winner. Simultaneously open Spotify for Artists → Audience breakdown. If % female listeners has moved 1–2 points upward, the targeting is working. That's the gender flip signal firing in real time.</p>
+  </div>
+</div>
+
+<!-- PART 8: SYSTEM INTEGRATION -->
+<div class="section">
+  <div class="sec-label">Part 8</div>
+  <h2>How Ads Manager Connects to the Full April Waterfall</h2>
+
+  <div class="step">
+    <div class="step-num">1</div>
+    <div class="step-body">
+      <h3>April 3 — ESL drops + Ads Manager campaign launches same day</h3>
+      <p>Two traffic sources hitting SEE ME simultaneously: organic release discovery + paid targeted reach. The algorithm reads simultaneous multi-source traffic as stronger demand signal than either alone. Launch the campaign on the same day as the drop.</p>
+    </div>
+  </div>
+  <div class="step">
+    <div class="step-num">2</div>
+    <div class="step-body">
+      <h3>Days 1–7 — Algorithm learns your audience from paid streams</h3>
+      <p>Every paid stream adds a listener's profile to Spotify's model of "who listens to Ethan Payton." Fan base targeting (6LACK, Tiller, Caesar) trains the algorithm that your audience overlaps with those artists. This bleeds into organic Discover Weekly recommendations 2–4 weeks later. The campaign plants seeds the algorithm bears fruit from long after the budget runs out.</p>
+    </div>
+  </div>
+  <div class="step">
+    <div class="step-num">3</div>
+    <div class="step-body">
+      <h3>April 10 — Sweet Frustration drops, campaign pivots</h3>
+      <p>At Day 7 of the SEE ME campaign, restructure: pause the weakest ad set, shift budget to the winner, start a new ad set for Sweet Frustration. The audience data from SEE ME tells you exactly who to target on round 2 — no guessing. The fan base that converted on SEE ME gets re-engaged for SF.</p>
+    </div>
+  </div>
+  <div class="step">
+    <div class="step-num">4</div>
+    <div class="step-body">
+      <h3>April 14 — 414 Day — Let it breathe organically</h3>
+      <p>No new ad spend needed. The paid foundation from weeks 1–2 means the algorithm is already primed. Organic spikes from 414 content will propagate further because the audience model is established. Save the budget for the ALL LOVE EP push.</p>
+    </div>
+  </div>
+  <div class="step">
+    <div class="step-num">5</div>
+    <div class="step-body">
+      <h3>Post-campaign — Write the data brief</h3>
+      <p>After the campaign closes: best-performing ad set, actual CPM, cost per stream, save rate, gender demographic movement, new cities that appeared from the broad ad set. This document is the foundation for every future campaign. By campaign 3, you're running a precision system — not guessing.</p>
+    </div>
+  </div>
+
+  <div class="callout green">
+    <span class="callout-label">The Myoboku Principle — The Sage Play</span>
+    <p>A sage doesn't just use nature energy — they become so attuned to the environment that every decision is informed by real-time feedback. That's what you're building here. Not a one-off ad campaign. A feedback loop: <strong>campaign runs → data returns → targeting sharpens → next campaign is more precise → algorithmic audience model gets cleaner → organic reach grows → next campaign costs less per stream than the last.</strong> Each cycle compounds. Run these campaigns consistently, read the data every time, and by campaign 4 you're operating a self-correcting growth system. That's the sage play.</p>
+  </div>
+</div>
+
+<hr>
+
+<div style="text-align:center;padding:1.5rem 0 2rem;border-top:2px solid var(--border);margin-top:3rem">
+  <p style="font-size:12px;color:var(--muted);line-height:1.8">
+    Interface verification: Ethan Payton LLC · Spotify Ads Manager · adsmanager.spotify.com · March 31, 2026<br>
+    All CPM ranges, budget minimums, and UI structure sourced from live account screenshots taken during active ad set creation.
+  </p>
+  <p style="font-size:11px;color:#9ca3af;margin-top:8px;font-weight:600">Ethan Payton / past.El noir Records — Internal Strategy Doc · Q2 2026 · Confidential</p>
+</div>
+
+</div>
+</body>
+</html>

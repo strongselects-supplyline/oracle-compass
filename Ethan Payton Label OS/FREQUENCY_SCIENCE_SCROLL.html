@@ -1,0 +1,607 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+<meta charset="UTF-8">
+<meta name="viewport" content="width=device-width, initial-scale=1.0">
+<title>Frequency Science — The Sage Production Scroll</title>
+<link href="https://fonts.googleapis.com/css2?family=Inter:wght@400;500;600;700;800&family=JetBrains+Mono:wght@500;600;700&display=swap" rel="stylesheet">
+<style>
+:root {
+  --bg: #ffffff;
+  --card: #ffffff;
+  --border: #d1d5db;
+  --text: #1a1d2e;
+  --muted: #52576e;
+  --green: #166534;
+  --blue: #1d4ed8;
+  --purple: #5b21b6;
+  --pink: #9d174d;
+  --red: #991b1b;
+  --gold: #92400e;
+  --orange: #9a3412;
+  --teal: #115e59;
+  --indigo: #3730a3;
+}
+*{box-sizing:border-box;margin:0;padding:0}
+body{font-family:'Inter',sans-serif;background:#f4f5f7;color:var(--text);line-height:1.75;-webkit-font-smoothing:antialiased}
+.page{max-width:860px;margin:0 auto;padding:3rem 2.5rem 6rem;background:var(--bg);box-shadow:0 0 0 1px var(--border)}
+
+/* HERO */
+.hero{text-align:left;padding:2.5rem 0;border-bottom:3px solid var(--text);margin-bottom:3rem}
+.eyebrow{font-size:10px;letter-spacing:3px;text-transform:uppercase;color:var(--muted);font-weight:700;margin-bottom:10px}
+.hero h1{font-size:34px;font-weight:800;line-height:1.1;margin-bottom:8px;color:var(--text)}
+.hero h1 span{color:var(--purple)}
+.hero-sub{font-size:14px;color:var(--muted);max-width:620px;border-left:4px solid var(--purple);padding-left:14px;margin-top:14px;line-height:1.7}
+.verified{display:inline-block;margin-top:14px;background:#f5f3ff;border:1px solid #ddd6fe;border-radius:6px;padding:6px 13px;font-size:11px;color:var(--purple);font-weight:700}
+
+/* SECTIONS */
+.section{margin-top:3rem}
+.sec-label{font-size:10px;letter-spacing:3px;text-transform:uppercase;font-weight:700;margin-bottom:6px;padding-left:10px}
+.sec-label.purple{color:var(--purple);border-left:3px solid var(--purple)}
+.sec-label.blue{color:var(--blue);border-left:3px solid var(--blue)}
+.sec-label.green{color:var(--green);border-left:3px solid var(--green)}
+.sec-label.red{color:var(--red);border-left:3px solid var(--red)}
+.sec-label.gold{color:var(--gold);border-left:3px solid #d97706}
+.sec-label.pink{color:var(--pink);border-left:3px solid #db2777}
+.sec-label.teal{color:var(--teal);border-left:3px solid #0d9488}
+.sec-label.indigo{color:var(--indigo);border-left:3px solid #6366f1}
+.sec-label.orange{color:var(--orange);border-left:3px solid #ea580c}
+
+h2{font-size:22px;font-weight:800;color:var(--text);line-height:1.2;margin-bottom:14px;border-bottom:2px solid var(--border);padding-bottom:8px}
+h3{font-size:15px;font-weight:700;color:var(--text);margin-bottom:6px;margin-top:24px}
+h4{font-size:13px;font-weight:700;color:var(--muted);text-transform:uppercase;letter-spacing:1px;margin-top:20px;margin-bottom:8px}
+p{font-size:14px;color:var(--text);margin-bottom:1rem;line-height:1.8}
+strong{color:#0a0c18;font-weight:700}
+em{color:var(--muted);font-style:italic}
+ul,ol{padding-left:20px;margin-bottom:1rem}
+li{font-size:13px;color:var(--text);margin-bottom:5px;line-height:1.7}
+li strong{color:#0a0c18}
+
+/* CALLOUTS */
+.callout{border-radius:8px;padding:16px 20px;margin:18px 0;border:1px solid var(--border)}
+.callout.purple{border-left:5px solid #7c3aed;background:#f5f3ff}
+.callout.blue{border-left:5px solid #2563eb;background:#eff6ff}
+.callout.green{border-left:5px solid #16a34a;background:#f0fdf4}
+.callout.red{border-left:5px solid #dc2626;background:#fef2f2}
+.callout.gold{border-left:5px solid #d97706;background:#fffbeb}
+.callout.pink{border-left:5px solid #db2777;background:#fdf2f8}
+.callout.teal{border-left:5px solid #0d9488;background:#f0fdfa}
+.callout.indigo{border-left:5px solid #6366f1;background:#eef2ff}
+.callout.orange{border-left:5px solid #ea580c;background:#fff7ed}
+.cl{font-size:10px;letter-spacing:2px;text-transform:uppercase;font-weight:800;margin-bottom:6px;display:block}
+.callout.purple .cl{color:#5b21b6}
+.callout.blue .cl{color:#1e40af}
+.callout.green .cl{color:#166534}
+.callout.red .cl{color:#991b1b}
+.callout.gold .cl{color:#92400e}
+.callout.pink .cl{color:#9d174d}
+.callout.teal .cl{color:#115e59}
+.callout.indigo .cl{color:#3730a3}
+.callout.orange .cl{color:#9a3412}
+.callout p{margin-bottom:0;font-size:13px}
+.callout p+p{margin-top:8px}
+.callout ul{margin-bottom:0}
+
+/* TABLES */
+table{width:100%;border-collapse:collapse;margin:18px 0;font-size:13px}
+th{background:#f3f4f6;color:var(--muted);font-weight:700;font-size:11px;letter-spacing:1px;text-transform:uppercase;padding:10px 12px;text-align:left;border:1px solid var(--border)}
+td{padding:10px 12px;border:1px solid var(--border);color:var(--text);vertical-align:top;line-height:1.6}
+tr:nth-child(even) td{background:#f9fafb}
+
+/* STATE CARDS (for mudra section) */
+.state-card{border:2px solid var(--border);border-radius:10px;padding:20px 22px;margin:18px 0;page-break-inside:avoid}
+.state-card.lethargy{border-left:6px solid #ea580c}
+.state-card.lust{border-left:6px solid #db2777}
+.state-card.fear{border-left:6px solid #d97706}
+.state-card.rage{border-left:6px solid #dc2626}
+.state-card.flow{border-left:6px solid #16a34a}
+.state-num{font-size:10px;letter-spacing:2px;text-transform:uppercase;color:var(--muted);font-weight:700;margin-bottom:4px}
+.state-name{font-size:17px;font-weight:800;margin-bottom:4px}
+.state-name.lethargy{color:var(--orange)}
+.state-name.lust{color:var(--pink)}
+.state-name.fear{color:var(--gold)}
+.state-name.rage{color:var(--red)}
+.state-name.flow{color:var(--green)}
+.mudra-line{font-size:14px;font-weight:700;color:var(--text);margin-top:10px}
+.sound-line{margin-top:8px;padding:10px 14px;background:#f5f3ff;border:1px solid #ddd6fe;border-radius:6px}
+.sound-label{font-size:10px;letter-spacing:1.5px;text-transform:uppercase;color:var(--purple);font-weight:800;margin-bottom:3px}
+.sound-val{font-family:'JetBrains Mono',monospace;font-size:14px;font-weight:700;color:var(--text)}
+.sound-note{font-size:12px;color:var(--muted);margin-top:4px;line-height:1.5}
+.statement{margin-top:8px;padding:10px 14px;background:#fffbeb;border:1px solid #fde68a;border-radius:6px}
+.stmt-label{font-size:10px;letter-spacing:1.5px;text-transform:uppercase;color:var(--gold);font-weight:800;margin-bottom:3px}
+.stmt-val{font-size:14px;font-style:italic;color:var(--text);font-weight:600}
+.why-line{font-size:12px;color:var(--muted);margin-top:8px;line-height:1.6;border-left:2px solid var(--border);padding-left:10px}
+
+/* TECHNIQUE CARDS */
+.tech-card{border:1px solid var(--border);border-radius:10px;padding:18px 20px;margin:14px 0;page-break-inside:avoid}
+.tech-card.primary{border-left:5px solid var(--green);background:#f0fdf4}
+.tech-card.secondary{border-left:5px solid var(--blue);background:#eff6ff}
+.tech-card.advanced{border-left:5px solid var(--purple);background:#f5f3ff}
+.tech-num{font-size:10px;letter-spacing:2px;text-transform:uppercase;font-weight:800;margin-bottom:4px}
+.tech-card.primary .tech-num{color:var(--green)}
+.tech-card.secondary .tech-num{color:var(--blue)}
+.tech-card.advanced .tech-num{color:var(--purple)}
+.tech-name{font-size:16px;font-weight:800;color:var(--text);margin-bottom:8px}
+.tech-body{font-size:13px;color:var(--text);line-height:1.7}
+.tech-body strong{color:#0a0c18}
+.tech-how{margin-top:10px;padding:10px 14px;background:#f3f4f6;border:1px solid var(--border);border-radius:6px;font-size:12px;color:var(--muted);line-height:1.6}
+.tech-how strong{color:var(--text)}
+
+/* SPEC TABLE */
+.spec-wrap{border:1px solid var(--border);border-radius:10px;overflow:hidden;margin:18px 0}
+.spec-row{display:flex;justify-content:space-between;align-items:flex-start;padding:10px 16px;border-bottom:1px solid var(--border);gap:16px}
+.spec-row:nth-child(even){background:#f9fafb}
+.spec-row:last-child{border-bottom:none}
+.spec-key{color:var(--muted);font-size:13px;font-weight:600;flex-shrink:0}
+.spec-val{color:var(--text);font-weight:700;font-family:'JetBrains Mono',monospace;font-size:12px;text-align:right}
+.spec-note{font-size:11px;color:var(--muted);font-family:'Inter',sans-serif;margin-top:2px;text-align:right}
+
+code{font-family:'JetBrains Mono',monospace;font-size:12px;background:#f3f4f6;padding:2px 6px;border-radius:4px;color:var(--purple);font-weight:600;border:1px solid var(--border)}
+hr{border:0;height:2px;background:var(--border);margin:3rem 0}
+
+/* PRINT */
+@media print{
+  body{background:white}
+  .page{box-shadow:none;padding:1.5rem 1.5rem 3rem}
+  h2{page-break-after:avoid}
+  .callout,.state-card,.tech-card{page-break-inside:avoid}
+}
+</style>
+</head>
+<body>
+<div class="page">
+
+<!-- HERO -->
+<div class="hero">
+  <div class="eyebrow">past.El noir Records — Production Science Scroll</div>
+  <h1>Frequency Science &<br><span>The Sage Production System</span></h1>
+  <p class="hero-sub">How sound frequency interfaces with the human nervous system at the bioelectric level — and how to embed this science into music production as an invisible layer that deepens emotional impact, increases save rates, and creates a listening experience the audience can feel but can't explain.</p>
+  <div class="verified">Synthesized from: Neuroscience literature · Psychoacoustics research · Military declassified programs · MIT Gamma entrainment studies · Traditional mantra systems · DAW production methodology</div>
+</div>
+
+<!-- ==================== CHAPTER 1: BRAINWAVE STATES ==================== -->
+<div class="section">
+  <div class="sec-label purple">Chapter 1</div>
+  <h2>Your Brain Runs at Frequencies — The Brainwave Spectrum</h2>
+
+  <p>Your brain's electrical activity oscillates at measurable frequencies. An EEG (electroencephalogram) reads these in real time. Different frequencies correspond to different cognitive and emotional states. <strong>This is not theory — it's measured physics.</strong></p>
+
+  <table>
+    <thead>
+      <tr><th>Brainwave</th><th>Frequency</th><th>State</th><th>What It Feels Like</th><th>Musical Parallel</th></tr>
+    </thead>
+    <tbody>
+      <tr><td><strong>Delta</strong></td><td>0.5–4 Hz</td><td>Deep sleep, healing</td><td>Unconscious, body repair, cellular regeneration</td><td>Below audible range — felt as deep rumble or vibration</td></tr>
+      <tr><td><strong>Theta</strong></td><td>4–8 Hz</td><td>Deep meditation, REM, creativity</td><td>Flow state, hypnagogic imagery, emotional processing, "in the zone"</td><td>The state R&B listeners enter during late-night sessions</td></tr>
+      <tr><td><strong>Alpha</strong></td><td>8–13 Hz</td><td>Relaxed alertness, calm focus</td><td>Present, not anxious, soft attention, receptive</td><td>The "driving with good music" state</td></tr>
+      <tr><td><strong>Beta</strong></td><td>13–30 Hz</td><td>Active thinking, stress</td><td>Normal waking state, problem-solving, overthinking</td><td>The state most people are in — music pulls them out of it</td></tr>
+      <tr><td><strong>Gamma</strong></td><td>30–100 Hz</td><td>Peak cognition, insight</td><td>"Aha" moments, heightened perception, spiritual experience</td><td>40 Hz = low E1 on bass. Sub-bass territory.</td></tr>
+    </tbody>
+  </table>
+
+  <div class="callout purple">
+    <span class="cl">The Key Discovery — Frequency Following Response</span>
+    <p>When the brain is exposed to a rhythmic stimulus at a specific frequency — sound, light, vibration — the brain's electrical activity begins to <strong>match that frequency</strong>. This is called <strong>entrainment</strong> or the <strong>frequency following response</strong>. Documented in EEG studies since the 1930s (Adrian & Matthews, 1934, published in <em>Brain</em>). Your brain is a rhythm-matching machine. It locks onto external patterns. Music producers have been accidentally triggering this forever — a 120 BPM track entrains the listener's motor cortex to that tempo. But frequency goes deeper than tempo.</p>
+  </div>
+</div>
+
+<!-- ==================== CHAPTER 2: ENTRAINMENT MECHANISMS ==================== -->
+<div class="section">
+  <div class="sec-label blue">Chapter 2</div>
+  <h2>Three Proven Entrainment Mechanisms</h2>
+
+  <h3>1. Binaural Beats (Discovered 1839 — Heinrich Wilhelm Dove)</h3>
+  <p>Play 200 Hz in the left ear and 210 Hz in the right ear. The brain perceives a phantom "beat" at 10 Hz — the difference — and begins entraining toward Alpha. <strong>Validated in modern neuroscience via EEG.</strong></p>
+  <ul>
+    <li><strong>Delta range</strong> (1–4 Hz difference) → induces deep relaxation, sleep</li>
+    <li><strong>Theta range</strong> (4–8 Hz difference) → induces meditative/creative states</li>
+    <li><strong>Alpha range</strong> (8–13 Hz difference) → induces calm focus, reduces anxiety</li>
+    <li><strong>Gamma range</strong> (30+ Hz difference) → induces heightened perception, cognition</li>
+  </ul>
+  <p><strong>Requires headphones.</strong> The two different frequencies must reach each ear separately for the brain to generate the phantom beat.</p>
+
+  <h3>2. Isochronic Tones (Stronger Than Binaural)</h3>
+  <p>A single tone that pulses on and off at the target frequency. <strong>More effective than binaural beats</strong> because they don't require headphones and create a sharper neural stimulus. Used in clinical neurofeedback settings. The on-off pattern creates a stronger evoked potential in the auditory cortex than the subtle phase difference of binaural beats.</p>
+
+  <h3>3. Rhythmic Auditory Stimulation (Tempo as Entrainment)</h3>
+  <p>The BPM of a track creates its own entrainment on the motor cortex and autonomic nervous system:</p>
+  <table>
+    <thead><tr><th>BPM Range</th><th>Brainwave Target</th><th>Listener State</th><th>Genre Application</th></tr></thead>
+    <tbody>
+      <tr><td><strong>60–70 BPM</strong></td><td>Alpha/Theta boundary</td><td>Deep relaxation, emotional receptivity, vulnerability</td><td>Late-night R&B, ambient, slow jams — <strong>SEE ME territory</strong></td></tr>
+      <tr><td><strong>80–90 BPM</strong></td><td>Alpha</td><td>Calm focus, present, warm</td><td>Mid-tempo R&B, neo-soul</td></tr>
+      <tr><td><strong>100–120 BPM</strong></td><td>Low Beta</td><td>Energized but not anxious</td><td>Pop, upbeat R&B</td></tr>
+      <tr><td><strong>120–140 BPM</strong></td><td>Beta</td><td>Active, physical</td><td>Dance, high-energy pop</td></tr>
+      <tr><td><strong>140+ BPM</strong></td><td>High Beta</td><td>Club energy, physical activation</td><td>EDM, trap, drill</td></tr>
+    </tbody>
+  </table>
+
+  <div class="callout blue">
+    <span class="cl">For SEE ME and Late-Night R&B</span>
+    <p><strong>65–80 BPM is the sweet spot.</strong> That tempo range literally puts the listener's brain into the state where they process emotions most deeply — Theta/Alpha boundary — and that's when they save, add to playlists, and share. The tempo isn't just a vibe choice. It's a neurological targeting decision. This is why chill R&B generates higher save rates than uptempo pop at similar stream counts.</p>
+  </div>
+</div>
+
+<!-- ==================== CHAPTER 3: WEAPONIZED HISTORY ==================== -->
+<div class="section">
+  <div class="sec-label red">Chapter 3</div>
+  <h2>The Weaponized Side — Proof That Frequency Manipulates the Brain</h2>
+
+  <p>If frequency can <em>damage</em> neural tissue and disrupt brain states, the inverse is equally true — appropriate frequencies can <em>repair, regulate, and enhance</em> neural function. The difference is intent, precision, and dosage. Here's the declassified history:</p>
+
+  <h3>Soviet Psychotronic Programs (1950s–1989)</h3>
+  <ul>
+    <li><strong>LIDA Machine (1950s–70s):</strong> Emitted pulsed radio waves at specific frequencies to induce sleep, compliance, or disorientation. Captured by US forces in Vietnam, studied at Walter Reed Army Institute of Research. Proof of concept: electromagnetic frequency modulation can alter human consciousness.</li>
+    <li><strong>Woodpecker Signal (1976–1989):</strong> The Duga over-the-horizon radar emitted 10 Hz pulses detectable worldwide. 10 Hz = Alpha brainwave range. Whether psychological effects were intentional or incidental is debated, but the bioelectric effect of 10 Hz pulsing on human brainwaves is not disputed.</li>
+  </ul>
+
+  <h3>Microwave Auditory Effect (Frey Effect, 1961)</h3>
+  <p>Pulsed microwave radiation creates the perception of sound directly inside the human skull — no speakers, no earphones. The mechanism: microwave pulses cause thermoelastic expansion in brain tissue, generating pressure waves the cochlea interprets as sound. This is the leading scientific explanation for:</p>
+
+  <h3>Havana Syndrome (2016–Present)</h3>
+  <p>US and Canadian diplomats in Cuba reported hearing strange sounds, then experienced headaches, cognitive impairment, and measurable brain damage. Published in <em>JAMA</em> (Journal of the American Medical Association). Leading hypothesis: directed pulsed microwave energy — the Frey effect weaponized. Frequency modulation creating destructive interference in neural tissue.</p>
+
+  <div class="callout red">
+    <span class="cl">The Principle</span>
+    <p>Frequency is a tool. It is neutral. Directed at destruction, it damages tissue and disrupts cognition. Directed at healing, it repairs tissue and enhances cognition. Embedded in music, it deepens the listener's emotional experience in ways they can't consciously identify. <strong>The Russians proved the mechanism works. We're pointing it in the opposite direction.</strong></p>
+  </div>
+</div>
+
+<!-- ==================== CHAPTER 4: THE HEALING SCIENCE ==================== -->
+<div class="section">
+  <div class="sec-label green">Chapter 4</div>
+  <h2>The Healing Side — Verified Research</h2>
+
+  <h3>1. 40 Hz Gamma Stimulation (MIT / Li-Huei Tsai Lab)</h3>
+  <p>The most rigorous recent frequency research. MIT found that exposing mice to <strong>40 Hz light and sound stimulation reduced amyloid plaques (Alzheimer's markers) by 50%</strong>. The mechanism: 40 Hz entrainment activates microglia — the brain's immune cells — to clear metabolic waste. Human clinical trials now underway.</p>
+  <div class="callout green">
+    <span class="cl">For Music Production</span>
+    <p><strong>40 Hz is a low E1 on a bass guitar.</strong> You can embed this as a sub-bass fundamental. Every time that E1 hits in the low end, it's delivering a Gamma-range stimulus to the listener's brain — the frequency associated with peak cognition, insight, and heightened perception.</p>
+  </div>
+
+  <h3>2. The 432 Hz vs. 440 Hz Tuning Debate</h3>
+  <p>Standard concert pitch: A = 440 Hz. Alternative tuning: A = 432 Hz. A 2019 study in <em>EXPLORE: The Journal of Science & Healing</em> found that <strong>432 Hz music reduced heart rate and blood pressure compared to 440 Hz in a double-blind test</strong>.</p>
+  <p>432 Hz produces slightly different vibrational ratios that may interact with the body's resonant frequencies more harmoniously. The science isn't fully conclusive but the anecdotal evidence from producers is massive — records tuned to 432 feel "warmer" and "more emotional." 432 Hz is mathematically aligned with the Schumann resonance (Earth's electromagnetic pulse at ~7.83 Hz): 432 / 7.83 ≈ 55.17 — a near-integer harmonic relationship.</p>
+
+  <h3>3. Solfeggio Frequencies (Ancient System, Partially Validated)</h3>
+  <p>Specific frequencies from Gregorian chant tradition, each associated with a documented effect:</p>
+
+  <table>
+    <thead><tr><th>Frequency</th><th>Traditional Effect</th><th>Nearest Musical Note</th><th>Key Signature</th></tr></thead>
+    <tbody>
+      <tr><td><strong>174 Hz</strong></td><td>Pain reduction, grounding, security</td><td>F3</td><td>F major</td></tr>
+      <tr><td><strong>285 Hz</strong></td><td>Tissue healing, cellular repair</td><td>C#4 / D4</td><td>Db major</td></tr>
+      <tr><td><strong>396 Hz</strong></td><td>Liberating fear and guilt</td><td>G4</td><td><strong>G major/minor</strong> — most emotionally felt key in Western music</td></tr>
+      <tr><td><strong>417 Hz</strong></td><td>Facilitating change, breaking patterns</td><td>Ab4</td><td>Ab major</td></tr>
+      <tr><td><strong>432 Hz</strong></td><td>Natural tuning, heart coherence</td><td>A4 (detuned -32 cents)</td><td>Any key at 432 tuning</td></tr>
+      <tr><td><strong>528 Hz</strong></td><td>DNA repair, transformation — "the love frequency"</td><td>C5</td><td><strong>C major</strong> — key of purity and openness</td></tr>
+      <tr><td><strong>639 Hz</strong></td><td>Reconnecting relationships, harmonizing</td><td>Eb5</td><td>Eb major</td></tr>
+      <tr><td><strong>741 Hz</strong></td><td>Awakening intuition, problem solving</td><td>F#5</td><td>F# major</td></tr>
+      <tr><td><strong>852 Hz</strong></td><td>Spiritual awareness, returning to order</td><td>Ab5</td><td>Ab major</td></tr>
+      <tr><td><strong>963 Hz</strong></td><td>Higher consciousness, unity</td><td>B5</td><td>B major</td></tr>
+    </tbody>
+  </table>
+
+  <div class="callout green">
+    <span class="cl">528 Hz — The Most Studied</span>
+    <p>Molecular biologist Dr. Glen Rein found that <strong>528 Hz sound waves increased UV light absorption in DNA by 8.2%</strong> — unique among all frequencies tested. 528 Hz is very close to C5. If you write or tune a section of a song in C major with the melody centering around C5, you are in the frequency zone associated with cellular repair and transformation. This is the frequency that earned the name "the love frequency" in biochemistry research.</p>
+  </div>
+</div>
+
+<!-- ==================== CHAPTER 5: MUDRA + SOUND PAIRINGS ==================== -->
+<div class="section">
+  <div class="sec-label gold">Chapter 5</div>
+  <h2>The Five Mudra States — With Sound, Mantra, and Statement Pairings</h2>
+
+  <p>Each mudra has a traditional seed sound (<strong>bija mantra</strong>) tied to the same energy center. The vibration of the sound creates physical resonance in the body that amplifies the hand position's effect. Sound targets the energy center from the <em>inside</em> (vibration). Hand position targets it from the <em>outside</em> (nerve pressure). Statement gives the mind a direction. All three together is the full protocol.</p>
+
+  <!-- STATE 1 -->
+  <div class="state-card lethargy">
+    <div class="state-num">State 01</div>
+    <div class="state-name lethargy">LETHARGY / DEPLETION</div>
+    <div class="mudra-line">Mudra: PRANA MUDRA — ring + pinky tips to thumb, other fingers straight, palms up</div>
+    <div class="sound-line">
+      <div class="sound-label">Seed Sound (Bija Mantra)</div>
+      <div class="sound-val">"VAM" (pronounced <em>vahm</em>)</div>
+      <div class="sound-note">Seed mantra for the sacral chakra — the center of vitality and will to act. Hum on a slow exhale. Feel the vibration in your lower abdomen.</div>
+    </div>
+    <div class="statement">
+      <div class="stmt-label">Internal Statement</div>
+      <div class="stmt-val">"I have energy. It is available now."</div>
+    </div>
+    <div class="why-line"><strong>Why it works:</strong> VAM vibration resonates at the frequency of the water/earth junction where depleted prana pools. The sound + mudra activate both the hand position pathway AND the target energy center simultaneously. Paired with Kapalabhati (breath of fire) and upward gaze.</div>
+  </div>
+
+  <!-- STATE 2 -->
+  <div class="state-card lust">
+    <div class="state-num">State 02</div>
+    <div class="state-name lust">LUST / EXCESS SACRAL ENERGY</div>
+    <div class="mudra-line">Mudra: BRAHMA MUDRA — fists with thumbs tucked inside, knuckles touching at navel</div>
+    <div class="sound-line">
+      <div class="sound-label">Vocal Practice (Three-Part A-U-M)</div>
+      <div class="sound-val">A — U — M (three separate sounds, NOT combined)</div>
+      <div class="sound-note">Turn head <strong>right</strong> → exhale "A" (ahhh). Turn head <strong>left</strong> → exhale "U" (ooo). Drop chin to chest → exhale "M" (mmm). Lift head center → silence. The A-U-M sequence activates three distinct cranial nerve regions through jaw/throat vibration, progressively calming the limbic system.</div>
+    </div>
+    <div class="statement">
+      <div class="stmt-label">Internal Statement</div>
+      <div class="stmt-val">"This energy is mine to direct."</div>
+    </div>
+    <div class="why-line"><strong>Why it works:</strong> Not shame-based — it's ownership. The three-part vocal sequence disrupts the singular fixation pattern of hypersexual states by cycling through three different physical orientations. Paired with Sitali (cooling breath), Mula Bandha (root lock), and downward gaze.</div>
+  </div>
+
+  <!-- STATE 3 -->
+  <div class="state-card fear">
+    <div class="state-num">State 03</div>
+    <div class="state-name fear">DOUBT / FEAR</div>
+    <div class="mudra-line">Mudra: ABHAYA (right palm out, shoulder height) + PRITHVI (ring finger to thumb)</div>
+    <div class="sound-line">
+      <div class="sound-label">Seed Sound (Bija Mantra)</div>
+      <div class="sound-val">"LAM" (pronounced <em>lahm</em>)</div>
+      <div class="sound-note">Seed mantra for the root chakra — earth element, foundation. Chant deep and slow. Feel it in the base of your spine and thighs. LAM's low frequency physically resonates the pelvic floor and lower spine — the exact regions where fear stores as tissue tension.</div>
+    </div>
+    <div class="sound-line" style="margin-top:6px">
+      <div class="sound-label">Alternate Sound</div>
+      <div class="sound-val">"SO HUM" (So = inhale, Hum = exhale)</div>
+      <div class="sound-note">Ancient Vedic mantra. Translates to "I am that" — a statement of existing without condition or justification. The breath becomes the mantra carrier.</div>
+    </div>
+    <div class="statement">
+      <div class="stmt-label">Internal Statement</div>
+      <div class="stmt-val">"I am here. I am safe. I am already standing."</div>
+    </div>
+    <div class="why-line"><strong>Why it works:</strong> You're using sound to vibrate the fear out of the tissue while the mudra signals safety to the brainstem. Paired with Box Breathing (4-4-4-4), wide peripheral gaze, and body shaking (TRE) for acute fear.</div>
+  </div>
+
+  <!-- STATE 4 -->
+  <div class="state-card rage">
+    <div class="state-num">State 04</div>
+    <div class="state-name rage">RAGE / ANGER</div>
+    <div class="mudra-line">Mudra (cooling): SHUNI — middle finger to thumb · Mudra (focusing): KALI — interlaced fingers, both index fingers point up like a blade</div>
+    <div class="sound-line">
+      <div class="sound-label">Seed Sound for Shuni (Cooling the Fire)</div>
+      <div class="sound-val">"RAM" (pronounced <em>rahm</em>)</div>
+      <div class="sound-note">Seed mantra for the solar plexus / fire element. Counterintuitive — you're not adding fire, you're <strong>naming and addressing</strong> the fire so it can transform. RAM vibrates at the solar plexus itself — you're giving the anger a formal container.</div>
+    </div>
+    <div class="sound-line" style="margin-top:6px">
+      <div class="sound-label">Seed Sound for Kali (Aiming the Force)</div>
+      <div class="sound-val">"OM KRIM" (pronounced <em>om kreem</em>)</div>
+      <div class="sound-note">Kali's primary seed sound. <em>Krim</em> is the sound of transformative destruction — cutting through what needs to be cut. Use this before hard creative work, channeling anger into output, entering a session from pain.</div>
+    </div>
+    <div class="statement">
+      <div class="stmt-label">Internal Statement (Shuni — when cooling)</div>
+      <div class="stmt-val">"This force is real. I am choosing where it goes."</div>
+    </div>
+    <div class="statement" style="margin-top:6px">
+      <div class="stmt-label">Internal Statement (Kali — when aiming)</div>
+      <div class="stmt-val">"I will make something from this."</div>
+    </div>
+    <div class="why-line"><strong>Why it works:</strong> The sound becomes a direction switch. Shuni + RAM cools the fire into discipline. Kali + OM KRIM aims the fire into creation. Paired with 4-in/8-out long exhale breath (do NOT use breath of fire — adds fire to fire). Wall push first for acute rage.</div>
+  </div>
+
+  <!-- STATE 5 -->
+  <div class="state-card flow">
+    <div class="state-num">State 05</div>
+    <div class="state-name flow">FLOW / PRE-CREATION / PEAK STATE</div>
+    <div class="mudra-line">Mudra: JNANA MUDRA — index to thumb in light relaxed circle, palms up on knees</div>
+    <div class="sound-line">
+      <div class="sound-label">Sound</div>
+      <div class="sound-val">"AUM" / "OM" (full combined sound, all three phases blending)</div>
+      <div class="sound-note">One long resonant exhale, let it fill the skull and chest. OM's frequency has been measured to match the Schumann resonance (Earth's electromagnetic pulse at ~7.83 Hz). The vibration syncs brainwave activity toward Alpha/Theta — the creative flow state.</div>
+    </div>
+    <div class="sound-line" style="margin-top:6px">
+      <div class="sound-label">Alternate Chant (Before Artistic Work)</div>
+      <div class="sound-val">"AHAM BRAHMASMI"</div>
+      <div class="sound-note">Sanskrit: "I am the creative force." Used specifically before artistic work in classical Vedic tradition. This isn't affirmation — it's a declaration of identity with the creative principle itself.</div>
+    </div>
+    <div class="statement">
+      <div class="stmt-label">Internal Statement</div>
+      <div class="stmt-val">"I am ready. The work is already in me."</div>
+    </div>
+    <div class="why-line"><strong>Why it works:</strong> OM syncs brainwaves toward the Alpha/Theta flow state. Do this before opening a DAW, before picking up a guitar, before writing — instead of doomscrolling to "warm up." Hold Jnana Mudra throughout the session if possible. Paired with Nadi Shodhana (alternate nostril breathing, 5 rounds).</div>
+  </div>
+
+  <div class="callout gold">
+    <span class="cl">Universal Add-On for All Five States</span>
+    <p><strong>Mula Bandha (Root Lock)</strong> — pelvic floor contraction (the "stop urination" squeeze). Can be added to ANY mudra in ANY state. It keeps prana in the body during any state transition, preventing energy from leaking or scattering as you shift. Think of it as the ground wire in an electrical circuit — without it, the current dissipates. With it, the current goes where you direct it.</p>
+  </div>
+</div>
+
+<!-- ==================== CHAPTER 6: PRODUCTION TECHNIQUES ==================== -->
+<div class="section">
+  <div class="sec-label teal">Chapter 6</div>
+  <h2>Music Production Techniques — Embedding Frequency Science Invisibly</h2>
+
+  <p>These five techniques let you embed healing and entrainment frequencies into any song, in any key, without compromising the music. The listener never knows it's there. They just know the music <em>hits different</em>.</p>
+
+  <!-- TECHNIQUE 1 -->
+  <div class="tech-card primary">
+    <div class="tech-num">Technique 01</div>
+    <div class="tech-name">Sub-Bass Entrainment Layer</div>
+    <div class="tech-body">
+      <p>Add a <strong>sub-bass sine wave</strong> below the audible mix that pulses at the target brainwave frequency. Inaudible as a distinct sound but <em>felt</em> physically through headphones and speakers — and the brain still entrains to it.</p>
+      <ul>
+        <li><strong>Late-night/chill track (SEE ME):</strong> Layer a 6–8 Hz sine wave (Theta) at -20 to -30 dB below the mix floor. The listener doesn't hear it. Their brain drifts toward Theta — the meditative, emotional processing state. This is why they <em>feel</em> the track deeper than they can explain.</li>
+        <li><strong>Energy track:</strong> Layer a 10–12 Hz pulse (Alpha) — keeps the listener alert but relaxed.</li>
+        <li><strong>Peak cognition/insight:</strong> Layer a 40 Hz sine (Gamma — low E1) as a sub-bass fundamental.</li>
+      </ul>
+    </div>
+    <div class="tech-how"><strong>DAW How-To:</strong> Create a sine wave oscillator at the target frequency. Automate a tremolo/volume LFO on it at the same frequency so it pulses. Mix at -24 dB or lower. It won't register on streaming service loudness meters but it's present in the waveform. Use a high-pass filter on the master bus set above the entrainment frequency to prevent it from affecting LUFS readings.</div>
+  </div>
+
+  <!-- TECHNIQUE 2 -->
+  <div class="tech-card primary">
+    <div class="tech-num">Technique 02</div>
+    <div class="tech-name">Binaural Panning in Stereo Mix</div>
+    <div class="tech-body">
+      <p>Subtle but powerful for headphone listeners (majority of Spotify consumption):</p>
+      <ul>
+        <li>Pan a pad or ambient layer slightly differently in L vs R — a <strong>4–8 Hz frequency difference</strong></li>
+        <li>Example: synth pad at 200 Hz panned slightly left, same pad at 206 Hz panned slightly right. Listener's brain perceives the 6 Hz difference and entrains toward Theta.</li>
+        <li>Works best in: <strong>intros, outros, bridge sections, ambient breakdowns</strong> — moments where the listener's critical mind relaxes and susceptibility is highest</li>
+      </ul>
+    </div>
+    <div class="tech-how"><strong>DAW How-To:</strong> Duplicate a pad track. Detune the duplicate by 4–8 cents (not semitones — cents). Pan original 30% left, duplicate 30% right. The frequency difference is tiny enough that it sounds like stereo width, but the brain processes the difference as a binaural beat. Only works through headphones — through speakers the waves combine and cancel the binaural effect.</div>
+  </div>
+
+  <!-- TECHNIQUE 3 -->
+  <div class="tech-card secondary">
+    <div class="tech-num">Technique 03</div>
+    <div class="tech-name">Key Selection Based on Frequency Targets</div>
+    <div class="tech-body">
+      <p>The most elegant application — no subliminal tricks, just choosing keys that naturally resonate at healing frequencies:</p>
+    </div>
+  </div>
+
+  <table>
+    <thead><tr><th>Desired Effect</th><th>Target Frequency</th><th>Write In This Key</th><th>Why</th></tr></thead>
+    <tbody>
+      <tr><td>Deep emotional processing</td><td>396 Hz</td><td><strong>G major/minor</strong></td><td>G4 = 392 Hz ≈ "liberating fear/guilt" solfeggio. G minor is the most emotionally felt key in Western music — not a coincidence.</td></tr>
+      <tr><td>Heart opening, vulnerability, transformation</td><td>528 Hz</td><td><strong>C major</strong></td><td>C5 = 523 Hz ≈ 528 "love frequency." C major = purity and openness across centuries of theory.</td></tr>
+      <tr><td>Relational healing, connection</td><td>639 Hz</td><td><strong>Eb major</strong></td><td>Eb5 = 622 Hz ≈ 639. Eb major = devotion and deep love in classical theory.</td></tr>
+      <tr><td>Grounding, safety, presence</td><td>174 Hz</td><td><strong>F major</strong></td><td>F3 = 174.6 Hz — near-exact match to the grounding solfeggio.</td></tr>
+      <tr><td>Transformation, breaking patterns</td><td>417 Hz</td><td><strong>Ab major</strong></td><td>Ab4 = 415.3 Hz ≈ the "change" frequency.</td></tr>
+      <tr><td>Intuition, awakening</td><td>741 Hz</td><td><strong>F# major</strong></td><td>F#5 = 739.9 Hz — almost exact match.</td></tr>
+    </tbody>
+  </table>
+
+  <!-- TECHNIQUE 4 -->
+  <div class="tech-card secondary">
+    <div class="tech-num">Technique 04</div>
+    <div class="tech-name">432 Hz Master Tuning</div>
+    <div class="tech-body">
+      <p>Retune the entire project from A=440 Hz to A=432 Hz. The complete harmonic series shifts, and every note now resonates at ratios that align more naturally with human bioelectrical rhythms. Widely reported by producers to make records feel "warmer" and create more chest resonance.</p>
+    </div>
+    <div class="tech-how"><strong>DAW How-To:</strong> Global pitch shift of <strong>-31.77 cents</strong> (about -0.32 semitones). In most DAWs: Master Tuning parameter → set to -32 cents. Or use a pitch shift plugin on the master bus. If using soft synths, many allow retuning the oscillator reference pitch to 432. Do this <em>before</em> mixing — the harmonic relationships shift slightly and EQ decisions should be made in the target tuning.</div>
+  </div>
+
+  <!-- TECHNIQUE 5 -->
+  <div class="tech-card advanced">
+    <div class="tech-num">Technique 05</div>
+    <div class="tech-name">Target Frequency Layering (Any Key)</div>
+    <div class="tech-body">
+      <p><strong>This solves the transposition problem.</strong> If your song is in a different key than the target frequency, you embed the frequency as a production layer rather than a melodic element:</p>
+      <ul>
+        <li><strong>Option A — Drone/pad:</strong> Add a very quiet sustained tone at the target frequency (e.g. 528 Hz / C5) buried at -18 to -24 dB. It becomes harmonic texture, not melody.</li>
+        <li><strong>Option B — Sub-harmonic:</strong> Divide the target by 2, 4, or 8 to reach sub-bass range. 528 Hz → 264 → 132 → 66 Hz (C2). Embed as sub-bass sine. The overtone series rebuilds the target frequency even though the fundamental is subsonic.</li>
+        <li><strong>Option C — Independent entrainment:</strong> The brainwave entrainment layer (Theta pulse, binaural pan, isochronic tremolo) has zero relationship to key. It works in any harmonic context because it operates below the range of pitched perception.</li>
+      </ul>
+    </div>
+  </div>
+</div>
+
+<!-- ==================== CHAPTER 7: THE TRANSPOSITION RULE ==================== -->
+<div class="section">
+  <div class="sec-label indigo">Chapter 7</div>
+  <h2>The Transposition Rule — Absolute vs. Relative Frequency</h2>
+
+  <p>The critical distinction that determines how freely you can work:</p>
+
+  <div class="callout indigo">
+    <span class="cl">Two Separate Mechanisms, Two Separate Rules</span>
+    <p><strong>Mechanism 1 — Absolute Frequency (Key-Dependent):</strong> Solfeggio/healing frequencies (528 Hz, 396 Hz, etc.) are about exact vibration speed. 528 Hz = C5. If you transpose to D major, the melody moves to D5 = 587 Hz — a different frequency with different resonance. <strong>Transposing changes the absolute frequency, which changes the specific cellular effect.</strong></p>
+    <p><strong>Mechanism 2 — Relative Frequency / Entrainment (Key-Independent):</strong> Brainwave entrainment cares about <em>pulse rate</em> — how many times per second a stimulus repeats. A 6 Hz sub-bass pulse entrains Theta in any key. A binaural 4 Hz difference works in any key. <strong>This mechanism is completely key-independent.</strong></p>
+  </div>
+
+  <div class="callout green">
+    <span class="cl">The Practical Rule</span>
+    <p><strong>Never force a song into a key just for frequency.</strong> The songwriting has to be authentic first. Write in whatever key feels right musically. Then layer the target frequency as a production element using Technique 05 (drone, sub-harmonic, or independent entrainment). You get both: the song sounds right AND the frequency science is embedded invisibly.</p>
+  </div>
+
+  <h3>Example: SEE ME in Ab Minor</h3>
+  <table>
+    <thead><tr><th>Layer</th><th>What</th><th>Frequency</th><th>Key Relationship</th><th>Audible?</th></tr></thead>
+    <tbody>
+      <tr><td><strong>Song</strong></td><td>Normal production</td><td>Ab minor</td><td>Root key</td><td>Yes — the music</td></tr>
+      <tr><td><strong>Drone</strong></td><td>Sustained sine tone</td><td>528 Hz (C5)</td><td>Major 3rd of Ab — adds warmth</td><td>Barely — mixed very low</td></tr>
+      <tr><td><strong>Sub-bass</strong></td><td>Sub-harmonic of 528</td><td>66 Hz (C2)</td><td>Same, octaves down</td><td>Felt in chest, not heard as pitch</td></tr>
+      <tr><td><strong>Entrainment</strong></td><td>Theta pulse</td><td>6 Hz tremolo on pad</td><td>No key relationship needed</td><td>Not consciously heard</td></tr>
+      <tr><td><strong>Binaural</strong></td><td>Stereo pad split</td><td>L: 200 Hz / R: 206 Hz</td><td>Independent</td><td>Perceived as stereo width</td></tr>
+    </tbody>
+  </table>
+  <p>The listener hears a beautiful R&B track in Ab minor. They don't know why it makes them feel so deeply. They can't explain why they saved it. They just know it <em>did something</em>.</p>
+</div>
+
+<!-- ==================== CHAPTER 8: THE ETHICAL FRAME ==================== -->
+<div class="section">
+  <div class="sec-label pink">Chapter 8</div>
+  <h2>The Ethical Frame — Medicine vs. Weapon</h2>
+
+  <p>Everything described in this scroll is <strong>enhancement, not manipulation.</strong></p>
+
+  <p>The listener is already choosing to listen to R&B at night because they <em>want</em> to feel something. They selected the genre, opened the app, put in headphones, and pressed play. You're not injecting a state they didn't consent to — you're <strong>deepening the state they already sought out.</strong></p>
+
+  <p>That's the difference between a weapon and a medicine. Same chemistry, different intent.</p>
+
+  <div class="callout pink">
+    <span class="cl">The Line</span>
+    <p>The Russians pointed this science at destruction. You point it at the thing music has always been for — <strong>helping people feel what they need to feel so they can process it and move through it.</strong> Most producers pick keys based on what sounds good to their ear. You pick keys based on what the human nervous system responds to at the cellular level — and then the music sounds good <em>because</em> it's resonating correctly. That's not manipulation. That's mastery of the craft.</p>
+  </div>
+</div>
+
+<!-- ==================== CHAPTER 9: QUICK REFERENCE ==================== -->
+<div class="section">
+  <div class="sec-label orange">Chapter 9</div>
+  <h2>Quick Reference — All Systems at a Glance</h2>
+
+  <h3>Mudra → Sound → Statement Map</h3>
+  <table>
+    <thead><tr><th>State</th><th>Mudra</th><th>Sound</th><th>Statement</th></tr></thead>
+    <tbody>
+      <tr><td><strong>Lethargy</strong></td><td>Prana (ring+pinky→thumb)</td><td>VAM</td><td>"I have energy. It is available now."</td></tr>
+      <tr><td><strong>Lust</strong></td><td>Brahma (fists, thumbs in)</td><td>A – U – M (3 parts)</td><td>"This energy is mine to direct."</td></tr>
+      <tr><td><strong>Fear</strong></td><td>Abhaya + Prithvi</td><td>LAM / SO HUM</td><td>"I am here. I am safe. I am already standing."</td></tr>
+      <tr><td><strong>Rage (cool)</strong></td><td>Shuni (middle→thumb)</td><td>RAM</td><td>"This force is real. I am choosing where it goes."</td></tr>
+      <tr><td><strong>Rage (aim)</strong></td><td>Kali (index blades up)</td><td>OM KRIM</td><td>"I will make something from this."</td></tr>
+      <tr><td><strong>Flow</strong></td><td>Jnana (index→thumb)</td><td>AUM / OM</td><td>"I am ready. The work is already in me."</td></tr>
+    </tbody>
+  </table>
+
+  <h3>Key → Frequency → Effect Map (for Production)</h3>
+  <table>
+    <thead><tr><th>Key</th><th>Closest Solfeggio</th><th>Effect</th><th>Best For</th></tr></thead>
+    <tbody>
+      <tr><td><strong>F major</strong></td><td>174 Hz — Grounding</td><td>Safety, pain reduction</td><td>Ballads about coming home, stability</td></tr>
+      <tr><td><strong>G major/minor</strong></td><td>396 Hz — Liberation</td><td>Releasing fear/guilt</td><td>Emotional R&B, confessionals</td></tr>
+      <tr><td><strong>Ab major</strong></td><td>417 Hz — Change</td><td>Breaking patterns</td><td>Growth songs, pivots</td></tr>
+      <tr><td><strong>C major</strong></td><td>528 Hz — Love/Repair</td><td>Heart opening, transformation</td><td>Vulnerability tracks, love songs</td></tr>
+      <tr><td><strong>Eb major</strong></td><td>639 Hz — Connection</td><td>Relational healing</td><td>Reconciliation, longing</td></tr>
+      <tr><td><strong>F# major</strong></td><td>741 Hz — Intuition</td><td>Awakening, clarity</td><td>Introspective, spiritual</td></tr>
+    </tbody>
+  </table>
+
+  <h3>Entrainment Layer Cheat Sheet</h3>
+  <table>
+    <thead><tr><th>Target State</th><th>Frequency</th><th>Method</th><th>Mix Level</th><th>Key Dependent?</th></tr></thead>
+    <tbody>
+      <tr><td>Deep emotional processing</td><td>6–8 Hz (Theta)</td><td>Sub-bass sine pulse / tremolo LFO</td><td>-24 dB or lower</td><td>No</td></tr>
+      <tr><td>Calm focus</td><td>10 Hz (Alpha)</td><td>Sub-bass pulse or isochronic pad</td><td>-20 dB</td><td>No</td></tr>
+      <tr><td>Peak cognition</td><td>40 Hz (Gamma)</td><td>Sub-bass fundamental (E1)</td><td>Normal bass level</td><td>No — but E1 works in most keys</td></tr>
+      <tr><td>Warmth / heart coherence</td><td>432 Hz tuning</td><td>Global detune -32 cents</td><td>Full mix</td><td>Affects all keys equally</td></tr>
+      <tr><td>Stereo depth + Theta</td><td>4–8 Hz difference</td><td>Binaural pad split (L/R detuned)</td><td>Normal pad level</td><td>No</td></tr>
+    </tbody>
+  </table>
+
+  <h3>Production Checklist — Pre-Release Frequency Audit</h3>
+  <div class="spec-wrap">
+    <div class="spec-row"><span class="spec-key">☐ Key selection reviewed against solfeggio map?</span></div>
+    <div class="spec-row"><span class="spec-key">☐ Sub-bass entrainment layer added (Theta/Alpha)?</span></div>
+    <div class="spec-row"><span class="spec-key">☐ Binaural pad split in stereo field?</span></div>
+    <div class="spec-row"><span class="spec-key">☐ 432 Hz retuning applied (or intentionally not)?</span></div>
+    <div class="spec-row"><span class="spec-key">☐ Target solfeggio drone/sub-harmonic embedded?</span></div>
+    <div class="spec-row"><span class="spec-key">☐ BPM in optimal brainwave range for genre?</span></div>
+    <div class="spec-row"><span class="spec-key">☐ Entrainment layers below LUFS threshold?</span></div>
+    <div class="spec-row"><span class="spec-key">☐ Headphone check for binaural perception?</span></div>
+  </div>
+</div>
+
+<hr>
+
+<div style="text-align:center;padding:1.5rem 0 2rem;border-top:2px solid var(--border);margin-top:3rem">
+  <p style="font-size:12px;color:var(--muted);line-height:1.8">
+    Sources: Adrian & Matthews (1934) <em>Brain</em> · Heinrich Wilhelm Dove (1839) binaural discovery · MIT Li-Huei Tsai Lab gamma entrainment research · <em>EXPLORE: The Journal of Science & Healing</em> (2019) 432 Hz study · Dr. Glen Rein 528 Hz DNA absorption study · Stephen Porges Polyvagal Theory · Allan Frey microwave auditory effect (1961) · <em>JAMA</em> Havana Syndrome reports · Walter Reed Army Institute LIDA device analysis · Mudras of India (Cain Carroll) · The Gheranda Samhita · Light on Pranayama (B.K.S. Iyengar) · Traditional Chinese Medicine meridian maps · Ayurvedic bija mantra systems
+  </p>
+  <p style="font-size:11px;color:#9ca3af;margin-top:8px;font-weight:600">Ethan Payton / past.El noir Records — Internal Production Science Doc · Q2 2026 · Confidential</p>
+</div>
+
+</div>
+</body>
+</html>

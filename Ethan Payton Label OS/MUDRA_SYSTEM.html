@@ -1,0 +1,638 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+<meta charset="UTF-8">
+<meta name="viewport" content="width=device-width, initial-scale=1.0">
+<title>MUDRA SYSTEM — Self-Teaching Scroll</title>
+<link href="https://fonts.googleapis.com/css2?family=Inter:wght@300;400;500;600;700;800&family=JetBrains+Mono:wght@400;500&display=swap" rel="stylesheet">
+<style>
+:root {
+  --bg: #08090f;
+  --bg2: #0f1117;
+  --card: rgba(20, 22, 35, 0.85);
+  --border: rgba(255,255,255,0.07);
+  --text: #dde1f0;
+  --muted: #7b82a0;
+  --gold: #c9a84c;
+  --purple: #9d6fff;
+  --blue: #4f9eff;
+  --green: #3ecf8e;
+  --red: #f87171;
+  --pink: #f472b6;
+  --yellow: #fbbf24;
+}
+*,*::before,*::after{box-sizing:border-box;margin:0;padding:0}
+html{scroll-behavior:smooth}
+body{font-family:'Inter',sans-serif;background:var(--bg);color:var(--text);line-height:1.75;-webkit-font-smoothing:antialiased;padding:0}
+
+/* SCROLL LAYOUT */
+.scroll{max-width:820px;margin:0 auto;padding:5rem 2rem 8rem}
+
+/* HERO */
+.hero{text-align:center;padding:4rem 0 5rem;border-bottom:1px solid var(--border)}
+.hero-eyebrow{font-size:11px;letter-spacing:3px;text-transform:uppercase;color:var(--muted);margin-bottom:16px;font-weight:500}
+.hero-title{font-size:clamp(36px,6vw,60px);font-weight:800;line-height:1.05;background:linear-gradient(145deg,#c9a84c,#9d6fff,#4f9eff);-webkit-background-clip:text;-webkit-text-fill-color:transparent;background-clip:text;margin-bottom:16px}
+.hero-sub{font-size:18px;color:var(--muted);font-weight:400;max-width:560px;margin:0 auto}
+.hero-note{margin-top:32px;font-size:13px;color:var(--muted);font-style:italic}
+
+/* CHAPTER HEADERS */
+.chapter{margin-top:7rem}
+.chapter-num{font-size:11px;letter-spacing:3px;text-transform:uppercase;color:var(--gold);font-weight:600;margin-bottom:8px}
+.chapter-title{font-size:clamp(22px,3.5vw,32px);font-weight:800;color:#fff;line-height:1.2;margin-bottom:24px}
+.chapter-title.purple{background:linear-gradient(135deg,var(--purple),var(--blue));-webkit-background-clip:text;-webkit-text-fill-color:transparent;background-clip:text}
+
+/* BODY TEXT */
+p{color:var(--text);margin-bottom:1.4rem;font-size:15px}
+.lead{font-size:17px;color:var(--text);line-height:1.8}
+strong{color:#fff;font-weight:600}
+em{color:#b8bdd6;font-style:italic}
+
+/* DEFINITION BLOCKS — these are the "earn the term" cards */
+.define{background:rgba(201,168,76,0.06);border:1px solid rgba(201,168,76,0.18);border-left:4px solid var(--gold);border-radius:0 10px 10px 0;padding:20px 24px;margin:28px 0}
+.define-term{font-size:13px;letter-spacing:2px;text-transform:uppercase;color:var(--gold);font-weight:700;margin-bottom:6px}
+.define-body{font-size:14px;color:#b8c0d8;line-height:1.7;margin:0}
+.define-body strong{color:#e8dfc0}
+
+/* SCIENCE NOTES */
+.science{background:rgba(79,158,255,0.05);border:1px solid rgba(79,158,255,0.15);border-left:4px solid var(--blue);border-radius:0 10px 10px 0;padding:20px 24px;margin:28px 0}
+.science-label{font-size:11px;letter-spacing:2px;text-transform:uppercase;color:var(--blue);font-weight:700;margin-bottom:6px}
+.science p{font-size:14px;color:#a8c4e8;margin:0;line-height:1.7}
+
+/* STATE CARDS */
+.state-card{background:var(--card);border:1px solid var(--border);border-radius:16px;padding:36px;margin:32px 0;backdrop-filter:blur(12px);position:relative;overflow:hidden}
+.state-card::before{content:'';position:absolute;top:0;left:0;right:0;height:3px}
+.state-card.lethargy::before{background:linear-gradient(90deg,#f87171,#fb923c)}
+.state-card.lust::before{background:linear-gradient(90deg,#f472b6,#a855f7)}
+.state-card.fear::before{background:linear-gradient(90deg,#fbbf24,#34d399)}
+.state-card.rage::before{background:linear-gradient(90deg,#ef4444,#f97316)}
+.state-card.flow::before{background:linear-gradient(90deg,#3ecf8e,#4f9eff)}
+
+.state-num{font-size:11px;letter-spacing:2px;text-transform:uppercase;color:var(--muted);margin-bottom:8px}
+.state-name{font-size:22px;font-weight:800;margin-bottom:6px}
+.state-name.lethargy{color:#fb923c}
+.state-name.lust{color:#f472b6}
+.state-name.fear{color:#fbbf24}
+.state-name.rage{color:#f87171}
+.state-name.flow{color:#3ecf8e}
+.state-desc{font-size:14px;color:var(--muted);margin-bottom:28px;line-height:1.6}
+
+/* MUDRA BLOCKS inside state cards */
+.mudra-block{background:rgba(255,255,255,0.03);border:1px solid var(--border);border-radius:10px;padding:20px 24px;margin-bottom:16px}
+.mudra-name{font-size:14px;font-weight:700;color:#fff;margin-bottom:12px;display:flex;align-items:center;gap:8px}
+.mudra-role{font-size:11px;padding:2px 8px;border-radius:4px;font-weight:600;letter-spacing:1px;text-transform:uppercase}
+.role-primary{background:rgba(201,168,76,0.15);color:var(--gold)}
+.role-secondary{background:rgba(157,111,255,0.12);color:var(--purple)}
+.role-breath{background:rgba(79,158,255,0.12);color:var(--blue)}
+.role-body{background:rgba(62,207,142,0.12);color:var(--green)}
+
+.steps{list-style:none;padding:0;margin:0}
+.steps li{font-size:14px;color:#b8bdd6;padding:5px 0 5px 20px;position:relative;line-height:1.6}
+.steps li::before{content:"→";position:absolute;left:0;color:var(--gold);font-size:12px;top:7px}
+.steps li strong{color:#e0e4f2}
+.steps li em{color:#8a90b0}
+
+.hold-time{display:inline-block;margin-top:16px;font-size:12px;font-weight:600;letter-spacing:1px;text-transform:uppercase;color:var(--gold);background:rgba(201,168,76,0.08);border:1px solid rgba(201,168,76,0.2);padding:6px 14px;border-radius:6px}
+
+/* SEPARATOR */
+hr{border:0;height:1px;background:linear-gradient(90deg,transparent,var(--border),transparent);margin:5rem 0}
+
+/* FINGER MAP TABLE */
+.table-wrap{overflow-x:auto;margin:28px 0;border-radius:12px;border:1px solid var(--border)}
+table{width:100%;border-collapse:collapse;background:var(--card)}
+th{padding:12px 16px;text-align:left;font-size:11px;letter-spacing:1.5px;text-transform:uppercase;color:var(--muted);font-weight:600;border-bottom:1px solid var(--border)}
+td{padding:12px 16px;font-size:13px;color:var(--text);border-bottom:1px solid rgba(255,255,255,0.04);vertical-align:top}
+tr:last-child td{border-bottom:none}
+tr:hover td{background:rgba(255,255,255,0.02)}
+td:first-child{font-weight:600;color:#fff}
+
+/* QUICK REF */
+.qref-grid{display:grid;grid-template-columns:1fr 1fr;gap:12px;margin:28px 0}
+@media(max-width:580px){.qref-grid{grid-template-columns:1fr}}
+.qref-card{background:var(--card);border:1px solid var(--border);border-radius:10px;padding:16px 18px}
+.qref-state{font-size:12px;font-weight:700;text-transform:uppercase;letter-spacing:1px;margin-bottom:6px}
+.qref-mudra{font-size:13px;color:var(--text);margin-bottom:4px}
+.qref-breath{font-size:12px;color:var(--muted)}
+
+/* PROTOCOL STEPS */
+.protocol{counter-reset:step}
+.protocol-step{display:flex;gap:16px;margin-bottom:20px;align-items:flex-start}
+.step-num{width:32px;height:32px;min-width:32px;border-radius:50%;background:rgba(201,168,76,0.12);border:1px solid rgba(201,168,76,0.3);display:flex;align-items:center;justify-content:center;font-family:'JetBrains Mono',monospace;font-size:13px;font-weight:600;color:var(--gold)}
+.step-body{padding-top:4px}
+.step-title{font-size:14px;font-weight:700;color:#fff;margin-bottom:4px}
+.step-desc{font-size:13px;color:var(--muted);line-height:1.6}
+
+/* SCROLLBAR */
+::-webkit-scrollbar{width:6px}
+::-webkit-scrollbar-track{background:var(--bg)}
+::-webkit-scrollbar-thumb{background:rgba(255,255,255,0.1);border-radius:3px}
+
+/* ANIMATION */
+@keyframes fadeUp{from{opacity:0;transform:translateY(16px)}to{opacity:1;transform:translateY(0)}}
+.scroll>*{animation:fadeUp .5s ease both}
+</style>
+</head>
+<body>
+<div class="scroll">
+
+<!-- HERO -->
+<header class="hero">
+  <div class="hero-eyebrow">Ethan Payton / past.El — Personal Practice Scroll</div>
+  <h1 class="hero-title">THE MUDRA SYSTEM</h1>
+  <p class="hero-sub">A complete self-teaching guide to hand seals, breathwork, and real-time energy control. No prior knowledge required.</p>
+  <p class="hero-note">Read this once, front to back, like a scroll. Every term is defined before it's used.<br>Sources: Hindu Hasta Mudra tradition · Buddhist hand seals · Taoist meridian theory · Yogic pranayama · Somatic neuroscience (Polyvagal Theory) · Traditional Chinese Medicine</p>
+</header>
+
+<!-- CHAPTER 0: WHAT IS THIS -->
+<div class="chapter">
+  <div class="chapter-num">Chapter 0</div>
+  <h2 class="chapter-title">What You're Actually Reading</h2>
+
+  <p class="lead">This is a practical manual for controlling your internal state using your hands and your breath. That's it. No spirituality required — but the traditions behind this are thousands of years old, and modern neuroscience has started confirming why they work.</p>
+
+  <p>The central idea: <strong>your body and brain talk to each other constantly, in both directions.</strong> Most people only know about the top-down direction (brain tells body what to do). This system is about the other direction — <strong>body talking back to brain</strong> — and using that pathway on purpose.</p>
+
+  <p>Your hands are the key because of something called the <strong>cortical homunculus</strong> — a map of how much of your brain's real estate is dedicated to different body parts. Your hands get a disproportionately massive slice of that map. Specific finger positions held for even a few minutes send continuous feedback signals deep into your nervous system. Ancient practitioners discovered which positions created which effects. We're now confirming why.</p>
+
+  <div class="define">
+    <div class="define-term">Mudra</div>
+    <div class="define-body">Sanskrit word (मुद्रा) meaning "seal" or "gesture." In this context: a specific hand position held intentionally to direct energy and influence your nervous system state. Not symbolic. Not decorative. Functional.</div>
+  </div>
+
+  <div class="define">
+    <div class="define-term">Pranayama</div>
+    <div class="define-body"><strong>Prana</strong> = life force / breath / energy. <strong>Ayama</strong> = extension, control. So: the deliberate control of breath to regulate the body's energy. Breath is the only autonomic (automatic) function you can consciously override, which makes it the fastest lever you have for changing your internal state in real time.</div>
+  </div>
+
+  <div class="define">
+    <div class="define-term">Autonomic Nervous System (ANS)</div>
+    <div class="define-body">The part of your nervous system that runs everything you don't consciously control — heart rate, digestion, hormone release, arousal. It has two main modes: <strong>sympathetic</strong> (fight/flight — activated, alert, stressed) and <strong>parasympathetic</strong> (rest/digest — calm, recovered, creative). Most people are stuck in sympathetic. This system teaches you to switch on demand.</div>
+  </div>
+
+  <div class="define">
+    <div class="define-term">Polyvagal Theory</div>
+    <div class="define-body">Developed by neuroscientist Stephen Porges. The vagus nerve (10th cranial nerve) is a two-way highway between your brain and organs. 80% of signals travel <em>upward</em> — body to brain. Breathwork and body-based practices use this upward pathway. Slow exhales specifically activate the "vagal brake" — your nervous system's built-in downregulation switch.</div>
+  </div>
+</div>
+
+<!-- CHAPTER 1: THE MAP -->
+<div class="chapter">
+  <div class="chapter-num">Chapter 1</div>
+  <h2 class="chapter-title">The Finger Map — Why Each Finger Does Something Different</h2>
+
+  <p>Before you can use mudras, you need to understand why specific fingers matter. Two systems converge here: <strong>Traditional Chinese Medicine (TCM) meridians</strong> and <strong>modern nerve pathway mapping</strong>.</p>
+
+  <div class="define">
+    <div class="define-term">Meridian</div>
+    <div class="define-body">In TCM and yogic tradition, meridians are channels through which life energy (called <em>chi</em> in Chinese, <em>prana</em> in Sanskrit) flows. Each finger is the terminal point of a specific meridian that runs through an organ or system. Pressing or connecting specific fingertips creates circuit-closing effects along these channels. Western science has begun mapping these to actual nerve and fascial pathways.</div>
+  </div>
+
+  <div class="define">
+    <div class="define-term">Chakra</div>
+    <div class="define-body">An energy center in the body (Sanskrit: "wheel"). There are seven main ones along the spine, from the base of your tailbone (Root/Muladhara) to the crown of your head (Crown/Sahasrara). Think of them as junction boxes where energy concentrates. A "depleted" chakra means that energy center is running low. An "overactive" one means it's in excess. Both create specific emotional and physical states — which is exactly what this system helps regulate.</div>
+  </div>
+
+  <div class="define">
+    <div class="define-term">The Five Elements</div>
+    <div class="define-body">Both TCM and Ayurveda (Indian medicine) organize reality into five elemental forces: <strong>Earth</strong> (stability, groundedness), <strong>Water</strong> (flow, emotion, sexuality), <strong>Fire</strong> (drive, transformation, digestion), <strong>Air</strong> (movement, thought, anxiety), <strong>Space/Ether</strong> (consciousness, expansion, higher mind). Your fingers each correspond to one of these. When an element is in excess or deficient, you feel it as a specific emotional or physical state.</div>
+  </div>
+
+  <div class="define">
+    <div class="define-term">Vata / Pitta / Kapha (Doshas)</div>
+    <div class="define-body">Ayurvedic body-mind types, each composed of elements: <strong>Vata</strong> = Air + Space (when excess: anxiety, scattered, can't land). <strong>Pitta</strong> = Fire + Water (when excess: rage, overheating, perfectionism). <strong>Kapha</strong> = Earth + Water (when excess: lethargy, stagnation, heaviness). You'll see these used in the State sections. You don't need to know your "type" — just recognize: <em>the feeling of nervousness/racing thoughts = Vata excess. Burning anger = Pitta excess. Stuck heaviness = Kapha stagnation.</em></div>
+  </div>
+
+  <div class="table-wrap">
+    <table>
+      <thead>
+        <tr><th>Finger</th><th>Element</th><th>Meridian / Organ (TCM)</th><th>Chakra Link</th><th>What it governs</th></tr>
+      </thead>
+      <tbody>
+        <tr><td>Thumb</td><td>Space / Ether</td><td>Lung meridian, cerebral cortex</td><td>Crown → Third Eye</td><td>Higher cognition, consciousness, breath regulation</td></tr>
+        <tr><td>Index (Pointer)</td><td>Air</td><td>Large intestine, ego/identity</td><td>Heart → Throat</td><td>Direction, self-assertion, mental movement, anxiety</td></tr>
+        <tr><td>Middle</td><td>Fire</td><td>Pericardium, gut-brain axis</td><td>Solar Plexus</td><td>Core self, anger, digestion, drive, transformation</td></tr>
+        <tr><td>Ring</td><td>Earth</td><td>Triple warmer, endocrine/thyroid</td><td>Root → Sacral</td><td>Stability, metabolism, body temperature, vitality</td></tr>
+        <tr><td>Pinky (Little)</td><td>Water</td><td>Heart + small intestine</td><td>Sacral → Heart</td><td>Emotion, flow, relationships, sexual energy</td></tr>
+      </tbody>
+    </table>
+  </div>
+
+  <div class="science">
+    <div class="science-label">Why Touching Fingertips Creates Effects</div>
+    <p>When you press fingertip to fingertip (or fingertip to thumb), you're activating dense concentrations of mechanoreceptors — pressure sensors that feed directly into the somatosensory cortex. The thumb specifically is the largest single region on the cortical homunculus map. Sustained pressure creates a standing proprioceptive signal — your brain isn't ignoring your hand position, it's constantly processing it. That signal propagates into the limbic system and brainstem, influencing autonomic tone. This is the mechanism. The traditions named it "prana flow." The neuroscience calls it "somato-autonomic coupling." Same thing.</p>
+  </div>
+
+  <div class="define">
+    <div class="define-term">Prana / Chi / Life Force</div>
+    <div class="define-body">The fundamental energy that animates living systems. Different traditions name it differently (prana, chi, ki, pneuma) but describe the same phenomenon: an energy that flows through the body, can be directed, can be depleted, can be cultivated. In modern terms, this maps closely to <strong>autonomic tone</strong> (how regulated your nervous system is), <strong>mitochondrial output</strong> (actual cellular energy), and <strong>neuroendocrine balance</strong> (hormone/neurotransmitter ratios). When traditions say "prana is low," translate: nervous system is dysregulated, cellular energy is depleted, cortisol is elevated, dopamine/serotonin are low.</div>
+  </div>
+</div>
+
+<!-- CHAPTER 2: THE FIVE STATES -->
+<div class="chapter">
+  <div class="chapter-num">Chapter 2</div>
+  <h2 class="chapter-title purple">The Five States + Their Mudras</h2>
+  <p>Each state below is a recognizable internal condition. Find the one that matches where you are right now. Then follow the protocol. <strong>You don't need to believe in any of this. Just do it and observe.</strong></p>
+</div>
+
+<!-- STATE 1: LETHARGY -->
+<div class="state-card lethargy">
+  <div class="state-num">State 01</div>
+  <div class="state-name lethargy">LETHARGY / DEPLETION</div>
+  <div class="state-desc">You recognize this as: can't get started, heavy, foggy, no motivation, body feels like lead, staring at your phone doing nothing. The engine is running but at 10% with no acceleration available.</div>
+
+  <p style="font-size:14px;color:#b8bdd6;margin-bottom:20px"><strong style="color:#fb923c">What's happening energetically:</strong> The Root chakra (base of spine — your foundation, survival instinct, physical vitality) and the Sacral chakra (just below the navel — creativity, pleasure, will to act) are both low. In Ayurvedic terms this is either Vata excess (you've been scattered and anxious until you crashed) or Kapha stagnation (energy literally sitting still, not moving). The fire element is dimmed.</p>
+
+  <div class="mudra-block">
+    <div class="mudra-name">PRANA MUDRA <span class="mudra-role role-primary">Primary</span></div>
+    <ul class="steps">
+      <li>Bring the tips of your <strong>ring finger</strong> and <strong>pinky finger</strong> to touch the tip of your <strong>thumb</strong></li>
+      <li>Your <strong>index and middle fingers extend straight</strong> — don't curl them</li>
+      <li>Both hands. Rest them <strong>palms facing up on your knees</strong></li>
+      <li>Sit upright. Eyes closed or soft gaze downward</li>
+      <li><em>Traditional effect:</em> Awakens dormant prana (life force), activates earth and water elements, revitalizes the root system, boosts immune function</li>
+      <li><em>Science layer:</em> Ring finger pressure on the thumb base stimulates the adrenal reflex zone in TCM hand mapping. Pinky stimulates the heart meridian terminal. Together they activate the lower-organ feedback loop — the system responsible for baseline vitality and energy reserves</li>
+    </ul>
+  </div>
+
+  <div class="mudra-block">
+    <div class="mudra-name">SURYA MUDRA — Fire Activation <span class="mudra-role role-secondary">Secondary</span></div>
+    <ul class="steps">
+      <li>Fold your <strong>ring finger down</strong> so its tip touches the base of your thumb</li>
+      <li>Press your <strong>thumb over the ring finger</strong>, holding it down with mild pressure</li>
+      <li>Other fingers extend naturally</li>
+      <li><em>Traditional effect:</em> Ignites Agni (your digestive/metabolic fire), burns through Kapha stagnation, activates the solar plexus</li>
+      <li><em>Science layer:</em> Sustained ring finger compression stimulates thyroid and metabolism reflex zones. The triple warmer meridian (endocrine regulation) runs through the ring finger — direct pressure upregulates it</li>
+    </ul>
+  </div>
+
+  <div class="mudra-block">
+    <div class="mudra-name">KAPALABHATI — Breath of Fire <span class="mudra-role role-breath">Breath Pair</span></div>
+    <ul class="steps">
+      <li><strong>Sharp, forceful exhales through the nose</strong> — about one per second</li>
+      <li>Your belly pumps inward with each exhale. The inhale is passive — it just happens between exhales</li>
+      <li>Start with <strong>30 rounds</strong>, then breathe normally for a full minute</li>
+      <li>This is not hyperventilation — it's controlled rhythmic pumping</li>
+      <li><em>What it does:</em> Rapidly oxygenates the blood, activates sympathetic tone <em>just enough</em> to shake the lethargy without spiking stress hormones. The CO2 flush signals the brainstem to increase arousal. Most people feel alert within 60 seconds</li>
+    </ul>
+  </div>
+
+  <div class="mudra-block">
+    <div class="mudra-name">GAZE (Drishti) + BODY POSITION <span class="mudra-role role-body">Body Layer</span></div>
+    <ul class="steps">
+      <li><strong>Gaze upward</strong> — eyes tilted up activates the sympathetic nervous system (this is why people look up when trying to recall something or energize). Even with eyes closed, tilt them upward behind the lids</li>
+      <li>Sit with your <strong>spine tall</strong>, chest open. Slouching literally compresses the vagus nerve and reinforces the lethargic state</li>
+    </ul>
+  </div>
+
+  <span class="hold-time">⏱ Hold Prana Mudra 10–15 min for full effect · 3 min minimum for a state shift</span>
+</div>
+
+<!-- STATE 2: LUST / HYPERSEXUALITY -->
+<div class="state-card lust">
+  <div class="state-num">State 02</div>
+  <div class="state-name lust">LUST / HYPERSEXUALITY / EXCESS SACRAL</div>
+  <div class="state-desc">You recognize this as: can't concentrate because libido is taking over, distracted by desire, the sexual energy is running without an off switch, scattered in a specific way.</div>
+
+  <p style="font-size:14px;color:#b8bdd6;margin-bottom:20px"><strong style="color:#f472b6">What's happening energetically:</strong> The Sacral chakra (Svadhisthana — emotion, sexuality, creativity, pleasure) is in <em>overflow</em>. In yogic terms, <em>apana vayu</em> — the downward-moving vital force associated with reproduction and elimination — is running too strong and pulling energy downward and outward instead of upward into creativity and focus. The goal here is NOT suppression. It's <em>sublimation</em> — redirecting the same energy upward through your central channel (the spine) where it becomes creative fuel. Tantric traditions call this <em>urdhva-retas</em>: upward-moving vital force.</p>
+
+  <div class="mudra-block">
+    <div class="mudra-name">BRAHMA MUDRA <span class="mudra-role role-primary">Primary</span></div>
+    <ul class="steps">
+      <li>Both hands: make <strong>fists with thumbs tucked inside</strong> your fingers (thumb on palm, fingers folded over it)</li>
+      <li>Place both fists at your <strong>navel level</strong>, knuckles of both hands touching each other</li>
+      <li>Press the knuckles together with <strong>moderate steady pressure</strong></li>
+      <li>Sit upright, eyes closed</li>
+      <li><em>Traditional effect:</em> Seals the second chakra at the navel junction, activates the navel lock, draws the descending force back upward through the central channel</li>
+      <li><em>Science layer:</em> The internal thumb position creates pressure on the ulnar nerve running through the palm. Combined with breath retention (see below), this activates the vagal brake — your nervous system's built-in downregulation switch. It literally lowers autonomic arousal</li>
+    </ul>
+  </div>
+
+  <div class="mudra-block">
+    <div class="mudra-name">MULA BANDHA — Root Lock <span class="mudra-role role-secondary">Physical Seal</span></div>
+    <ul class="steps">
+      <li>This is a <strong>full-body seal</strong>, not just hands: contract your <strong>pelvic floor</strong> — the same muscles you'd use to stop urinating mid-stream</li>
+      <li>Hold this contraction while holding Brahma Mudra. Together they create a physical "seal" that prevents the energy from discharging downward</li>
+      <li>You can hold Mula Bandha continuously or pulse it in rhythm with your breath</li>
+      <li><em>Science layer:</em> Pelvic floor contraction activates the pudendal nerve, which feeds directly into the hypothalamic-pituitary axis — the brain system that regulates arousal hormones. You're using a peripheral nerve to send a downregulation signal to your hormone control center</li>
+    </ul>
+  </div>
+
+  <div class="mudra-block">
+    <div class="mudra-name">SITALI — Cooling Breath <span class="mudra-role role-breath">Breath Pair</span></div>
+    <ul class="steps">
+      <li>Roll your tongue into a tube shape (like a taco). If you genetically can't roll your tongue, spread it wide and flat instead — same effect</li>
+      <li><strong>Inhale slowly through the tongue</strong> — you'll feel genuine cooling in your mouth and chest as the air passes over the wet surface</li>
+      <li>Close mouth. Hold briefly (Kumbhaka = breath retention). Exhale slowly through your nose</li>
+      <li>Repeat <strong>10–15 cycles</strong></li>
+      <li><em>What it does:</em> Activates cooling thermoreceptors in the mouth that signal directly to the hypothalamus. This literally drops body temperature and decreases limbic arousal — the same system driving the hypersexual state. It is a physiological interrupt, not a mindset technique</li>
+    </ul>
+  </div>
+
+  <div class="mudra-block">
+    <div class="mudra-name">NADI SHODHANA — Alternate Nostril Breathing <span class="mudra-role role-breath">Follow-up</span></div>
+    <ul class="steps">
+      <li>Right hand: fold your index and middle fingers down. Use <strong>thumb to close right nostril, ring finger to close left</strong></li>
+      <li>Open right nostril → inhale slowly → close right → open left → exhale slowly → inhale left → close left → open right → exhale. That's one round</li>
+      <li>Do <strong>5–10 rounds</strong> after Sitali</li>
+      <li><em>What it does:</em> Balances the left and right hemispheres of the brain (left = logical/analytical, right = emotional/creative). Hypersexual states involve unilateral dominance of the emotional brain. Alternate nostril breathing mechanically re-syncs both sides, dissolving the agitation that's feeding the state</li>
+    </ul>
+  </div>
+
+  <span class="hold-time">⏱ Brahma Mudra + Mula Bandha + Sitali for 5–10 min · This is not a quick fix — sit with it</span>
+</div>
+
+<!-- STATE 3: DOUBT / FEAR -->
+<div class="state-card fear">
+  <div class="state-num">State 03</div>
+  <div class="state-name fear">DOUBT / FEAR</div>
+  <div class="state-desc">You recognize this as: second-guessing yourself, catastrophic thinking, chest tightness, stomach dropping, can't make a decision, hypervigilance, feeling like something is going to go wrong.</div>
+
+  <p style="font-size:14px;color:#b8bdd6;margin-bottom:20px"><strong style="color:#fbbf24">What's happening energetically:</strong> The Root chakra (Muladhara — your foundation, safety, survival programming) is destabilized. In Ayurvedic terms, this is <strong>Vata excess</strong> — the Air and Space elements are dominant, meaning your energy is literally "in the wind." There is no anchor. The antidote is earth element — heaviness, groundedness, physical solidity. You need to come back into your body and out of your spinning mind.</p>
+
+  <div class="mudra-block">
+    <div class="mudra-name">ABHAYA MUDRA — Fearlessness <span class="mudra-role role-primary">Primary</span></div>
+    <ul class="steps">
+      <li>Raise your <strong>right hand to shoulder height</strong>, palm facing outward (away from you), fingers together and extended upward</li>
+      <li>Left hand rests <strong>palm-up on your knee</strong></li>
+      <li>Hold this. Do not rush out of it</li>
+      <li><em>Traditional significance:</em> This is the universal protective gesture across Hindu, Buddhist, Christian, and Egyptian iconography. Every deity offering protection shows this seal. It has survived across unconnected cultures for 5,000+ years because it works — it is a body posture that simultaneously signals your own nervous system and broadcasts non-threat to the environment</li>
+      <li><em>Science layer (embodied cognition):</em> Open palm exposure is a primate social signal of non-threat and safety. When you perform it <em>as the sender</em>, you activate the same neurological reassurance — your body cannot fully distinguish between sending and receiving a safety signal. Amy Cuddy's power posture research is downstream of this ancient discovery</li>
+    </ul>
+  </div>
+
+  <div class="mudra-block">
+    <div class="mudra-name">PRITHVI MUDRA — Earth / Grounding <span class="mudra-role role-secondary">Secondary</span></div>
+    <ul class="steps">
+      <li>Touch the tip of your <strong>ring finger to the tip of your thumb</strong></li>
+      <li>All other fingers extend outward naturally</li>
+      <li>Both hands, palms facing up on your knees</li>
+      <li><em>Traditional effect:</em> Activates the Earth element directly. Muladhara activation = physical groundedness, stability, feeling of being held by gravity rather than in free-fall</li>
+      <li><em>Science layer:</em> The ring finger is the terminal of the triple warmer meridian, which regulates body temperature and peripheral circulation. Fear triggers vasoconstriction (cold hands, cold feet, blood rushing to core). Ring finger stimulation through this meridian literally warms the periphery — the physiological "return to safety" signal your brainstem is waiting for</li>
+    </ul>
+  </div>
+
+  <div class="mudra-block">
+    <div class="mudra-name">BOX BREATHING — 4-4-4-4 <span class="mudra-role role-breath">Breath Pair</span></div>
+    <ul class="steps">
+      <li><strong>Inhale</strong> for 4 counts → <strong>Hold</strong> for 4 counts → <strong>Exhale</strong> for 4 counts → <strong>Hold out</strong> for 4 counts</li>
+      <li>One cycle = about 16 seconds. Do <strong>5–10 cycles</strong></li>
+      <li>Count slowly — each count = roughly 1 second</li>
+      <li><em>What it does:</em> This is the official breathing protocol used by Navy SEALs, trauma therapists, and emergency responders for a reason. Box breathing mechanically regulates the autonomic nervous system and reduces amygdala activation (the brain's fear alarm). The equal-ratio pattern prevents CO2 from dropping or spiking, holding your blood chemistry in the "calm" zone</li>
+    </ul>
+  </div>
+
+  <div class="mudra-block">
+    <div class="mudra-name">SHAKING / TRE (for severe fear or dissociation) <span class="mudra-role role-body">Body Layer</span></div>
+    <ul class="steps">
+      <li>If the fear is acute or there's a dissociated, "not in my body" feeling — <strong>do this before the mudra</strong></li>
+      <li>Stand. Bend your knees slightly. Let your body begin to <strong>tremble and shake</strong> naturally — don't force it, just allow it</li>
+      <li>Shake for 2–5 minutes. Let it move through your legs, hips, spine</li>
+      <li><em>Why:</em> This is called TRE (Trauma Release Exercises) — developed by Dr. Peter Levine. Fear is stored as physical tension, especially in the psoas, hip flexors, and jaw. Animals do this naturally after a threat passes (you've seen a dog shake after being scared). We've been conditioned to suppress it. Shaking discharges the stored cortisol/adrenaline from the nervous system so the mudra can actually land</li>
+    </ul>
+  </div>
+
+  <div class="mudra-block">
+    <div class="mudra-name">GAZE for Fear <span class="mudra-role role-body">Body Layer</span></div>
+    <ul class="steps">
+      <li><strong>Soft wide gaze at the horizon</strong> — not focused on any one thing, peripheral vision expanded</li>
+      <li>Wide peripheral vision is a neurological safety signal. The visual cortex in threat mode narrows focus (tunnel vision). Deliberately widening your gaze sends the "no immediate predator" signal to your brainstem and drops the threat response</li>
+    </ul>
+  </div>
+
+  <span class="hold-time">⏱ Abhaya + Box Breathing for 10 min minimum · Fear lives in the body first</span>
+</div>
+
+<!-- STATE 4: RAGE -->
+<div class="state-card rage">
+  <div class="state-num">State 04</div>
+  <div class="state-name rage">RAGE / ANGER</div>
+  <div class="state-desc">You recognize this as: hot face, tight jaw, clenched fists, everything is an obstacle, people are idiots, you either want to destroy something or you go cold and calculating-cold-angry. Both forms are here.</div>
+
+  <p style="font-size:14px;color:#b8bdd6;margin-bottom:20px"><strong style="color:#f87171">What's happening energetically:</strong> The Solar Plexus chakra (Manipura — power, will, transformation) is <em>overfiring</em>, combined with Liver chi stagnation in TCM (the liver meridian channels anger; when it's blocked, fury accumulates and pressurizes). This is <strong>Pitta excess</strong> — the fire element in overdrive. The critical note: <em>the goal is NOT to kill this energy.</em> Unworked rage is destruction. Worked rage becomes drive, discipline, and creative force. The mudras here either cool it into patience or focus it into a blade.</p>
+
+  <div class="mudra-block">
+    <div class="mudra-name">SHUNI MUDRA — Discipline / Patience <span class="mudra-role role-primary">Primary (cooling)</span></div>
+    <ul class="steps">
+      <li>Touch the tip of your <strong>middle finger to the tip of your thumb</strong></li>
+      <li>Other fingers extend gently</li>
+      <li>Both hands, can be palm-up or palm-down</li>
+      <li><em>Traditional meaning:</em> The middle finger is Saturn energy in both yogic and Western esoteric traditions — slowness, discipline, purification, the long game. This seal turns the volcano into a mountain: same heat, same power, new direction. It is the seal of patience and mastery over impulsiveness</li>
+      <li><em>Science layer:</em> The middle finger has the highest concentration of mechanoreceptors mapping to the gut-brain axis (the enteric nervous system, often called "the second brain"). Rage literally lives in the gut — the churning, hot sensation is real nerve activity. Sustained middle finger stimulation directly engages this gut-brain pathway into regulation mode</li>
+    </ul>
+  </div>
+
+  <div class="mudra-block">
+    <div class="mudra-name">MATANGI MUDRA — Harmonizing Solar Plexus <span class="mudra-role role-secondary">Secondary (harmonizing)</span></div>
+    <ul class="steps">
+      <li>Interlace all fingers together in front of your solar plexus (just above the navel)</li>
+      <li>Extend <strong>both middle fingers straight up</strong>, touching each other, pointing toward the ceiling</li>
+      <li>Hands held at the transition between navel and heart level</li>
+      <li><em>Traditional context:</em> Named after Matangi — the tantric goddess of expressed inner power and the spoken word. This mudra specifically treats stored anger that has not been expressed or spoken. It directly harmonizes Manipura (solar plexus chakra)</li>
+      <li><em>Science layer:</em> Bilateral hand symmetry with midline pressure activates interhemispheric coordination in the brain, reducing the unilateral emotional-brain dominance that anger creates. The extended midline fingers apply pressure to specific solar plexus reflex zones in the palms</li>
+    </ul>
+  </div>
+
+  <div class="mudra-block">
+    <div class="mudra-name">KALI MUDRA — Focusing Righteous Force <span class="mudra-role role-secondary">Alternate (when you don't want to cool it)</span></div>
+    <ul class="steps">
+      <li>Interlace all fingers</li>
+      <li>Extend <strong>both index fingers</strong> together, straight up, pointing like a single blade</li>
+      <li>This is specifically for moments when the anger is <em>valid, righteous, and useful</em> — don't cool it, <strong>aim it</strong></li>
+      <li>Use this before hard creative work, channeling anger into output, entering a session from pain</li>
+      <li>Named after Kali — goddess of transformation through destruction. The destroyer of illusion, not of your self</li>
+    </ul>
+  </div>
+
+  <div class="mudra-block">
+    <div class="mudra-name">LONG EXHALE BREATH — 4-in, 8-out <span class="mudra-role role-breath">Breath Pair</span></div>
+    <ul class="steps">
+      <li>Inhale through nose for <strong>4 counts</strong> → exhale slowly through nose for <strong>8 counts</strong></li>
+      <li>The extended exhale is the key. It mechanically activates the parasympathetic brake via the vagus nerve</li>
+      <li>Do <strong>NOT use Kapalabhati (breath of fire) here</strong> — that adds fire to fire and will amplify the rage</li>
+      <li>Sitali (cooling tongue breath) also works here if the body is genuinely hot</li>
+    </ul>
+  </div>
+
+  <div class="mudra-block">
+    <div class="mudra-name">WALL PUSH — Discharge Before Sitting <span class="mudra-role role-body">Physical Prerequisite</span></div>
+    <ul class="steps">
+      <li>If the rage is acute — <strong>do this before the mudra</strong>, not after</li>
+      <li>Press both palms flat against a wall. Push with <strong>full force for 30–60 seconds</strong></li>
+      <li><em>Why:</em> Acute anger floods your system with adrenaline and cortisol that need a physical outlet. Without one, trying to sit and meditate is like trying to brake with the gas pressed. The wall push gives the sympathetic activation somewhere to go, discharges the hormone spike, and makes the mudra actually land</li>
+    </ul>
+  </div>
+
+  <span class="hold-time">⏱ 5–15 min · The anger will not disappear — it will transform</span>
+</div>
+
+<!-- STATE 5: FLOW / PEAK PERFORMANCE -->
+<div class="state-card flow">
+  <div class="state-num">State 05</div>
+  <div class="state-name flow">ENTERING FLOW / PRE-CREATION / PEAK STATE</div>
+  <div class="state-desc">This is the offensive mudra — you're not in crisis, you're preparing to create, perform, compete, or enter the studio. The goal here is not regulation but amplification of existing calm into expanded capability.</div>
+
+  <div class="mudra-block">
+    <div class="mudra-name">JNANA MUDRA — Knowledge / Clarity <span class="mudra-role role-primary">Primary</span></div>
+    <ul class="steps">
+      <li>Touch the tip of your <strong>index finger to the tip of your thumb</strong> in a light, relaxed circle</li>
+      <li>Other three fingers extend gently</li>
+      <li>Both hands, <strong>palms facing up</strong> on your knees</li>
+      <li>This is the most widely recognized mudra — it appears in virtually every meditative tradition on earth</li>
+      <li><em>Traditional effect:</em> Activates the index finger's Air element, connecting ego-identity (index) with pure consciousness (thumb/Space). The gesture of "knowing." Associated with the Third Eye and heightened perception</li>
+      <li><em>Science layer:</em> Index-to-thumb closure forms a feedback loop between the motor cortex's highest-density region (thumb) and the ego-identity/prefrontal cortex activation zone (index finger meridian). The relaxed, open circuit — as opposed to pressed — signals "alert and safe" to the ANS, the optimal state for creative cognition</li>
+    </ul>
+  </div>
+
+  <div class="mudra-block">
+    <div class="mudra-name">DHYANA MUDRA — Deep Meditation <span class="mudra-role role-secondary">Secondary (for depth work)</span></div>
+    <ul class="steps">
+      <li>Rest your <strong>left hand palm-up</strong> in your lap</li>
+      <li>Rest your <strong>right hand palm-up on top of the left</strong>, both hands cupped, at the level of the lower abdomen</li>
+      <li>Bring the tips of <strong>both thumbs together</strong> lightly, forming an oval</li>
+      <li>The oval shape formed by thumbs and palms is called the "cosmic egg" — holding the field of awareness</li>
+      <li>This is the mudra used in Zazen (Zen Buddhist sitting) and Vipassana meditation. It works for deep focus sessions, writing, or creative blocks that require going inward first</li>
+    </ul>
+  </div>
+
+  <div class="mudra-block">
+    <div class="mudra-name">NADI SHODHANA — Alternate Nostril <span class="mudra-role role-breath">Breath Pair (pre-session)</span></div>
+    <ul class="steps">
+      <li>5–10 rounds of alternate nostril before sitting down to work</li>
+      <li>This syncs both hemispheres and clears "mental weather" — random thoughts, residual anxiety, distraction from the outside world</li>
+      <li>Do this before opening a DAW, before picking up a guitar, before writing — instead of doomscrolling to "warm up"</li>
+    </ul>
+  </div>
+
+  <span class="hold-time">⏱ Jnana Mudra — hold throughout the session if possible · Even 5 min pre-session changes the quality of the work</span>
+</div>
+
+<!-- CHAPTER 3: PROGRAMMING -->
+<div class="chapter">
+  <div class="chapter-num">Chapter 3</div>
+  <h2 class="chapter-title">How to Program These Into Your Body</h2>
+
+  <p>Mudras don't reach their full potency the first time you try them. They work through <strong>neuroplastic conditioning</strong> — the more you use a specific seal in a calm, intentional state, the faster it can interrupt a dysregulated one. Think of it like installing a keyboard shortcut. Right now the shortcut key exists but isn't mapped to anything. You're mapping it.</p>
+
+  <div class="define">
+    <div class="define-term">Neuroplastic Conditioning</div>
+    <div class="define-body">The brain's principle of "neurons that fire together wire together." Every time you hold a mudra + breathwork in a neutral or positive state, you're building an associative pathway. After enough repetitions, the mudra alone begins triggering the associated state — sometimes in under 30 seconds. This is why experienced practitioners can shift state almost instantly with a hand position that would do very little for a first-timer.</div>
+  </div>
+
+  <div class="protocol">
+    <div class="protocol-step">
+      <div class="step-num">1</div>
+      <div class="step-body">
+        <div class="step-title">Start in a neutral state</div>
+        <div class="step-desc">The first two weeks: practice each mudra when you're already calm — not in crisis. 10–15 minutes daily. This is the installation phase. You're mapping the shortcut before you need it.</div>
+      </div>
+    </div>
+    <div class="protocol-step">
+      <div class="step-num">2</div>
+      <div class="step-body">
+        <div class="step-title">Add breathwork in week 2</div>
+        <div class="step-desc">Once the hand position is comfortable and familiar, layer in the matched breathwork. Now you're binding two inputs to one output — increasing the potency of the conditioning.</div>
+      </div>
+    </div>
+    <div class="protocol-step">
+      <div class="step-num">3</div>
+      <div class="step-body">
+        <div class="step-title">Test in mild dysregulation first</div>
+        <div class="step-desc">Before using a mudra in a full rage or panic state, test it when you're just slightly off — tired, mildly anxious, slightly distracted. Build the pattern at the edges before taking it into the deep end.</div>
+      </div>
+    </div>
+    <div class="protocol-step">
+      <div class="step-num">4</div>
+      <div class="step-body">
+        <div class="step-title">Eventually — 30 seconds is enough</div>
+        <div class="step-desc">After 3–6 weeks of consistent practice, just forming the hand position will begin shifting state. The association is built. The shortcut is installed. This is what "mastery" actually means in this context — not knowing the theory, but having the reflex.</div>
+      </div>
+    </div>
+  </div>
+
+  <div class="define">
+    <div class="define-term">Mula Bandha — Root Lock (as a universal add-on)</div>
+    <div class="define-body">Mula Bandha (pelvic floor contraction — the "stop urination" squeeze) can be added to ANY mudra in ANY state. It serves as a universal anchor: it keeps prana in the body during any state transition, preventing the energy from leaking or scattering as you shift. Think of it as the ground wire in an electrical circuit — without it, the current dissipates. With it, the current goes where you direct it.</div>
+  </div>
+
+  <div class="define">
+    <div class="define-term">Drishti — Gaze Positions</div>
+    <div class="define-body"><strong>Lethargy:</strong> gaze upward (eyes or eye direction behind closed lids) — activates sympathetic, increases alertness. <strong>Rage / Lust:</strong> gaze downward toward the nose — activates parasympathetic, decreases arousal. <strong>Fear:</strong> soft wide gaze at the horizon — wide peripheral vision signals "no immediate threat" to the brainstem's threat-detection system and drops the fear response. Your eye position is a direct input to the nervous system — not metaphor.</div>
+  </div>
+</div>
+
+<!-- QUICK REFERENCE -->
+<div class="chapter">
+  <div class="chapter-num">Quick Reference</div>
+  <h2 class="chapter-title">State → Action Map</h2>
+
+  <div class="qref-grid">
+    <div class="qref-card">
+      <div class="qref-state" style="color:#fb923c">01 · Lethargy</div>
+      <div class="qref-mudra"><strong>Prana Mudra</strong> — ring + pinky tips to thumb</div>
+      <div class="qref-breath">Kapalabhati · Gaze UP</div>
+    </div>
+    <div class="qref-card">
+      <div class="qref-state" style="color:#f472b6">02 · Lust / Excess</div>
+      <div class="qref-mudra"><strong>Brahma Mudra</strong> — fists, thumbs tucked, knuckles touching</div>
+      <div class="qref-breath">Sitali · Mula Bandha · Gaze DOWN</div>
+    </div>
+    <div class="qref-card">
+      <div class="qref-state" style="color:#fbbf24">03 · Fear / Doubt</div>
+      <div class="qref-mudra"><strong>Abhaya</strong> (R palm out) + <strong>Prithvi</strong> (ring to thumb)</div>
+      <div class="qref-breath">Box Breathing 4-4-4-4 · Gaze WIDE</div>
+    </div>
+    <div class="qref-card">
+      <div class="qref-state" style="color:#f87171">04 · Rage</div>
+      <div class="qref-mudra"><strong>Shuni</strong> (middle to thumb) or <strong>Kali</strong> (index blades up)</div>
+      <div class="qref-breath">4-8 long exhale · Wall push first · Gaze DOWN</div>
+    </div>
+    <div class="qref-card">
+      <div class="qref-state" style="color:#3ecf8e">05 · Flow / Create</div>
+      <div class="qref-mudra"><strong>Jnana Mudra</strong> — index to thumb, palms up</div>
+      <div class="qref-breath">Nadi Shodhana (5 rounds) · Gaze SOFT</div>
+    </div>
+    <div class="qref-card" style="grid-column:span 1">
+      <div class="qref-state" style="color:#9d6fff">Universal Add-On</div>
+      <div class="qref-mudra"><strong>Mula Bandha</strong> — pelvic floor contraction</div>
+      <div class="qref-breath">Pairs with any state. Anchors the energy in the body.</div>
+    </div>
+  </div>
+</div>
+
+<!-- CHAPTER 4: NARUTO -->
+<div class="chapter">
+  <div class="chapter-num">Chapter 4</div>
+  <h2 class="chapter-title">The Naruto Crossover — What's Real</h2>
+
+  <p>Masashi Kishimoto drew the hand seals in Naruto directly from Buddhist mudra traditions. This is documented. The "chakra system" in Naruto — life force energy, energy centers, the ability to direct it — is a creative metaphor built on real traditions. Here's what maps accurately:</p>
+
+  <div class="table-wrap">
+    <table>
+      <thead><tr><th>Naruto Seal</th><th>Real Mudra</th><th>Tradition</th><th>What it actually does</th></tr></thead>
+      <tbody>
+        <tr><td>Ram — index + middle of both hands interlocked</td><td>Variant of Prana / Dhyana configuration</td><td>Yogic</td><td>Activates prana flow, meditative state entry</td></tr>
+        <tr><td>Bird / Ox</td><td>Anjali Mudra variants (prayer position + opening)</td><td>Hindu</td><td>Heart opening, connection, reverence signal to ANS</td></tr>
+        <tr><td>Boar / Rat — interlaced full-hand configurations</td><td>Matangi, Kali — interlaced with extending fingers</td><td>Tantric</td><td>Solar plexus harmonization, power focusing</td></tr>
+        <tr><td>Serpent — elongated single hand</td><td>Gyan / Jnana Mudra variants</td><td>Buddhist</td><td>Clarity, knowledge activation, focused consciousness</td></tr>
+        <tr><td>Tiger — open striking palm</td><td>Abhaya Mudra geometry</td><td>Universal</td><td>Power + protection, fearlessness broadcast</td></tr>
+      </tbody>
+    </table>
+  </div>
+
+  <p>The deeper resonance: <strong>the tailed beasts (bijuu) in Naruto are not evil.</strong> They are unintegrated power — raw force that destroys without direction. The shinobi's arc is not to kill the beast but to befriend it, understand it, and make it a willing partner. Kurama does not become Naruto's weapon. He becomes Naruto's companion. That is precisely the Jungian concept of <strong>shadow integration</strong> — the dark or overwhelming parts of yourself are not to be destroyed but to be understood and worked with. Every chakra state in this manual is a form of this: you are not suppressing your lethargy, rage, lust, or fear. You are learning to listen to what they're communicating, and redirect them with skill.</p>
+
+  <p>That's not cartoon philosophy. That's the entire arc of every serious contemplative tradition on earth.</p>
+</div>
+
+<hr>
+
+<div style="text-align:center;padding:2rem 0 4rem">
+  <p style="font-size:13px;color:var(--muted);font-style:italic;line-height:2">
+    Sources: Mudras of India (Cain Carroll) · The Gheranda Samhita · Light on Pranayama (B.K.S. Iyengar) · Polyvagal Theory (Stephen Porges) · Waking the Tiger (Peter Levine) · The Body Keeps the Score (Bessel van der Kolk) · TCM Hand Reflexology Maps · Trauma Release Exercises (David Berceli)
+  </p>
+  <p style="font-size:12px;color:#3a3f55;margin-top:12px">Ethan Payton / past.El — Personal Practice · noir Records</p>
+</div>
+
+</div>
+</body>
+</html>

@@ -920,11 +920,11 @@ export async function deriveKillList(): Promise<KillTask[]> {
   }
 
   // ── 12. ANTI-DRIFT TELEMETRY ESCALATIONS ─────────────────────────
-  // Hard deadlines
-  const apr1 = new Date("2026-04-01T00:00:00");
-  const apr3 = new Date("2026-04-03T00:00:00");
-  const daysToApr1 = Math.max(1, Math.ceil((apr1.getTime() - now.getTime()) / 86400000));
-  const daysToApr3 = Math.max(1, Math.ceil((apr3.getTime() - now.getTime()) / 86400000));
+  // Hard deadlines — EP upload by Apr 14, EP release Apr 24
+  const epUploadDeadline = new Date("2026-04-14T00:00:00");
+  const epReleaseDeadline = new Date("2026-04-24T00:00:00");
+  const daysToUpload = Math.max(1, Math.ceil((epUploadDeadline.getTime() - now.getTime()) / 86400000));
+  const daysToRelease = Math.max(1, Math.ceil((epReleaseDeadline.getTime() - now.getTime()) / 86400000));
 
   const trackSummaries = await getTrackHoursSummaries();
   const sfSummary = trackSummaries.find(t => t.trackName.toUpperCase() === 'SWEET FRUSTRATION');
@@ -932,16 +932,16 @@ export async function deriveKillList(): Promise<KillTask[]> {
   const sfHours = sfSummary?.totalHours || 0;
   const lidHours = lidSummary?.totalHours || 0;
 
-  // DoorDash ($1,000 target by Apr 3)
-  if (telemetry.doordash_earned < 1000 && now < apr3) {
-    const dailyTargetDD = Math.ceil((1000 - telemetry.doordash_earned) / daysToApr3);
+  // DoorDash ($1,000 target by EP release Apr 24)
+  if (telemetry.doordash_earned < 1000 && now < epReleaseDeadline) {
+    const dailyTargetDD = Math.ceil((1000 - telemetry.doordash_earned) / daysToRelease);
     const ddUrgency = dailyTargetDD > 200 ? "RED" : dailyTargetDD > 120 ? "AMBER" : "GREEN";
     tasks.push({
       id: "telemetry-dd",
       title: `DoorDash: Earn $${dailyTargetDD} today`,
-      subtitle: `$${telemetry.doordash_earned} / $1,000 logged. ${daysToApr3} days left.`,
+      subtitle: `$${telemetry.doordash_earned} / $1,000 logged. ${daysToRelease} days left.`,
       howTo: [
-        `You need $${dailyTargetDD}/day to hit the $1k bill by Apr 3.`,
+        `You need $${dailyTargetDD}/day to hit the $1k target by EP release.`,
         "Lock your 2:00 PM - 8:30 PM window.",
         "Update the Telemetry panel instantly when you get home."
       ],
@@ -952,14 +952,14 @@ export async function deriveKillList(): Promise<KillTask[]> {
     });
   }
 
-  // SF Mixdown (11 hr target by Apr 1)
-  if (sfHours < 11 && now < apr1) {
-    const dailyTargetSF = ((11 - sfHours) / daysToApr1).toFixed(1);
+  // SF Mixdown (11 hr target by EP upload Apr 14)
+  if (sfHours < 11 && now < epUploadDeadline) {
+    const dailyTargetSF = ((11 - sfHours) / daysToUpload).toFixed(1);
     const sfUrgency = parseFloat(dailyTargetSF) > 3 ? "RED" : parseFloat(dailyTargetSF) > 1.5 ? "AMBER" : "GREEN";
     tasks.push({
       id: "telemetry-sf",
       title: `Mix/Master SF: ${dailyTargetSF} hr pace`,
-      subtitle: `Sweet Frustration: ${sfHours} / 11 hrs logged. ${daysToApr1} days left.`,
+      subtitle: `Sweet Frustration: ${sfHours} / 11 hrs logged. ${daysToUpload} days to upload.`,
       howTo: [
         "10:00 AM - 2:00 PM is the unbreakable studio block.",
         "Your only job is closing this track.",
@@ -972,14 +972,14 @@ export async function deriveKillList(): Promise<KillTask[]> {
     });
   }
 
-  // LID Mixdown (11 hr target by Apr 1)
-  if (lidHours < 11 && now < apr1) {
-    const dailyTargetLID = ((11 - lidHours) / daysToApr1).toFixed(1);
+  // LID Mixdown (11 hr target by EP upload Apr 14)
+  if (lidHours < 11 && now < epUploadDeadline) {
+    const dailyTargetLID = ((11 - lidHours) / daysToUpload).toFixed(1);
     const lidUrgency = parseFloat(dailyTargetLID) > 3 ? "RED" : parseFloat(dailyTargetLID) > 1.5 ? "AMBER" : "GREEN";
     tasks.push({
       id: "telemetry-lid",
       title: `Mix/Master LID: ${dailyTargetLID} hr pace`,
-      subtitle: `Like I Did: ${lidHours} / 11 hrs logged. ${daysToApr1} days left.`,
+      subtitle: `Like I Did: ${lidHours} / 11 hrs logged. ${daysToUpload} days to upload.`,
       howTo: [
         "10:00 AM - 2:00 PM is the unbreakable studio block.",
         "If SF is done, all your time goes here.",
@@ -992,25 +992,26 @@ export async function deriveKillList(): Promise<KillTask[]> {
     });
   }
 
-  // ── 13. ESL EDITORIAL PITCH — URGENT ────────────────────────────
-  // Standard 7-day window expired Mar 24 (ESL release Apr 3).
-  // Spotify still reviews late submissions — must submit same-day as Amuse upload (Mar 31).
+  // ── 13. ESL EDITORIAL PITCH — 414 DAY (APR 14) ───────────────────
+  // ESL drops 414 Day (Apr 14). Upload by Apr 7. Pitch window opens after upload.
+  // Standard 7-day pitch window = submit by Apr 7 for guaranteed Release Radar.
   const eslRelease = releases.find(r => r.title === "East Side Love");
   if (eslRelease && eslRelease.status !== "live" && !eslRelease.contentDeliverables.spotifyPitchSubmitted) {
-    const mar31 = new Date("2026-03-31T00:00:00");
-    if (now >= mar31) {
+    const eslUploadDate = new Date("2026-04-07T00:00:00");
+    const daysToEslUpload = Math.ceil((eslUploadDate.getTime() - now.getTime()) / 86400000);
+
+    if (now >= eslUploadDate) {
+      // Post-upload: pitch immediately
       tasks.push({
         id: "esl-pitch-same-day",
-        title: "Submit ESL editorial pitch — SAME DAY AS UPLOAD",
-        subtitle: "7-day window expired Mar 24. Submit immediately after Amuse accepts the upload.",
+        title: "Submit ESL editorial pitch NOW",
+        subtitle: "ESL is uploaded. Pitch immediately for 414 Day Release Radar.",
         howTo: [
-          "Upload ESL to Amuse first — Spotify needs the release to exist as 'upcoming' before pitching.",
-          "Open Spotify for Artists (app or web) — wait 2-6 hrs after Amuse confirms.",
+          "Open Spotify for Artists (app or web).",
           "Go to Music → East Side Love → tap 'Pitch a song'.",
           "Genre: R&B / Soul. Mood: Romantic, Melancholic. Instruments: 808, Piano, Synth.",
-          "Culture: TrapSoul. Song description: 'Cinematic OVO-pocket R&B in the Bryson Tiller / Drake lane. Built for late-night editorial playlists and Release Radar discovery.'",
-          "Release date: April 3. Check all fields are filled. Submit.",
-          "The standard window has passed — editorial still reviews. A compelling pitch can still land Release Radar.",
+          "Culture: TrapSoul. Song description: 'Cinematic OVO-pocket R&B in the Bryson Tiller / Drake lane. Milwaukee anthem for 414 Day. Built for late-night editorial playlists and Release Radar discovery.'",
+          "Release date: April 14. Check all fields are filled. Submit.",
           "Tap ✓ when submitted.",
         ],
         urgency: "RED",
@@ -1020,28 +1021,25 @@ export async function deriveKillList(): Promise<KillTask[]> {
           await updateContentDeliverables("East Side Love", { spotifyPitchSubmitted: true });
         },
       });
-    } else {
-      // Pre-Mar-31: AMBER reminder to pitch on the day of upload
-      const daysToUpload = Math.ceil((mar31.getTime() - now.getTime()) / 86400000);
-      if (daysToUpload <= 3) {
-        tasks.push({
-          id: "esl-pitch-prep",
-          title: `Prep ESL editorial pitch — submit in ${daysToUpload}d`,
-          subtitle: "Pitch goes in same-day as upload on Mar 31. Write the pitch copy now.",
-          howTo: [
-            "Write your pitch copy NOW so you're not fumbling on upload day.",
-            "Genre: R&B / Soul. Mood: Romantic, Melancholic.",
-            "Description: 'Cinematic OVO-pocket R&B in the Bryson Tiller / Drake lane. Late-night, emotional, built for editorial discovery.'",
-            "Save it in Notes — you'll paste it into Spotify for Artists on Mar 31 right after upload.",
-          ],
-          urgency: "AMBER",
-          pillar: "ops",
-          timeBlock: "biz",
-          action: async () => {
-            await setStoreValue("esl_pitch_prep_done", true);
-          },
-        });
-      }
+    } else if (daysToEslUpload <= 7) {
+      // Pre-upload: prep the pitch copy
+      tasks.push({
+        id: "esl-pitch-prep",
+        title: `Prep ESL editorial pitch — upload in ${daysToEslUpload}d`,
+        subtitle: "Upload ESL to Amuse by Apr 7. Have pitch copy ready to paste.",
+        howTo: [
+          "Write your pitch copy NOW so you're ready on upload day.",
+          "Genre: R&B / Soul. Mood: Romantic, Melancholic.",
+          "Description: 'Cinematic OVO-pocket R&B in the Bryson Tiller / Drake lane. Milwaukee anthem dropping 414 Day. Late-night, emotional, built for editorial discovery.'",
+          "Save it in Notes — paste into Spotify for Artists right after Amuse confirms.",
+        ],
+        urgency: daysToEslUpload <= 3 ? "RED" : "AMBER",
+        pillar: "ops",
+        timeBlock: "biz",
+        action: async () => {
+          await setStoreValue("esl_pitch_prep_done", true);
+        },
+      });
     }
   }
 

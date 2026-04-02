@@ -1,0 +1,529 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+<meta charset="UTF-8">
+<meta name="viewport" content="width=device-width, initial-scale=1.0">
+<title>Frequency × Key Matrix — past.El Production Reference</title>
+<link href="https://fonts.googleapis.com/css2?family=Inter:wght@400;500;600;700;800&family=JetBrains+Mono:wght@500;600;700&display=swap" rel="stylesheet">
+<style>
+:root {
+  --bg: #ffffff;
+  --border: #d1d5db;
+  --text: #1a1d2e;
+  --muted: #52576e;
+
+  /* interval color system */
+  --root:   #166534; --root-bg:  #dcfce7;
+  --p5:     #1e40af; --p5-bg:   #dbeafe;
+  --p4:     #075985; --p4-bg:   #e0f2fe;
+  --m3:     #7e22ce; --m3-bg:   #f3e8ff;
+  --M3:     #92400e; --M3-bg:   #fef3c7;
+  --m6:     #9d174d; --m6-bg:   #fce7f3;
+  --M6:     #c2410c; --M6-bg:   #ffedd5;
+  --m7:     #6b21a8; --m7-bg:   #ede9fe;
+  --M7:     #374151; --M7-bg:   #f3f4f6;
+  --tt:     #991b1b; --tt-bg:   #fee2e2;
+  --semi:   #6b7280; --semi-bg: #f9fafb;
+  --M2:     #4b5563; --M2-bg:   #f3f4f6;
+}
+
+*{box-sizing:border-box;margin:0;padding:0}
+body{font-family:'Inter',sans-serif;background:#f4f5f7;color:var(--text);-webkit-font-smoothing:antialiased}
+.page{max-width:1050px;margin:0 auto;padding:2.5rem 2rem 5rem;background:#fff;box-shadow:0 0 0 1px var(--border)}
+
+/* HERO */
+.hero{border-bottom:3px solid var(--text);padding:2rem 0 1.8rem;margin-bottom:2.5rem}
+.eyebrow{font-size:10px;letter-spacing:3px;text-transform:uppercase;color:var(--muted);font-weight:700;margin-bottom:8px}
+h1{font-size:28px;font-weight:800;color:var(--text);line-height:1.1;margin-bottom:8px}
+.hero-sub{font-size:13px;color:var(--muted);line-height:1.7;border-left:4px solid #7c3aed;padding-left:12px;margin-top:10px;max-width:700px}
+
+/* SECTION */
+.section{margin-top:2.5rem}
+.sec-label{font-size:10px;letter-spacing:3px;text-transform:uppercase;font-weight:700;margin-bottom:5px;padding-left:8px;border-left:3px solid #7c3aed;color:#5b21b6}
+h2{font-size:18px;font-weight:800;color:var(--text);margin-bottom:14px;border-bottom:2px solid var(--border);padding-bottom:7px}
+h3{font-size:14px;font-weight:700;color:var(--text);margin-bottom:8px;margin-top:20px}
+p{font-size:13px;color:var(--text);margin-bottom:10px;line-height:1.7}
+strong{color:#0a0c18;font-weight:700}
+
+/* LEGEND */
+.legend{display:flex;flex-wrap:wrap;gap:8px;margin:14px 0 20px}
+.leg{display:flex;align-items:center;gap:6px;font-size:11px;font-weight:600}
+.leg-dot{width:14px;height:14px;border-radius:3px;flex-shrink:0}
+
+/* THE MAIN MATRIX TABLE */
+.matrix-wrap{overflow-x:auto;margin:14px 0;border:1px solid var(--border);border-radius:8px}
+.matrix{border-collapse:collapse;width:100%;font-size:12px}
+.matrix th{padding:9px 10px;text-align:center;font-size:10px;letter-spacing:1px;text-transform:uppercase;font-weight:700;border:1px solid var(--border);background:#f3f4f6;color:var(--muted)}
+.matrix th.row-header{text-align:left;min-width:120px}
+.matrix td{padding:8px 6px;border:1px solid var(--border);text-align:center;font-weight:600;font-size:11px;vertical-align:middle;line-height:1.3}
+.matrix td.key-col{text-align:left;padding-left:12px;font-weight:700;font-size:12px;background:#f9fafb;border-right:2px solid var(--border)}
+.matrix td.key-col .rel-min{font-size:10px;color:var(--muted);font-weight:500;display:block;margin-top:1px}
+
+/* INTERVAL CELLS */
+.i-root{background:var(--root-bg);color:var(--root)}
+.i-p5  {background:var(--p5-bg);color:var(--p5)}
+.i-p4  {background:var(--p4-bg);color:var(--p4)}
+.i-M3  {background:var(--M3-bg);color:var(--M3)}
+.i-m3  {background:var(--m3-bg);color:var(--m3)}
+.i-M6  {background:var(--M6-bg);color:var(--M6)}
+.i-m6  {background:var(--m6-bg);color:var(--m6)}
+.i-m7  {background:var(--m7-bg);color:var(--m7)}
+.i-M7  {background:var(--M7-bg);color:var(--M7)}
+.i-tt  {background:var(--tt-bg);color:var(--tt)}
+.i-M2  {background:var(--M2-bg);color:var(--M2)}
+.i-m2  {background:var(--semi-bg);color:var(--semi)}
+
+/* FREQ HEADER ROW */
+.freq-header td, .freq-header th{background:#1a1d2e;color:#fff;font-size:10px;letter-spacing:1px;text-transform:uppercase;border-color:#374151}
+.freq-note{font-family:'JetBrains Mono',monospace;font-size:13px;font-weight:700;display:block;margin-top:2px;color:#a5b4fc}
+
+/* SUBHARMONIC TABLE */
+.sub-table{border-collapse:collapse;width:100%;font-size:12px;margin:12px 0}
+.sub-table th{padding:8px 12px;text-align:left;font-size:10px;letter-spacing:1px;text-transform:uppercase;font-weight:700;border:1px solid var(--border);background:#f3f4f6;color:var(--muted)}
+.sub-table td{padding:8px 12px;border:1px solid var(--border);color:var(--text);vertical-align:top;line-height:1.6}
+.sub-table tr:nth-child(even) td{background:#f9fafb}
+.mono{font-family:'JetBrains Mono',monospace;font-weight:700;font-size:12px}
+
+/* CALLOUT */
+.callout{border-radius:8px;padding:14px 18px;margin:16px 0;border:1px solid var(--border)}
+.callout.purple{border-left:5px solid #7c3aed;background:#f5f3ff}
+.callout.blue{border-left:5px solid #2563eb;background:#eff6ff}
+.callout.green{border-left:5px solid #16a34a;background:#f0fdf4}
+.callout.gold{border-left:5px solid #d97706;background:#fffbeb}
+.cl{font-size:10px;letter-spacing:2px;text-transform:uppercase;font-weight:800;margin-bottom:6px;display:block}
+.callout.purple .cl{color:#5b21b6}
+.callout.blue .cl{color:#1e40af}
+.callout.green .cl{color:#166534}
+.callout.gold .cl{color:#92400e}
+.callout p{margin-bottom:0;font-size:13px}
+.callout p+p{margin-top:6px}
+
+/* BEST-FIT TABLE */
+.fit-table{border-collapse:collapse;width:100%;font-size:12px;margin:12px 0}
+.fit-table th{padding:8px 12px;font-size:10px;letter-spacing:1px;text-transform:uppercase;font-weight:700;border:1px solid var(--border);background:#f3f4f6;color:var(--muted);text-align:left}
+.fit-table td{padding:8px 12px;border:1px solid var(--border);color:var(--text);font-size:12px;line-height:1.6}
+.fit-table tr:nth-child(even) td{background:#f9fafb}
+.tag{display:inline-block;padding:2px 7px;border-radius:4px;font-size:10px;font-weight:700;margin:2px}
+.tag.root{background:var(--root-bg);color:var(--root)}
+.tag.strong{background:var(--p5-bg);color:var(--p5)}
+.tag.warm{background:var(--M3-bg);color:var(--M3)}
+.tag.dark{background:var(--m3-bg);color:var(--m3)}
+.tag.color{background:var(--m7-bg);color:var(--m7)}
+.tag.tension{background:var(--tt-bg);color:var(--tt)}
+
+hr{border:0;height:2px;background:var(--border);margin:2.5rem 0}
+
+@media print {
+  body{background:white}
+  .page{box-shadow:none;padding:1rem 1.5rem 3rem;max-width:100%}
+  h2{page-break-after:avoid}
+  .matrix-wrap,.callout,.sub-table,.fit-table{page-break-inside:avoid}
+}
+</style>
+</head>
+<body>
+<div class="page">
+
+<!-- HERO -->
+<div class="hero">
+  <div class="eyebrow">past.El noir Records — Production Reference · Print Edition</div>
+  <h1>Frequency × Key Matrix</h1>
+  <p class="hero-sub">For any song key and any target solfeggio frequency — instantly see what interval the frequency lands on, what emotional color that creates, and what sub-harmonic frequency to dial into your oscillator. The transposition problem solved as a lookup table.</p>
+</div>
+
+<!-- HOW TO USE -->
+<div class="section">
+  <div class="sec-label">How to Use This</div>
+  <h2>Reading the Matrix</h2>
+  <p><strong>Step 1:</strong> Know your song key. Find that row in the matrix below.<br>
+  <strong>Step 2:</strong> Find the column for the healing effect you want to embed (528 Hz Love, 396 Hz Liberation, etc.)<br>
+  <strong>Step 3:</strong> The cell shows what interval that frequency lands on in your key and what emotional color it creates.<br>
+  <strong>Step 4:</strong> Use the Sub-Harmonic Reference table to find the exact frequency (in Hz) to dial into your DAW sine oscillator.</p>
+
+  <div class="callout purple">
+    <span class="cl">The Core Rule</span>
+    <p>All intervals can work — they create different emotional textures. A Root match is the strongest resonance. A Perfect 5th is open and powerful. A minor 3rd is dark and emotional — often ideal for R&B. A tritone creates maximum dark tension — effective in intentional amounts. <strong>None are wrong. They're just different moods.</strong></p>
+    <p>For a drone layer at -20 dB, even dissonant intervals become textural warmth rather than audible clashing. The ear won't identify the drone as a "wrong note" — it will just feel the harmonic field shift.</p>
+  </div>
+
+  <!-- LEGEND -->
+  <div class="legend">
+    <div class="leg"><div class="leg-dot" style="background:var(--root-bg);border:1.5px solid var(--root)"></div><span style="color:var(--root)">Root — Perfect</span></div>
+    <div class="leg"><div class="leg-dot" style="background:var(--p5-bg);border:1.5px solid var(--p5)"></div><span style="color:var(--p5)">P5 — Open, powerful</span></div>
+    <div class="leg"><div class="leg-dot" style="background:var(--p4-bg);border:1.5px solid var(--p4)"></div><span style="color:var(--p4)">P4 — Stable, grounded</span></div>
+    <div class="leg"><div class="leg-dot" style="background:var(--M3-bg);border:1.5px solid var(--M3)"></div><span style="color:var(--M3)">M3 — Warm, bright</span></div>
+    <div class="leg"><div class="leg-dot" style="background:var(--m3-bg);border:1.5px solid var(--m3)"></div><span style="color:var(--m3)">m3 — Dark, emotional</span></div>
+    <div class="leg"><div class="leg-dot" style="background:var(--M6-bg);border:1.5px solid var(--M6)"></div><span style="color:var(--M6)">M6 — Open, longing</span></div>
+    <div class="leg"><div class="leg-dot" style="background:var(--m6-bg);border:1.5px solid var(--m6)"></div><span style="color:var(--m6)">m6 — Melancholic</span></div>
+    <div class="leg"><div class="leg-dot" style="background:var(--m7-bg);border:1.5px solid var(--m7)"></div><span style="color:var(--m7)">m7 — Blues/jazz color</span></div>
+    <div class="leg"><div class="leg-dot" style="background:var(--M7-bg);border:1.5px solid var(--M7)"></div><span style="color:var(--M7)">M7 — Yearning tension</span></div>
+    <div class="leg"><div class="leg-dot" style="background:var(--tt-bg);border:1.5px solid var(--tt)"></div><span style="color:var(--tt)">TT — Tritone, dark</span></div>
+    <div class="leg"><div class="leg-dot" style="background:var(--M2-bg);border:1.5px solid var(--M2)"></div><span style="color:var(--M2)">M2 — Mild tension</span></div>
+    <div class="leg"><div class="leg-dot" style="background:var(--semi-bg);border:1.5px solid var(--semi)"></div><span style="color:var(--semi)">m2 — Semitone, tense</span></div>
+  </div>
+</div>
+
+<!-- THE MAIN MATRIX -->
+<div class="section">
+  <div class="sec-label">The Matrix</div>
+  <h2>All 12 Keys × 6 Target Frequencies</h2>
+
+  <div class="matrix-wrap">
+    <table class="matrix">
+      <thead>
+        <tr class="freq-header">
+          <th class="row-header">Song Key</th>
+          <th>174 Hz<span class="freq-note">≈ F</span></th>
+          <th>396 Hz<span class="freq-note">≈ G</span></th>
+          <th>417 Hz<span class="freq-note">≈ Ab</span></th>
+          <th>528 Hz<span class="freq-note">≈ C</span></th>
+          <th>639 Hz<span class="freq-note">≈ Eb</span></th>
+          <th>741 Hz<span class="freq-note">≈ F#</span></th>
+        </tr>
+        <tr>
+          <th class="row-header">Effect →</th>
+          <th>Grounding<br>Security</th>
+          <th>Liberation<br>Release Fear</th>
+          <th>Change<br>Break Patterns</th>
+          <th>Love<br>Repair / Heart</th>
+          <th>Connection<br>Relationship</th>
+          <th>Intuition<br>Awakening</th>
+        </tr>
+      </thead>
+      <tbody>
+
+        <!-- C -->
+        <tr>
+          <td class="key-col">C major<span class="rel-min">/ A minor</span></td>
+          <td class="i-p4">P4<br>Stable</td>
+          <td class="i-p5">P5<br>Open</td>
+          <td class="i-m6">m6<br>Melancholic</td>
+          <td class="i-root">ROOT<br>Perfect</td>
+          <td class="i-m3">m3<br>Emotional</td>
+          <td class="i-tt">TT<br>Dark</td>
+        </tr>
+
+        <!-- Db -->
+        <tr>
+          <td class="key-col">Db major<span class="rel-min">/ Bb minor</span></td>
+          <td class="i-M3">M3<br>Warm</td>
+          <td class="i-tt">TT<br>Dark</td>
+          <td class="i-p5">P5<br>Open</td>
+          <td class="i-M7">M7<br>Yearning</td>
+          <td class="i-M2">M2<br>Mild</td>
+          <td class="i-p4">P4<br>Stable</td>
+        </tr>
+
+        <!-- D -->
+        <tr>
+          <td class="key-col">D major<span class="rel-min">/ B minor</span></td>
+          <td class="i-m3">m3<br>Emotional</td>
+          <td class="i-p4">P4<br>Stable</td>
+          <td class="i-tt">TT<br>Dark</td>
+          <td class="i-m7">m7<br>Blues</td>
+          <td class="i-m2">m2<br>Semitone</td>
+          <td class="i-M3">M3<br>Warm</td>
+        </tr>
+
+        <!-- Eb -->
+        <tr>
+          <td class="key-col">Eb major<span class="rel-min">/ C minor</span></td>
+          <td class="i-M2">M2<br>Mild</td>
+          <td class="i-M3">M3<br>Warm</td>
+          <td class="i-p4">P4<br>Stable</td>
+          <td class="i-M6">M6<br>Longing</td>
+          <td class="i-root">ROOT<br>Perfect</td>
+          <td class="i-m3">m3<br>Emotional</td>
+        </tr>
+
+        <!-- E -->
+        <tr>
+          <td class="key-col">E major<span class="rel-min">/ C# minor</span></td>
+          <td class="i-m2">m2<br>Semitone</td>
+          <td class="i-m3">m3<br>Emotional</td>
+          <td class="i-M3">M3<br>Warm</td>
+          <td class="i-m6">m6<br>Melancholic</td>
+          <td class="i-M7">M7<br>Yearning</td>
+          <td class="i-M2">M2<br>Mild</td>
+        </tr>
+
+        <!-- F -->
+        <tr>
+          <td class="key-col">F major<span class="rel-min">/ D minor</span></td>
+          <td class="i-root">ROOT<br>Perfect</td>
+          <td class="i-M2">M2<br>Mild</td>
+          <td class="i-m3">m3<br>Emotional</td>
+          <td class="i-p5">P5<br>Open</td>
+          <td class="i-m7">m7<br>Blues</td>
+          <td class="i-m2">m2<br>Semitone</td>
+        </tr>
+
+        <!-- F# -->
+        <tr>
+          <td class="key-col">F# major<span class="rel-min">/ D# minor</span></td>
+          <td class="i-M7">M7<br>Yearning</td>
+          <td class="i-m2">m2<br>Semitone</td>
+          <td class="i-M2">M2<br>Mild</td>
+          <td class="i-tt">TT<br>Dark</td>
+          <td class="i-M6">M6<br>Longing</td>
+          <td class="i-root">ROOT<br>Perfect</td>
+        </tr>
+
+        <!-- G -->
+        <tr>
+          <td class="key-col">G major<span class="rel-min">/ E minor</span></td>
+          <td class="i-m7">m7<br>Blues</td>
+          <td class="i-root">ROOT<br>Perfect</td>
+          <td class="i-m2">m2<br>Semitone</td>
+          <td class="i-p4">P4<br>Stable</td>
+          <td class="i-m6">m6<br>Melancholic</td>
+          <td class="i-M7">M7<br>Yearning</td>
+        </tr>
+
+        <!-- Ab -->
+        <tr>
+          <td class="key-col">Ab major<span class="rel-min">/ F minor</span></td>
+          <td class="i-M6">M6<br>Longing</td>
+          <td class="i-M7">M7<br>Yearning</td>
+          <td class="i-root">ROOT<br>Perfect</td>
+          <td class="i-M3">M3<br>Warm</td>
+          <td class="i-p5">P5<br>Open</td>
+          <td class="i-m7">m7<br>Blues</td>
+        </tr>
+
+        <!-- A -->
+        <tr>
+          <td class="key-col">A major<span class="rel-min">/ F# minor</span></td>
+          <td class="i-m6">m6<br>Melancholic</td>
+          <td class="i-m7">m7<br>Blues</td>
+          <td class="i-M7">M7<br>Yearning</td>
+          <td class="i-m3">m3<br>Emotional</td>
+          <td class="i-tt">TT<br>Dark</td>
+          <td class="i-M6">M6<br>Longing</td>
+        </tr>
+
+        <!-- Bb -->
+        <tr>
+          <td class="key-col">Bb major<span class="rel-min">/ G minor</span></td>
+          <td class="i-p5">P5<br>Open</td>
+          <td class="i-M6">M6<br>Longing</td>
+          <td class="i-m7">m7<br>Blues</td>
+          <td class="i-M2">M2<br>Mild</td>
+          <td class="i-p4">P4<br>Stable</td>
+          <td class="i-m6">m6<br>Melancholic</td>
+        </tr>
+
+        <!-- B -->
+        <tr>
+          <td class="key-col">B major<span class="rel-min">/ G# minor</span></td>
+          <td class="i-tt">TT<br>Dark</td>
+          <td class="i-m6">m6<br>Melancholic</td>
+          <td class="i-M6">M6<br>Longing</td>
+          <td class="i-m2">m2<br>Semitone</td>
+          <td class="i-M3">M3<br>Warm</td>
+          <td class="i-p5">P5<br>Open</td>
+        </tr>
+
+      </tbody>
+    </table>
+  </div>
+</div>
+
+<!-- SUB-HARMONIC REFERENCE -->
+<div class="section">
+  <div class="sec-label">Sub-Harmonic Reference</div>
+  <h2>Oscillator Frequencies to Dial In — Per Target Effect</h2>
+  <p>Divide the target frequency down by octaves (÷2 each time) until you reach the sub-bass range your speakers and headphones can reproduce. <strong>Use the lowest practical value for headphone listeners; slightly higher for playback on bass-capable speakers.</strong></p>
+
+  <table class="sub-table">
+    <thead>
+      <tr>
+        <th>Target Effect</th>
+        <th>Source Hz</th>
+        <th>Note</th>
+        <th>÷2 (one octave down)</th>
+        <th>÷4 (two octaves)</th>
+        <th>÷8 (three octaves — sub-bass)</th>
+        <th>Recommended for DAW</th>
+      </tr>
+    </thead>
+    <tbody>
+      <tr>
+        <td><strong>Grounding / Security</strong></td>
+        <td class="mono">174 Hz</td>
+        <td>F3</td>
+        <td class="mono">87.0 Hz (F2)</td>
+        <td class="mono">43.5 Hz (F1)</td>
+        <td class="mono">21.8 Hz</td>
+        <td><strong>87 Hz</strong> — audible sub, felt in chest through speakers. 43.5 Hz for sub-only systems.</td>
+      </tr>
+      <tr>
+        <td><strong>Liberation / Release Fear</strong></td>
+        <td class="mono">396 Hz</td>
+        <td>G4</td>
+        <td class="mono">198.0 Hz (G3)</td>
+        <td class="mono">99.0 Hz (G2)</td>
+        <td class="mono">49.5 Hz (G1)</td>
+        <td><strong>99 Hz</strong> — ideal sub-bass range. 49.5 Hz for deep sub layer.</td>
+      </tr>
+      <tr>
+        <td><strong>Change / Break Patterns</strong></td>
+        <td class="mono">417 Hz</td>
+        <td>Ab4</td>
+        <td class="mono">208.5 Hz (Ab3)</td>
+        <td class="mono">104.3 Hz (Ab2)</td>
+        <td class="mono">52.1 Hz (Ab1)</td>
+        <td><strong>104 Hz</strong> — clean sub presence. 52.1 Hz for felt-not-heard sub layer.</td>
+      </tr>
+      <tr>
+        <td><strong>Love / Repair / Heart</strong></td>
+        <td class="mono">528 Hz</td>
+        <td>C5</td>
+        <td class="mono">264.0 Hz (C4)</td>
+        <td class="mono">132.0 Hz (C3)</td>
+        <td class="mono">66.0 Hz (C2)</td>
+        <td><strong>66 Hz</strong> for deep sub. <strong>132 Hz</strong> if you want it audible as bass texture. Both are precise — C divides cleanly.</td>
+      </tr>
+      <tr>
+        <td><strong>Connection / Relationship</strong></td>
+        <td class="mono">639 Hz</td>
+        <td>≈ Eb5</td>
+        <td class="mono">319.5 Hz (Eb4)</td>
+        <td class="mono">159.8 Hz (Eb3)</td>
+        <td class="mono">79.9 Hz (Eb2)</td>
+        <td><strong>80 Hz</strong> — Eb2 range, solid sub. 159.8 Hz for audible bass layer.</td>
+      </tr>
+      <tr>
+        <td><strong>Intuition / Awakening</strong></td>
+        <td class="mono">741 Hz</td>
+        <td>F#5</td>
+        <td class="mono">370.5 Hz (F#4)</td>
+        <td class="mono">185.3 Hz (F#3)</td>
+        <td class="mono">92.5 Hz (F#2)</td>
+        <td><strong>92.5 Hz</strong> — nearly exact F#2 (92.50 Hz). Exceptional match. 185.3 Hz for audible bass layer.</td>
+      </tr>
+    </tbody>
+  </table>
+
+  <div class="callout green">
+    <span class="cl">DAW Setup — Step by Step</span>
+    <p><strong>1.</strong> Create a new MIDI track. Insert any soft synth with a sine wave oscillator (Massive, Serum, Operator, ES2, etc.).<br>
+    <strong>2.</strong> Set the oscillator to a single sine wave. Disable all envelopes — you want a sustained, pure tone.<br>
+    <strong>3.</strong> Set the pitch to the "Recommended for DAW" frequency above (tune by ear using a spectrum analyzer, or enter the Hz directly in synths that support it).<br>
+    <strong>4.</strong> Apply a tremolo/volume LFO on the track at the target brainwave frequency (6–8 Hz for Theta, 10–12 Hz for Alpha) to create the entrainment pulse.<br>
+    <strong>5.</strong> Mix at <strong>-20 to -24 dB</strong> below the main mix. Apply a high-pass filter at 200 Hz on the master bus to prevent the drone from muddying the low end.<br>
+    <strong>6.</strong> Check on headphones — the sub-harmonic layer is most effective in headphone listening.</p>
+  </div>
+</div>
+
+<!-- BEST FIT KEYS -->
+<div class="section">
+  <div class="sec-label">Best-Fit Summary</div>
+  <h2>Strongest Key Matches Per Effect — Quick Reference</h2>
+
+  <table class="fit-table">
+    <thead>
+      <tr>
+        <th>Target Effect</th>
+        <th>Frequency</th>
+        <th>Root Match Keys</th>
+        <th>Strong Fit (P5/P4/M3)</th>
+        <th>Emotional/Dark Fit (m3/m6)</th>
+        <th>Avoid (m2) if clean sound desired</th>
+      </tr>
+    </thead>
+    <tbody>
+      <tr>
+        <td><strong>Grounding</strong></td>
+        <td class="mono">174 Hz (F)</td>
+        <td><span class="tag root">F major</span><span class="tag root">D minor</span></td>
+        <td><span class="tag strong">Bb major</span><span class="tag strong">C major</span><span class="tag warm">Db major</span></td>
+        <td><span class="tag dark">D major</span><span class="tag dark">A major</span></td>
+        <td>E major / C# minor</td>
+      </tr>
+      <tr>
+        <td><strong>Liberation</strong></td>
+        <td class="mono">396 Hz (G)</td>
+        <td><span class="tag root">G major</span><span class="tag root">E minor</span></td>
+        <td><span class="tag strong">C major</span><span class="tag strong">D major</span><span class="tag warm">Eb major</span></td>
+        <td><span class="tag dark">E major</span><span class="tag dark">B major</span></td>
+        <td>F# major / D# minor</td>
+      </tr>
+      <tr>
+        <td><strong>Change</strong></td>
+        <td class="mono">417 Hz (Ab)</td>
+        <td><span class="tag root">Ab major</span><span class="tag root">F minor</span></td>
+        <td><span class="tag strong">Db major</span><span class="tag strong">Eb major</span><span class="tag warm">E major</span></td>
+        <td><span class="tag dark">F major</span><span class="tag dark">A major</span></td>
+        <td>G major / E minor</td>
+      </tr>
+      <tr>
+        <td><strong>Love / Repair</strong></td>
+        <td class="mono">528 Hz (C)</td>
+        <td><span class="tag root">C major</span><span class="tag root">A minor</span></td>
+        <td><span class="tag strong">F major</span><span class="tag strong">G major</span><span class="tag warm">Ab major</span></td>
+        <td><span class="tag dark">A major</span><span class="tag dark">Eb major</span></td>
+        <td>B major / G# minor</td>
+      </tr>
+      <tr>
+        <td><strong>Connection</strong></td>
+        <td class="mono">639 Hz (Eb)</td>
+        <td><span class="tag root">Eb major</span><span class="tag root">C minor</span></td>
+        <td><span class="tag strong">Ab major</span><span class="tag strong">Bb major</span><span class="tag warm">F# major</span></td>
+        <td><span class="tag dark">C major</span><span class="tag dark">B major</span></td>
+        <td>D major / B minor</td>
+      </tr>
+      <tr>
+        <td><strong>Intuition</strong></td>
+        <td class="mono">741 Hz (F#)</td>
+        <td><span class="tag root">F# major</span><span class="tag root">D# minor</span></td>
+        <td><span class="tag strong">B major</span><span class="tag strong">Db major</span><span class="tag warm">D major</span></td>
+        <td><span class="tag dark">Eb major</span><span class="tag dark">Bb major</span></td>
+        <td>F major / D minor</td>
+      </tr>
+    </tbody>
+  </table>
+</div>
+
+<!-- PRODUCTION WORKFLOW -->
+<div class="section">
+  <div class="sec-label">Workflow</div>
+  <h2>Per-Track Frequency Embedding Protocol</h2>
+
+  <div class="callout blue">
+    <span class="cl">The 5-Step Process for Every Track</span>
+    <p><strong>Step 1 — Write the song first.</strong> Never choose a key based on frequency targets. Songwriting authenticity comes first, always.</p>
+    <p><strong>Step 2 — Identify the key.</strong> Major or minor, and its relative counterpart.</p>
+    <p><strong>Step 3 — Consult the matrix.</strong> Find the row for your key. Identify which target frequencies land on Root, P5, P4, M3, or m3. These are your best-fit effects. Note which land on TT or m2 — use those sparingly if at all.</p>
+    <p><strong>Step 4 — Choose your target effect(s).</strong> Match the effect to the song's emotional intention. A breakup song → Liberation (396 Hz) or Love/Repair (528 Hz). A song about trust or clarity → Grounding (174 Hz). A song about change in a relationship → Connection (639 Hz).</p>
+    <p><strong>Step 5 — Embed the sub-harmonic layer.</strong> Use the Sub-Harmonic Reference table to dial in the exact Hz in your DAW. Set the LFO tremolo to 6–8 Hz for Theta entrainment. Mix at -20 to -24 dB.</p>
+  </div>
+
+  <div class="callout gold">
+    <span class="cl">Ethan Payton Catalog Notes</span>
+    <p><strong>SEE ME / late-night R&B tracks:</strong> Target 528 Hz (Love/Repair) if key is near C, F, G, Ab, or A. For Ab minor or F# minor, the 528 Hz lands on a M3 or TT respectively — use 528's sub-harmonic at 66 Hz as a nearly inaudible bed, not as a drone layer. The entrainment effect (6–8 Hz Theta pulse) works in any key regardless.</p>
+    <p><strong>Sweet Frustration / bridge singles:</strong> Target 639 Hz (Connection/Relationship) — specifically designed for music about wanting closeness. Best-fit keys: Eb, Ab, Bb, F#. If the track is in a different key, embed 80 Hz (Eb2 sub-harmonic) as an under-layer.</p>
+    <p><strong>General principle:</strong> When the target frequency lands on m3 in the song key, the resulting harmonic texture is dark and emotionally charged — which is the core emotional register of past.El's catalog. A "dissonant" match by classical theory is often the most emotionally resonant choice for this genre.</p>
+  </div>
+</div>
+
+<!-- TRANSPOSITION REMINDER -->
+<div class="section">
+  <div class="sec-label">Key Reminder</div>
+  <h2>The Two-Mechanism Rule</h2>
+  <p>This matrix covers <strong>absolute frequency embedding</strong> — where the solfeggio note is placed as a drone, pad layer, or sub-harmonic at the exact target frequency.</p>
+  <p><strong>Brainwave entrainment</strong> (the 6–8 Hz Theta pulse, binaural stereo split, isochronic tremolo) operates completely independently of key and does not need this matrix. Those techniques work in any key because they function through pulse rate, not pitch. Apply them to every track regardless of key situation.</p>
+</div>
+
+<hr>
+
+<div style="text-align:center;padding:1.5rem 0 2rem;border-top:2px solid var(--border);margin-top:2rem">
+  <p style="font-size:11px;color:var(--muted);line-height:1.8">
+    Interval mapping: standard Western chromatic scale · Solfeggio frequencies: traditional sources cross-referenced with Hz measurements · Sub-harmonic math: octave equivalence (÷2 per octave) · All frequency values to nearest 0.5 Hz
+  </p>
+  <p style="font-size:10px;color:#9ca3af;margin-top:6px;font-weight:700">Ethan Payton / past.El noir Records — Internal Production Reference · Q2 2026 · Confidential</p>
+</div>
+
+</div>
+</body>
+</html>
