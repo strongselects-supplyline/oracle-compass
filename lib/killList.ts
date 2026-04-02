@@ -184,6 +184,115 @@ export async function deriveKillList(): Promise<KillTask[]> {
     }
   }
 
+  // ── 2.5 DAY ONE GUARDRAILS & MUDRA SYSTEM ────────────────────────
+  if (!dailyLog.proteinAtMeals && hour >= 12 && hour < 20) {
+    tasks.push({
+      id: "dayone-protein",
+      title: "Check your protein intake today",
+      subtitle: "Tyrosine is the dopamine precursor. Building blocks.",
+      howTo: [
+        "Protein at every meal is a Day One protocol rule.",
+        "Eat a high protein source with your next meal.",
+        "Tap ✓ if you've hit your protein goals so far today.",
+      ],
+      urgency: hour >= 14 ? "AMBER" : "GREEN",
+      pillar: "body",
+      timeBlock: "any",
+      action: async () => {
+        const log = await getDailyLog(today);
+        log.proteinAtMeals = true;
+        await saveDailyLog(log);
+      },
+    });
+  }
+
+  if (!dailyLog.caffeineCutoff && hour >= 13) {
+    tasks.push({
+      id: "dayone-caffeine",
+      title: "Cut caffeine for the day",
+      subtitle: "Protect sleep architecture. No caffeine past 1 PM.",
+      howTo: [
+        "Switch to water, herbal tea, or decaf only.",
+        "Caffeine half-life is 5-6 hours.",
+        "Tap ✓ to confirm you are done with caffeine today.",
+      ],
+      urgency: hour >= 14 ? "RED" : "AMBER",
+      pillar: "body",
+      timeBlock: "any",
+      action: async () => {
+        const log = await getDailyLog(today);
+        log.caffeineCutoff = true;
+        await saveDailyLog(log);
+      },
+    });
+  }
+
+  if (!dailyLog.trataka && hour >= 21) {
+    tasks.push({
+      id: "dayone-trataka",
+      title: "Trataka (Candle Gazing)",
+      subtitle: "Downregulate your nervous system before sleep.",
+      howTo: [
+        "Light a candle. Turn off all other lights.",
+        "Stare at the flame without blinking until eyes water slightly.",
+        "Close eyes and focus on the after-image at your third eye.",
+        "Do this for 5-10 minutes.",
+      ],
+      urgency: hour >= 22 ? "RED" : "AMBER",
+      pillar: "body",
+      timeBlock: "evening",
+      action: async () => {
+        const log = await getDailyLog(today);
+        log.trataka = true;
+        await saveDailyLog(log);
+      },
+    });
+  }
+
+  const viceCheckKey = `vice_clear:${today}`;
+  const viceCleared = await getStoreValue(viceCheckKey);
+  if (!viceCleared) {
+      tasks.push({
+        id: "dayone-vice",
+        title: "Vice Management: Boredom / Cravings Check",
+        subtitle: "Permanent guardrail: Is the builder vice or craving spiking?",
+        howTo: [
+            "If you are feeling a craving (weed, porn) or a spike in boredom:",
+            "Go to the sauna immediately — forced stillness.",
+            "OR sit in the living room for 10 minutes doing absolutely nothing.",
+            "Do not engineer a dashboard to avoid the feeling.",
+            "Tap ✓ only if you successfully sat through the spike."
+        ],
+        urgency: "AMBER",
+        pillar: "body",
+        timeBlock: "any",
+        action: async () => { await setStoreValue(viceCheckKey, true); },
+      });
+  }
+
+  if (isStudioDay(dayType as any) && hour < 10) {
+    const mudraFlowKey = `mudra_flow_clear:${today}`;
+    const mudraFlowCleared = await getStoreValue(mudraFlowKey);
+    if (!mudraFlowCleared) {
+        tasks.push({
+            id: "mudra-flow",
+            title: "Pre-Session Flow Trigger (Jnana Mudra)",
+            subtitle: "Clear mental weather before opening the DAW.",
+            howTo: [
+                "Sit with spine tall. Touch index to thumb (Jnana Mudra).",
+                "Palms up on knees.",
+                "Run Nadi Shodhana (Alternate Nostril Breathing) for 5 rounds.",
+                "Activate right hemisphere. Do not open DAW until shifted.",
+                "Tap ✓ when clear and ready."
+            ],
+            urgency: hour >= 9 ? "RED" : "AMBER",
+            pillar: "creative",
+            timeBlock: "studio",
+            action: async () => { await setStoreValue(mudraFlowKey, true); },
+        });
+    }
+  }
+
   // ── 3. GRIND → Tasks ─────────────────────────────────────────────
   if (!dailyLog.sovereigntyStack) {
     tasks.push({

@@ -43,7 +43,7 @@ If it's evening, acknowledge that the work day is done — guide recovery or con
 
 CROSS-PILLAR LOGIC:
 - Heavy DoorDash week (4+ shifts) + low studio sessions -> consider shifting a release, flag the imbalance
-- Compliance gap within 3 days of release -> RED severity, flag_action immediately regardless of anything else
+- Pre-release compliance gaps (e.g. Instrumental missing) within 3 days of release -> RED severity, flag_action immediately regardless of anything else
 - DoorDash monthly earnings signal financial runway — if low, flag it
 - Sobriety streak is non-negotiable context. If sovereignty stack is missed 3 days in a row, flag_action RED immediately. This is the foundation of the empire and must be protected.
 - Studio session count below 3/week by midweek on a music-heavy week -> flag or shift
@@ -70,7 +70,7 @@ SESSION-TYPE DIFFERENTIATED RESPONSE:
 
 MUSIC RULES:
 - Shift releases only if session count is genuinely behind schedule. Don't penalize one bad day.
-- Compliance gaps (ISRC, ASCAP, MLC) within 3 days = RED + flag_action, nothing else matters
+- Post-release compliance gaps (ISRC, ASCAP, MLC) will surface after release. If present, = RED + flag_action.
 - EP Apr 24 is the fixed north star. Upload to Amuse by Apr 14 for pre-save build. Singles must land before EP.
 - ALL LOVE is a 4-track EP, not an 11-track album. 7 tracks are parked for post-EP release.
 

@@ -287,12 +287,16 @@ export async function assembleContext(): Promise<OracleContext> {
   const complianceGaps: string[] = [];
   if (nextRelease) {
     const d = nextRelease.contentDeliverables;
-    if (!d.isrcPulled) complianceGaps.push("ISRC not pulled");
-    if (!d.ascapRegistered) complianceGaps.push("ASCAP not registered");
-    if (!d.mlcRegistered) complianceGaps.push("MLC not registered");
-    if (!d.songtrustRegistered) complianceGaps.push("Songtrust not registered");
     if (!d.instrumentalRendered) complianceGaps.push("Instrumental not rendered");
-    if (!d.musixmatchSubmitted) complianceGaps.push("Musixmatch lyrics not submitted");
+    
+    // Registration requirements are post-release only
+    if (daysUntilNext <= -1) {
+      if (!d.isrcPulled) complianceGaps.push("ISRC not pulled");
+      if (!d.ascapRegistered) complianceGaps.push("ASCAP not registered");
+      if (!d.mlcRegistered) complianceGaps.push("MLC not registered");
+      if (!d.songtrustRegistered) complianceGaps.push("Songtrust not registered");
+      if (!d.musixmatchSubmitted) complianceGaps.push("Musixmatch lyrics not submitted");
+    }
   }
 
   const label: LabelSnapshot = {

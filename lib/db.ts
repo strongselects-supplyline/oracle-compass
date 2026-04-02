@@ -23,6 +23,9 @@ export type DailyLog = {
     fuelPostSession: boolean;
     fuelHydration: number | null; // 1-5
     fuelDairyFlag: boolean; // true = dairy within 2hrs of vocals (anti-pattern)
+    caffeineCutoff: boolean; // check if caffeine stopped by 1PM
+    trataka: boolean; // 5-10m candle gazing before bed
+    proteinAtMeals: boolean; // ensures tyrosine for dopamine processing
     // Session intelligence
     sessionQuality: number | null; // 1-5 (1=struggled, 3=solid, 5=flow state)
     sessionType: string; // 'recording' | 'mixing' | 'mastering' | 'writing' | ''
@@ -163,6 +166,9 @@ function getDefaultLog(date: string): DailyLog {
         fuelPostSession: false,
         fuelHydration: null,
         fuelDairyFlag: false,
+        caffeineCutoff: false,
+        trataka: false,
+        proteinAtMeals: false,
         sessionQuality: null,
         sessionType: '',
         personalTime: false,
