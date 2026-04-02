@@ -25,7 +25,7 @@ export default function EnginePage() {
   const [accounts, setAccounts] = useState<Account[]>(DEFAULT_ACCOUNTS);
   const [editingAccount, setEditingAccount] = useState<number | null>(null);
 
-  const [telemetry, setTelemetry] = useState<DailyTelemetry>({ sf_hours_logged: 0, lid_hours_logged: 0, doordash_earned: 0 });
+  const [telemetry, setTelemetry] = useState<DailyTelemetry>({ doordash_earned: 0 });
 
   const [priority, setPriority] = useState<string | null>(null);
   const [flags, setFlags] = useState<OracleFlag[]>([]);
@@ -251,27 +251,25 @@ export default function EnginePage() {
           ))}
         </div>
 
-        <div className="card">
-          <div className="flex justify-between items-center mb-4">
-            <p className="text-[10px] font-black tracking-[0.18em] text-[#555] uppercase">Income Bridge</p>
-          </div>
-
-          <div className="space-y-3">
-            <div className="flex justify-between items-end">
-              <div>
-                <p className="text-[9px] text-[#444] uppercase tracking-widest mb-1">DoorDash</p>
-                <p className="text-lg font-black text-amber-500">${telemetry.doordash_earned} <span className="text-[11px] font-bold text-[#555]">/ $1,000</span></p>
+        <div className="card mt-6">
+          <p className="text-[10px] font-black tracking-[0.18em] text-[#555] uppercase mb-4">Engine Protocol Stack</p>
+          <div className="space-y-0">
+            {[
+              { label: "Delay first meal", detail: "IF window → fasted state = repair state active", color: "#22c55e" },
+              { label: "Protein first in eating window", detail: "Calorie restriction without protein = muscle loss", color: "#22c55e" },
+              { label: "Lift 3x/week minimum", detail: "Muscle is the longevity signal. IF alone isn't enough.", color: "#22c55e" },
+              { label: "Creatine 5g/day", detail: "Up to 20-25g when sleep-deprived (cognitive rescue)", color: "#f59e0b" },
+              { label: "Kill the black plastic", detail: "BPA + phthalates → 20% T-drop. Glass > plastic always.", color: "#ef4444" },
+              { label: "Visceral fat is the silent killer", detail: "Doubles early mortality risk. You can't see it until the belly.", color: "#ef4444" },
+            ].map((item, i) => (
+              <div key={i} className="flex items-start gap-3 py-2.5 border-b border-[#1a1a1a] last:border-0">
+                <div style={{ background: item.color }} className="w-1.5 h-1.5 rounded-full mt-1.5 flex-shrink-0" />
+                <div>
+                  <div className="text-xs font-bold text-white">{item.label}</div>
+                  <div className="text-[10px] text-[#444] mt-0.5">{item.detail}</div>
+                </div>
               </div>
-              <p className="text-[10px] font-black tracking-widest text-[#444] uppercase">(log on Kill tab)</p>
-            </div>
-            {telemetry.doordash_earned < 1000 && (
-              <div className="h-1 bg-[#1e1e1e] rounded-full overflow-hidden mt-3">
-                <div
-                  className="h-full rounded-full transition-all duration-500 bg-amber-500"
-                  style={{ width: `${Math.min((telemetry.doordash_earned / 1000) * 100, 100)}%` }}
-                />
-              </div>
-            )}
+            ))}
           </div>
         </div>
 

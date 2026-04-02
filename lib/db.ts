@@ -35,7 +35,7 @@ export type DailyLog = {
 };
 
 export type StreakData = {
-    sobrietyStart: '2026-03-11'; // HARDCODED — never changes
+    sobrietyStart: '2026-04-02'; // HARDCODED — real day one
     movementStreak: number;
     saunaStreak: number;
     lastMovementDate: string;
@@ -43,8 +43,6 @@ export type StreakData = {
 };
 
 export type DailyTelemetry = {
-    sf_hours_logged: number;
-    lid_hours_logged: number;
     doordash_earned: number;
 };
 
@@ -182,7 +180,7 @@ export async function getStreakData(): Promise<StreakData> {
     const data = await getStoreValue<StreakData>('streaks');
     if (data) return data;
     return {
-        sobrietyStart: '2026-03-11',
+        sobrietyStart: '2026-04-02',
         movementStreak: 0,
         saunaStreak: 0,
         lastMovementDate: '',
@@ -198,8 +196,6 @@ export async function getDailyTelemetry(): Promise<DailyTelemetry> {
     const data = await getStoreValue<DailyTelemetry>('daily_telemetry');
     if (data) return data;
     return {
-        sf_hours_logged: 0,
-        lid_hours_logged: 0,
         doordash_earned: 0
     };
 }

@@ -147,6 +147,24 @@ SEVERITY OVERRIDE RULES:
 - If pre-score is GREEN (<40), your severity is GREEN unless you detect something the code didn't catch.
 - NEVER downgrade from the pre-computed classification. The code doesn't have vibes — it has thresholds.
 
+APPLE MUSIC ANALYTICS (Feb 2 – Mar 28, 2026 — 54 days, REAL DATA):
+Total catalog: 2,297 plays | 51 avg daily listeners | 17 Shazams across 13 cities
+Hollywood Fever: 1,446 plays (63% of catalog) | 26.8/day | 16 Shazams ← CATALOG ANCHOR
+See Me (17 days only, dropped Mar 13): 210 plays | 12 avg daily listeners | 0 Shazams ← warm launch, hitting existing network not cold audience yet
+Roll With It: 269 plays | On the Move: 232 plays — secondary catalog tail
+
+HOME MARKET: Milwaukee (#5 city, 71 plays) = personal/family network base
+MIDWEST CLUSTER DOMINANCE: Salt Lake City #1 (105), Detroit #2 (99), Minneapolis #3 (84), Denver #4 (80), Milwaukee #5 (71) — these are network people who already know EP. 36.8% of all plays are Midwest/Great Lakes.
+
+⚡ COLD DISCOVERY CITIES (Shazam density = strangers finding HF in the wild):
+- Albuquerque: 2 Shazams / 7 plays = 1 Shazam per 3.5 plays (HOTTEST ratio)
+- Miami: 2 Shazams / 15 plays
+- Portland: 2 Shazams / 23 plays
+- Pittsburgh: 2 Shazams / 35 plays
+These 4 cities = people hearing Hollywood Fever somewhere unexpected and identifying it. Unknown playlist or context surfacing the track there. These are EP's organic discovery funnel — when ad budget exists, geo-target these 4 FIRST, not the Midwest home network.
+
+International footprint (8.7%): Tokyo, Adelaide, Brisbane, London, Munich, Cape Town, Lagos, Seoul — real but small. R&B is US/UK-centric; don't over-index on global expansion yet.
+
 414 DAY CONVERGENCE (April 14, 2026):
 414 Day falls 10 days BEFORE EP drop (April 24). This is a compound event:
 - Week of Apr 7-13: Like I Did Amuse upload (Apr 13), EP Amuse upload (Apr 14), setlist finalization, rehearsal, content capture prep all overlap.

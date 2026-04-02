@@ -13,6 +13,12 @@ import { getKillStats } from "@/lib/killList";
 export default function BottomNav() {
     const pathname = usePathname();
     const [showMore, setShowMore] = useState(false);
+    const [bizDay, setBizDay] = useState(false);
+    const [oracleSeverity, setOracleSeverity] = useState<string | null>(null);
+    const [unreviewedCopy, setUnreviewedCopy] = useState(false);
+    const [plannerDot, setPlannerDot] = useState(false);
+    const [killRed, setKillRed] = useState(false);
+    const [killCount, setKillCount] = useState(0);
 
     useEffect(() => {
         setBizDay(isBizDay(getDayType()));
@@ -50,14 +56,13 @@ export default function BottomNav() {
     ];
 
     const moreNavs = [
-        { name: "Plan",   path: "/planner",  icon: "\uD83D\uDCCB" },
+        { name: "Plan",   path: "/planner",  icon: "📋" },
         { name: "Engine", path: "/engine",   icon: "⚙️" },
-        { name: "Studio", path: "/studio",   icon: "\uD83C\uDFA4" },
+        { name: "Studio", path: "/studio",   icon: "🎤" },
         { name: "Flow",   path: "/velocity",  icon: "📈" },
         { name: "Label",  path: "/label",    icon: "🏷️" },
-        { name: "CRM",    path: "/crm",      icon: "🤝" },
         { name: "Geo",    path: "/geo",      icon: "🗺️" },
-        { name: "Grind",  path: "/grind",    icon: "\uD83D\uDCAA" },
+        { name: "Grind",  path: "/grind",    icon: "💪" },
         { name: "Brain",  path: "/brain",    icon: "🧠" },
     ];
 
@@ -85,24 +90,6 @@ export default function BottomNav() {
                         {moreNavs.map(n => {
                             const active = pathname === n.path || (n.name === "Studio" && pathname === "/sonic");
                             const dotColor = getDotColor(n.name);
-                            const isExternal = n.path === "/crm";
-
-                            if (isExternal) {
-                                return (
-                                    <a 
-                                        key={n.path} 
-                                        href={n.path} 
-                                        className={`more-item ${active ? "active" : ""}`}
-                                        onClick={() => setShowMore(false)}
-                                    >
-                                        <span className="icon relative">
-                                            {n.icon}
-                                            {dotColor && <span className={`absolute -top-1 -right-2 w-2 h-2 ${dotColor} rounded-full border border-[#111]`} />}
-                                        </span>
-                                        <span>{n.name}</span>
-                                    </a>
-                                );
-                            }
 
                             return (
                                 <Link 
@@ -158,5 +145,4 @@ export default function BottomNav() {
             </nav>
         </>
     );
-}
 }

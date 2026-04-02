@@ -81,7 +81,7 @@ export default function BrainPage() {
         </div>
 
         {/* ── Philosophical Anchors ── */}
-        <div className="space-y-10 mb-14">
+        <div className="space-y-8 mb-12">
           <Anchor text="Done is the tribute." />
           <Anchor text="Every move must compound." />
           <Anchor text="The anesthesia phase is over." />
@@ -92,6 +92,42 @@ export default function BrainPage() {
               Channel the power.<br />
               <span className="text-[#666] mt-1 block">ALL LOVE is the output.</span>
             </p>
+          </div>
+          <div>
+            <Anchor text="The mind is an organ. Not an identity." />
+            <p className="text-[#888] text-sm font-medium leading-relaxed mt-3 ml-1">
+              Observe it. Don&apos;t become it.<br />
+              <span className="text-[11px] text-[#555] italic">When stuck: &ldquo;What is my mind doing right now?&rdquo;</span>
+            </p>
+          </div>
+          <div>
+            <Anchor text="Design for the worst case. Be surprised by the rest." />
+            <p className="text-[#888] text-sm font-medium leading-relaxed mt-3 ml-1">
+              Strategy based on 90% chance of success is a fragile strategy.<br />
+              <span className="text-[11px] text-[#555] italic">Worst-case first. Then act.</span>
+            </p>
+          </div>
+        </div>
+
+        {/* ── NSDR Recovery Protocol ── */}
+        <div className="card mb-10">
+          <p className="text-[10px] font-black tracking-[0.18em] text-[#555] uppercase mb-4">Recovery Protocol</p>
+          <div className="space-y-0">
+            {[
+              { step: "Morning: Delay first meal", note: "IF window = repair state" },
+              { step: "10-20min NSDR / Yoga Nidra", note: "After depleted sessions — replenishes dopamine faster than caffeine" },
+              { step: "Observer mode interrupt", note: "\"What is my mind doing?\" — not \"Why am I like this?\"" },
+              { step: "Creatine 5g daily", note: "20-25g when sleep-deprived (cognitive rescue protocol)" },
+              { step: "No social media during reset window", note: "Retriggers the drain. Open after, not during." },
+            ].map((item, i) => (
+              <div key={i} className="flex items-start gap-3 py-2.5 border-b border-[#1a1a1a] last:border-0">
+                <span className="text-amber-500 font-black text-[10px] flex-shrink-0 mt-0.5">{i + 1}</span>
+                <div>
+                  <div className="text-xs font-bold text-white">{item.step}</div>
+                  <div className="text-[10px] text-[#444] mt-0.5">{item.note}</div>
+                </div>
+              </div>
+            ))}
           </div>
         </div>
 

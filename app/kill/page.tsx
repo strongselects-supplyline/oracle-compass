@@ -259,7 +259,7 @@ function ReleaseGroup({
 export default function KillPage() {
   const [tasks, setTasks] = useState<KillTask[]>([]);
   const [stats, setStats] = useState({ total: 0, cleared: 0, redRemaining: 0 });
-  const [telemetry, setTelemetry] = useState<DailyTelemetry>({ sf_hours_logged: 0, lid_hours_logged: 0, doordash_earned: 0 });
+  const [telemetry, setTelemetry] = useState<DailyTelemetry>({ doordash_earned: 0 });
   const [trackSummaries, setTrackSummaries] = useState<TrackHoursSummary[]>([]);
   const [loading, setLoading] = useState(true);
   const [recalStatus, setRecalStatus] = useState<"idle" | "running" | "done">("idle");

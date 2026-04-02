@@ -133,15 +133,15 @@ const RELEASE_DEFAULTS: Release[] = [
     contentDeliverables: { ...DEFAULT_DELIVERABLES, coreDriveComplete: true, campaignKitGenerated: true, ascap: "pending", mlc: "pending", soundExchange: "complete", songtrust: "pending", notes: "Live Mar 13. Core Drive: 2,713 tracks / 38 playlists. Campaign kit in docs/handoff_mar24/." } 
   },
   { 
-    title: "East Side Love", uploadDate: "2026-03-31", releaseDate: "2026-04-03", status: "unreleased", 
-    contentDeliverables: { ...DEFAULT_DELIVERABLES, coreDriveComplete: true, campaignKitGenerated: true, soundExchange: "complete", notes: "Core Drive: 1,221 tracks / 20 playlists. Campaign kit in docs/handoff_mar24/. Upload Mon Mar 31, shorter Amuse window." } 
+    title: "East Side Love", uploadDate: "2026-04-07", releaseDate: "2026-04-14", status: "unreleased", 
+    contentDeliverables: { ...DEFAULT_DELIVERABLES, coreDriveComplete: true, campaignKitGenerated: true, soundExchange: "complete", notes: "Core Drive: 1,221 tracks / 20 playlists. Campaign kit in docs/handoff_mar24/. 414 Day drop — Milwaukee track on Milwaukee's day." } 
   },
   { 
-    title: "Sweet Frustration", uploadDate: "2026-04-06", releaseDate: "2026-04-10", status: "unreleased", 
+    title: "Sweet Frustration", uploadDate: "2026-04-02", releaseDate: "2026-04-10", status: "unreleased", 
     contentDeliverables: { ...DEFAULT_DELIVERABLES, coreDriveComplete: true, campaignKitGenerated: true, soundExchange: "complete", notes: "Core Drive: 1,134 tracks / 20 playlists. KAYTRANADA lane. Campaign kit in docs/handoff_mar24/." } 
   },
   { 
-    title: "Like I Did", uploadDate: "2026-04-13", releaseDate: "2026-04-17", status: "unreleased", 
+    title: "Like I Did", uploadDate: "2026-04-09", releaseDate: "2026-04-17", status: "unreleased", 
     contentDeliverables: { ...DEFAULT_DELIVERABLES, coreDriveComplete: true, campaignKitGenerated: true, soundExchange: "complete", notes: "Core Drive: via Like I Did analysis (110 BPM D minor pocket). Campaign kit = worth_it_campaign_kit.md in docs/handoff_mar24/." } 
   },
   { 
@@ -152,7 +152,7 @@ const RELEASE_DEFAULTS: Release[] = [
 
 const RELEASES_KEY = "dynamic_releases";
 const RELEASES_VERSION_KEY = "releases_data_version";
-const RELEASE_DATA_VERSION = 20; // v20: ESL upload moved to Mon Mar 31 (shorter Amuse window, release still Apr 3)
+const RELEASE_DATA_VERSION = 21; // v21: ESL moved to 414 Day (Apr 14), SF upload moved up
 
 // Read from IndexedDB, seeding defaults on first call or after version bump
 export async function getDynamicReleases(): Promise<Release[]> {
