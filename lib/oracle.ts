@@ -58,6 +58,20 @@ export type ContentSnapshot = {
   } | null;
 };
 
+export type FanCaptureSnapshot = {
+  linktreeSetup: boolean;
+  mailchimpSetup: boolean;
+};
+
+export type LiveEventSnapshot = {
+  setlistLocked: boolean;
+  rehearsal1Done: boolean;
+  rehearsal2Done: boolean;
+  gearChecked: boolean;
+  contentPlan: boolean;
+  synesthesiaTested: boolean;
+};
+
 export type TimeSnapshot = {
   currentHour: number;       // 0-23
   currentBlock: string;      // 'pre-session' | 'studio' | 'post-studio' | 'evening' | 'dd-morning' | 'dd-evening'
@@ -101,6 +115,8 @@ export type OracleContext = {
   time: TimeSnapshot;
   session: SessionSnapshot;
   planner: PlannerSnapshot;
+  fanCapture: FanCaptureSnapshot;
+  livePhase: LiveEventSnapshot;
   declaredPriority: string | null;
 };
 
@@ -407,6 +423,35 @@ export async function assembleContext(): Promise<OracleContext> {
     sundayChecklistComplete: isSundayChecklistComplete(sundayChecklistData),
   };
 
+  // Fan Capture & Live Event reads
+  const [
+    linktreeSetup, mailchimpSetup,
+    setlistLocked, rehearsal1, rehearsal2, gear, contentPlan, synesthesia
+  ] = await Promise.all([
+    getStoreValue<boolean>("fan_capture_linktree"),
+    getStoreValue<boolean>("fan_capture_mailchimp"),
+    getStoreValue<boolean>("414day_setlist_locked"),
+    getStoreValue<boolean>("414day_rehearsal_1"),
+    getStoreValue<boolean>("414day_rehearsal_2"),
+    getStoreValue<boolean>("414day_gear_checked"),
+    getStoreValue<boolean>("414day_content_capture_plan"),
+    getStoreValue<boolean>("414day_synesthesia_tested")
+  ]);
+
+  const fanCapture: FanCaptureSnapshot = {
+    linktreeSetup: linktreeSetup || false,
+    mailchimpSetup: mailchimpSetup || false,
+  };
+
+  const livePhase: LiveEventSnapshot = {
+    setlistLocked: setlistLocked || false,
+    rehearsal1Done: rehearsal1 || false,
+    rehearsal2Done: rehearsal2 || false,
+    gearChecked: gear || false,
+    contentPlan: contentPlan || false,
+    synesthesiaTested: synesthesia || false,
+  };
+
   return {
     date: today,
     dayType: todayDayType,
@@ -427,6 +472,8 @@ export async function assembleContext(): Promise<OracleContext> {
     time,
     session,
     planner,
+    fanCapture,
+    livePhase,
     declaredPriority: declaredPriority || null,
   };
 }

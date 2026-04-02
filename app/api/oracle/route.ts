@@ -388,12 +388,13 @@ DOORDASH THIS MONTH (rolling 4wk): $${ctx.income.doordashEarningsThisMonth}
 
 -- LIVE PERFORMANCE --
 414 DAY MILWAUKEE: ${Math.ceil((new Date("2026-04-14").getTime() - new Date(ctx.date).getTime()) / 86400000)} days away (Apr 14, 3 days before album)
-SETLIST: Not yet tracked in Oracle context — check Kill List for prep status
+SETLIST: ${ctx.livePhase.setlistLocked ? "Locked" : "Pending"} | REHEARSALS: ${[ctx.livePhase.rehearsal1Done, ctx.livePhase.rehearsal2Done].filter(Boolean).length}/2 Done
+GEAR/CONTENT/VISUALS: Gear=${ctx.livePhase.gearChecked ? "Y" : "N"} ContentPlan=${ctx.livePhase.contentPlan ? "Y" : "N"} Synesthesia=${ctx.livePhase.synesthesiaTested ? "Y" : "N"}
 
 -- FAN INFRASTRUCTURE --
-LINKTREE: Not yet tracked — check Kill List
-MAILCHIMP: Not yet tracked — check Kill List
-NOTE: If both are missing, flag as RED. Zero owned audience = existential risk.
+LINKTREE: ${ctx.fanCapture.linktreeSetup ? "Active ✓" : "MISSING"}
+MAILCHIMP: ${ctx.fanCapture.mailchimpSetup ? "Active ✓" : "MISSING"}
+NOTE: If both are MISSING, flag as RED. Zero owned audience = existential risk.
 
 -- META --
 LAST DECREE: ${ctx.lastDecree?.severity ?? "none"} - "${ctx.lastDecree?.oracle_message ?? "none"}"
