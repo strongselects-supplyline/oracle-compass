@@ -33,6 +33,7 @@ export const BRAND_VOICE = {
             "No hype words: fire, banger, lit, slaps, vibes, immaculate",
             "Specificity beats vagueness: '3AM in Lake Geneva' > 'late night vibes'",
             "Social captions: 1–3 lines max. Restraint.",
+            "ONE IDEA PER POST. You think in 4K, most receive in 720p. Simplify the surface, keep the depth in the music.",
             "Dates stated plainly: 'friday.' not 'THIS FRIDAY 🔥'",
             "Maximum one emoji per post, only when it adds meaning",
             "Third-person bio: always 'Ethan Payton', never 'EP'",
@@ -108,6 +109,7 @@ export const BRAND_VOICE = {
         "Merch never announced before design files exist",
         "No posting that breaks lowercase convention without explicit CEO approval",
         "Never lead copy with another artist's name — lead with the feeling, let the sound prove the comparison",
+        "Content must pass the '720p stranger test' — if a stranger can't feel it in one pass, cut it down.",
     ],
 } as const;
 
