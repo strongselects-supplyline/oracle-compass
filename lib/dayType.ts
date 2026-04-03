@@ -2,9 +2,21 @@
 // Core gating logic for Oracle Compass
 //
 // CURRENT SCHEDULE (EP sprint through Apr 24, 2026):
-//   Mon/Wed/Fri: STUDIO + SAUNA DAY (10AM-2PM studio, sauna reset, DD 2-8:30PM through Apr 3)
-//   Tue/Thu/Sat: STUDIO DAY (10AM-2PM studio, DD 2-8:30PM through Apr 3)
+//   Mon/Wed/Fri: STUDIO + SAUNA DAY
+//   Tue/Thu/Sat: STUDIO DAY
 //   Sunday: SACRED
+//
+// DAILY BLOCK MAP:
+//   6-7 AM    → DD Morning Sprint (1hr ~$25)
+//   7-9 AM    → Sovereignty Stack + Movement
+//   10 AM-12  → Studio Block 1
+//   12-2 PM   → DD Midday Sprint (2hrs ~$50)
+//   2-4 PM    → Studio Block 2
+//   5:30-8:30 → DD Evening Sprint (2-3hrs ~$50-75)
+//   9 PM+     → Wind-down, Trataka
+//
+// DD TARGET: $1,800/mo @ $25/hr net = ~72 hrs/mo = ~2.8 hrs/day
+// Only need 2 of 3 sprints most days to hit target.
 //
 // BIZ DAY is disabled during the EP sprint. Business tasks (outreach, touches)
 // still fire from the Kill List per-release checklist — they're not day-gated.

@@ -16,30 +16,39 @@ type ProtocolStep = { icon: string; action: string; tab?: string };
 
 function getProtocolSteps(dayType: string): { tagline: string; steps: ProtocolStep[] } {
   if (dayType === "STUDIO + SAUNA DAY") return {
-    tagline: "6-Hour Dual-Track Sprint + Thermal Reset.",
+    tagline: "Split-Block Studio + Thermal Reset + DD Sprints.",
     steps: [
-      { icon: "\u2600\uFE0F", action: "Sovereignty Stack \u2192 log below" },
-      { icon: "\uD83C\uDFB9", action: "10 AM \u2192 6hr Dual-Track Sprint (2 songs at once)" },
-      { icon: "\uD83D\uDD25", action: "4 PM \u2192 Sauna session (thermal reset)" },
+      { icon: "\uD83D\uDE97", action: "6 AM \u2192 DD Morning Sprint (1hr)" },
+      { icon: "\u2600\uFE0F", action: "7 AM \u2192 Sovereignty Stack \u2192 log below" },
+      { icon: "\uD83C\uDFB9", action: "10 AM \u2192 Studio Block 1 (mix/vocals)" },
+      { icon: "\uD83D\uDE97", action: "12 PM \u2192 DD Midday Sprint (2hrs)" },
+      { icon: "\uD83C\uDFA4", action: "2 PM \u2192 Studio Block 2" },
+      { icon: "\uD83D\uDD25", action: "4 PM \u2192 Sauna (thermal reset)" },
+      { icon: "\uD83D\uDE97", action: "5:30 PM \u2192 DD Evening Sprint (2-3hrs)" },
       { icon: "\uD83D\uDCF1", action: "Post content from STUDIO queue", tab: "studio" },
     ]
   };
   if (dayType === "STUDIO DAY") return {
-    tagline: "44 Tracks. 10 Hrs Each. No Distractions.",
+    tagline: "Split-Block Studio + DD Sprints. No Distractions.",
     steps: [
-      { icon: "\u2600\uFE0F", action: "Sovereignty Stack \u2192 log below" },
-      { icon: "\uD83C\uDFB9", action: "10 AM \u2192 6hr Dual-Track Sprint (Vocals + Mix)" },
-      { icon: "\uD83C\uDFA4", action: "Track A: Vocals | Track B: Mixing" },
+      { icon: "\uD83D\uDE97", action: "6 AM \u2192 DD Morning Sprint (1hr)" },
+      { icon: "\u2600\uFE0F", action: "7 AM \u2192 Sovereignty Stack \u2192 log below" },
+      { icon: "\uD83C\uDFB9", action: "10 AM \u2192 Studio Block 1 (mix/vocals)" },
+      { icon: "\uD83D\uDE97", action: "12 PM \u2192 DD Midday Sprint (2hrs)" },
+      { icon: "\uD83C\uDFA4", action: "2 PM \u2192 Studio Block 2" },
+      { icon: "\uD83D\uDE97", action: "5:30 PM \u2192 DD Evening Sprint (2-3hrs)" },
       { icon: "\uD83D\uDCF1", action: "Post content from STUDIO queue", tab: "studio" },
     ]
   };
   if (dayType === "BIZ DAY") return {
-    tagline: "Pipeline moves today. ENGINE is Track 1.",
+    tagline: "Pipeline moves + DD Sprints. ENGINE is Track 1.",
     steps: [
-      { icon: "\u2600\uFE0F", action: "Sovereignty Stack \u2192 log below" },
+      { icon: "\uD83D\uDE97", action: "6 AM \u2192 DD Morning Sprint (1hr)" },
+      { icon: "\u2600\uFE0F", action: "7 AM \u2192 Sovereignty Stack \u2192 log below" },
       { icon: "\u2699\uFE0F", action: "Check ENGINE for pipeline tasks", tab: "engine" },
+      { icon: "\uD83D\uDE97", action: "12 PM \u2192 DD Midday Sprint (2hrs)" },
       { icon: "\uD83D\uDCE4", action: "Push content to IG/TikTok/YouTube" },
-      { icon: "\uD83D\uDCCA", action: "Review STUDIO waterfall \u2014 is anything overdue?", tab: "studio" },
+      { icon: "\uD83D\uDE97", action: "5:30 PM \u2192 DD Evening Sprint (2-3hrs)" },
       { icon: "\uD83D\uDD2E", action: "Read today's Oracle decree", tab: "oracle" },
     ]
   };

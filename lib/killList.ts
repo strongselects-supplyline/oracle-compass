@@ -1121,24 +1121,90 @@ export async function deriveKillList(): Promise<KillTask[]> {
   const sfHours = sfSummary?.totalHours || 0;
   const lidHours = lidSummary?.totalHours || 0;
 
-  // DoorDash ($1,000 target by EP release Apr 24)
-  if (telemetry.doordash_earned < 1000 && now < epReleaseDeadline) {
-    const dailyTargetDD = Math.ceil((1000 - telemetry.doordash_earned) / daysToRelease);
-    const ddUrgency = dailyTargetDD > 200 ? "RED" : dailyTargetDD > 120 ? "AMBER" : "GREEN";
-    tasks.push({
-      id: "telemetry-dd",
-      title: `DoorDash: Earn $${dailyTargetDD} today`,
-      subtitle: `$${telemetry.doordash_earned} / $1,000 logged. ${daysToRelease} days left.`,
-      howTo: [
-        `You need $${dailyTargetDD}/day to hit the $1k target by EP release.`,
-        "Lock your 2:00 PM - 8:30 PM window.",
-        "Update the Telemetry panel instantly when you get home."
-      ],
-      urgency: ddUrgency,
-      pillar: "business",
-      timeBlock: "evening",
-      action: async () => {}, // Handled by telemetry UI
-    });
+  // DoorDash — $1,800/month rolling target
+  // Dynamic sprint windows: 6-7AM (morning), 12-2PM (midday), 5:30-8:30PM+ (evening)
+  // Min ~3.5 hrs/day across 2-3 sprints. Sundays off.
+  const DD_MONTHLY_TARGET = 1800;
+  const monthNow = new Date();
+  const daysInMonth = new Date(monthNow.getFullYear(), monthNow.getMonth() + 1, 0).getDate();
+  const currentDay = monthNow.getDate();
+  // Count remaining working days (exclude Sundays)
+  let ddWorkingDaysLeft = 0;
+  for (let d = currentDay; d <= daysInMonth; d++) {
+    const check = new Date(monthNow.getFullYear(), monthNow.getMonth(), d);
+    if (check.getDay() !== 0) ddWorkingDaysLeft++;
+  }
+  ddWorkingDaysLeft = Math.max(ddWorkingDaysLeft, 1);
+  const ddRemaining = Math.max(DD_MONTHLY_TARGET - telemetry.doordash_earned, 0);
+  const ddDailyTarget = Math.ceil(ddRemaining / ddWorkingDaysLeft);
+  const ddPct = Math.round((telemetry.doordash_earned / DD_MONTHLY_TARGET) * 100);
+  const isSunday = new Date().getDay() === 0;
+
+  if (ddRemaining > 0 && !isSunday) {
+    const ddUrgency = ddDailyTarget > 120 ? "RED" : ddDailyTarget > 80 ? "AMBER" : "GREEN";
+
+    // Morning sprint: 6-7 AM (~$20, 1hr)
+    const ddMornKey = `dd_morning:${today}`;
+    const ddMornDone = await getStoreValue(ddMornKey);
+    if (!ddMornDone && hour >= 5 && hour < 8) {
+      tasks.push({
+        id: "dd-morning",
+        title: `DD Morning Sprint — 6-7 AM`,
+        subtitle: `$${telemetry.doordash_earned}/$${DD_MONTHLY_TARGET} (${ddPct}%) · ~$${Math.round(ddDailyTarget * 0.2)} target · ${ddWorkingDaysLeft}d left`,
+        howTo: [
+          "Quick 1-hour burst before your stack. ~$25 net.",
+          "Breakfast rush = high tips. Stay in a tight radius.",
+          "You only need 2 of 3 sprints to hit daily pace.",
+          "Tap ✓ when this sprint is done.",
+        ],
+        urgency: ddUrgency,
+        pillar: "business",
+        timeBlock: "any",
+        action: async () => { await setStoreValue(ddMornKey, true); },
+      });
+    }
+
+    // Midday sprint: 12-2 PM (~$35, 2hrs)
+    const ddMidKey = `dd_midday:${today}`;
+    const ddMidDone = await getStoreValue(ddMidKey);
+    if (!ddMidDone && hour >= 11 && hour < 15) {
+      tasks.push({
+        id: "dd-midday",
+        title: `DD Midday Sprint — 12-2 PM`,
+        subtitle: `$${telemetry.doordash_earned}/$${DD_MONTHLY_TARGET} (${ddPct}%) · ~$${Math.round(ddDailyTarget * 0.35)} target · ${ddWorkingDaysLeft}d left`,
+        howTo: [
+          "2-hour window between studio blocks. ~$50 net.",
+          "Lunch rush = consistent volume.",
+          "Stay efficient — decline orders under $6.",
+          "Back to Studio Block 2 at 2 PM.",
+        ],
+        urgency: ddUrgency,
+        pillar: "business",
+        timeBlock: "any",
+        action: async () => { await setStoreValue(ddMidKey, true); },
+      });
+    }
+
+    // Evening sprint: 5:30-8:30+ PM (~$50, 2-3hrs)
+    const ddEveKey = `dd_evening:${today}`;
+    const ddEveDone = await getStoreValue(ddEveKey);
+    if (!ddEveDone && hour >= 17) {
+      tasks.push({
+        id: "dd-evening",
+        title: `DD Evening Sprint — 5:30-8:30 PM`,
+        subtitle: `$${telemetry.doordash_earned}/$${DD_MONTHLY_TARGET} (${ddPct}%) · ~$${Math.round(ddDailyTarget * 0.45)} target · ${ddWorkingDaysLeft}d left`,
+        howTo: [
+          "Biggest window — dinner rush. 2-3hrs = ~$50-75 net.",
+          "Flexible end time. Go until you hit daily target.",
+          "This is where the bulk of today's DD income lands.",
+          "Log earnings with the + button when done.",
+        ],
+        urgency: ddUrgency,
+        pillar: "business",
+        timeBlock: "evening",
+        action: async () => { await setStoreValue(ddEveKey, true); },
+      });
+    }
   }
 
   // SF Mixdown (11 hr target by EP upload Apr 14)
@@ -1150,7 +1216,7 @@ export async function deriveKillList(): Promise<KillTask[]> {
       title: `Mix/Master SF: ${dailyTargetSF} hr pace`,
       subtitle: `Sweet Frustration: ${sfHours} / 11 hrs logged. ${daysToUpload} days to upload.`,
       howTo: [
-        "10:00 AM - 2:00 PM is the unbreakable studio block.",
+        "10-12 AM = Studio Block 1. 2-4 PM = Studio Block 2 (DD midday fills the gap).",
         "Your only job is closing this track.",
         "Sessions logged on the Log tab automatically update this pace."
       ],
@@ -1170,7 +1236,7 @@ export async function deriveKillList(): Promise<KillTask[]> {
       title: `Mix/Master LID: ${dailyTargetLID} hr pace`,
       subtitle: `Like I Did: ${lidHours} / 11 hrs logged. ${daysToUpload} days to upload.`,
       howTo: [
-        "10:00 AM - 2:00 PM is the unbreakable studio block.",
+        "10-12 AM = Studio Block 1. 2-4 PM = Studio Block 2 (DD midday fills the gap).",
         "If SF is done, all your time goes here.",
         "Sessions logged on the Log tab automatically update this pace."
       ],
