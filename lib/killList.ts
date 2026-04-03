@@ -293,6 +293,86 @@ export async function deriveKillList(): Promise<KillTask[]> {
     }
   }
 
+  // ── 2.7 "ITS ALL LOVE" CONTENT SPRINT (22-Day Protocol) ──────────
+  // Dynamic phase task based on days until Apr 24 EP drop.
+  const epDropDate = new Date("2026-04-24T00:00:00");
+  const daysToEpDrop = Math.ceil((epDropDate.getTime() - new Date().getTime()) / 86400000);
+  const contentSprKey = `content_sprint_clear:${today}`;
+  const contentSprintCleared = await getStoreValue(contentSprKey);
+
+  if (!contentSprintCleared && daysToEpDrop >= 0 && daysToEpDrop <= 22) {
+    if (daysToEpDrop > 10) {
+      // Phase 1: Ambient Awareness (Apr 2-13)
+      tasks.push({
+        id: "content-sprint-phase1",
+        title: "Post \"Its All Love\" sip video",
+        subtitle: `Phase 1: Ambient Awareness. ${daysToEpDrop} days to EP. Own the phrase.`,
+        howTo: [
+          "White tee, glasses, mug of tea.",
+          "Setup → drop a 4K observation → sip → \"But it's all love.\"",
+          "Embed sub-frequency audio layer underneath softly.",
+          "EP snippet playing underneath softly.",
+          "Point. Shoot. Sip. Post. No editing required.",
+        ],
+        urgency: "RED" as const,
+        pillar: "creative" as const,
+        timeBlock: "content" as const,
+        action: async () => { await setStoreValue(contentSprKey, true); },
+      });
+    } else if (daysToEpDrop === 10) {
+      // Phase 2: 414 Day (Apr 14)
+      tasks.push({
+        id: "content-sprint-phase2",
+        title: "414 Day content shift — ESL + Milwaukee",
+        subtitle: "Phase 2: ESL drops today. Content pivots to the city.",
+        howTo: [
+          "Post BTS of ESL creation + Milwaukee-specific content.",
+          "\"Its All Love\" video that references the city.",
+          "One post: \"Happy 414. This one's for the city.\" + link.",
+          "3-4 pieces of content today. This is the hometown statement.",
+        ],
+        urgency: "RED" as const,
+        pillar: "creative" as const,
+        timeBlock: "content" as const,
+        action: async () => { await setStoreValue(contentSprKey, true); },
+      });
+    } else if (daysToEpDrop > 0) {
+      // Phase 3: EP Countdown (Apr 15-23)
+      tasks.push({
+        id: "content-sprint-phase3",
+        title: `EP Countdown content (${daysToEpDrop}d left)`,
+        subtitle: "Phase 3: Accelerate. 2 videos + 15s mix preview from DAW.",
+        howTo: [
+          "1-2 \"Its All Love\" sip videos today.",
+          "Record a 15-second mix preview from a different EP track.",
+          "Short studio session clip — just you in the booth, music playing.",
+          "The frequency of posts teaches the algorithm you're about to drop.",
+        ],
+        urgency: "RED" as const,
+        pillar: "creative" as const,
+        timeBlock: "content" as const,
+        action: async () => { await setStoreValue(contentSprKey, true); },
+      });
+    } else {
+      // Phase 4: Drop Day (Apr 24)
+      tasks.push({
+        id: "content-sprint-phase4",
+        title: "DROP DAY — ALL LOVE EP is here.",
+        subtitle: "Phase 4: Morning resolution, midday announce, evening live.",
+        howTo: [
+          "MORNING: Final \"Its All Love\" video — \"...but it's ALL LOVE. Out now.\"",
+          "MIDDAY: Full EP announcement post.",
+          "EVENING: Go live or post a longer-form reaction/listen-along.",
+          "This is the day. Execute the 3-post stack.",
+        ],
+        urgency: "RED" as const,
+        pillar: "creative" as const,
+        timeBlock: "content" as const,
+        action: async () => { await setStoreValue(contentSprKey, true); },
+      });
+    }
+  }
+
   // ── 3. GRIND → Tasks ─────────────────────────────────────────────
   if (!dailyLog.sovereigntyStack) {
     tasks.push({
