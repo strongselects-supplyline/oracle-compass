@@ -6,6 +6,7 @@ import { getDynamicReleases, type Release } from "@/lib/releases";
 import type { OracleDecree, Realignment } from "@/lib/oracle";
 import { getKillStats } from "@/lib/killList";
 import { recalibrateOracle } from "@/lib/recalibrate";
+import { analyzeCompletionVelocity, buildExportPayload, type VelocityReport } from "@/lib/completionAnalytics";
 
 // ─── TYPES ──────────────────────────────────────────────────────────
 
@@ -280,6 +281,7 @@ export default function OraclePage() {
   const [killStats, setKillStats] = useState({ active: 0, total: 0 });
   const [telemetry, setTelemetry] = useState<DailyTelemetry | null>(null);
   const [nextRelease, setNextRelease] = useState<Release | null>(null);
+  const [velocity, setVelocity] = useState<VelocityReport | null>(null);
 
   const loadDecree = useCallback(async () => {
     const today = getTodayISO();
@@ -316,6 +318,7 @@ export default function OraclePage() {
     }
     setKillStats({ active: stats.total - stats.cleared, total: stats.total });
     setLoading(false);
+    analyzeCompletionVelocity().then(setVelocity);
   }, []);
 
   // Load on mount
@@ -348,6 +351,17 @@ export default function OraclePage() {
     setActions(fresh);
     setAssessment(assess(fresh, decree));
     setStoreValue(CLEARED_KEY, []);
+  };
+
+  const handleExport = async () => {
+    const payload = await buildExportPayload();
+    const blob = new Blob([JSON.stringify(payload, null, 2)], { type: "application/json" });
+    const url = URL.createObjectURL(blob);
+    const a = document.createElement("a");
+    a.href = url;
+    a.download = `oracle-compass-log-${new Date().toISOString().split("T")[0]}.json`;
+    a.click();
+    URL.revokeObjectURL(url);
   };
 
   const activeActions = actions.filter((a) => !a.cleared);
@@ -571,6 +585,41 @@ export default function OraclePage() {
               </div>
             )}
 
+            {/* ─── VELOCITY SUMMARY ─── */}
+            {velocity && (
+              <div className="mb-8" style={fadeSlide(0.28)}>
+                <h2 className="text-xs font-mono uppercase tracking-[0.25em] mb-3" style={{ color: "rgba(255,255,255,0.2)" }}>
+                  Execution Velocity
+                </h2>
+                <div
+                  className="rounded-xl p-4"
+                  style={{
+                    background: velocity.velocityDelta < -40 ? "rgba(255,45,45,0.05)" : "rgba(255,255,255,0.02)",
+                    border: velocity.velocityDelta < -40 ? "1px solid rgba(255,45,45,0.2)" : "1px solid rgba(255,255,255,0.06)",
+                  }}
+                >
+                  <div className="flex items-center justify-between mb-2">
+                    <span className="text-xs font-mono text-white">{velocity.thisWeekCount} tasks this week</span>
+                    <span className="text-xs font-mono" style={{
+                      color: velocity.velocityDelta > 0 ? "#00E676" : velocity.velocityDelta < -20 ? "#FF2D2D" : "#FFB800"
+                    }}>
+                      {velocity.velocityDelta > 0 ? "↑" : "↓"} {Math.abs(velocity.velocityDelta)}% vs last week
+                    </span>
+                  </div>
+                  <p className="text-xs" style={{ color: "rgba(255,255,255,0.4)" }}>{velocity.summary}</p>
+                  {velocity.neglectedLanes.length > 0 && (
+                    <div className="mt-3 flex flex-wrap gap-1.5">
+                      {velocity.neglectedLanes.map(l => (
+                        <span key={l.laneId} className="text-[9px] font-black px-2 py-0.5 rounded" style={{ background: "rgba(255,184,0,0.1)", color: "#FFB800", border: "1px solid rgba(255,184,0,0.2)" }}>
+                          {l.laneId} · {l.daysSince}d idle
+                        </span>
+                      ))}
+                    </div>
+                  )}
+                </div>
+              </div>
+            )}
+
             {/* ─── SYSTEM SNAPSHOT ─── */}
             {telemetry && nextRelease && (
               <div className="mb-8" style={fadeSlide(0.3)}>
@@ -602,9 +651,9 @@ export default function OraclePage() {
               </div>
             )}
 
-            {/* ─── RESET ─── */}
+            {/* ─── RESET + EXPORT ─── */}
             {clearedActions.length > 0 && (
-              <div className="text-center">
+              <div className="text-center flex flex-col items-center gap-3">
                 <button
                   onClick={handleReset}
                   className="text-xs font-mono uppercase tracking-wider px-4 py-2 rounded-lg transition-all duration-200"
@@ -613,6 +662,13 @@ export default function OraclePage() {
                   onMouseLeave={(e) => { (e.target as HTMLElement).style.borderColor = "rgba(255,255,255,0.08)"; (e.target as HTMLElement).style.color = "rgba(255,255,255,0.25)"; }}
                 >
                   Reset Oracle
+                </button>
+                <button
+                  onClick={handleExport}
+                  className="text-xs font-mono uppercase tracking-wider px-4 py-2 rounded-lg transition-all duration-200"
+                  style={{ color: "rgba(255,255,255,0.3)", border: "1px solid rgba(255,255,255,0.1)", background: "transparent" }}
+                >
+                  ⇩ Export Execution Log
                 </button>
               </div>
             )}

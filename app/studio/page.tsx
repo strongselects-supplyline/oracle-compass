@@ -2,10 +2,10 @@
 
 import { useEffect, useState } from "react";
 import { getDynamicReleases, Release, EP_RELEASE_DATE } from "@/lib/releases";
-import { getStoreValue, setStoreValue } from "@/lib/db";
+import { getStoreValue, setStoreValue, getDailyLog, getTodayISO } from "@/lib/db";
 import { PROJECTS, LOOSIES, TIMELINE_EVENTS, STATUSES, Project, Track, TrackStatus } from "@/lib/studioData";
 import { getWeekKey } from "@/lib/oracle";
-import { getSessionsForDateRange } from "@/lib/studioLog";
+import { getSessionsForDateRange, getAllSessions, StudioSessionEntry } from "@/lib/studioLog";
 
 // ── Utils ────────────────────────────────────────────────────
 function daysUntilDate(dateStr: string | null): number | null {
@@ -181,6 +181,7 @@ export default function StudioPage() {
     const [releases, setReleases] = useState<Release[]>([]);
     const [albumDays, setAlbumDays] = useState(0);
     const [sessions, setSessions] = useState(0);
+    const [lastSession, setLastSession] = useState<StudioSessionEntry | null>(null);
     const weekKey = `weekly_sessions:${getWeekKey()}`;
 
     useEffect(() => {
@@ -195,6 +196,11 @@ export default function StudioPage() {
             const { startStr, endStr } = getWeekDateRange();
             const loggedSessions = await getSessionsForDateRange(startStr, endStr);
             setSessions(loggedSessions.length);
+            // Resume session card
+            const allSessions = await getAllSessions();
+            if (allSessions.length > 0) {
+                setLastSession(allSessions[allSessions.length - 1]);
+            }
         };
         init();
     }, []);
@@ -218,6 +224,34 @@ export default function StudioPage() {
                         <div className="text-[9px] text-[#555] font-bold uppercase tracking-wider mt-0.5">days · ALL LOVE EP</div>
                     </div>
                 </div>
+
+                {/* Session Resume Card */}
+                {lastSession && (
+                    <div className="card mb-6 border border-[#1e1e1e]">
+                        <p className="text-[9px] font-black tracking-[0.2em] text-amber-500/70 uppercase mb-3">Resume Session</p>
+                        <div className="flex justify-between items-start">
+                            <div>
+                                <p className="text-sm font-black text-white">{lastSession.trackName}</p>
+                                <p className="text-[10px] text-[#555] mt-0.5 capitalize">
+                                    {lastSession.sessionType} · {lastSession.hours}h logged
+                                    {lastSession.quality && ` · Quality ${lastSession.quality}/5`}
+                                </p>
+                                <p className="text-[10px] text-[#444] mt-1">
+                                    {new Date(lastSession.createdAt).toLocaleDateString("en-US", { month: "short", day: "numeric" })}
+                                </p>
+                            </div>
+                            <div className="text-right">
+                                <p className="text-[9px] font-black text-amber-500 uppercase tracking-wider">Next step</p>
+                                <p className="text-[10px] text-[#888] mt-1">
+                                    {lastSession.sessionType === 'mixing' ? 'Continue mix' :
+                                     lastSession.sessionType === 'mastering' ? 'Master pass' :
+                                     lastSession.sessionType === 'recording' ? 'Continue tracking' :
+                                     lastSession.sessionType === 'writing' ? 'Continue writing' : 'Open session'}
+                                </p>
+                            </div>
+                        </div>
+                    </div>
+                )}
 
                 {/* Timeline */}
                 <Timeline />

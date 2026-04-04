@@ -2,6 +2,7 @@
 
 import { useState, useEffect, useCallback } from 'react';
 import { getStoreValue, setStoreValue } from '@/lib/db';
+import { getWeeklyLaneHeatmap, WeeklyHeatmap } from '@/lib/completionAnalytics';
 import {
   ALL_TRACKS,
   SPRINT_WEEKS,
@@ -66,9 +67,11 @@ export default function PlannerPage() {
   const [expandedPhases, setExpandedPhases] = useState<Set<Phase>>(new Set(['ALL_LOVE']));
   const [showMatrix, setShowMatrix]     = useState(false);
   const [showRules, setShowRules]       = useState(false);
+  const [heatmap, setHeatmap]           = useState<WeeklyHeatmap | null>(null);
 
   useEffect(() => {
     loadStatuses().then(s => { setStatuses(s); setLoaded(true); });
+    getWeeklyLaneHeatmap().then(setHeatmap);
   }, []);
 
   const cycleStatus = useCallback((trackId: string) => {
@@ -318,6 +321,46 @@ export default function PlannerPage() {
             );
           })}
         </div>
+
+        {/* ── LANE HEATMAP ── */}
+        {heatmap && (
+          <div className="px-4 mt-6">
+            <p className="text-[9px] font-black tracking-widest text-[#444] mb-3">WEEKLY LANE HEATMAP</p>
+            <div className="card !p-3">
+              {/* Day headers */}
+              <div className="grid grid-cols-8 gap-1 mb-2">
+                <div className="text-[7px] text-[#333] font-bold text-right pr-1 flex items-center justify-end"></div>
+                {['M','T','W','T','F','S','S'].map((d, i) => (
+                  <div key={i} className="text-[8px] text-[#445] font-black text-center">{d}</div>
+                ))}
+              </div>
+              {/* Lane rows */}
+              {[{id:'money',icon:'💰',color:'#22c55e'},{id:'body',icon:'🏋️',color:'#f97316'},{id:'music',icon:'🎹',color:'#60a5fa'},{id:'content',icon:'📱',color:'#f472b6'},{id:'life',icon:'🏠',color:'#facc15'},{id:'inner',icon:'🧘',color:'#a78bfa'}].map(lane => (
+                <div key={lane.id} className="grid grid-cols-8 gap-1 mb-1.5">
+                  <div className="text-[9px] flex items-center justify-end pr-1">{lane.icon}</div>
+                  {heatmap.days.map(dateISO => {
+                    const cell = heatmap.cells.find(c => c.laneId === lane.id && c.dateISO === dateISO);
+                    const t = cell?.touches || 0;
+                    const opacity = t === 0 ? 0 : t === 1 ? 0.25 : t <= 3 ? 0.55 : 0.9;
+                    return (
+                      <div
+                        key={dateISO}
+                        className="w-full aspect-square rounded"
+                        style={{
+                          backgroundColor: t === 0 ? '#111' : lane.color,
+                          opacity,
+                          border: '1px solid #1a1a1a',
+                        }}
+                        title={`${lane.id}: ${t} touches on ${dateISO}`}
+                      />
+                    );
+                  })}
+                </div>
+              ))}
+              <p className="text-[7px] text-[#333] mt-2 text-right">dim = 1 touch · bright = 4+ touches</p>
+            </div>
+          </div>
+        )}
 
         {/* ── FULL SPRINT PLAN MATRIX ── */}
         <div className="px-4 mt-6">
