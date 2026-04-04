@@ -1,6 +1,6 @@
 "use client";
 
-import { useEffect, useState } from "react";
+import { useEffect, useState, useCallback } from "react";
 import { getDayType, isSacredDay, isStudioDay } from "@/lib/dayType";
 import { getDailyLog, saveDailyLog, DailyLog, getStoreValue, getTodayISO } from "@/lib/db";
 import { getSobrietyStreak } from "@/lib/streaks";
@@ -9,6 +9,7 @@ import { useCloudSync } from "@/lib/useCloudSync";
 import { getMakeModeWeek } from "@/lib/oracle";
 import type { OracleDecree } from "@/lib/oracle";
 import { getLaneStatus, Lane } from "@/lib/lanes";
+import { getKillStats } from "@/lib/killList";
 import WeeklyMirror from "@/components/WeeklyMirror";
 import CheckItem from "@/components/CheckItem";
 import Link from "next/link";
@@ -90,7 +91,13 @@ export default function MorningMode() {
   const [daysUntilRelease, setDaysUntilRelease] = useState<number>(0);
   const [lanes, setLanes] = useState<Lane[]>([]);
   const [showProtocol, setShowProtocol] = useState(false);
+  const [killRedCount, setKillRedCount] = useState(0);
   const { syncStatus, sync: handleSync } = useCloudSync();
+
+  // Refresh lanes reactively after any state change
+  const refreshLanes = useCallback(async () => {
+    setLanes(await getLaneStatus());
+  }, []);
 
   // DoorDash State
   const [ddHours, setDdHours] = useState("");
@@ -120,6 +127,8 @@ export default function MorningMode() {
 
       setDecree(await getStoreValue<OracleDecree>(`oracle_decree:${getTodayISO()}`));
       setLanes(await getLaneStatus());
+      const stats = await getKillStats();
+      setKillRedCount(stats.redRemaining);
     };
     init();
   }, []);
@@ -137,6 +146,8 @@ export default function MorningMode() {
     const updated = { ...log, ...updates };
     setLog(updated);
     await saveDailyLog(updated);
+    // Refresh lanes so they reflect the new log state immediately
+    refreshLanes();
   };
 
   const submitDoorDash = async () => {
@@ -153,6 +164,7 @@ export default function MorningMode() {
         const tel = await getDailyTelemetry();
         tel.doordash_earned += parseFloat(ddRevenue) || 0;
         await saveDailyTelemetry(tel);
+        refreshLanes(); // Update money lane immediately
         setDdStatus("V"); setTimeout(() => { setDdStatus(""); setDdHours(""); setDdRevenue(""); }, 2000);
       }
       else setDdStatus("X");
@@ -249,23 +261,45 @@ export default function MorningMode() {
               <div className="mb-8">
                 <h3 className="text-[10px] font-black tracking-[0.2em] text-[#555] uppercase mb-3 px-1">Lanes Touched Today</h3>
                 <div className="grid grid-cols-6 gap-2">
-                  {lanes.map(lane => (
-                    <div key={lane.id} className="flex flex-col items-center gap-1.5">
-                      <div className={`w-12 h-12 rounded-full flex items-center justify-center text-lg transition-all duration-500 ${
-                        lane.touched
-                          ? `${lane.bgColor} ring-2 ring-current ${lane.color} scale-105`
-                          : 'bg-[#111] ring-1 ring-[#222] opacity-40'
-                      }`}>
-                        {lane.icon}
+                  {lanes.map(lane => {
+                    // Life lane is tappable — toggles personalTime directly
+                    const isTappable = lane.id === 'life';
+                    const handleTapLane = async () => {
+                      if (!isTappable || !log) return;
+                      await updateLog({ personalTime: !log.personalTime });
+                    };
+
+                    // Explicit ring colors per lane (ring-current doesn't work with Tailwind text classes)
+                    const ringColors: Record<string, string> = {
+                      money: 'ring-green-400', body: 'ring-orange-400', music: 'ring-blue-400',
+                      content: 'ring-pink-400', life: 'ring-yellow-400', inner: 'ring-purple-400',
+                    };
+
+                    return (
+                      <div
+                        key={lane.id}
+                        className={`flex flex-col items-center gap-1.5 ${isTappable ? 'cursor-pointer active:scale-95' : ''}`}
+                        onClick={isTappable ? handleTapLane : undefined}
+                      >
+                        <div className={`w-12 h-12 rounded-full flex items-center justify-center text-lg transition-all duration-500 ${
+                          lane.touched
+                            ? `${lane.bgColor} ring-2 ${ringColors[lane.id]} ${lane.color} scale-105`
+                            : 'bg-[#111] ring-1 ring-[#222] opacity-40'
+                        }`}>
+                          {lane.icon}
+                        </div>
+                        <span className={`text-[8px] font-black tracking-wider uppercase ${
+                          lane.touched ? lane.color : 'text-[#333]'
+                        }`}>{lane.label}</span>
+                        {lane.touched && lane.touchCount > 1 && (
+                          <span className={`text-[7px] font-bold ${lane.color} opacity-60`}>{lane.touchCount}x</span>
+                        )}
+                        {isTappable && !lane.touched && (
+                          <span className="text-[7px] text-[#333] font-bold">tap</span>
+                        )}
                       </div>
-                      <span className={`text-[8px] font-black tracking-wider uppercase ${
-                        lane.touched ? lane.color : 'text-[#333]'
-                      }`}>{lane.label}</span>
-                      {lane.touched && lane.touchCount > 1 && (
-                        <span className={`text-[7px] font-bold ${lane.color} opacity-60`}>{lane.touchCount}x</span>
-                      )}
-                    </div>
-                  ))}
+                    );
+                  })}
                 </div>
                 <div className="mt-3 text-center">
                   <span className="text-[10px] text-[#444] font-bold">
@@ -277,9 +311,25 @@ export default function MorningMode() {
 
             {/* NEED DIRECTION? — Kill List safety net */}
             <Link href="/kill" className="block mb-8">
-              <div className="card !p-4 text-center border-dashed border-[#222] hover:border-amber-500/30 transition-all active:scale-[0.98]">
-                <p className="text-sm font-black text-[#666]">Need direction?</p>
-                <p className="text-[10px] text-[#444] mt-0.5">Open the Kill List for data-backed next moves</p>
+              <div className={`card !p-4 text-center border-dashed transition-all active:scale-[0.98] ${
+                killRedCount > 0
+                  ? 'border-red-500/30 hover:border-red-500/50'
+                  : 'border-[#222] hover:border-amber-500/30'
+              }`}>
+                <p className="text-sm font-black text-[#666]">
+                  Need direction?
+                  {killRedCount > 0 && (
+                    <span className="ml-2 text-[10px] text-red-400 font-black">
+                      {killRedCount} RED
+                    </span>
+                  )}
+                </p>
+                <p className="text-[10px] text-[#444] mt-0.5">
+                  {killRedCount > 0
+                    ? `${killRedCount} urgent task${killRedCount > 1 ? 's' : ''} waiting on the Kill List`
+                    : 'Open the Kill List for data-backed next moves'
+                  }
+                </p>
               </div>
             </Link>
 

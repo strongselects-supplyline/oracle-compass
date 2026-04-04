@@ -586,7 +586,7 @@ export default function OraclePage() {
             )}
 
             {/* ─── VELOCITY SUMMARY ─── */}
-            {velocity && (
+            {velocity && (velocity.thisWeekCount > 0 || velocity.lastWeekCount > 0) && (
               <div className="mb-8" style={fadeSlide(0.28)}>
                 <h2 className="text-xs font-mono uppercase tracking-[0.25em] mb-3" style={{ color: "rgba(255,255,255,0.2)" }}>
                   Execution Velocity
@@ -600,11 +600,15 @@ export default function OraclePage() {
                 >
                   <div className="flex items-center justify-between mb-2">
                     <span className="text-xs font-mono text-white">{velocity.thisWeekCount} tasks this week</span>
-                    <span className="text-xs font-mono" style={{
-                      color: velocity.velocityDelta > 0 ? "#00E676" : velocity.velocityDelta < -20 ? "#FF2D2D" : "#FFB800"
-                    }}>
-                      {velocity.velocityDelta > 0 ? "↑" : "↓"} {Math.abs(velocity.velocityDelta)}% vs last week
-                    </span>
+                    {velocity.lastWeekCount > 0 ? (
+                      <span className="text-xs font-mono" style={{
+                        color: velocity.velocityDelta > 0 ? "#00E676" : velocity.velocityDelta < -20 ? "#FF2D2D" : "#FFB800"
+                      }}>
+                        {velocity.velocityDelta > 0 ? "↑" : "↓"} {Math.abs(velocity.velocityDelta)}% vs last week
+                      </span>
+                    ) : (
+                      <span className="text-xs font-mono" style={{ color: "rgba(255,255,255,0.25)" }}>first full week</span>
+                    )}
                   </div>
                   <p className="text-xs" style={{ color: "rgba(255,255,255,0.4)" }}>{velocity.summary}</p>
                   {velocity.neglectedLanes.length > 0 && (
@@ -651,9 +655,9 @@ export default function OraclePage() {
               </div>
             )}
 
-            {/* ─── RESET + EXPORT ─── */}
+            {/* ─── RESET ─── */}
             {clearedActions.length > 0 && (
-              <div className="text-center flex flex-col items-center gap-3">
+              <div className="text-center mb-4">
                 <button
                   onClick={handleReset}
                   className="text-xs font-mono uppercase tracking-wider px-4 py-2 rounded-lg transition-all duration-200"
@@ -663,15 +667,19 @@ export default function OraclePage() {
                 >
                   Reset Oracle
                 </button>
-                <button
-                  onClick={handleExport}
-                  className="text-xs font-mono uppercase tracking-wider px-4 py-2 rounded-lg transition-all duration-200"
-                  style={{ color: "rgba(255,255,255,0.3)", border: "1px solid rgba(255,255,255,0.1)", background: "transparent" }}
-                >
-                  ⇩ Export Execution Log
-                </button>
               </div>
             )}
+
+            {/* ─── EXPORT (always available) ─── */}
+            <div className="text-center">
+              <button
+                onClick={handleExport}
+                className="text-xs font-mono uppercase tracking-wider px-4 py-2 rounded-lg transition-all duration-200"
+                style={{ color: "rgba(255,255,255,0.3)", border: "1px solid rgba(255,255,255,0.1)", background: "transparent" }}
+              >
+                ⇩ Export Execution Log
+              </button>
+            </div>
           </>
         )}
       </div>
