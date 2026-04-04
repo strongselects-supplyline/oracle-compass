@@ -74,7 +74,7 @@ export const PROJECTS: Project[] = [
         tracks: [
             { title: 'I Like Girls', bpm: 107, key: 'F# min', rbConf: 0.74, sexy: 0.70, chill: 0.44, romantic: 0.32, happy: 0.35, uplifting: 0.34, energetic: 0.23, isrc: '', status: 'unreleased', releaseDate: null, pitchDeadline: null, isLeadSingle: false, leadRank: null },
             { title: 'SEE ME', bpm: 120, key: 'B min', rbConf: 0.68, sexy: 0.69, chill: 0.45, romantic: 0.46, happy: 0.50, uplifting: 0.46, energetic: 0.25, isrc: '', status: 'single_live', releaseDate: '2026-03-13', pitchDeadline: '2026-03-06', isLeadSingle: true, leadRank: 1 },
-            { title: 'East Side Love', bpm: 98, key: 'C# min', rbConf: 0.59, sexy: 0.87, chill: 0.63, romantic: 0.62, happy: 0.38, uplifting: 0.05, energetic: 0.10, isrc: '', status: 'unreleased', releaseDate: '2026-04-03', pitchDeadline: '2026-03-27', isLeadSingle: true, leadRank: 2 },
+            { title: 'East Side Love', bpm: 98, key: 'C# min', rbConf: 0.59, sexy: 0.87, chill: 0.63, romantic: 0.62, happy: 0.38, uplifting: 0.05, energetic: 0.10, isrc: '', status: 'unreleased', releaseDate: '2026-04-14', pitchDeadline: '2026-04-07', isLeadSingle: true, leadRank: 2 },
             { title: 'Want U Bad', bpm: 114, key: 'G min', rbConf: 0.52, sexy: 0.56, chill: 0.65, romantic: 0.46, happy: 0.58, uplifting: 0.38, energetic: 0.12, isrc: '', status: 'unreleased', releaseDate: null, pitchDeadline: null, isLeadSingle: false, leadRank: null },
             { title: 'Green Light Patient', bpm: 104, key: '', rbConf: null, sexy: null, chill: null, romantic: null, happy: null, uplifting: null, energetic: null, isrc: '', status: 'unreleased', releaseDate: null, pitchDeadline: null, isLeadSingle: false, leadRank: null },
             { title: 'Luxury', bpm: 100, key: '', rbConf: null, sexy: null, chill: null, romantic: null, happy: null, uplifting: null, energetic: null, isrc: '', status: 'unreleased', releaseDate: null, pitchDeadline: null, isLeadSingle: false, leadRank: null },
@@ -117,7 +117,7 @@ export const LOOSIES: Loosie[] = [
 
 export const TIMELINE_EVENTS: TimelineEvent[] = [
     { date: '2026-03-13', label: 'SEE ME', project: 'all-love', type: 'single' },
-    { date: '2026-04-03', label: 'East Side Love', project: 'all-love', type: 'single' },
+    { date: '2026-04-14', label: 'East Side Love', project: 'all-love', type: 'single' },
     { date: '2026-04-10', label: 'Sweet Frustration', project: 'all-love', type: 'single' },
     { date: '2026-04-17', label: 'Like I Did', project: 'all-love', type: 'single' },
     { date: '2026-04-24', label: 'ALL LOVE EP', project: 'all-love', type: 'album' },

@@ -20,7 +20,7 @@ export default function BrainPage() {
   const [albumTracksReady, setAlbumTracksReady] = useState(0);
   const week = getMakeModeWeek();
   const phasePercent = getPhasePercent();
-  const apr3Done = Date.UTC(new Date().getFullYear(), new Date().getMonth(), new Date().getDate()) >= Date.UTC(2026, 2, 3);
+  const apr3Done = Date.UTC(new Date().getFullYear(), new Date().getMonth(), new Date().getDate()) >= Date.UTC(2026, 3, 3);
 
   const currentPhase =
     phasePercent < 45 ? "MAKE" :

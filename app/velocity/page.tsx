@@ -22,7 +22,7 @@ import { getDynamicReleases, Release } from "@/lib/releases";
 
 const EP_RELEASES = [
   { title: "SEE ME",            releaseDate: "2026-03-13", color: "#8b5cf6" },
-  { title: "East Side Love",    releaseDate: "2026-04-03", color: "#3b82f6" },
+  { title: "East Side Love",    releaseDate: "2026-04-14", color: "#3b82f6" },
   { title: "Sweet Frustration", releaseDate: "2026-04-10", color: "#f59e0b" },
   { title: "Like I Did",        releaseDate: "2026-04-17", color: "#ec4899" },
   { title: "ALL LOVE (EP)",     releaseDate: "2026-04-24", color: "#d4a853" },
@@ -166,7 +166,7 @@ function EPFlywheel() {
   }
 
   const todayPct = Math.max(0, Math.min(100, ((today.getTime() - start.getTime()) / totalMs) * 100));
-  const compoundStart = toPct("2026-04-03");
+  const compoundStart = toPct("2026-04-10");
   const compoundEnd = toPct("2026-04-24");
 
   return (
@@ -239,10 +239,10 @@ function EPFlywheel() {
         <div className="flex justify-between items-center">
           <div>
             <div className="text-[9px] font-black text-[#d4a853] uppercase tracking-wider">Compounding Zone</div>
-            <div className="text-[8px] text-[#666] mt-0.5">Apr 3–24 · ESL + SF + LID + EP in 21 days</div>
+            <div className="text-[8px] text-[#666] mt-0.5">Apr 10–24 · SF + ESL + LID + EP in 14 days</div>
           </div>
           <div className="text-right">
-            <div className="text-base font-black text-[#d4a853]">{Math.max(0, daysFrom("2026-04-03"))}</div>
+            <div className="text-base font-black text-[#d4a853]">{Math.max(0, daysFrom("2026-04-10"))}</div>
             <div className="text-[7px] text-[#555]">days away</div>
           </div>
         </div>
