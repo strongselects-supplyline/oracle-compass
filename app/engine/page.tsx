@@ -25,7 +25,7 @@ export default function EnginePage() {
   const [accounts, setAccounts] = useState<Account[]>(DEFAULT_ACCOUNTS);
   const [editingAccount, setEditingAccount] = useState<number | null>(null);
 
-  const [telemetry, setTelemetry] = useState<DailyTelemetry>({ doordash_earned: 0 });
+  const [telemetry, setTelemetry] = useState<DailyTelemetry>({ doordash_earned: 0, doordash_month: '' });
 
   const [priority, setPriority] = useState<string | null>(null);
   const [flags, setFlags] = useState<OracleFlag[]>([]);
@@ -134,6 +134,17 @@ export default function EnginePage() {
   return (
     <main className="page animate-fade-in">
       <div className="page-inner">
+
+        {/* Header */}
+        <div className="flex justify-between items-center mb-6">
+          <div>
+            <p className="text-[10px] font-black tracking-[0.2em] text-[#444] uppercase">Oracle Compass</p>
+            <h1 className="text-lg font-black tracking-tight text-white">⚙️ Engine</h1>
+          </div>
+          <span className="text-[9px] font-black tracking-widest text-amber-500 uppercase bg-amber-500/10 px-2.5 py-1 rounded-lg border border-amber-500/20">
+            {dayState === "biz" ? "BIZ DAY" : "STUDIO DAY"}
+          </span>
+        </div>
 
         {priority && (
           <div className="mb-5 px-4 py-3 rounded-xl border border-amber-900/40 bg-[#0f0f0f] flex items-center gap-3">

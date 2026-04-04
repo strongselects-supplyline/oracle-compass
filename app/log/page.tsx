@@ -60,7 +60,7 @@ function TogglePill({
           : checked
           ? warn
             ? "border-red-500/50 bg-red-500/10 text-red-400"
-            : "border-green-500/40 bg-green-500/8 text-white"
+            : "border-green-500/40 bg-green-500/[0.08] text-white"
           : "border-[#222] bg-[#0d0d0d] text-[#888]"
       }`}
     >

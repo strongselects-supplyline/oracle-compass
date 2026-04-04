@@ -165,10 +165,10 @@ export default function MorningMode() {
         tel.doordash_earned += parseFloat(ddRevenue) || 0;
         await saveDailyTelemetry(tel);
         refreshLanes(); // Update money lane immediately
-        setDdStatus("V"); setTimeout(() => { setDdStatus(""); setDdHours(""); setDdRevenue(""); }, 2000);
+        setDdStatus("LOGGED ✓"); setTimeout(() => { setDdStatus(""); setDdHours(""); setDdRevenue(""); }, 2000);
       }
-      else setDdStatus("X");
-    } catch { setDdStatus("X"); }
+      else setDdStatus("FAILED");
+    } catch { setDdStatus("FAILED"); }
   };
 
   if (!log) return null;
@@ -418,7 +418,7 @@ export default function MorningMode() {
             <div className="mb-8">
               <div className="flex justify-between items-center mb-3 px-1">
                 <h3 className="text-[10px] font-black tracking-[0.2em] text-[#555] uppercase">DOORDASH LOG</h3>
-                {ddStatus && <span className={`text-[10px] font-black tracking-widest ${ddStatus === "V" ? "text-green-500" : ddStatus === "X" ? "text-red-500" : "text-amber-500"}`}>{ddStatus === "V" ? "LOGGED" : ddStatus === "X" ? "FAILED" : ddStatus}</span>}
+                {ddStatus && <span className={`text-[10px] font-black tracking-widest ${ddStatus.includes("✓") ? "text-green-500" : ddStatus === "FAILED" ? "text-red-500" : "text-amber-500"}`}>{ddStatus}</span>}
               </div>
               <div className="card flex gap-2 p-2 relative overflow-hidden">
                 <input type="number" placeholder="Hrs" className="flex-1 bg-[#111] rounded-lg p-3 text-center text-sm font-black outline-none border border-transparent focus:border-[#333]" value={ddHours} onChange={e => setDdHours(e.target.value)} />

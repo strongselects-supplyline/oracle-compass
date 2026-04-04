@@ -164,22 +164,27 @@ export default function GrindPage() {
                     {syncStatus || "SYNC TO CLOUD"}
                 </button>
 
-                {/* ── RECOVERY PROTOCOL (M9) ── */}
+                {/* ── RECOVERY PROTOCOL ── */}
                 <div className="mt-12 pb-12">
-                  <p className="text-[9px] font-black tracking-[0.3em] text-center text-[#555] uppercase mb-5">Recovery Protocol</p>
-                  <div className="grid grid-cols-3 gap-4">
-                    <div className="card flex flex-col items-center p-3 opacity-60">
-                      <div className="text-2xl mb-1">💧</div>
-                      <span className="text-[10px] font-bold text-[#666]">HYDRO</span>
-                    </div>
-                    <div className="card flex flex-col items-center p-3 opacity-60">
-                      <div className="text-2xl mb-1">🧘</div>
-                      <span className="text-[10px] font-bold text-[#666]">MWO</span>
-                    </div>
-                    <div className="card flex flex-col items-center p-3 opacity-60">
-                      <div className="text-2xl mb-1">📵</div>
-                      <span className="text-[10px] font-bold text-[#666]">OFF-GRID</span>
-                    </div>
+                  <p className="text-[9px] font-black tracking-[0.3em] text-center text-[#555] uppercase mb-2">Recovery Protocol</p>
+                  <p className="text-[10px] text-[#444] text-center mb-5">When depleted — run this sequence before forcing output.</p>
+                  <div className="card !p-1.5">
+                    {[
+                      { icon: "💧", label: "Hydration Reset", desc: "32oz water + electrolytes. Dehydration mimics exhaustion.", field: "recoveryHydro" as const },
+                      { icon: "🧘", label: "NSDR / Yoga Nidra", desc: "10-20min — replenishes dopamine faster than caffeine.", field: "recoveryNSDR" as const },
+                      { icon: "📵", label: "Off-Grid Window", desc: "No social media, no inputs. Let the nervous system reset.", field: "recoveryOffGrid" as const },
+                      { icon: "🌬️", label: "Nadi Shodhana", desc: "Alternate nostril breathing — 5min minimum. Rebalances.", field: "recoveryBreathwork" as const },
+                      { icon: "🚶", label: "Movement Reset", desc: "Walk outside. Sunlight + movement = cortisol regulation.", field: "recoveryMovement" as const },
+                      { icon: "🛌", label: "Power Nap", desc: "20min max. Set alarm. Longer = grogginess.", field: "recoveryNap" as const },
+                    ].map((item) => (
+                      <CheckItem
+                        key={item.field}
+                        label={`${item.icon} ${item.label}`}
+                        description={item.desc}
+                        checked={!!(log as unknown as Record<string, boolean>)[item.field]}
+                        onChange={(v) => updateLog({ [item.field]: v })}
+                      />
+                    ))}
                   </div>
                 </div>
 
