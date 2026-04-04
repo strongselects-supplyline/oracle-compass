@@ -1,0 +1,851 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+<meta charset="UTF-8">
+<meta name="viewport" content="width=device-width, initial-scale=1.0">
+<title>ESL Campaign Brief — April 2026</title>
+<link href="https://fonts.googleapis.com/css2?family=Space+Grotesk:wght@300;400;500;600;700&family=Space+Mono:ital,wght@0,400;0,700;1,400&display=swap" rel="stylesheet">
+<style>
+:root {
+  --bg: #0a0a0a;
+  --surface: #111111;
+  --surface2: #161616;
+  --border: #1f1f1f;
+  --border2: #2a2a2a;
+  --text: #f0f0f0;
+  --text2: #888;
+  --text3: #555;
+  --gold: #c9a227;
+  --gold-dim: rgba(201,162,39,0.12);
+  --red: #e84040;
+  --red-dim: rgba(232,64,64,0.1);
+  --green: #22c55e;
+  --green-dim: rgba(34,197,94,0.1);
+  --blue: #3b82f6;
+  --blue-dim: rgba(59,130,246,0.1);
+  --amber: #f59e0b;
+  --purple: #a855f7;
+  --purple-dim: rgba(168,85,247,0.1);
+  --pink: #ec4899;
+}
+* { margin: 0; padding: 0; box-sizing: border-box; }
+body {
+  font-family: 'Space Grotesk', system-ui, sans-serif;
+  background: var(--bg);
+  color: var(--text);
+  line-height: 1.6;
+  -webkit-font-smoothing: antialiased;
+}
+.wrap { max-width: 960px; margin: 0 auto; padding: 0 2rem; }
+nav {
+  position: sticky; top: 0; z-index: 100;
+  border-bottom: 1px solid var(--border);
+  background: rgba(10,10,10,0.96);
+  backdrop-filter: blur(12px);
+  padding: 0.9rem 0;
+}
+nav .inner {
+  max-width: 960px; margin: 0 auto; padding: 0 2rem;
+  display: flex; align-items: center; justify-content: space-between; gap: 1rem;
+}
+.nav-brand { font-family: 'Space Mono', monospace; font-size: 0.68rem; color: var(--gold); letter-spacing: 0.12em; text-transform: uppercase; }
+.nav-links { display: flex; gap: 1.25rem; }
+.nav-links a { font-size: 0.62rem; color: var(--text3); text-decoration: none; letter-spacing: 0.08em; text-transform: uppercase; transition: color 0.2s; }
+.nav-links a:hover { color: var(--text); }
+
+/* HEADER */
+.doc-header {
+  padding: 5rem 0 3.5rem;
+  border-bottom: 1px solid var(--border);
+}
+.doc-eyebrow {
+  font-family: 'Space Mono', monospace;
+  font-size: 0.6rem;
+  color: var(--gold);
+  letter-spacing: 0.18em;
+  text-transform: uppercase;
+  margin-bottom: 1rem;
+  display: flex; align-items: center; gap: 0.5rem;
+}
+.doc-eyebrow::before { content: ''; width: 20px; height: 1px; background: var(--gold); }
+.doc-title {
+  font-size: clamp(2rem, 5vw, 3.5rem);
+  font-weight: 700;
+  letter-spacing: -0.03em;
+  line-height: 0.95;
+  margin-bottom: 1rem;
+}
+.doc-title em { font-style: normal; color: var(--gold); }
+.doc-sub {
+  font-size: 0.95rem;
+  color: var(--text2);
+  max-width: 560px;
+  line-height: 1.7;
+  margin-bottom: 2.5rem;
+}
+.deadline-row {
+  display: grid;
+  grid-template-columns: repeat(4, 1fr);
+  gap: 1px;
+  background: var(--border);
+  border: 1px solid var(--border);
+  margin-top: 2.5rem;
+}
+.dl-cell {
+  background: var(--bg);
+  padding: 1.25rem;
+}
+.dl-date {
+  font-family: 'Space Mono', monospace;
+  font-size: 1.5rem;
+  font-weight: 700;
+  color: #fff;
+  line-height: 1;
+  margin-bottom: 0.25rem;
+}
+.dl-label { font-size: 0.62rem; color: var(--text3); letter-spacing: 0.1em; text-transform: uppercase; font-weight: 600; }
+.dl-sub { font-size: 0.6rem; color: var(--text3); margin-top: 0.2rem; }
+.dl-urgent { color: var(--red); }
+.dl-active { color: var(--gold); }
+
+/* SECTIONS */
+section { padding: 3.5rem 0; border-bottom: 1px solid var(--border); }
+.section-label {
+  font-family: 'Space Mono', monospace;
+  font-size: 0.58rem;
+  color: var(--gold);
+  letter-spacing: 0.2em;
+  text-transform: uppercase;
+  margin-bottom: 0.6rem;
+  display: flex; align-items: center; gap: 0.5rem;
+}
+.section-label::before { content: ''; width: 16px; height: 1px; background: var(--gold); }
+h2 {
+  font-size: clamp(1.4rem, 2.5vw, 2rem);
+  font-weight: 700;
+  letter-spacing: -0.02em;
+  margin-bottom: 0.75rem;
+}
+.section-intro {
+  font-size: 0.9rem;
+  color: var(--text2);
+  max-width: 620px;
+  line-height: 1.8;
+  margin-bottom: 2rem;
+}
+
+/* PITCH BOX */
+.pitch-box {
+  background: var(--surface);
+  border: 1px solid var(--border);
+  border-top: 3px solid var(--gold);
+  padding: 2rem;
+  margin-bottom: 1.5rem;
+}
+.pitch-field {
+  margin-bottom: 1.5rem;
+}
+.pitch-field:last-child { margin-bottom: 0; }
+.pitch-label {
+  font-family: 'Space Mono', monospace;
+  font-size: 0.58rem;
+  color: var(--text3);
+  letter-spacing: 0.15em;
+  text-transform: uppercase;
+  margin-bottom: 0.5rem;
+  display: flex; align-items: center; gap: 0.75rem;
+}
+.pitch-label span { color: var(--text3); font-size: 0.58rem; }
+.pitch-label .char-limit { color: var(--amber); }
+.pitch-copy {
+  background: var(--surface2);
+  border: 1px solid var(--border2);
+  padding: 1rem 1.25rem;
+  font-size: 0.88rem;
+  color: var(--text);
+  line-height: 1.75;
+  white-space: pre-wrap;
+  border-left: 3px solid var(--gold);
+  font-family: inherit;
+}
+.pitch-note {
+  font-size: 0.72rem;
+  color: var(--text3);
+  margin-top: 0.5rem;
+  font-style: italic;
+}
+
+/* CARDS */
+.card {
+  background: var(--surface);
+  border: 1px solid var(--border);
+  padding: 1.75rem;
+  position: relative;
+}
+.card-gold { border-top: 3px solid var(--gold); }
+.card-red { border-top: 3px solid var(--red); }
+.card-green { border-top: 3px solid var(--green); }
+.card-blue { border-top: 3px solid var(--blue); }
+.card-purple { border-top: 3px solid var(--purple); }
+.card-pink { border-top: 3px solid var(--pink); }
+.card-label { font-size: 0.58rem; font-family: 'Space Mono', monospace; color: var(--text3); letter-spacing: 0.15em; text-transform: uppercase; margin-bottom: 0.6rem; }
+.card-title { font-size: 0.95rem; font-weight: 700; margin-bottom: 0.5rem; }
+.card-body { font-size: 0.82rem; color: var(--text2); line-height: 1.7; }
+
+/* GRID */
+.grid-2 { display: grid; grid-template-columns: 1fr 1fr; gap: 1.25rem; }
+.grid-3 { display: grid; grid-template-columns: repeat(3, 1fr); gap: 1.25rem; }
+@media (max-width: 760px) { .grid-2, .grid-3 { grid-template-columns: 1fr; } .deadline-row { grid-template-columns: 1fr 1fr; } }
+
+/* CONTENT CALENDAR */
+.cal-row {
+  display: grid;
+  grid-template-columns: 100px 1fr 1fr;
+  gap: 1.25rem;
+  padding: 1.25rem 0;
+  border-bottom: 1px solid var(--border);
+  align-items: start;
+}
+.cal-row:last-child { border-bottom: none; }
+.cal-date {
+  font-family: 'Space Mono', monospace;
+  font-size: 0.78rem;
+  color: var(--gold);
+  font-weight: 700;
+  padding-top: 0.1rem;
+}
+.cal-date .day { font-size: 0.62rem; color: var(--text3); font-weight: 400; display: block; margin-top: 0.1rem; }
+.cal-event { font-weight: 600; font-size: 0.88rem; margin-bottom: 0.3rem; }
+.cal-action { font-size: 0.8rem; color: var(--text2); line-height: 1.65; }
+.cal-post { font-size: 0.8rem; color: var(--text2); line-height: 1.65; }
+.tag {
+  display: inline-block;
+  font-size: 0.55rem;
+  font-family: 'Space Mono', monospace;
+  letter-spacing: 0.1em;
+  padding: 0.15rem 0.45rem;
+  border-radius: 2px;
+  margin-left: 0.4rem;
+  vertical-align: middle;
+}
+.tag-red { background: var(--red-dim); color: var(--red); border: 1px solid rgba(232,64,64,0.2); }
+.tag-gold { background: var(--gold-dim); color: var(--gold); border: 1px solid rgba(201,162,39,0.2); }
+.tag-green { background: var(--green-dim); color: var(--green); border: 1px solid rgba(34,197,94,0.2); }
+.tag-blue { background: var(--blue-dim); color: var(--blue); border: 1px solid rgba(59,130,246,0.2); }
+.tag-purple { background: var(--purple-dim); color: var(--purple); border: 1px solid rgba(168,85,247,0.2); }
+
+/* COMMENT TEMPLATES */
+.comment-block {
+  background: var(--surface);
+  border: 1px solid var(--border);
+  padding: 1.25rem;
+  margin-bottom: 0.75rem;
+}
+.comment-type { font-size: 0.6rem; font-family: 'Space Mono', monospace; color: var(--text3); letter-spacing: 0.12em; text-transform: uppercase; margin-bottom: 0.5rem; }
+.comment-text { font-size: 0.88rem; color: var(--text); line-height: 1.6; font-style: italic; border-left: 2px solid var(--border2); padding-left: 0.75rem; }
+
+/* TARGET TABLE */
+.target-row {
+  display: grid;
+  grid-template-columns: 130px 80px 80px 1fr;
+  gap: 1rem;
+  padding: 0.65rem 0;
+  border-bottom: 1px solid var(--border);
+  font-size: 0.82rem;
+  align-items: center;
+}
+.target-row:last-child { border-bottom: none; }
+.t-city { font-weight: 600; color: var(--text); }
+.t-num { font-family: 'Space Mono', monospace; color: var(--text2); font-size: 0.75rem; }
+.t-spend { font-family: 'Space Mono', monospace; color: var(--gold); font-size: 0.78rem; }
+.t-why { font-size: 0.75rem; color: var(--text3); }
+
+/* PULL QUOTE */
+.pull-quote {
+  margin: 2rem 0;
+  padding: 1.5rem 1.5rem 1.5rem 2rem;
+  border-left: 3px solid var(--gold);
+  background: var(--gold-dim);
+  font-size: 0.95rem;
+  font-style: italic;
+  color: var(--text);
+  line-height: 1.7;
+}
+
+/* FOOTER */
+footer {
+  padding: 2.5rem 0;
+  border-top: 1px solid var(--border);
+  display: flex;
+  justify-content: space-between;
+  align-items: center;
+}
+footer .f-brand { font-family: 'Space Mono', monospace; font-size: 0.65rem; color: var(--text3); }
+footer .f-note { font-size: 0.6rem; color: var(--text3); }
+</style>
+</head>
+<body>
+
+<nav>
+  <div class="inner">
+    <span class="nav-brand">past.El noir Records</span>
+    <div class="nav-links">
+      <a href="#pitch">Editorial Pitch</a>
+      <a href="#targeting">Targeting</a>
+      <a href="#calendar">Calendar</a>
+      <a href="#sf">Sweet Frustration</a>
+      <a href="#comments">Comment Templates</a>
+      <a href="#ctas">CTAs</a>
+    </div>
+  </div>
+</nav>
+
+<!-- HEADER -->
+<div class="doc-header">
+  <div class="wrap">
+    <div class="doc-eyebrow">Campaign Brief &mdash; ALL LOVE EP Cycle</div>
+    <div class="doc-title">East Side Love<br><em>April 14 Roll-Out</em></div>
+    <p class="doc-sub">
+      Everything that needs to execute from April 7 upload through April 28 deluxe. Editorial pitch copy,
+      targeting breakdown, content calendar, comment seed templates. Act on this, don't interpret it.
+    </p>
+
+    <div class="deadline-row">
+      <div class="dl-cell">
+        <div class="dl-date dl-urgent">Apr 7</div>
+        <div class="dl-label">ESL Upload</div>
+        <div class="dl-sub">DistroKid + editorial pitch submit</div>
+      </div>
+      <div class="dl-cell">
+        <div class="dl-date">Apr 10</div>
+        <div class="dl-label">SF Release</div>
+        <div class="dl-sub">Sweet Frustration — bridge single</div>
+      </div>
+      <div class="dl-cell">
+        <div class="dl-date dl-active">Apr 14</div>
+        <div class="dl-label">ESL + 414 Day</div>
+        <div class="dl-sub">ESL drops. Live set. EP uploads.</div>
+      </div>
+      <div class="dl-cell">
+        <div class="dl-date">Apr 24</div>
+        <div class="dl-label">ALL LOVE EP</div>
+        <div class="dl-sub">Full EP. Marquee deploy.</div>
+      </div>
+    </div>
+  </div>
+</div>
+
+<!-- ═══════════════════ SPOTIFY EDITORIAL PITCH ═══════════════════ -->
+<section id="pitch">
+  <div class="wrap">
+    <div class="section-label">Spotify for Artists &mdash; Submit April 7</div>
+    <h2>Editorial Pitch Copy</h2>
+    <p class="section-intro">
+      Paste this into Spotify for Artists editorial submission when you upload on April 7.
+      Pitches must be submitted at least 7 days before release. Targeting: Release Radar,
+      R&amp;B X, Are &amp; Be, and Late Night Vibes.
+    </p>
+
+    <div class="pitch-box">
+      <div class="pitch-field">
+        <div class="pitch-label">
+          SONG DESCRIPTION
+          <span class="char-limit">250 char limit — use all of it</span>
+        </div>
+        <div class="pitch-copy">East Side Love is a late-night letter to Milwaukee's east side — the streets, the specific feeling of being young and in love in a city that shaped you. Past.El wraps that nostalgia in a modern Alt-R&B pocket: warm bass, layered harmonics, and a vocal that sounds like it was written at 2am in the neighborhood that raised him.</div>
+        <div class="pitch-note">Lead with place and emotion. Curators want a feeling, not a resume.</div>
+      </div>
+
+      <div class="pitch-field">
+        <div class="pitch-label">
+          ARTIST STORY / CONTEXT
+          <span class="char-limit">Use the release context field</span>
+        </div>
+        <div class="pitch-copy">East Side Love drops on April 14 — Milwaukee's 414 Day — intentionally. It's the second single off the ALL LOVE EP (April 24), a 4-track project built around the kind of emotional specificity that turns songs into saved memories. Past.El has 15,682 monthly listeners and 8 years of catalog generating 290K+ cross-platform streams without label infrastructure. The audience is there. This single is the bridge.</div>
+        <div class="pitch-note">Lead with the 414 Day angle — it's a platform-specific hook that makes curators feel like they're in on something local and specific.</div>
+      </div>
+
+      <div class="pitch-field">
+        <div class="pitch-label">COMPARABLE ARTISTS — Use These in the "Similar Artists" Field</div>
+        <div class="pitch-copy">Bryson Tiller, 6LACK, Brent Faiyaz, PARTYNEXTDOOR, Jordan Ward</div>
+        <div class="pitch-note">All confirmed via Core Drive spectral analysis. These are machine-verified sonic matches, not aspirational comps.</div>
+      </div>
+
+      <div class="pitch-field">
+        <div class="pitch-label">MOOD &amp; GENRE TAGS — Select These</div>
+        <div class="pitch-copy">Mood: Romantic, Chill, Late Night
+Genre: R&amp;B, Alternative R&amp;B
+Tempo: Mid-tempo (105 BPM)
+Instruments: Vocals, Bass, Guitar, Electronic</div>
+      </div>
+
+      <div class="pitch-field">
+        <div class="pitch-label">TARGET PLAYLISTS — Prioritize in This Order</div>
+        <div class="pitch-copy">1. Release Radar (algorithmic — submit ensures eligibility)
+2. Are &amp; Be (Spotify editorial R&amp;B flagship)
+3. R&amp;B X (alternative R&amp;B editorial)
+4. Late Night R&amp;B (mood editorial — ESL is a night drive song)
+5. Chill R&amp;B (secondary pitch — Spotify Mood category)
+6. New Music Friday (submit to every active editorial)</div>
+        <div class="pitch-note">You can only pitch one track per release in the editorial submission. ESL is the right call over SF for editorial — it has the specific narrative hook (414 Day) that curators can write about.</div>
+      </div>
+    </div>
+
+    <div class="card card-gold">
+      <div class="card-label">The 414 Day Pitch Angle</div>
+      <div class="card-body">
+        <strong style="color:var(--text)">Why this matters:</strong> Spotify editorial teams respond to specificity.
+        "Milwaukee's 414 Day" gives a curator a story peg — they can write "This song was made FOR this day in
+        the city that made the artist." That's the difference between a song getting added to one playlist vs. three.
+        Use "414 Day" in any free-text field. It reads as hyper-local, authentic, and on a specific cultural moment.
+        Curators love that.
+      </div>
+    </div>
+  </div>
+</section>
+
+<!-- ═══════════════════ AD TARGETING ═══════════════════ -->
+<section id="targeting">
+  <div class="wrap">
+    <div class="section-label">Paid Distribution &mdash; ESL + EP Cycle</div>
+    <h2>Targeting + Budget Breakdown</h2>
+    <p class="section-intro">
+      Based on cross-platform verified audience. These cities have self-selected into the catalog
+      without promotion. Paid spend here converts at the lowest cost-per-save.
+    </p>
+
+    <div class="grid-2" style="margin-bottom: 1.5rem;">
+      <div class="card card-gold">
+        <div class="card-label">Marquee — Deploy April 14 (ESL Release Day)</div>
+        <div class="card-title">Minimum $100 &mdash; You Now Qualify</div>
+        <div class="card-body">
+          Requirement: 5,000+ monthly active listeners. You have 15,682.
+          Marquee appears on the Home tab for listeners who have previously engaged with your music.
+          It is a full-screen takeover with "Save" as the primary CTA.
+          <br><br>
+          Deploy on ESL release day (April 14). The 21-day window post-release is the highest-velocity
+          period. <strong style="color:var(--text)">Do not deploy Marquee before the editorial pitch is
+          submitted (Apr 7)</strong> — let the organic editorial placement land first if it does.
+          <br><br>
+          <strong style="color:var(--text)">Budget rec:</strong> $100 minimum. $150 ideal.
+          Target: All US listeners who have interacted with past.El in the past 6 months.
+        </div>
+      </div>
+      <div class="card card-blue">
+        <div class="card-label">Ad Studio — Deploy April 7 Through EP Drop</div>
+        <div class="card-title">Roll With It as Discovery Audio</div>
+        <div class="card-body">
+          Marquee re-engages existing listeners. Ad Studio acquires new ones.
+          Run these simultaneously — they don't cannibalize.
+          <br><br>
+          <strong style="color:var(--text)">Audio creative:</strong> Roll With It hook (0:00–0:28).
+          The 3.88% Shazam rate means new listeners who hear it will want to know more. They land on
+          a profile that now has ESL as the newest release.
+          <br><br>
+          <strong style="color:var(--text)">Budget rec:</strong> $50 test campaign.
+          Denver $20, Detroit $15, Minneapolis $15. Scale to $100 if saves are &gt;3%.
+        </div>
+      </div>
+    </div>
+
+    <div class="card" style="margin-bottom: 0;">
+      <div class="card-label">City Targeting Priority — Cross-Platform Verified</div>
+      <div style="margin-top: 0.75rem;">
+        <div class="target-row" style="font-size:0.62rem; color:var(--text3); padding-bottom:0.4rem; font-family:'Space Mono',monospace; letter-spacing:0.1em; text-transform:uppercase;">
+          <div>City</div><div>Spotify Users</div><div>Rec. Spend</div><div>Why</div>
+        </div>
+        <div class="target-row">
+          <div class="t-city">Salt Lake City</div>
+          <div class="t-num">3,999 combined</div>
+          <div class="t-spend">$15 Marquee</div>
+          <div class="t-why">#1 on both platforms — lowest cost-per-convert</div>
+        </div>
+        <div class="target-row">
+          <div class="t-city">Denver</div>
+          <div class="t-num">2,131 Spotify</div>
+          <div class="t-spend">$20 Ad Studio</div>
+          <div class="t-why">Routing Playbook Tier 1. Organic driver, unknown source.</div>
+        </div>
+        <div class="target-row">
+          <div class="t-city">Detroit</div>
+          <div class="t-num">1,888 Spotify</div>
+          <div class="t-spend">$15 Ad Studio</div>
+          <div class="t-why">Surging — #2 in 2026 YTD. Breakout market.</div>
+        </div>
+        <div class="target-row">
+          <div class="t-city">Chicago</div>
+          <div class="t-num">3,042 Spotify</div>
+          <div class="t-spend">Include in Marquee</div>
+          <div class="t-why">Apple #1 all-time. ESL's "Midwest home" frame resonates strongest here.</div>
+        </div>
+        <div class="target-row">
+          <div class="t-city">Minneapolis</div>
+          <div class="t-num">1,830 Spotify</div>
+          <div class="t-spend">$15 Ad Studio</div>
+          <div class="t-why">Routing Playbook Tier 1. Drivable from Milwaukee.</div>
+        </div>
+        <div class="target-row">
+          <div class="t-city">Charlotte</div>
+          <div class="t-num">1,441 Spotify</div>
+          <div class="t-spend">Monitor for EP</div>
+          <div class="t-why">Rising. Deploy in EP Marquee if budget allows.</div>
+        </div>
+        <div class="target-row" style="border-bottom:none;">
+          <div class="t-city">Milwaukee</div>
+          <div class="t-num">home market</div>
+          <div class="t-spend">414 Day organic</div>
+          <div class="t-why">Live set handles this. Don't pay to reach your own city.</div>
+        </div>
+      </div>
+      <div style="margin-top:1rem; font-size:0.7rem; color:var(--text3);">
+        Total recommended outlay: $150-200 for ESL cycle (Marquee $100-150 + Ad Studio $50). EP Marquee: separate $100-150 on April 24.
+      </div>
+    </div>
+  </div>
+</section>
+
+<!-- ═══════════════════ CONTENT CALENDAR ═══════════════════ -->
+<section id="calendar">
+  <div class="wrap">
+    <div class="section-label">April 7–28 Execution</div>
+    <h2>Content Calendar</h2>
+    <p class="section-intro">
+      Three principles from Chaotic Good: seed organic before you spend paid,
+      control the narrative in comments within 5 minutes of every post,
+      and your main channel tells the story — the platform tools do the promotion.
+    </p>
+
+    <div class="card" style="padding: 0; margin-bottom: 1.5rem; overflow: hidden;">
+      <div style="padding: 1.5rem 1.75rem; background: var(--surface2); border-bottom: 1px solid var(--border);">
+        <div class="card-label">PLATFORM PRIORITY</div>
+        <div style="font-size:0.82rem; color:var(--text2);">TikTok first (trending audio mechanic). IG Reels second. YouTube Shorts third. Post to all three within the same hour — same content, same caption, same hashtags. Do not customize per platform until you have data on what converts where.</div>
+      </div>
+      <div style="padding: 1.5rem 1.75rem;">
+
+        <div class="cal-row">
+          <div class="cal-date">Apr 7<span class="day">Monday</span></div>
+          <div>
+            <div class="cal-event">ESL Upload to DistroKid <span class="tag tag-red">DEADLINE</span></div>
+            <div class="cal-action">Upload track + submit editorial pitch to Spotify for Artists. Set release date April 14. Submit Spotify pre-save link once generated.</div>
+          </div>
+          <div class="cal-post">
+            <strong>Content:</strong> Zero promotion of ESL today — it doesn't exist yet publicly.
+            Post a studio process clip from SEE ME or a "what's coming" atmospheric visual.
+            Caption: "milwaukee been asking. next week." No hashtags needed — keep it cryptic.
+          </div>
+        </div>
+
+        <div class="cal-row">
+          <div class="cal-date">Apr 8–9<span class="day">Tue–Wed</span></div>
+          <div>
+            <div class="cal-event">ESL Pre-Drop Seeding</div>
+            <div class="cal-action">Share ESL pre-save link in bio. Post the cover art with 0 context. Audio clip teaser (15 sec, the most emotionally loaded part of the chorus). Let people ask what it is.</div>
+          </div>
+          <div class="cal-post">
+            <strong>Format:</strong> Pastel talk — cover art background, 1 lyric overlaid, ESL audio playing underneath. Target: "the east side remembers." This is the DM-share format. People send this to someone they have east side memories with.
+          </div>
+        </div>
+
+        <div class="cal-row">
+          <div class="cal-date">Apr 10<span class="day">Friday</span></div>
+          <div>
+            <div class="cal-event">Sweet Frustration Release Day <span class="tag tag-purple">BRIDGE SINGLE</span></div>
+            <div class="cal-action">SF drops. Post to all platforms within 1 hour of midnight. Comment seeds deployed within 5 minutes. ESL pre-save link stays in bio.</div>
+          </div>
+          <div class="cal-post">
+            <strong>Format:</strong> Low-angle studio footage, guitar riff as the hook, text: "you feel it and you won't say it." This is the gender flip post — frame it from her perspective, not his. Goal: female saves and shares.
+          </div>
+        </div>
+
+        <div class="cal-row">
+          <div class="cal-date">Apr 11–13<span class="day">Sat–Mon</span></div>
+          <div>
+            <div class="cal-event">414 Day Countdown + SF Push</div>
+            <div class="cal-action">3 posts over 3 days. Sweet Frustration content continues. ESL countdown begins Day 2. 414 Day live set promotion begins Day 3.</div>
+          </div>
+          <div class="cal-post">
+            <strong>Sequence:</strong> Day 1: SF "studio behind-the-scenes" clip. Day 2: ESL teaser — "414 Day. April 14." with the cover art. Day 3: 414 Day performance announcement with ticket/show details.
+          </div>
+        </div>
+
+        <div class="cal-row">
+          <div class="cal-date" style="color:var(--gold)">Apr 14<span class="day" style="color:var(--gold)">414 Day</span></div>
+          <div>
+            <div class="cal-event" style="color:var(--gold)">ESL Release + 414 Day Live Set <span class="tag tag-gold">MAX EFFORT</span></div>
+            <div class="cal-action">ESL goes live midnight. Deploy Marquee ($100-150). At the show: film everything. 5 camera setups minimum. Full set recorded. Photo content. After the show: upload EP to DistroKid for April 24.</div>
+          </div>
+          <div class="cal-post">
+            <strong>Day-of posts (3 minimum):</strong> 1) ESL release post at midnight with full cover art and streaming link. 2) "It's 414 Day in Milwaukee" mid-day context post. 3) Live set arrival/soundcheck clip 2 hours before doors. Deploy all comment seeds.
+          </div>
+        </div>
+
+        <div class="cal-row">
+          <div class="cal-date">Apr 15–16<span class="day">Wed–Thu</span></div>
+          <div>
+            <div class="cal-event">414 Day Content Drop <span class="tag tag-green">HIGH VOLUME</span></div>
+            <div class="cal-action">This is the biggest content window of the cycle. 414 Day footage + ESL release momentum. Target: 6-8 posts over 2 days from live set clips.</div>
+          </div>
+          <div class="cal-post">
+            <strong>Clip format:</strong> 3 performance clips (30-45 sec each), 1 crowd/room energy clip, 1 lyric moment close-up, 1 "after the show" atmospheric. All with ESL audio or SF audio underneath. Burned-in subtitles on every post.
+          </div>
+        </div>
+
+        <div class="cal-row">
+          <div class="cal-date">Apr 17<span class="day">Friday</span></div>
+          <div>
+            <div class="cal-event">Like I Did Release</div>
+            <div class="cal-action">Final single before EP. Post at midnight. Comment seeds. ESL Marquee still running. This is the emotional closer — the most vulnerable track of the cycle.</div>
+          </div>
+          <div class="cal-post">
+            <strong>Format:</strong> Slow motion close-up, warm lighting, the most emotionally specific lyric overlaid. "I hope they love you like I did" energy. No energy, no hype. This post is quiet. People need to feel it.
+          </div>
+        </div>
+
+        <div class="cal-row">
+          <div class="cal-date">Apr 18–23<span class="day">Pre-EP Week</span></div>
+          <div>
+            <div class="cal-event">EP Countdown — 6 Days</div>
+            <div class="cal-action">One post per day, each highlighting a different aspect of ALL LOVE. Cover art. Track listing. One moment from recording each song. The story of why the EP exists.</div>
+          </div>
+          <div class="cal-post">
+            <strong>Day sequence:</strong> D6: EP cover art. D5: "4 songs that needed to exist." D4: SEE ME behind-the-scenes. D3: ESL 414 Day highlight. D2: SF studio process. D1: "tomorrow." — just the date and the cover art.
+          </div>
+        </div>
+
+        <div class="cal-row" style="border-bottom:none;">
+          <div class="cal-date" style="color:var(--gold)">Apr 24<span class="day" style="color:var(--gold)">Drop Day</span></div>
+          <div>
+            <div class="cal-event" style="color:var(--gold)">ALL LOVE EP Release <span class="tag tag-gold">MAX EFFORT</span></div>
+            <div class="cal-action">EP live. Deploy EP Marquee ($100-150). Expand Ad Studio to Tier 1 + Tier 2 cities. This is the Chaotic Good "5 release events = trend simulation" payoff. The algorithm has been primed for 8 weeks.</div>
+          </div>
+          <div class="cal-post">
+            <strong>Drop day posts (4 minimum):</strong> Midnight release announcement. Morning "it's here" with streaming link. Afternoon "thank you Milwaukee / thank you SLC / thank you Denver" city love post. Night: personal reflection on what ALL LOVE means.
+          </div>
+        </div>
+
+      </div>
+    </div>
+
+    <div class="card card-green">
+      <div class="card-label">Apr 28 &mdash; ALL LOVE Deluxe (Birthday Drop)</div>
+      <div class="card-title">The Gift Frame</div>
+      <div class="card-body">
+        The deluxe drop on your birthday is a save-spike opportunity. Frame it as a gift: "I've been
+        sitting on one more. Happy birthday to me." People love surprising an artist on their birthday.
+        This generates organic shares without paid spend. The additional track(s) also re-trigger
+        Release Radar for followers who have the EP saved. Plan the deluxe content separately — it
+        doesn't need the same campaign infrastructure. Just the post and the save CTA.
+      </div>
+    </div>
+  </div>
+</section>
+
+<!-- ═══════════════════ SWEET FRUSTRATION ═══════════════════ -->
+<section id="sf">
+  <div class="wrap">
+    <div class="section-label">April 10 &mdash; Bridge Single</div>
+    <h2>Sweet Frustration Strategy</h2>
+    <p class="section-intro">
+      SF is the gender flip execution. It's the Brent Faiyaz "Wasting Time" of this cycle.
+      Content approach is different from every other release: the frame is her experience, not his.
+    </p>
+
+    <div class="grid-2" style="margin-bottom: 1.5rem;">
+      <div class="card card-pink">
+        <div class="card-label">What Makes SF the Bridge Single</div>
+        <div class="card-title">Desire + Ache Duality</div>
+        <div class="card-body">
+          The bridge single works when both genders can project into it simultaneously. Male listeners
+          hear "she's frustrating me." Female listeners hear "he finally gets what it feels like."
+          The KAYTRANADA-influenced production (guitar riff, warm mid-tempo energy) is the sonic
+          hook that the 40% female audience already in the catalog will recognize as something for them.
+          <br><br>
+          <strong style="color:var(--text)">Do not make this a "woman in a video" post.</strong>
+          The creative should be about the feeling, not the visuals.
+        </div>
+      </div>
+      <div class="card card-purple">
+        <div class="card-label">Content Direction</div>
+        <div class="card-title">Studio Process + The Guitar Riff</div>
+        <div class="card-body">
+          Lead content: the guitar riff. Closeup of the production process. Let people hear what
+          makes this song different before they hear the full thing. The production is the tell —
+          it signals that this isn't just another R&amp;B track.
+          <br><br>
+          Secondary content: lyric cards in the pastel talk format. The lines that work best are
+          the ones where she could write them about him. Ambiguous subject/object.
+          <br><br>
+          Playlist pitch: R&amp;B Mood, Late Night R&amp;B, Bedroom R&amp;B, KAYTRANADA fans.
+        </div>
+      </div>
+    </div>
+
+    <div class="card" style="margin-bottom: 1rem;">
+      <div class="card-label">SF Lyric Card Templates &mdash; Pastel Talk Format</div>
+      <div class="card-body" style="margin-top: 0.5rem;">
+        These are for post overlay text. Use each one separately across 3-5 different posts. Warm neutral
+        background or blurred bokeh footage underneath. SF audio at low volume. No hard sell.
+      </div>
+    </div>
+
+    <div class="comment-block">
+      <div class="comment-type">LYRIC CARD 01 &mdash; The hook (use this first)</div>
+      <div class="comment-text">"sweet frustration — you want it and you won't say it"</div>
+    </div>
+    <div class="comment-block">
+      <div class="comment-type">LYRIC CARD 02 &mdash; The send-to-someone line</div>
+      <div class="comment-text">"i know exactly what this is. you know too."</div>
+    </div>
+    <div class="comment-block">
+      <div class="comment-type">LYRIC CARD 03 &mdash; The late-night share</div>
+      <div class="comment-text">"why do we keep doing this to each other"</div>
+    </div>
+
+    <div class="pull-quote">
+      "Monitor Spotify for Artists gender split weekly starting April 10.
+      If female audience share moves 5+ points toward the 50/50 target by April 24,
+      SF did its job. If it doesn't move, double down on the lyric card format — not more production content."
+    </div>
+  </div>
+</section>
+
+<!-- ═══════════════════ COMMENT TEMPLATES ═══════════════════ -->
+<section id="comments">
+  <div class="wrap">
+    <div class="section-label">Chaotic Good Protocol &mdash; Deploy Within 5 Minutes</div>
+    <h2>Comment Seed Templates</h2>
+    <p class="section-intro">
+      Pre-write these. Have inner circle deploy within the first 5 minutes of every post.
+      First impressions set permanent narrative. Comments must be specific — not "fire," but
+      something that tells the next viewer what to listen for.
+    </p>
+
+    <div class="grid-2">
+      <div>
+        <div style="font-size:0.72rem; font-weight:600; margin-bottom:0.75rem; color:var(--text);">ESL — EAST SIDE LOVE</div>
+        <div class="comment-block">
+          <div class="comment-type">EMOTIONAL ANCHOR</div>
+          <div class="comment-text">"the way he describes a specific place and makes it universal — east side isn't just milwaukee right now"</div>
+        </div>
+        <div class="comment-block">
+          <div class="comment-type">PRODUCTION NOTE</div>
+          <div class="comment-text">"that bass line doesn't move and it doesn't need to"</div>
+        </div>
+        <div class="comment-block">
+          <div class="comment-type">SEND TO SOMEONE</div>
+          <div class="comment-text">"this is literally the song i needed to send but couldn't write"</div>
+        </div>
+        <div class="comment-block">
+          <div class="comment-type">414 DAY HOOK</div>
+          <div class="comment-text">"dropping this on 414 Day was deliberate and we see it"</div>
+        </div>
+      </div>
+      <div>
+        <div style="font-size:0.72rem; font-weight:600; margin-bottom:0.75rem; color:var(--text);">SWEET FRUSTRATION</div>
+        <div class="comment-block">
+          <div class="comment-type">BRIDGE SINGLE NOTE</div>
+          <div class="comment-text">"the guitar on this hit different from what past.El usually does — and it works"</div>
+        </div>
+        <div class="comment-block">
+          <div class="comment-type">GENDER FLIP SEED</div>
+          <div class="comment-text">"i was NOT expecting to feel called out by an r&b song today"</div>
+        </div>
+        <div class="comment-block">
+          <div class="comment-type">LYRIC SPECIFIC</div>
+          <div class="comment-text">"'sweet frustration' as a title alone ?????"</div>
+        </div>
+        <div class="comment-block">
+          <div class="comment-type">SHARE SEED</div>
+          <div class="comment-text">"sending this with no context and waiting"</div>
+        </div>
+      </div>
+    </div>
+
+    <div style="margin-top: 1.5rem;">
+      <div style="font-size:0.72rem; font-weight:600; margin-bottom:0.75rem; color:var(--text);">LIKE I DID + ALL LOVE EP</div>
+      <div class="grid-2">
+        <div class="comment-block">
+          <div class="comment-type">LIKE I DID — EMOTIONAL CLOSER</div>
+          <div class="comment-text">"this is the one that needed to close the project. nothing else could."</div>
+        </div>
+        <div class="comment-block">
+          <div class="comment-type">EP DROP — CATALOG REFERENCE</div>
+          <div class="comment-text">"this goes with hollywood fever. same artist. different era. both necessary."</div>
+        </div>
+        <div class="comment-block">
+          <div class="comment-type">EP DROP — VOLUME SIGNAL</div>
+          <div class="comment-text">"he dropped 4 singles and an ep in under 2 months and every single one held"</div>
+        </div>
+        <div class="comment-block">
+          <div class="comment-type">EP DROP — SAVE CTA SEED</div>
+          <div class="comment-text">"adding ALL LOVE to the rotation. if you haven't saved it yet you're sleeping"</div>
+        </div>
+      </div>
+    </div>
+  </div>
+</section>
+
+<!-- ═══════════════════ CTA HIERARCHY ═══════════════════ -->
+<section id="ctas">
+  <div class="wrap">
+    <div class="section-label">Content Copy &mdash; Use These Verbatim</div>
+    <h2>CTA Hierarchy</h2>
+    <p class="section-intro">
+      Every piece of content ends with one of these. In this order. Never skip the save CTA.
+      It's the only metric that directly feeds the popularity score.
+    </p>
+
+    <div class="grid-3" style="margin-bottom: 1.5rem;">
+      <div class="card card-gold">
+        <div class="card-label">Priority 1 &mdash; Always First</div>
+        <div class="card-title">Save [track] on Spotify</div>
+        <div class="card-body">
+          "save east side love on Spotify 🔗 in bio"<br><br>
+          "save this one before you forget — link in bio"<br><br>
+          "if this hits, save it. that's all i'm asking."
+        </div>
+      </div>
+      <div class="card card-blue">
+        <div class="card-label">Priority 2 &mdash; Secondary</div>
+        <div class="card-title">Follow past.El on Spotify</div>
+        <div class="card-body">
+          "follow so you don't miss the EP. link in bio."<br><br>
+          "follow past.El on Spotify — ALL LOVE EP April 24"<br><br>
+          "i have 15k listeners. only 1,364 follow. fix that."
+        </div>
+      </div>
+      <div class="card card-purple">
+        <div class="card-label">Priority 3 &mdash; Tertiary</div>
+        <div class="card-title">Pre-save ALL LOVE</div>
+        <div class="card-body">
+          "ALL LOVE EP — April 24. pre-save in bio."<br><br>
+          "4 singles. 1 EP. 1 deluxe. April 24."<br><br>
+          "pre-save ALL LOVE if you've been saving the singles."
+        </div>
+      </div>
+    </div>
+
+    <div class="card" style="border-left: 3px solid var(--gold);">
+      <div class="card-label">Publishing Registrations &mdash; The Monday After Each Release</div>
+      <div class="card-body">
+        SF release Apr 10 &rarr; register Monday Apr 13<br>
+        ESL release Apr 14 &rarr; register Wednesday Apr 16 (Monday is 414 Day — do it the next business day)<br>
+        LID release Apr 17 &rarr; register Monday Apr 20<br>
+        EP release Apr 24 &rarr; register Monday Apr 27<br>
+        <br>
+        <strong style="color:var(--text)">Platforms:</strong> ASCAP (for each composition), MLC (US mechanical), Songtrust (international collection).
+        Verify SEE ME (live Feb 27) was registered. If not, do it today.
+      </div>
+    </div>
+  </div>
+</section>
+
+<div class="wrap">
+  <footer>
+    <div class="f-brand">past.El noir Records &mdash; ESL Campaign Brief<br>Generated April 4, 2026</div>
+    <div class="f-note">All targeting based on cross-platform CSV data. Marquee eligibility confirmed (15,682 MAL &gt; 5,000 threshold). Budget figures are minimums.</div>
+  </footer>
+</div>
+
+</body>
+</html>

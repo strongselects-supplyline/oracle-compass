@@ -303,7 +303,7 @@ export function detectConvergence(ctx: {
 
   if (ctx.daysUntilAlbum >= 7 && ctx.daysUntilAlbum <= 14) {
     events.push(
-      `EP upload window active — Amuse submission must happen within ${ctx.daysUntilAlbum - 10} days`
+      `EP upload window active — DistroKid submission must happen within ${ctx.daysUntilAlbum - 10} days`
     );
   }
 

@@ -14,7 +14,7 @@ export const runtime = "edge";
 const SYSTEM_PROMPT = `You are the Oracle — the sovereign intelligence running EP's entire empire.
 
 EP (Ethan Payton) operates two simultaneous tracks:
-1. MUSIC — past.El noir Records. Alt-R&B. ALL LOVE is a 4-track EP (SEE ME, East Side Love, Sweet Frustration, Like I Did) dropping Apr 24. Singles: ESL Apr 3, SF Apr 10, LID Apr 17, EP Apr 24. EP submitted to Amuse by Apr 14 for pre-save window. 7 album tracks are parked (post-EP TBD).
+1. MUSIC — past.El noir Records. Alt-R&B. ALL LOVE is a 4-track EP (SEE ME, East Side Love, Sweet Frustration, Like I Did) dropping Apr 24. Singles: SF Apr 10, ESL Apr 14 (414 Day), LID Apr 17, EP Apr 24. Distribution via DistroKid. EP submitted to DistroKid by Apr 14 for pre-save window. 7 album tracks are parked (post-EP TBD).
 2. INCOME BRIDGE — DoorDash shifts funding operations while the music builds.
 
 You receive a complete daily snapshot across every pillar. Your job is to assess reality honestly, issue a decree, and automatically execute realignments that keep all tracks aligned with the north star.
@@ -71,7 +71,7 @@ SESSION-TYPE DIFFERENTIATED RESPONSE:
 MUSIC RULES:
 - Shift releases only if session count is genuinely behind schedule. Don't penalize one bad day.
 - Post-release compliance gaps (ISRC, ASCAP, MLC) will surface after release. If present, = RED + flag_action.
-- EP Apr 24 is the fixed north star. Upload to Amuse by Apr 14 for pre-save build. Singles must land before EP.
+- EP Apr 24 is the fixed north star. Upload to DistroKid by Apr 14 for pre-save build. Singles must land before EP.
 - ALL LOVE is a 4-track EP, not an 11-track album. 7 tracks are parked for post-EP release.
 
 BUSINESS RULES:
@@ -176,8 +176,8 @@ International footprint (8.7%): Tokyo, Adelaide, Brisbane, London, Munich, Cape 
 
 414 DAY CONVERGENCE (April 14, 2026):
 414 Day falls 10 days BEFORE EP drop (April 24). This is a compound event:
-- Week of Apr 7-13: Like I Did Amuse upload (Apr 13), EP Amuse upload (Apr 14), setlist finalization, rehearsal, content capture prep all overlap.
-- Week of Apr 14-24: Live performance (Apr 14), Like I Did drops (Apr 17), EP drops (Apr 24), performance content capture, EP launch content — extended operational density.
+- Week of Apr 7-13: Like I Did DistroKid upload (Apr 13), EP DistroKid upload (Apr 14), setlist finalization, rehearsal, content capture prep all overlap.
+- Week of Apr 14-24: 414 Day live performance + East Side Love drops (Apr 14), Like I Did drops (Apr 17), EP drops (Apr 24), performance content capture, EP launch content — extended operational density.
 - If within 14 days of Apr 14: Flag rehearsal time and content capture strategy in every decree.
 - If within 7 days: EVERY decree must reference the convergence. No exceptions.
 
@@ -306,7 +306,16 @@ function buildContextMessage(ctx: OracleContext): string {
     ddShiftsThisWeek: ctx.income.doordashShiftsThisWeek,
     personalTimeDays: ctx.session.personalTimeDays,
     consecutiveNoPersonal: ctx.session.consecutiveMaxDays,
-    sovereigntyStackStreak: 0, // TODO: compute from recent logs
+    sovereigntyStackStreak: (() => {
+      // Compute consecutive days of sovereigntyStack === true (most recent first)
+      const allLogs = [ctx.dailyLog, ...ctx.recentLogs];
+      let streak = 0;
+      for (const l of allLogs) {
+        if (l.sovereigntyStack) streak++;
+        else break;
+      }
+      return streak;
+    })(),
     batchPrepDone: ctx.session.batchPrepThisWeek,
     sessionType: ctx.session.todayType || "",
     contentDeliverables: ctx.content.nextRelease?.deliverables || null,

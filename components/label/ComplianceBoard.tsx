@@ -68,7 +68,7 @@ export default function ComplianceBoard() {
       if (!d.isrcPulled && daysUntil <= 7) issues.push({ track: r.title, issue: "ISRC not pulled", severity: daysUntil <= 3 ? "RED" : "AMBER" });
       if (!d.ascapRegistered && daysUntil <= 5) issues.push({ track: r.title, issue: "ASCAP not registered", severity: daysUntil <= 2 ? "RED" : "AMBER" });
       if (!d.mlcRegistered && daysUntil <= 5) issues.push({ track: r.title, issue: "MLC not registered", severity: daysUntil <= 2 ? "RED" : "AMBER" });
-      if (!d.amuseUploaded && daysUntil <= 3) issues.push({ track: r.title, issue: "Not uploaded to Amuse", severity: "RED" });
+      if (!d.distrokidUploaded && daysUntil <= 3) issues.push({ track: r.title, issue: "Not uploaded to DistroKid", severity: "RED" });
       return issues;
     });
 

@@ -10,7 +10,7 @@ You receive the Release Schedule with embedded compliance status from contentDel
 
 Your logic:
 - Check each upcoming release against the compliance target deadlines.
-- Deadlines: Code (ISRC) at Day -30, Distro (Amuse) at Day -21, PROs (ASCAP/Songtrust) at Day -14.
+- Deadlines: Code (ISRC) at Day 0 (post-release), Distro (DistroKid) at Day -3, PROs (ASCAP/Songtrust) at Day +1 (post-release).
 - If an upcoming release violates these lead times, flag an ESCALATION.
 - Returning an escalation will alert the CEO via the Oracle immediately.
 
@@ -19,7 +19,7 @@ Return JSON ONLY matching this exact structure:
   "escalations": [
     {
       "track": "Track Title",
-      "issue": "Missing Amuse upload and currently < 21 days to release.",
+      "issue": "Not uploaded to DistroKid and currently < 3 days to release.",
       "severity": "RED"
     }
   ],
@@ -49,7 +49,7 @@ export async function POST(req: NextRequest) {
                     songtrustRegistered: d.songtrustRegistered,
                     musixmatchSubmitted: d.musixmatchSubmitted,
                     instrumentalRendered: d.instrumentalRendered,
-                    amuseUploaded: d.amuseUploaded,
+                    distrokidUploaded: d.distrokidUploaded,
                     spotifyPitchSubmitted: d.spotifyPitchSubmitted,
                 }
             };
