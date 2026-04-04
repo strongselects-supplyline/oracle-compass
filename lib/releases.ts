@@ -33,7 +33,7 @@ export type ContentDeliverables = {
   folderOrganized: boolean;
   preSaveLinkActive: boolean;
   // Distribution
-  distrokidUploaded: boolean;
+  amuseUploaded: boolean;
   preSaveLive: boolean;
   streamingLinksVerified: boolean;
   spotifyPitchSubmitted: boolean;
@@ -88,7 +88,7 @@ const DEFAULT_DELIVERABLES: ContentDeliverables = {
   creditsWritten: false,
   folderOrganized: false,
   preSaveLinkActive: false,
-  distrokidUploaded: false,
+  amuseUploaded: false,
   preSaveLive: false,
   streamingLinksVerified: false,
   spotifyPitchSubmitted: false,
@@ -146,13 +146,13 @@ const RELEASE_DEFAULTS: Release[] = [
   },
   { 
     title: "ALL LOVE (EP)", uploadDate: "2026-04-14", releaseDate: "2026-04-24", status: "unreleased", 
-    contentDeliverables: { ...DEFAULT_DELIVERABLES, notes: "EP entity. Upload to DistroKid by Apr 14. Drops Apr 24. Needs: EP cover art, track sequencing, UPC, EP-level Spotify pitch." } 
+    contentDeliverables: { ...DEFAULT_DELIVERABLES, notes: "EP entity. Upload to Amuse by Apr 14. Drops Apr 24. Needs: EP cover art, track sequencing, UPC, EP-level Spotify pitch." }
   },
 ];
 
 const RELEASES_KEY = "dynamic_releases";
 const RELEASES_VERSION_KEY = "releases_data_version";
-const RELEASE_DATA_VERSION = 22; // v22: Amuse→DistroKid, amuseUploaded→distrokidUploaded
+const RELEASE_DATA_VERSION = 23; // v23: Revert DistroKid→Amuse (Ethan uses Amuse), distrokidUploaded→amuseUploaded
 
 // Read from IndexedDB, seeding defaults on first call or after version bump
 export async function getDynamicReleases(): Promise<Release[]> {

@@ -2,7 +2,7 @@
 // Receives an OracleDecree and executes each realignment command against IndexedDB.
 // Handles all realignment types — music shifts, business targets, priority flags.
 
-import { setStoreValue, getStoreValue, getTodayISO } from "@/lib/db";
+import { setStoreValue, getStoreValue, getTodayISO, logRealignmentAudit } from "@/lib/db";
 import { shiftRelease } from "@/lib/releases";
 import type { OracleDecree, Realignment, OracleFlag } from "@/lib/oracle";
 
@@ -14,6 +14,16 @@ export async function executeRealignment(decree: OracleDecree): Promise<void> {
 
   for (const r of decree.realignments) {
     await applyRealignment(r);
+    // Audit trail — skip no_change (noise), log everything else
+    if (r.type !== "no_change") {
+      await logRealignmentAudit({
+        type: r.type,
+        reason: "reason" in r ? (r as any).reason : "",
+        decree_severity: decree.severity,
+        oracle_message: decree.oracle_message,
+        executedAt: new Date().toISOString(),
+      });
+    }
   }
   // Persist full decree — read by Oracle page + next day's context assembly
   await setStoreValue(`oracle_decree:${today}`, decree);

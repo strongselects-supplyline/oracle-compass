@@ -617,16 +617,16 @@ export async function deriveKillList(): Promise<KillTask[]> {
     ], 2, "creative", "content");
 
     // ── DISTRIBUTION (T-2 to T-0) ──
-    toggle("dist-distrokid", "distrokidUploaded", "Upload song to DistroKid", `Must be uploaded by ${release.uploadDate} (24-48hr review window)`, [
-      "Open DistroKid app or go to distrokid.com",
-      "Click 'Upload' or 'New Release'",
+    toggle("dist-amuse", "amuseUploaded", "Upload song to Amuse", `Must be uploaded by ${release.uploadDate} (8-day review window)`, [
+      "Open the Amuse app on your phone",
+      "Tap '+' to start a new release",
       "Upload the final master WAV/MP3 + album art",
       "Fill in: title, artist, genre, release date",
-      "Submit and save the release URL — you'll get your ISRC from here",
+      "Submit — you'll get your ISRC from the distribution confirmation",
     ], 3, "ops", "any");
 
     toggle("dist-presave", "preSaveLive", "Put pre-save link in your bio", "Fans can save the song before it drops", [
-      "Get your pre-save link from DistroKid or Linkfire",
+      "Get your pre-save link from Amuse or Linkfire",
       "If you don't have one: use linktr.ee or a Linkin.bio page",
       "Open Instagram → Edit Profile → Website → paste the link",
       "Open TikTok → Edit Profile → Website → paste the link",
@@ -647,7 +647,7 @@ export async function deriveKillList(): Promise<KillTask[]> {
         "Open Spotify and search for the song by title",
         "Open Apple Music and search for it there too",
         "Click play — make sure the audio is correct",
-        "If it's not showing up, check your DistroKid dashboard for distribution errors",
+        "If it's not showing up, check your Amuse app or amuse.io for distribution errors",
         "Share the links to your socials once confirmed",
       ], 0, "ops", "any");
     }
@@ -679,7 +679,7 @@ export async function deriveKillList(): Promise<KillTask[]> {
     // get-isrc + all registrations: surface AFTER release only — a live ISRC is required
     if (daysUntil <= 0) {
       toggle("reg-isrc", "isrcPulled", "Get your ISRC code", "Unique tracking code — needed for ASCAP, MLC, Songtrust registration", [
-        "Log in to DistroKid → My Music → select the release",
+        "Open Amuse app → Library → select the release",
         "The ISRC code looks like: US-XX1-23-45678",
         "Copy this code — paste it into ASCAP, MLC, and Songtrust",
         "Registration opens only after the song is live",
@@ -1278,12 +1278,12 @@ export async function deriveKillList(): Promise<KillTask[]> {
       tasks.push({
         id: "esl-pitch-prep",
         title: `Prep ESL editorial pitch — upload in ${daysToEslUpload}d`,
-        subtitle: "Upload ESL to DistroKid by Apr 7. Have pitch copy ready to paste.",
+        subtitle: "Upload ESL to Amuse by Apr 7. Have pitch copy ready to paste.",
         howTo: [
           "Write your pitch copy NOW so you're ready on upload day.",
           "Genre: R&B / Soul. Mood: Romantic, Melancholic.",
           "Description: 'Cinematic OVO-pocket R&B in the Bryson Tiller / Drake lane. Milwaukee anthem dropping 414 Day. Late-night, emotional, built for editorial discovery.'",
-          "Save it in Notes — paste into Spotify for Artists right after DistroKid confirms.",
+          "Save it in Notes — paste into Spotify for Artists right after Amuse confirms.",
         ],
         urgency: daysToEslUpload <= 3 ? "RED" : "AMBER",
         pillar: "ops",

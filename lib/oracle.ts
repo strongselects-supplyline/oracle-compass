@@ -9,6 +9,10 @@ import { fetchDashboardIncome } from "@/lib/dashboardBridge";
 import { getDayType } from "@/lib/dayType";
 import { getSprintTarget, getTrackStatuses, getSundayChecklist, computeTrackProgress, isSundayChecklistComplete } from "@/lib/planner";
 import { getSessionsForDateRange } from "@/lib/studioLog";
+import { getLaneStatus } from "@/lib/lanes";
+import type { Lane } from "@/lib/lanes";
+import { analyzeCompletionVelocity, getPatternSummary } from "@/lib/completionAnalytics";
+import type { VelocityReport } from "@/lib/completionAnalytics";
 
 export type CycleTrack = {
   name: string;
@@ -85,6 +89,7 @@ export type SessionSnapshot = {
   personalTimeDays: number;      // how many of last 7 days had personal time
   batchPrepThisWeek: boolean;    // did Sunday batch prep happen?
   consecutiveMaxDays: number;    // streak of days without personal time
+  weeklySessionBreakdown: Record<string, number>; // { recording: 2, mixing: 1 } from last 7 days
 };
 
 export type PlannerSnapshot = {
@@ -118,6 +123,10 @@ export type OracleContext = {
   fanCapture: FanCaptureSnapshot;
   livePhase: LiveEventSnapshot;
   declaredPriority: string | null;
+  // Execution intelligence (deployed Apr 4)
+  laneStatus: Lane[];
+  velocityReport: VelocityReport;
+  patternSummary: string;
 };
 
 export type Realignment =
@@ -392,6 +401,14 @@ export async function assembleContext(): Promise<OracleContext> {
   const sundayStr = `${lastSunday.getFullYear()}-${String(lastSunday.getMonth() + 1).padStart(2, '0')}-${String(lastSunday.getDate()).padStart(2, '0')}`;
   const sundayLog = await getDailyLog(sundayStr);
 
+  // Weekly session type breakdown (recording/mixing/etc over last 7 days)
+  const weeklySessionBreakdown: Record<string, number> = {};
+  for (const l of [...last7Logs, dailyLog]) {
+    if (l.sessionType && l.sessionType.trim()) {
+      weeklySessionBreakdown[l.sessionType] = (weeklySessionBreakdown[l.sessionType] || 0) + 1;
+    }
+  }
+
   const session: SessionSnapshot = {
     todayQuality: dailyLog.sessionQuality,
     todayType: dailyLog.sessionType || '',
@@ -399,6 +416,7 @@ export async function assembleContext(): Promise<OracleContext> {
     personalTimeDays,
     batchPrepThisWeek: sundayLog?.batchPrepDone || false,
     consecutiveMaxDays,
+    weeklySessionBreakdown,
   };
 
   // Meta
@@ -426,6 +444,13 @@ export async function assembleContext(): Promise<OracleContext> {
     trackInProgress: trackProgress.inProgress,
     sundayChecklistComplete: isSundayChecklistComplete(sundayChecklistData),
   };
+
+  // Execution intelligence — lane status, velocity, and pattern detection
+  const [laneStatus, velocityReport, patternSummary] = await Promise.all([
+    getLaneStatus(),
+    analyzeCompletionVelocity(),
+    getPatternSummary(),
+  ]);
 
   // Fan Capture & Live Event reads
   const [
@@ -479,5 +504,8 @@ export async function assembleContext(): Promise<OracleContext> {
     fanCapture,
     livePhase,
     declaredPriority: declaredPriority || null,
+    laneStatus,
+    velocityReport,
+    patternSummary,
   };
 }

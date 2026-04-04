@@ -31,10 +31,13 @@ export type DailyLog = {
     sessionType: string; // 'recording' | 'mixing' | 'mastering' | 'writing' | ''
     // Life balance
     personalTime: boolean; // did you take real personal/social/recovery time today?
+    personalTimeQuality: number | null; // 1-3: 1=passive scroll, 2=light activity, 3=restorative (walk/GF/nature)
     batchPrepDone: boolean; // Sunday batch prep completed (only relevant on Sundays)
     // Performance Conditioning (414 Day prep)
     conditioningType: string; // 'zone2' | 'vo2max' | 'anaerobic' | 'dance_walkthrough' | 'dance_fullout' | ''
     conditioningMinutes: number | null;
+    // Fuel quality signal (Day One protocol)
+    proteinQuality: number | null; // 1-3: 1=minimal/skip, 2=adequate, 3=high (full protein meals)
 };
 
 export type StreakData = {
@@ -178,9 +181,11 @@ function getDefaultLog(date: string): DailyLog {
         sessionQuality: null,
         sessionType: '',
         personalTime: false,
+        personalTimeQuality: null,
         batchPrepDone: false,
         conditioningType: '',
         conditioningMinutes: null,
+        proteinQuality: null,
     };
 }
 
@@ -253,4 +258,27 @@ export async function logTaskCompletion(entry: TaskCompletionEntry): Promise<voi
 
 export async function getCompletionLog(): Promise<TaskCompletionEntry[]> {
     return (await getStoreValue<TaskCompletionEntry[]>('task_completion_log')) || [];
+}
+
+// ── Realignment Audit Trail (append-only) ──────────────────────────
+// Every Oracle realignment is logged with full context so we can debug
+// "why did this release shift?" or "what was triggering RED severity?"
+
+export type RealignmentAuditEntry = {
+    type: string;             // realignment type (shift_release, flag_action, etc.)
+    reason: string;           // Oracle's stated reason
+    decree_severity: string;  // GREEN / AMBER / RED
+    oracle_message: string;   // the 1-2 sentence decree message
+    executedAt: string;       // ISO timestamp
+};
+
+export async function logRealignmentAudit(entry: RealignmentAuditEntry): Promise<void> {
+    const key = 'realignment_audit_log';
+    const log = (await getStoreValue<RealignmentAuditEntry[]>(key)) || [];
+    log.push(entry);
+    await setStoreValue(key, log);
+}
+
+export async function getRealignmentAuditLog(): Promise<RealignmentAuditEntry[]> {
+    return (await getStoreValue<RealignmentAuditEntry[]>('realignment_audit_log')) || [];
 }

@@ -10,7 +10,6 @@ export type ToolRef = {
   openVerb: string;   // "Open", "Go to", "Upload to"
   url?: string;       // if web-based
   cost?: string;      // pricing note if relevant
-  amusePartner?: boolean;
   promoCode?: string;
 };
 
@@ -67,13 +66,13 @@ export const TOOLS: Record<string, ToolRef> = {
     url: "https://www.opus.pro",
     cost: "Free tier available",
   },
-  // ── Distribution & Rights (Amuse) ─────────────────────────────────
+  // ── Distribution & Rights (Amuse) ────────────────────────────────
   amuse: {
     name: "Amuse",
     category: "distribution",
     platform: "mobile",
     openVerb: "Open",
-    amusePartner: true,
+    cost: "Free tier available. Pro unlocks instant distribution and splits.",
   },
   musixmatch: {
     name: "Musixmatch Pro",
@@ -81,8 +80,7 @@ export const TOOLS: Record<string, ToolRef> = {
     platform: "web",
     openVerb: "Go to",
     url: "https://pro.musixmatch.com",
-    amusePartner: true,
-    cost: "Free verification via Amuse. Code AMUSEPRO30 for additional features.",
+    cost: "Free tier available. Pro unlocks analytics.",
   },
   // ── Mastering ─────────────────────────────────────────────────────
   masterchannel: {
@@ -91,8 +89,7 @@ export const TOOLS: Record<string, ToolRef> = {
     platform: "web",
     openVerb: "Go to",
     url: "https://masterchannel.ai",
-    amusePartner: true,
-    cost: "$5.99/track via Amuse",
+    cost: "$5.99/track",
   },
   // ── Promotion & Discovery ─────────────────────────────────────────
   songtools: {
@@ -100,8 +97,7 @@ export const TOOLS: Record<string, ToolRef> = {
     category: "promotion",
     platform: "web",
     openVerb: "Go to",
-    amusePartner: true,
-    cost: "50% off first playlisting campaign via Amuse",
+    cost: "Pay-per-submission. Guaranteed curator feedback.",
   },
   groover: {
     name: "Groover",
@@ -109,7 +105,6 @@ export const TOOLS: Record<string, ToolRef> = {
     platform: "web",
     openVerb: "Go to",
     url: "https://groover.co",
-    amusePartner: true,
     cost: "Pay-per-pitch. Guaranteed feedback or credits back.",
   },
   unhurd: {
@@ -117,9 +112,7 @@ export const TOOLS: Record<string, ToolRef> = {
     category: "promotion",
     platform: "web",
     openVerb: "Go to",
-    amusePartner: true,
-    promoCode: "AMUSEPASS",
-    cost: "10% off first month/year with code AMUSEPASS",
+    cost: "Subscription. Playlist analytics and outreach tools.",
   },
   // ── Sync & Collaboration ──────────────────────────────────────────
   disco: {
@@ -128,17 +121,14 @@ export const TOOLS: Record<string, ToolRef> = {
     platform: "web",
     openVerb: "Go to",
     url: "https://disco.ac",
-    amusePartner: true,
-    cost: "Free via Amuse activation",
+    cost: "Free tier available. Sync licensing catalog management.",
   },
   elasticStage: {
     name: "elasticStage",
     category: "distribution",
     platform: "web",
     openVerb: "Go to",
-    amusePartner: true,
-    promoCode: "AMUSE15",
-    cost: "15% off first order. No minimums on vinyl/CD.",
+    cost: "No minimums on vinyl/CD.",
   },
 };
 
@@ -153,8 +143,11 @@ export function openApp(toolKey: keyof typeof TOOLS): string {
   return `Open ${t.name}`;
 }
 
+/** Returns an Amuse partner benefit note for a given tool, if one exists. */
 export function amusePartnerNote(toolKey: keyof typeof TOOLS): string {
-  const t = TOOLS[toolKey];
-  if (!t?.amusePartner) return "";
-  return `Available through your Amuse Pro account → Member Offers → ${t.name}.`;
+  const notes: Partial<Record<keyof typeof TOOLS, string>> = {
+    groover: "Amuse Pro partners get 10% off Groover credits — check the Amuse app under 'Partner Benefits'",
+    songtools: "Check Amuse Partner Benefits section for any active SongTools discount",
+  };
+  return notes[toolKey] ?? "";
 }

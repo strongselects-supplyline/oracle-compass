@@ -104,22 +104,22 @@ export const SPRINT_WEEKS: SprintWeek[] = [
   {
     wk: 3, dates: 'Mar 22\u201328', startDate: '2026-03-22', endDate: '2026-03-28',
     phase: 'ALL_LOVE', phaseBadge: 'ALL LOVE', target: 'Recording sprint + SF/LID mixdown', total: 1,
-    keyEvents: ['ALL LOVE topline recording through Wed night', 'ESL upload to DistroKid by Mar 30 (moved → Apr 7 for 414 Day)', 'DoorDash bridge: $1,000 target by Apr 3'],
+    keyEvents: ['ALL LOVE topline recording through Wed night', 'ESL upload to Amuse by Mar 30 (moved → Apr 7 for 414 Day)', 'DoorDash bridge: $1,000 target by Apr 3'],
   },
   {
     wk: 4, dates: 'Mar 29\u2013Apr 4', startDate: '2026-03-29', endDate: '2026-04-04',
     phase: 'ALL_LOVE', phaseBadge: 'ALL LOVE', target: 'ESL drops + SF/LID close', total: 2,
-    keyEvents: ['ESL DistroKid upload Apr 7 (414 Day release) 🔥', 'SF mix/master close target Apr 1', 'LID mix/master close target Apr 1', 'East Side Love drops Apr 14 (414 Day) 🔥', '$1,000 DD bill due Apr 3', 'DoorDash bridge ends'],
+    keyEvents: ['ESL Amuse upload Apr 7 (414 Day release) 🔥', 'SF mix/master close target Apr 1', 'LID mix/master close target Apr 1', 'East Side Love drops Apr 14 (414 Day) 🔥', '$1,000 DD bill due Apr 3', 'DoorDash bridge ends'],
   },
   {
     wk: 5, dates: 'Apr 5\u201311', startDate: '2026-04-05', endDate: '2026-04-11',
     phase: 'ALL_LOVE', phaseBadge: 'ALL LOVE', target: 'SF drops + LID upload', total: 3,
-    keyEvents: ['SF DistroKid upload deadline Apr 6', 'Sweet Frustration drops Apr 10 🔥', 'ESL drops Apr 14 (414 Day) 🎤', 'LID DistroKid upload deadline Apr 13', '$50 ad push — Denver, Minneapolis, Dallas, Calgary'],
+    keyEvents: ['SF Amuse upload deadline Apr 6', 'Sweet Frustration drops Apr 10 🔥', 'ESL drops Apr 14 (414 Day) 🎤', 'LID Amuse upload deadline Apr 13', '$50 ad push — Denver, Minneapolis, Dallas, Calgary'],
   },
   {
     wk: 6, dates: 'Apr 12\u201318', startDate: '2026-04-12', endDate: '2026-04-18',
     phase: 'ALL_LOVE', phaseBadge: 'ALL LOVE', target: '414 Day + LID drops + EP upload', total: 4,
-    keyEvents: ['LID DistroKid upload deadline Apr 13', 'EP DistroKid upload deadline Apr 14', '414 Day performance Apr 14 🎤 (GF filming)', 'QR code at venue → Spotify pre-save', 'East Side Love drops Apr 14 (414 Day) 🔥', 'Like I Did drops Apr 17 🔥', 'All CTAs shift to "pre-save ALL LOVE EP"'],
+    keyEvents: ['LID Amuse upload deadline Apr 13', 'EP Amuse upload deadline Apr 14', '414 Day performance Apr 14 🎤 (GF filming)', 'QR code at venue → Spotify pre-save', 'East Side Love drops Apr 14 (414 Day) 🔥', 'Like I Did drops Apr 17 🔥', 'All CTAs shift to "pre-save ALL LOVE EP"'],
   },
   {
     wk: 7, dates: 'Apr 19\u201325', startDate: '2026-04-19', endDate: '2026-04-25',
