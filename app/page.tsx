@@ -8,8 +8,10 @@ import { getDynamicReleases, Release } from "@/lib/releases";
 import { useCloudSync } from "@/lib/useCloudSync";
 import { getMakeModeWeek } from "@/lib/oracle";
 import type { OracleDecree } from "@/lib/oracle";
+import { getLaneStatus, Lane } from "@/lib/lanes";
 import WeeklyMirror from "@/components/WeeklyMirror";
 import CheckItem from "@/components/CheckItem";
+import Link from "next/link";
 
 
 type ProtocolStep = { icon: string; action: string; tab?: string };
@@ -86,6 +88,8 @@ export default function MorningMode() {
   const [week, setWeek] = useState<number>(1);
   const [nextRelease, setNextRelease] = useState<Release | null>(null);
   const [daysUntilRelease, setDaysUntilRelease] = useState<number>(0);
+  const [lanes, setLanes] = useState<Lane[]>([]);
+  const [showProtocol, setShowProtocol] = useState(false);
   const { syncStatus, sync: handleSync } = useCloudSync();
 
   // DoorDash State
@@ -115,6 +119,7 @@ export default function MorningMode() {
       setActiveTrack(next?.title || "–");
 
       setDecree(await getStoreValue<OracleDecree>(`oracle_decree:${getTodayISO()}`));
+      setLanes(await getLaneStatus());
     };
     init();
   }, []);
@@ -239,23 +244,68 @@ export default function MorningMode() {
             {/* WEEKLY MIRROR */}
             <WeeklyMirror />
 
-            {/* PROTOCOL */}
+            {/* LANE DASHBOARD */}
+            {lanes.length > 0 && (
+              <div className="mb-8">
+                <h3 className="text-[10px] font-black tracking-[0.2em] text-[#555] uppercase mb-3 px-1">Lanes Touched Today</h3>
+                <div className="grid grid-cols-6 gap-2">
+                  {lanes.map(lane => (
+                    <div key={lane.id} className="flex flex-col items-center gap-1.5">
+                      <div className={`w-12 h-12 rounded-full flex items-center justify-center text-lg transition-all duration-500 ${
+                        lane.touched
+                          ? `${lane.bgColor} ring-2 ring-current ${lane.color} scale-105`
+                          : 'bg-[#111] ring-1 ring-[#222] opacity-40'
+                      }`}>
+                        {lane.icon}
+                      </div>
+                      <span className={`text-[8px] font-black tracking-wider uppercase ${
+                        lane.touched ? lane.color : 'text-[#333]'
+                      }`}>{lane.label}</span>
+                      {lane.touched && lane.touchCount > 1 && (
+                        <span className={`text-[7px] font-bold ${lane.color} opacity-60`}>{lane.touchCount}x</span>
+                      )}
+                    </div>
+                  ))}
+                </div>
+                <div className="mt-3 text-center">
+                  <span className="text-[10px] text-[#444] font-bold">
+                    {lanes.filter(l => l.touched).length}/6 lanes active
+                  </span>
+                </div>
+              </div>
+            )}
+
+            {/* NEED DIRECTION? — Kill List safety net */}
+            <Link href="/kill" className="block mb-8">
+              <div className="card !p-4 text-center border-dashed border-[#222] hover:border-amber-500/30 transition-all active:scale-[0.98]">
+                <p className="text-sm font-black text-[#666]">Need direction?</p>
+                <p className="text-[10px] text-[#444] mt-0.5">Open the Kill List for data-backed next moves</p>
+              </div>
+            </Link>
+
+            {/* PROTOCOL (collapsible) */}
             {(() => {
               const protocol = getProtocolSteps(dayType);
               return protocol.steps.length > 0 && (
                 <div className="mb-8">
-                  <div className="flex justify-between items-end mb-3 px-1">
-                    <h3 className="text-sm font-black tracking-widest uppercase text-white">{dayType}</h3>
-                  </div>
-                  <div className="card !p-0 overflow-hidden divide-y divide-[#1a1a1a]">
-                    {protocol.steps.map((step, i) => (
-                      <div key={i} className="flex items-center gap-3 px-4 py-3.5">
-                        <span className="text-lg">{step.icon}</span>
-                        <span className="text-[12px] font-bold text-[#ccc] leading-snug flex-1">{step.action}</span>
-                        {step.tab && <span className="text-[8px] font-black tracking-widest text-amber-500/70 uppercase bg-amber-500/10 px-1.5 py-0.5 rounded">{step.tab}</span>}
-                      </div>
-                    ))}
-                  </div>
+                  <button
+                    onClick={() => setShowProtocol(!showProtocol)}
+                    className="flex justify-between items-center w-full mb-3 px-1"
+                  >
+                    <h3 className="text-[10px] font-black tracking-[0.2em] text-[#555] uppercase">{dayType}</h3>
+                    <span className="text-[10px] text-[#444] font-bold">{showProtocol ? 'hide' : 'show schedule'}</span>
+                  </button>
+                  {showProtocol && (
+                    <div className="card !p-0 overflow-hidden divide-y divide-[#1a1a1a] animate-fade-in">
+                      {protocol.steps.map((step, i) => (
+                        <div key={i} className="flex items-center gap-3 px-4 py-3.5">
+                          <span className="text-lg">{step.icon}</span>
+                          <span className="text-[12px] font-bold text-[#ccc] leading-snug flex-1">{step.action}</span>
+                          {step.tab && <span className="text-[8px] font-black tracking-widest text-amber-500/70 uppercase bg-amber-500/10 px-1.5 py-0.5 rounded">{step.tab}</span>}
+                        </div>
+                      ))}
+                    </div>
+                  )}
                 </div>
               );
             })()}

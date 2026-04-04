@@ -47,6 +47,7 @@ export type StreakData = {
 
 export type DailyTelemetry = {
     doordash_earned: number;
+    doordash_month: string; // YYYY-MM — auto-resets on month boundary
 };
 
 // Singleton DB promise
@@ -142,6 +143,11 @@ export function getTodayISO(): string {
     return `${d.getFullYear()}-${String(d.getMonth() + 1).padStart(2, '0')}-${String(d.getDate()).padStart(2, '0')}`;
 }
 
+function getCurrentMonth(): string {
+    const d = new Date();
+    return `${d.getFullYear()}-${String(d.getMonth() + 1).padStart(2, '0')}`;
+}
+
 export async function getDailyLog(date: string = getTodayISO()): Promise<DailyLog> {
     const log = await getStoreValue<DailyLog>(`daily_log:${date}`);
     if (log) return { ...getDefaultLog(date), ...log };
@@ -200,10 +206,27 @@ export async function saveStreakData(data: StreakData): Promise<void> {
 
 export async function getDailyTelemetry(): Promise<DailyTelemetry> {
     const data = await getStoreValue<DailyTelemetry>('daily_telemetry');
-    if (data) return data;
-    return {
-        doordash_earned: 0
-    };
+    const currentMonth = getCurrentMonth();
+
+    if (data) {
+        // Month boundary auto-reset
+        if (data.doordash_month && data.doordash_month !== currentMonth) {
+            // Archive previous month
+            const historyKey = `dd_history:${data.doordash_month}`;
+            await setStoreValue(historyKey, data.doordash_earned);
+            // Reset for new month
+            const fresh: DailyTelemetry = { doordash_earned: 0, doordash_month: currentMonth };
+            await setStoreValue('daily_telemetry', fresh);
+            return fresh;
+        }
+        // Backfill month field for existing data
+        if (!data.doordash_month) {
+            data.doordash_month = currentMonth;
+            await setStoreValue('daily_telemetry', data);
+        }
+        return data;
+    }
+    return { doordash_earned: 0, doordash_month: currentMonth };
 }
 
 export async function saveDailyTelemetry(data: DailyTelemetry): Promise<void> {
