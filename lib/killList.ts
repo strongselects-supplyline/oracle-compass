@@ -6,7 +6,7 @@
 // ADHD-first design: every task has plain language + step-by-step howTo.
 // Built March 18, 2026. Rewritten March 19, 2026.
 
-import { getDailyLog, saveDailyLog, getStoreValue, setStoreValue, getTodayISO, DailyLog, getDailyTelemetry } from "@/lib/db";
+import { getDailyLog, saveDailyLog, getStoreValue, setStoreValue, getTodayISO, DailyLog, getDailyTelemetry, logTaskCompletion } from "@/lib/db";
 import { getDynamicReleases, Release, updateContentDeliverables } from "@/lib/releases";
 import { getDayType, isStudioDay, isBizDay } from "@/lib/dayType";
 import { getWeekKey, OracleFlag } from "@/lib/oracle";
@@ -1393,6 +1393,15 @@ export async function completeTask(task: KillTask): Promise<void> {
     cleared.push(task.id);
     await setStoreValue(`kill_cleared:${today}`, cleared);
   }
+  // Silent audit trail — append-only log for pattern analysis
+  await logTaskCompletion({
+    taskId: task.id,
+    title: task.title,
+    pillar: task.pillar,
+    urgency: task.urgency,
+    clearedAt: new Date().toISOString(),
+    dayOfWeek: new Date().getDay(),
+  });
 }
 
 // ── Stats ────────────────────────────────────────────────────────────

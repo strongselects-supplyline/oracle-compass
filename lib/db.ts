@@ -209,3 +209,25 @@ export async function getDailyTelemetry(): Promise<DailyTelemetry> {
 export async function saveDailyTelemetry(data: DailyTelemetry): Promise<void> {
     await setStoreValue('daily_telemetry', data);
 }
+
+// ── Task Completion Log (silent audit trail) ────────────────────────
+
+export type TaskCompletionEntry = {
+    taskId: string;
+    title: string;
+    pillar: string;
+    urgency: string;
+    clearedAt: string;  // ISO timestamp
+    dayOfWeek: number;  // 0-6 (Sun-Sat)
+};
+
+export async function logTaskCompletion(entry: TaskCompletionEntry): Promise<void> {
+    const key = 'task_completion_log';
+    const log = (await getStoreValue<TaskCompletionEntry[]>(key)) || [];
+    log.push(entry);
+    await setStoreValue(key, log);
+}
+
+export async function getCompletionLog(): Promise<TaskCompletionEntry[]> {
+    return (await getStoreValue<TaskCompletionEntry[]>('task_completion_log')) || [];
+}
