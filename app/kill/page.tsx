@@ -5,9 +5,13 @@
 // Every task is derived from live system state. Nothing is hardcoded.
 // Tapping a task mutates the underlying data and the list re-derives.
 // When all RED items clear, the Oracle auto-recalibrates.
+//
+// Apr 7, 2026: Added Daily Focus anchor + Needle/Infrastructure split.
+// Dr. K insight: urgency ≠ importance. The page should answer "what's the one thing?"
+// first, then show everything else collapsed.
 
 import { useState, useEffect, useCallback, useRef } from "react";
-import { getDailyTelemetry, saveDailyTelemetry, DailyTelemetry } from "@/lib/db";
+import { getDailyTelemetry, saveDailyTelemetry, DailyTelemetry, getStoreValue, setStoreValue, getTodayISO } from "@/lib/db";
 import { deriveKillList, completeTask, getKillStats, KillTask } from "@/lib/killList";
 import { recalibrateOracle } from "@/lib/recalibrate";
 import { getTrackHoursSummaries, TrackHoursSummary } from "@/lib/studioLog";
@@ -22,12 +26,47 @@ const PILLAR_LABELS: Record<string, string> = {
   creative: "CREATIVE", business: "BUSINESS", body: "BODY", ops: "OPS",
 };
 
+// ── Needle vs Infrastructure classification ─────────────────────────
+// Needles = tasks that compound. The record, the releases, the performance, the outreach.
+// Infrastructure = one-time setup, socials, tools. Important but not the main stage.
+
+const NEEDLE_PREFIXES = [
+  // Creative core — the record
+  "telemetry-", "session-", "content-sprint-", "instrumental-",
+  // Release pipeline — the drops
+  "esl-pitch-", "414-",
+  // Outreach engine — the growth lever
+  "ig-community-sprint", "biz-move", "biz-touches",
+  // Revenue — keeps the lights on
+  "dd-",
+  // Oracle flags — system-level priority
+  "flag-",
+];
+
+const INFRASTRUCTURE_PREFIXES = [
+  // Social audit items
+  "social-", "fan-",
+  // Body/fuel — important but not "the work"
+  "fuel-", "dayone-", "grind-", "mudra-",
+  // Maintenance
+  "ss-menu-",
+];
+
+function isNeedle(task: KillTask): boolean {
+  // Explicit override from derivation engine
+  if (task.needle === true) return true;
+  if (task.needle === false) return false;
+  // Pattern-match by ID prefix
+  return NEEDLE_PREFIXES.some(p => task.id.startsWith(p));
+}
+
 // ── Extract release name from task title (format: "Task — Track Name") ──
 function getGroupKey(task: KillTask): string {
   // Oracle flags and non-release tasks always go under "Today"
   if (task.id.startsWith("flag-") || task.id.startsWith("fuel-") ||
       task.id.startsWith("grind-") || task.id.startsWith("session-") ||
-      task.id.startsWith("biz-") || task.id.startsWith("fan-")) {
+      task.id.startsWith("biz-") || task.id.startsWith("fan-") ||
+      task.id.startsWith("social-") || task.id.startsWith("ig-")) {
     return "Today";
   }
   // 414 Day prep tasks group together
@@ -264,6 +303,15 @@ export default function KillPage() {
   const [loading, setLoading] = useState(true);
   const [recalStatus, setRecalStatus] = useState<"idle" | "running" | "done">("idle");
 
+  // Daily Focus — one sentence, persists for the day
+  const [focus, setFocus] = useState("");
+  const [focusEditing, setFocusEditing] = useState(false);
+  const [focusDraft, setFocusDraft] = useState("");
+  const focusInputRef = useRef<HTMLInputElement>(null);
+
+  // Infrastructure section — collapsed by default
+  const [infraOpen, setInfraOpen] = useState(false);
+
   const refresh = useCallback(async () => {
     const [t, s, tel, summaries] = await Promise.all([deriveKillList(), getKillStats(), getDailyTelemetry(), getTrackHoursSummaries()]);
     setTasks(t);
@@ -273,7 +321,22 @@ export default function KillPage() {
     setLoading(false);
   }, []);
 
-  useEffect(() => { refresh(); }, [refresh]);
+  // Load focus on mount
+  useEffect(() => {
+    refresh();
+    const loadFocus = async () => {
+      const saved = await getStoreValue<string>(`daily_focus:${getTodayISO()}`);
+      if (saved) setFocus(saved);
+    };
+    loadFocus();
+  }, [refresh]);
+
+  const saveFocus = async () => {
+    const trimmed = focusDraft.trim();
+    setFocus(trimmed);
+    setFocusEditing(false);
+    await setStoreValue(`daily_focus:${getTodayISO()}`, trimmed);
+  };
 
   const handleComplete = async (task: KillTask) => {
     await completeTask(task);
@@ -302,11 +365,15 @@ export default function KillPage() {
     refresh(); // Re-derive the kill list so tasks immediately recalibrate urgencies
   };
 
-  // ── Group tasks by release/category ──
+  // ── Split tasks: needles vs infrastructure ──
+  const needleTasks = tasks.filter(isNeedle);
+  const infraTasks = tasks.filter(t => !isNeedle(t));
+
+  // ── Group needle tasks by release/category ──
   const groups: { name: string; tasks: KillTask[] }[] = [];
   const groupMap = new Map<string, KillTask[]>();
 
-  for (const task of tasks) {
+  for (const task of needleTasks) {
     const key = getGroupKey(task);
     if (!groupMap.has(key)) groupMap.set(key, []);
     groupMap.get(key)!.push(task);
@@ -327,6 +394,23 @@ export default function KillPage() {
     });
 
   groups.push(...releaseGroups);
+
+  // ── Infrastructure grouped ──
+  const infraGroups: { name: string; tasks: KillTask[] }[] = [];
+  const infraGroupMap = new Map<string, KillTask[]>();
+
+  for (const task of infraTasks) {
+    const key = getGroupKey(task);
+    if (!infraGroupMap.has(key)) infraGroupMap.set(key, []);
+    infraGroupMap.get(key)!.push(task);
+  }
+
+  const infraToday = infraGroupMap.get("Today");
+  if (infraToday && infraToday.length > 0) {
+    infraGroups.push({ name: "Today", tasks: infraToday });
+    infraGroupMap.delete("Today");
+  }
+  infraGroups.push(...Array.from(infraGroupMap.entries()).map(([name, tasks]) => ({ name, tasks })));
 
   const sfHoursFromLog = trackSummaries.find(t => t.trackName.toUpperCase() === 'SWEET FRUSTRATION')?.totalHours || 0;
   const lidHoursFromLog = trackSummaries.find(t => t.trackName.toUpperCase() === 'LIKE I DID')?.totalHours || 0;
@@ -407,6 +491,63 @@ export default function KillPage() {
           </div>
         </div>
 
+        {/* ── DAILY FOCUS — "What's the one thing?" ── */}
+        <div
+          className="mb-5 rounded-xl overflow-hidden"
+          style={{
+            background: focus ? "rgba(212,168,83,0.04)" : "rgba(255,255,255,0.02)",
+            border: `1px solid ${focus ? "rgba(212,168,83,0.15)" : "rgba(255,255,255,0.06)"}`,
+            animation: "killFadeIn 0.25s ease 0.05s both",
+          }}
+        >
+          <div className="px-4 py-3">
+            <p className="text-[9px] font-black tracking-[0.2em] uppercase mb-2" style={{ color: focus ? "#d4a853" : "rgba(255,255,255,0.25)" }}>
+              {focus ? "Today's Focus" : "Set Your Focus"}
+            </p>
+
+            {focusEditing ? (
+              <div className="flex gap-2">
+                <input
+                  ref={focusInputRef}
+                  type="text"
+                  value={focusDraft}
+                  onChange={e => setFocusDraft(e.target.value)}
+                  onKeyDown={e => { if (e.key === "Enter") saveFocus(); }}
+                  placeholder="What's the one thing today?"
+                  className="flex-1 bg-[#0a0a0a] border border-[#222] rounded-lg px-3 py-2.5 text-[13px] font-bold text-white outline-none placeholder-[#333] focus:border-[#d4a853]/30"
+                  autoFocus
+                />
+                <button
+                  onClick={saveFocus}
+                  className="px-4 py-2 rounded-lg bg-[#d4a853]/15 border border-[#d4a853]/25 text-[#d4a853] text-[10px] font-black tracking-widest uppercase active:scale-95 transition-all"
+                >
+                  Set
+                </button>
+              </div>
+            ) : (
+              <button
+                onClick={() => { setFocusDraft(focus); setFocusEditing(true); }}
+                className="w-full text-left active:scale-[0.99] transition-transform"
+                style={{ minHeight: "36px" }}
+              >
+                {focus ? (
+                  <p className="text-[15px] font-black text-white leading-snug">{focus}</p>
+                ) : (
+                  <p className="text-[13px] font-bold leading-snug" style={{ color: "rgba(255,255,255,0.25)" }}>
+                    Tap to set — everything below serves this.
+                  </p>
+                )}
+              </button>
+            )}
+
+            {focus && !focusEditing && (
+              <p className="text-[9px] mt-1.5" style={{ color: "rgba(255,255,255,0.15)" }}>
+                Everything below serves this. Tap to change.
+              </p>
+            )}
+          </div>
+        </div>
+
         {/* ── Daily Telemetry (Anti-Drift Engine) ── */}
         <div className="mb-5 rounded-xl p-4" style={{ background: "rgba(255,255,255,0.02)", border: "1px solid rgba(255,255,255,0.06)" }}>
           <div className="flex items-center justify-between mb-3">
@@ -439,17 +580,71 @@ export default function KillPage() {
           </div>
         </div>
 
-        {/* ── Grouped accordions ── */}
-        {groups.map((group, i) => (
-          <ReleaseGroup
-            key={group.name}
-            name={group.name}
-            tasks={group.tasks}
-            defaultOpen={i === 0 || getGroupUrgency(group.tasks) === "RED"}
-            onComplete={handleComplete}
-            index={i}
-          />
-        ))}
+        {/* ── NEEDLE TASKS — the work that compounds ── */}
+        {needleTasks.length > 0 && (
+          <div className="mb-2">
+            <h2 className="text-[9px] font-black tracking-[0.2em] uppercase mb-3 px-1" style={{ color: "rgba(255,255,255,0.25)" }}>
+              The Work
+            </h2>
+            {groups.map((group, i) => (
+              <ReleaseGroup
+                key={group.name}
+                name={group.name}
+                tasks={group.tasks}
+                defaultOpen={i === 0 || getGroupUrgency(group.tasks) === "RED"}
+                onComplete={handleComplete}
+                index={i}
+              />
+            ))}
+          </div>
+        )}
+
+        {/* ── INFRASTRUCTURE — collapsed by default ── */}
+        {infraTasks.length > 0 && (
+          <div className="mb-5">
+            <button
+              onClick={() => setInfraOpen(!infraOpen)}
+              className="w-full flex items-center justify-between px-1 py-3 transition-all"
+            >
+              <h2 className="text-[9px] font-black tracking-[0.2em] uppercase" style={{ color: "rgba(255,255,255,0.15)" }}>
+                Infrastructure ({infraTasks.length})
+              </h2>
+              <div className="flex items-center gap-2">
+                {infraTasks.some(t => t.urgency === "RED") && (
+                  <span className="text-[8px] font-black px-1.5 py-0.5 rounded" style={{ color: "#FF2D2D", background: "rgba(255,45,45,0.12)" }}>
+                    {infraTasks.filter(t => t.urgency === "RED").length}
+                  </span>
+                )}
+                {infraTasks.some(t => t.urgency === "AMBER") && (
+                  <span className="text-[8px] font-black px-1.5 py-0.5 rounded" style={{ color: "#FFB800", background: "rgba(255,184,0,0.1)" }}>
+                    {infraTasks.filter(t => t.urgency === "AMBER").length}
+                  </span>
+                )}
+                <span
+                  className="text-[10px] transition-transform duration-200"
+                  style={{ color: "rgba(255,255,255,0.15)", transform: infraOpen ? "rotate(180deg)" : "rotate(0deg)" }}
+                >
+                  ▾
+                </span>
+              </div>
+            </button>
+
+            {infraOpen && (
+              <div style={{ animation: "killFadeIn 0.2s ease both" }}>
+                {infraGroups.map((group, i) => (
+                  <ReleaseGroup
+                    key={group.name}
+                    name={group.name}
+                    tasks={group.tasks}
+                    defaultOpen={getGroupUrgency(group.tasks) === "RED"}
+                    onComplete={handleComplete}
+                    index={i}
+                  />
+                ))}
+              </div>
+            )}
+          </div>
+        )}
 
         {/* ── All Clear state ── */}
         {tasks.length === 0 && (

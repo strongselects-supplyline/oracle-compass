@@ -25,6 +25,7 @@ export type KillTask = {
   pillar: "creative" | "business" | "body" | "ops";
   timeBlock: "any" | "studio" | "biz" | "content" | "evening";
   action: () => Promise<void>;
+  needle?: boolean; // true = high-impact task (surfaces first). false/undefined = infrastructure (collapsed).
 };
 
 // ── Derivation Engine ────────────────────────────────────────────────
