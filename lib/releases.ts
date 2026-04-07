@@ -137,7 +137,7 @@ const RELEASE_DEFAULTS: Release[] = [
     contentDeliverables: { ...DEFAULT_DELIVERABLES, coreDriveComplete: true, campaignKitGenerated: true, soundExchange: "complete", notes: "Core Drive: 1,221 tracks / 20 playlists. Campaign kit in docs/handoff_mar24/. 414 Day drop — Milwaukee track on Milwaukee's day." } 
   },
   { 
-    title: "Sweet Frustration", uploadDate: "2026-04-02", releaseDate: "2026-04-10", status: "unreleased", 
+    title: "Sweet Frustration", uploadDate: "2026-04-07", releaseDate: "2026-04-10", status: "unreleased", 
     contentDeliverables: { ...DEFAULT_DELIVERABLES, coreDriveComplete: true, campaignKitGenerated: true, soundExchange: "complete", notes: "Core Drive: 1,134 tracks / 20 playlists. KAYTRANADA lane. Campaign kit in docs/handoff_mar24/." } 
   },
   { 
@@ -152,7 +152,7 @@ const RELEASE_DEFAULTS: Release[] = [
 
 const RELEASES_KEY = "dynamic_releases";
 const RELEASES_VERSION_KEY = "releases_data_version";
-const RELEASE_DATA_VERSION = 23; // v23: Revert DistroKid→Amuse (Ethan uses Amuse), distrokidUploaded→amuseUploaded
+const RELEASE_DATA_VERSION = 24; // v24: Fix SF uploadDate (Apr 2→Apr 7), sovereign plan integration (grief protocol, auto phase switch)
 
 // Read from IndexedDB, seeding defaults on first call or after version bump
 export async function getDynamicReleases(): Promise<Release[]> {
