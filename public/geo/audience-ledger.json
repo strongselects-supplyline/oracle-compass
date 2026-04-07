@@ -1,0 +1,2620 @@
+{
+  "version": 1,
+  "lastUpdated": "2026-04-07",
+  "artists": [
+    {
+      "name": "24will",
+      "tier": "T4",
+      "tracks": [
+        "i_like_girls"
+      ],
+      "fans": []
+    },
+    {
+      "name": "2AM",
+      "tier": "T4",
+      "tracks": [
+        "east_side_love"
+      ],
+      "fans": []
+    },
+    {
+      "name": "A$AP Rocky",
+      "tier": "T4",
+      "tracks": [
+        "like_i_did"
+      ],
+      "fans": []
+    },
+    {
+      "name": "Abel Deón",
+      "tier": "T4",
+      "tracks": [
+        "just_say_so"
+      ],
+      "fans": []
+    },
+    {
+      "name": "Aftertheparty",
+      "tier": "T4",
+      "tracks": [
+        "i_like_girls"
+      ],
+      "fans": []
+    },
+    {
+      "name": "AHVE",
+      "tier": "T4",
+      "tracks": [
+        "east_side_love"
+      ],
+      "fans": []
+    },
+    {
+      "name": "akumuh",
+      "tier": "T4",
+      "tracks": [
+        "i_like_girls"
+      ],
+      "fans": []
+    },
+    {
+      "name": "ALAKA'I",
+      "tier": "T4",
+      "tracks": [
+        "dance_with_him"
+      ],
+      "fans": []
+    },
+    {
+      "name": "Alex Isley",
+      "tier": "T4",
+      "tracks": [
+        "sweet_frustration"
+      ],
+      "fans": []
+    },
+    {
+      "name": "Alina Baraz",
+      "tier": "T4",
+      "tracks": [
+        "see_me"
+      ],
+      "fans": []
+    },
+    {
+      "name": "AlunaGeorge",
+      "tier": "T4",
+      "tracks": [
+        "sweet_frustration"
+      ],
+      "fans": []
+    },
+    {
+      "name": "Amy Winehouse",
+      "tier": "T4",
+      "tracks": [
+        "see_me"
+      ],
+      "fans": []
+    },
+    {
+      "name": "Andrew Davidson",
+      "tier": "T4",
+      "tracks": [
+        "just_say_so"
+      ],
+      "fans": []
+    },
+    {
+      "name": "Apollo Forbes",
+      "tier": "T4",
+      "tracks": [
+        "dance_with_him"
+      ],
+      "fans": []
+    },
+    {
+      "name": "ASTRO JP",
+      "tier": "T4",
+      "tracks": [
+        "east_side_love"
+      ],
+      "fans": []
+    },
+    {
+      "name": "Ava Max",
+      "tier": "T4",
+      "tracks": [
+        "origami"
+      ],
+      "fans": []
+    },
+    {
+      "name": "aytee si",
+      "tier": "T4",
+      "tracks": [
+        "dance_with_him"
+      ],
+      "fans": []
+    },
+    {
+      "name": "AZ Lyons",
+      "tier": "T4",
+      "tracks": [
+        "dance_with_him"
+      ],
+      "fans": []
+    },
+    {
+      "name": "Azealia Banks",
+      "tier": "T4",
+      "tracks": [
+        "sweet_frustration"
+      ],
+      "fans": []
+    },
+    {
+      "name": "Bankrol Hayden",
+      "tier": "T4",
+      "tracks": [
+        "like_i_did"
+      ],
+      "fans": []
+    },
+    {
+      "name": "Baruch",
+      "tier": "T4",
+      "tracks": [
+        "just_say_so"
+      ],
+      "fans": []
+    },
+    {
+      "name": "Blood Orange",
+      "tier": "T4",
+      "tracks": [
+        "sweet_frustration"
+      ],
+      "fans": []
+    },
+    {
+      "name": "Bluesz",
+      "tier": "T4",
+      "tracks": [
+        "dance_with_him"
+      ],
+      "fans": []
+    },
+    {
+      "name": "Bree Runway",
+      "tier": "T4",
+      "tracks": [
+        "sweet_frustration"
+      ],
+      "fans": []
+    },
+    {
+      "name": "Canon Torres",
+      "tier": "T4",
+      "tracks": [
+        "dance_with_him"
+      ],
+      "fans": []
+    },
+    {
+      "name": "Carrie Underwood",
+      "tier": "T4",
+      "tracks": [
+        "see_me"
+      ],
+      "fans": []
+    },
+    {
+      "name": "Cesar Santalo",
+      "tier": "T4",
+      "tracks": [
+        "see_me"
+      ],
+      "fans": []
+    },
+    {
+      "name": "Chance the Rapper",
+      "tier": "T4",
+      "tracks": [
+        "origami"
+      ],
+      "fans": []
+    },
+    {
+      "name": "Chaos In The CBD",
+      "tier": "T4",
+      "tracks": [
+        "sweet_frustration"
+      ],
+      "fans": []
+    },
+    {
+      "name": "Chelsea Cutler",
+      "tier": "T4",
+      "tracks": [
+        "see_me"
+      ],
+      "fans": []
+    },
+    {
+      "name": "Chord Overstreet",
+      "tier": "T4",
+      "tracks": [
+        "see_me"
+      ],
+      "fans": []
+    },
+    {
+      "name": "Conan Gray",
+      "tier": "T4",
+      "tracks": [
+        "see_me"
+      ],
+      "fans": []
+    },
+    {
+      "name": "Corey Lingo",
+      "tier": "T4",
+      "tracks": [
+        "just_say_so"
+      ],
+      "fans": []
+    },
+    {
+      "name": "Cortes",
+      "tier": "T4",
+      "tracks": [
+        "dance_with_him"
+      ],
+      "fans": []
+    },
+    {
+      "name": "Cosmo's Midnight",
+      "tier": "T4",
+      "tracks": [
+        "sweet_frustration"
+      ],
+      "fans": []
+    },
+    {
+      "name": "crushh",
+      "tier": "T4",
+      "tracks": [
+        "i_like_girls"
+      ],
+      "fans": []
+    },
+    {
+      "name": "Cupidon",
+      "tier": "T4",
+      "tracks": [
+        "sweet_frustration"
+      ],
+      "fans": []
+    },
+    {
+      "name": "Curtis Waters",
+      "tier": "T4",
+      "tracks": [
+        "origami"
+      ],
+      "fans": []
+    },
+    {
+      "name": "Cyrus",
+      "tier": "T4",
+      "tracks": [
+        "see_me"
+      ],
+      "fans": []
+    },
+    {
+      "name": "DaShawn Jordan",
+      "tier": "T4",
+      "tracks": [
+        "dance_with_him"
+      ],
+      "fans": []
+    },
+    {
+      "name": "Dave",
+      "tier": "T4",
+      "tracks": [
+        "like_i_did"
+      ],
+      "fans": []
+    },
+    {
+      "name": "Dead RoseZzz",
+      "tier": "T4",
+      "tracks": [
+        "i_like_girls"
+      ],
+      "fans": []
+    },
+    {
+      "name": "DeJ Loaf",
+      "tier": "T4",
+      "tracks": [
+        "like_i_did"
+      ],
+      "fans": []
+    },
+    {
+      "name": "DeLashay",
+      "tier": "T4",
+      "tracks": [
+        "east_side_love"
+      ],
+      "fans": []
+    },
+    {
+      "name": "Demi Lovato",
+      "tier": "T4",
+      "tracks": [
+        "see_me"
+      ],
+      "fans": []
+    },
+    {
+      "name": "Deuce B",
+      "tier": "T4",
+      "tracks": [
+        "east_side_love"
+      ],
+      "fans": []
+    },
+    {
+      "name": "dialE",
+      "tier": "T4",
+      "tracks": [
+        "sweet_frustration"
+      ],
+      "fans": []
+    },
+    {
+      "name": "DIDI HAN",
+      "tier": "T4",
+      "tracks": [
+        "sweet_frustration"
+      ],
+      "fans": []
+    },
+    {
+      "name": "DJ Spinz",
+      "tier": "T4",
+      "tracks": [
+        "dance_with_him"
+      ],
+      "fans": []
+    },
+    {
+      "name": "Doechii",
+      "tier": "T4",
+      "tracks": [
+        "sweet_frustration"
+      ],
+      "fans": []
+    },
+    {
+      "name": "Drew Harvey",
+      "tier": "T4",
+      "tracks": [
+        "see_me"
+      ],
+      "fans": []
+    },
+    {
+      "name": "Dro Kenji",
+      "tier": "T4",
+      "tracks": [
+        "just_say_so"
+      ],
+      "fans": []
+    },
+    {
+      "name": "Dru",
+      "tier": "T4",
+      "tracks": [
+        "just_say_so"
+      ],
+      "fans": []
+    },
+    {
+      "name": "Dubosse",
+      "tier": "T4",
+      "tracks": [
+        "east_side_love"
+      ],
+      "fans": []
+    },
+    {
+      "name": "DYSN",
+      "tier": "T4",
+      "tracks": [
+        "i_like_girls"
+      ],
+      "fans": []
+    },
+    {
+      "name": "Elair",
+      "tier": "T4",
+      "tracks": [
+        "dance_with_him"
+      ],
+      "fans": []
+    },
+    {
+      "name": "Elton John",
+      "tier": "T4",
+      "tracks": [
+        "origami"
+      ],
+      "fans": []
+    },
+    {
+      "name": "Emerson",
+      "tier": "T4",
+      "tracks": [
+        "dance_with_him"
+      ],
+      "fans": []
+    },
+    {
+      "name": "Eon Zero",
+      "tier": "T4",
+      "tracks": [
+        "i_like_girls"
+      ],
+      "fans": []
+    },
+    {
+      "name": "Eric Bellinger",
+      "tier": "T4",
+      "tracks": [
+        "like_i_did"
+      ],
+      "fans": []
+    },
+    {
+      "name": "ES.KAY",
+      "tier": "T4",
+      "tracks": [
+        "sweet_frustration"
+      ],
+      "fans": []
+    },
+    {
+      "name": "falcxne",
+      "tier": "T4",
+      "tracks": [
+        "sweet_frustration"
+      ],
+      "fans": []
+    },
+    {
+      "name": "Fashxn",
+      "tier": "T4",
+      "tracks": [
+        "dance_with_him"
+      ],
+      "fans": []
+    },
+    {
+      "name": "Feid",
+      "tier": "T4",
+      "tracks": [
+        "like_i_did"
+      ],
+      "fans": []
+    },
+    {
+      "name": "FI$HY",
+      "tier": "T4",
+      "tracks": [
+        "see_me"
+      ],
+      "fans": []
+    },
+    {
+      "name": "Funk Wav",
+      "tier": "T4",
+      "tracks": [
+        "sweet_frustration"
+      ],
+      "fans": []
+    },
+    {
+      "name": "Gabby Barrett",
+      "tier": "T4",
+      "tracks": [
+        "see_me"
+      ],
+      "fans": []
+    },
+    {
+      "name": "Garren",
+      "tier": "T4",
+      "tracks": [
+        "i_like_girls"
+      ],
+      "fans": []
+    },
+    {
+      "name": "GAYLE",
+      "tier": "T4",
+      "tracks": [
+        "see_me"
+      ],
+      "fans": []
+    },
+    {
+      "name": "ggy",
+      "tier": "T4",
+      "tracks": [
+        "i_like_girls"
+      ],
+      "fans": []
+    },
+    {
+      "name": "GIANNI TAYLOR",
+      "tier": "T4",
+      "tracks": [
+        "i_like_girls"
+      ],
+      "fans": []
+    },
+    {
+      "name": "Glass Animals",
+      "tier": "T4",
+      "tracks": [
+        "origami"
+      ],
+      "fans": []
+    },
+    {
+      "name": "Global Dan",
+      "tier": "T4",
+      "tracks": [
+        "just_say_so"
+      ],
+      "fans": []
+    },
+    {
+      "name": "GloRilla",
+      "tier": "T4",
+      "tracks": [
+        "like_i_did"
+      ],
+      "fans": []
+    },
+    {
+      "name": "gnash",
+      "tier": "T4",
+      "tracks": [
+        "see_me"
+      ],
+      "fans": []
+    },
+    {
+      "name": "Greatman Takit",
+      "tier": "T4",
+      "tracks": [
+        "east_side_love"
+      ],
+      "fans": []
+    },
+    {
+      "name": "guardin",
+      "tier": "T4",
+      "tracks": [
+        "just_say_so"
+      ],
+      "fans": []
+    },
+    {
+      "name": "Guccimith",
+      "tier": "T4",
+      "tracks": [
+        "dance_with_him"
+      ],
+      "fans": []
+    },
+    {
+      "name": "Harm Franklin",
+      "tier": "T4",
+      "tracks": [
+        "origami"
+      ],
+      "fans": []
+    },
+    {
+      "name": "Hev Abi",
+      "tier": "T4",
+      "tracks": [
+        "just_say_so"
+      ],
+      "fans": []
+    },
+    {
+      "name": "hie",
+      "tier": "T4",
+      "tracks": [
+        "dance_with_him"
+      ],
+      "fans": []
+    },
+    {
+      "name": "HolyTrill",
+      "tier": "T4",
+      "tracks": [
+        "i_like_girls"
+      ],
+      "fans": []
+    },
+    {
+      "name": "HRTLSS",
+      "tier": "T4",
+      "tracks": [
+        "see_me"
+      ],
+      "fans": []
+    },
+    {
+      "name": "hugo",
+      "tier": "T4",
+      "tracks": [
+        "sweet_frustration"
+      ],
+      "fans": []
+    },
+    {
+      "name": "HunnaV",
+      "tier": "T4",
+      "tracks": [
+        "see_me"
+      ],
+      "fans": []
+    },
+    {
+      "name": "Hunxho",
+      "tier": "T4",
+      "tracks": [
+        "like_i_did"
+      ],
+      "fans": []
+    },
+    {
+      "name": "HXE",
+      "tier": "T4",
+      "tracks": [
+        "just_say_so"
+      ],
+      "fans": []
+    },
+    {
+      "name": "Ian Alxndr",
+      "tier": "T4",
+      "tracks": [
+        "east_side_love"
+      ],
+      "fans": []
+    },
+    {
+      "name": "Icee Red",
+      "tier": "T4",
+      "tracks": [
+        "sweet_frustration"
+      ],
+      "fans": []
+    },
+    {
+      "name": "Imanbek",
+      "tier": "T4",
+      "tracks": [
+        "origami"
+      ],
+      "fans": []
+    },
+    {
+      "name": "IMY2",
+      "tier": "T4",
+      "tracks": [
+        "east_side_love"
+      ],
+      "fans": []
+    },
+    {
+      "name": "Jacob ZL",
+      "tier": "T4",
+      "tracks": [
+        "i_like_girls"
+      ],
+      "fans": []
+    },
+    {
+      "name": "Jae Harp",
+      "tier": "T4",
+      "tracks": [
+        "just_say_so"
+      ],
+      "fans": []
+    },
+    {
+      "name": "Jai Waetford",
+      "tier": "T4",
+      "tracks": [
+        "i_like_girls"
+      ],
+      "fans": []
+    },
+    {
+      "name": "Jairzinho",
+      "tier": "T4",
+      "tracks": [
+        "like_i_did"
+      ],
+      "fans": []
+    },
+    {
+      "name": "James Arthur",
+      "tier": "T4",
+      "tracks": [
+        "see_me"
+      ],
+      "fans": []
+    },
+    {
+      "name": "Jamieboy",
+      "tier": "T4",
+      "tracks": [
+        "east_side_love"
+      ],
+      "fans": []
+    },
+    {
+      "name": "Jason Derulo",
+      "tier": "T4",
+      "tracks": [
+        "origami"
+      ],
+      "fans": []
+    },
+    {
+      "name": "Jay Prince",
+      "tier": "T4",
+      "tracks": [
+        "sweet_frustration"
+      ],
+      "fans": []
+    },
+    {
+      "name": "Jaymie Deville",
+      "tier": "T4",
+      "tracks": [
+        "dance_with_him"
+      ],
+      "fans": []
+    },
+    {
+      "name": "Jonas Brothers",
+      "tier": "T4",
+      "tracks": [
+        "see_me"
+      ],
+      "fans": []
+    },
+    {
+      "name": "Josylvio",
+      "tier": "T4",
+      "tracks": [
+        "like_i_did"
+      ],
+      "fans": []
+    },
+    {
+      "name": "Joyner Lucas",
+      "tier": "T4",
+      "tracks": [
+        "see_me"
+      ],
+      "fans": []
+    },
+    {
+      "name": "juli",
+      "tier": "T4",
+      "tracks": [
+        "see_me"
+      ],
+      "fans": []
+    },
+    {
+      "name": "Juls",
+      "tier": "T4",
+      "tracks": [
+        "sweet_frustration"
+      ],
+      "fans": []
+    },
+    {
+      "name": "K-Major",
+      "tier": "T4",
+      "tracks": [
+        "dance_with_him"
+      ],
+      "fans": []
+    },
+    {
+      "name": "Kacey Musgraves",
+      "tier": "T4",
+      "tracks": [
+        "origami"
+      ],
+      "fans": []
+    },
+    {
+      "name": "Kah-Lo",
+      "tier": "T4",
+      "tracks": [
+        "sweet_frustration"
+      ],
+      "fans": []
+    },
+    {
+      "name": "Kahme",
+      "tier": "T4",
+      "tracks": [
+        "just_say_so"
+      ],
+      "fans": []
+    },
+    {
+      "name": "Kaisha",
+      "tier": "T4",
+      "tracks": [
+        "sweet_frustration"
+      ],
+      "fans": []
+    },
+    {
+      "name": "KALLITECHNIS",
+      "tier": "T4",
+      "tracks": [
+        "sweet_frustration"
+      ],
+      "fans": []
+    },
+    {
+      "name": "Kam Michael",
+      "tier": "T4",
+      "tracks": [
+        "see_me"
+      ],
+      "fans": []
+    },
+    {
+      "name": "Keinemusik",
+      "tier": "T4",
+      "tracks": [
+        "origami"
+      ],
+      "fans": []
+    },
+    {
+      "name": "Kelly Clarkson",
+      "tier": "T4",
+      "tracks": [
+        "see_me"
+      ],
+      "fans": []
+    },
+    {
+      "name": "Kilat",
+      "tier": "T4",
+      "tracks": [
+        "just_say_so"
+      ],
+      "fans": []
+    },
+    {
+      "name": "Knxwledge",
+      "tier": "T4",
+      "tracks": [
+        "sweet_frustration"
+      ],
+      "fans": []
+    },
+    {
+      "name": "Kobbie",
+      "tier": "T4",
+      "tracks": [
+        "dance_with_him"
+      ],
+      "fans": []
+    },
+    {
+      "name": "Kodak Black",
+      "tier": "T4",
+      "tracks": [
+        "like_i_did"
+      ],
+      "fans": []
+    },
+    {
+      "name": "Koomz",
+      "tier": "T4",
+      "tracks": [
+        "like_i_did"
+      ],
+      "fans": []
+    },
+    {
+      "name": "Kungs",
+      "tier": "T4",
+      "tracks": [
+        "origami"
+      ],
+      "fans": []
+    },
+    {
+      "name": "Kygo",
+      "tier": "T4",
+      "tracks": [
+        "origami"
+      ],
+      "fans": []
+    },
+    {
+      "name": "Larry June",
+      "tier": "T4",
+      "tracks": [
+        "like_i_did"
+      ],
+      "fans": []
+    },
+    {
+      "name": "Lauren Spencer Smith",
+      "tier": "T4",
+      "tracks": [
+        "see_me"
+      ],
+      "fans": []
+    },
+    {
+      "name": "Leah Kate",
+      "tier": "T4",
+      "tracks": [
+        "see_me"
+      ],
+      "fans": []
+    },
+    {
+      "name": "Leila B",
+      "tier": "T4",
+      "tracks": [
+        "east_side_love"
+      ],
+      "fans": []
+    },
+    {
+      "name": "Lennon Stella",
+      "tier": "T4",
+      "tracks": [
+        "origami"
+      ],
+      "fans": []
+    },
+    {
+      "name": "Levi Menezes",
+      "tier": "T4",
+      "tracks": [
+        "dance_with_him"
+      ],
+      "fans": []
+    },
+    {
+      "name": "Lil Loski",
+      "tier": "T4",
+      "tracks": [
+        "just_say_so"
+      ],
+      "fans": []
+    },
+    {
+      "name": "Lil Soda Boi",
+      "tier": "T4",
+      "tracks": [
+        "just_say_so"
+      ],
+      "fans": []
+    },
+    {
+      "name": "Lil Yung Pharaoh",
+      "tier": "T4",
+      "tracks": [
+        "i_like_girls"
+      ],
+      "fans": []
+    },
+    {
+      "name": "Little Mix",
+      "tier": "T4",
+      "tracks": [
+        "see_me"
+      ],
+      "fans": []
+    },
+    {
+      "name": "Liv.e",
+      "tier": "T4",
+      "tracks": [
+        "sweet_frustration"
+      ],
+      "fans": []
+    },
+    {
+      "name": "Lojay",
+      "tier": "T4",
+      "tracks": [
+        "east_side_love"
+      ],
+      "fans": []
+    },
+    {
+      "name": "LowKeyytm",
+      "tier": "T4",
+      "tracks": [
+        "just_say_so"
+      ],
+      "fans": []
+    },
+    {
+      "name": "Luh Kel",
+      "tier": "T4",
+      "tracks": [
+        "like_i_did"
+      ],
+      "fans": []
+    },
+    {
+      "name": "luvsh",
+      "tier": "T4",
+      "tracks": [
+        "i_like_girls"
+      ],
+      "fans": []
+    },
+    {
+      "name": "Lxst Boy",
+      "tier": "T4",
+      "tracks": [
+        "i_like_girls"
+      ],
+      "fans": []
+    },
+    {
+      "name": "M'Kiah",
+      "tier": "T4",
+      "tracks": [
+        "i_like_girls"
+      ],
+      "fans": []
+    },
+    {
+      "name": "Magyn",
+      "tier": "T4",
+      "tracks": [
+        "dance_with_him"
+      ],
+      "fans": []
+    },
+    {
+      "name": "Maleek Berry",
+      "tier": "T4",
+      "tracks": [
+        "like_i_did"
+      ],
+      "fans": []
+    },
+    {
+      "name": "Mark Ronson",
+      "tier": "T4",
+      "tracks": [
+        "origami"
+      ],
+      "fans": []
+    },
+    {
+      "name": "Melosa Wave",
+      "tier": "T4",
+      "tracks": [
+        "east_side_love"
+      ],
+      "fans": []
+    },
+    {
+      "name": "Michael Constantino",
+      "tier": "T4",
+      "tracks": [
+        "east_side_love"
+      ],
+      "fans": []
+    },
+    {
+      "name": "Mike WiLL Made-It",
+      "tier": "T4",
+      "tracks": [
+        "like_i_did"
+      ],
+      "fans": []
+    },
+    {
+      "name": "mike.",
+      "tier": "T4",
+      "tracks": [
+        "see_me"
+      ],
+      "fans": []
+    },
+    {
+      "name": "Milaa",
+      "tier": "T4",
+      "tracks": [
+        "sweet_frustration"
+      ],
+      "fans": []
+    },
+    {
+      "name": "MileHi",
+      "tier": "T4",
+      "tracks": [
+        "east_side_love"
+      ],
+      "fans": []
+    },
+    {
+      "name": "Mishon",
+      "tier": "T4",
+      "tracks": [
+        "just_say_so"
+      ],
+      "fans": []
+    },
+    {
+      "name": "MNEK",
+      "tier": "T4",
+      "tracks": [
+        "origami"
+      ],
+      "fans": []
+    },
+    {
+      "name": "Mocci",
+      "tier": "T4",
+      "tracks": [
+        "east_side_love"
+      ],
+      "fans": []
+    },
+    {
+      "name": "MOLIY",
+      "tier": "T4",
+      "tracks": [
+        "sweet_frustration"
+      ],
+      "fans": []
+    },
+    {
+      "name": "Molombo",
+      "tier": "T4",
+      "tracks": [
+        "east_side_love"
+      ],
+      "fans": []
+    },
+    {
+      "name": "Morgan Wallen",
+      "tier": "T4",
+      "tracks": [
+        "origami"
+      ],
+      "fans": []
+    },
+    {
+      "name": "Mr Eazi",
+      "tier": "T4",
+      "tracks": [
+        "like_i_did"
+      ],
+      "fans": []
+    },
+    {
+      "name": "Mr. Fingers",
+      "tier": "T4",
+      "tracks": [
+        "sweet_frustration"
+      ],
+      "fans": []
+    },
+    {
+      "name": "Mr. Thibs",
+      "tier": "T4",
+      "tracks": [
+        "dance_with_him"
+      ],
+      "fans": []
+    },
+    {
+      "name": "Msakks",
+      "tier": "T4",
+      "tracks": [
+        "just_say_so"
+      ],
+      "fans": []
+    },
+    {
+      "name": "Najiddy",
+      "tier": "T4",
+      "tracks": [
+        "east_side_love"
+      ],
+      "fans": []
+    },
+    {
+      "name": "NICK PROSPER",
+      "tier": "T4",
+      "tracks": [
+        "just_say_so"
+      ],
+      "fans": []
+    },
+    {
+      "name": "Nightcrawlers",
+      "tier": "T4",
+      "tracks": [
+        "origami"
+      ],
+      "fans": []
+    },
+    {
+      "name": "NxWorries",
+      "tier": "T4",
+      "tracks": [
+        "sweet_frustration"
+      ],
+      "fans": []
+    },
+    {
+      "name": "Offset",
+      "tier": "T4",
+      "tracks": [
+        "like_i_did"
+      ],
+      "fans": []
+    },
+    {
+      "name": "Olivia O'Brien",
+      "tier": "T4",
+      "tracks": [
+        "see_me"
+      ],
+      "fans": []
+    },
+    {
+      "name": "OneRepublic",
+      "tier": "T4",
+      "tracks": [
+        "origami"
+      ],
+      "fans": []
+    },
+    {
+      "name": "OVEOUS",
+      "tier": "T4",
+      "tracks": [
+        "sweet_frustration"
+      ],
+      "fans": []
+    },
+    {
+      "name": "Owen Kane",
+      "tier": "T4",
+      "tracks": [
+        "just_say_so"
+      ],
+      "fans": []
+    },
+    {
+      "name": "p-rallel",
+      "tier": "T4",
+      "tracks": [
+        "sweet_frustration"
+      ],
+      "fans": []
+    },
+    {
+      "name": "Patrick Cc:",
+      "tier": "T4",
+      "tracks": [
+        "just_say_so"
+      ],
+      "fans": []
+    },
+    {
+      "name": "Phoînix Keyz",
+      "tier": "T4",
+      "tracks": [
+        "see_me"
+      ],
+      "fans": []
+    },
+    {
+      "name": "PNAU",
+      "tier": "T4",
+      "tracks": [
+        "origami"
+      ],
+      "fans": []
+    },
+    {
+      "name": "Pyro",
+      "tier": "T4",
+      "tracks": [
+        "east_side_love"
+      ],
+      "fans": []
+    },
+    {
+      "name": "Ramz",
+      "tier": "T4",
+      "tracks": [
+        "like_i_did"
+      ],
+      "fans": []
+    },
+    {
+      "name": "Redlight",
+      "tier": "T4",
+      "tracks": [
+        "dance_with_him"
+      ],
+      "fans": []
+    },
+    {
+      "name": "REGI FLIH",
+      "tier": "T4",
+      "tracks": [
+        "see_me"
+      ],
+      "fans": []
+    },
+    {
+      "name": "RINI",
+      "tier": "T4",
+      "tracks": [
+        "dance_with_him"
+      ],
+      "fans": []
+    },
+    {
+      "name": "Rit",
+      "tier": "T4",
+      "tracks": [
+        "dance_with_him"
+      ],
+      "fans": []
+    },
+    {
+      "name": "Ritt Momney",
+      "tier": "T4",
+      "tracks": [
+        "origami"
+      ],
+      "fans": []
+    },
+    {
+      "name": "Robyn",
+      "tier": "T4",
+      "tracks": [
+        "sweet_frustration"
+      ],
+      "fans": []
+    },
+    {
+      "name": "Rochelle Jordan",
+      "tier": "T4",
+      "tracks": [
+        "sweet_frustration"
+      ],
+      "fans": []
+    },
+    {
+      "name": "ROSÉ",
+      "tier": "T4",
+      "tracks": [
+        "see_me"
+      ],
+      "fans": []
+    },
+    {
+      "name": "RÜFÜS DU SOL",
+      "tier": "T4",
+      "tracks": [
+        "origami"
+      ],
+      "fans": []
+    },
+    {
+      "name": "Rumour",
+      "tier": "T4",
+      "tracks": [
+        "east_side_love"
+      ],
+      "fans": []
+    },
+    {
+      "name": "Rylo Rodriguez",
+      "tier": "T4",
+      "tracks": [
+        "like_i_did"
+      ],
+      "fans": []
+    },
+    {
+      "name": "Sabrina Carpenter",
+      "tier": "T4",
+      "tracks": [
+        "origami"
+      ],
+      "fans": []
+    },
+    {
+      "name": "Sal Houdini",
+      "tier": "T4",
+      "tracks": [
+        "east_side_love"
+      ],
+      "fans": []
+    },
+    {
+      "name": "Sampha",
+      "tier": "T4",
+      "tracks": [
+        "sweet_frustration"
+      ],
+      "fans": []
+    },
+    {
+      "name": "Sango",
+      "tier": "T4",
+      "tracks": [
+        "sweet_frustration"
+      ],
+      "fans": []
+    },
+    {
+      "name": "Sara Kays",
+      "tier": "T4",
+      "tracks": [
+        "see_me"
+      ],
+      "fans": []
+    },
+    {
+      "name": "Sasha Alex Sloan",
+      "tier": "T4",
+      "tracks": [
+        "see_me"
+      ],
+      "fans": []
+    },
+    {
+      "name": "Scorey",
+      "tier": "T4",
+      "tracks": [
+        "see_me"
+      ],
+      "fans": []
+    },
+    {
+      "name": "seboy",
+      "tier": "T4",
+      "tracks": [
+        "see_me"
+      ],
+      "fans": []
+    },
+    {
+      "name": "Sendrell",
+      "tier": "T4",
+      "tracks": [
+        "east_side_love"
+      ],
+      "fans": []
+    },
+    {
+      "name": "Shay Lia",
+      "tier": "T4",
+      "tracks": [
+        "sweet_frustration"
+      ],
+      "fans": []
+    },
+    {
+      "name": "sichid",
+      "tier": "T4",
+      "tracks": [
+        "see_me"
+      ],
+      "fans": []
+    },
+    {
+      "name": "Sigala",
+      "tier": "T4",
+      "tracks": [
+        "origami"
+      ],
+      "fans": []
+    },
+    {
+      "name": "skaiwater",
+      "tier": "T4",
+      "tracks": [
+        "just_say_so"
+      ],
+      "fans": []
+    },
+    {
+      "name": "sleep.ing",
+      "tier": "T4",
+      "tracks": [
+        "see_me"
+      ],
+      "fans": []
+    },
+    {
+      "name": "Sleepy Hallow",
+      "tier": "T4",
+      "tracks": [
+        "like_i_did"
+      ],
+      "fans": []
+    },
+    {
+      "name": "Slim RB",
+      "tier": "T4",
+      "tracks": [
+        "east_side_love"
+      ],
+      "fans": []
+    },
+    {
+      "name": "slone",
+      "tier": "T4",
+      "tracks": [
+        "dance_with_him"
+      ],
+      "fans": []
+    },
+    {
+      "name": "Solydz",
+      "tier": "T4",
+      "tracks": [
+        "dance_with_him"
+      ],
+      "fans": []
+    },
+    {
+      "name": "Steel Banglez",
+      "tier": "T4",
+      "tracks": [
+        "like_i_did"
+      ],
+      "fans": []
+    },
+    {
+      "name": "Stefflon Don",
+      "tier": "T4",
+      "tracks": [
+        "like_i_did"
+      ],
+      "fans": []
+    },
+    {
+      "name": "Summrs",
+      "tier": "T4",
+      "tracks": [
+        "just_say_so"
+      ],
+      "fans": []
+    },
+    {
+      "name": "Supershy",
+      "tier": "T4",
+      "tracks": [
+        "sweet_frustration"
+      ],
+      "fans": []
+    },
+    {
+      "name": "Swaggy 2",
+      "tier": "T4",
+      "tracks": [
+        "just_say_so"
+      ],
+      "fans": []
+    },
+    {
+      "name": "Swízzy",
+      "tier": "T4",
+      "tracks": [
+        "east_side_love"
+      ],
+      "fans": []
+    },
+    {
+      "name": "T MULLA",
+      "tier": "T4",
+      "tracks": [
+        "like_i_did"
+      ],
+      "fans": []
+    },
+    {
+      "name": "Tairey",
+      "tier": "T4",
+      "tracks": [
+        "dance_with_him"
+      ],
+      "fans": []
+    },
+    {
+      "name": "Tamae",
+      "tier": "T4",
+      "tracks": [
+        "sweet_frustration"
+      ],
+      "fans": []
+    },
+    {
+      "name": "Teddy",
+      "tier": "T4",
+      "tracks": [
+        "just_say_so"
+      ],
+      "fans": []
+    },
+    {
+      "name": "teo glacier",
+      "tier": "T4",
+      "tracks": [
+        "dance_with_him"
+      ],
+      "fans": []
+    },
+    {
+      "name": "the bootleg boy",
+      "tier": "T4",
+      "tracks": [
+        "see_me"
+      ],
+      "fans": []
+    },
+    {
+      "name": "The Knocks",
+      "tier": "T4",
+      "tracks": [
+        "origami"
+      ],
+      "fans": []
+    },
+    {
+      "name": "timmies",
+      "tier": "T4",
+      "tracks": [
+        "see_me"
+      ],
+      "fans": []
+    },
+    {
+      "name": "Tj Carroll",
+      "tier": "T4",
+      "tracks": [
+        "just_say_so"
+      ],
+      "fans": []
+    },
+    {
+      "name": "Toro y Moi",
+      "tier": "T4",
+      "tracks": [
+        "origami"
+      ],
+      "fans": []
+    },
+    {
+      "name": "Troye Sivan",
+      "tier": "T4",
+      "tracks": [
+        "origami"
+      ],
+      "fans": []
+    },
+    {
+      "name": "Trusoul Davis",
+      "tier": "T4",
+      "tracks": [
+        "east_side_love"
+      ],
+      "fans": []
+    },
+    {
+      "name": "Victoria Monét",
+      "tier": "T4",
+      "tracks": [
+        "dance_with_him"
+      ],
+      "fans": []
+    },
+    {
+      "name": "Virrgoboii",
+      "tier": "T4",
+      "tracks": [
+        "i_like_girls"
+      ],
+      "fans": []
+    },
+    {
+      "name": "Vishisdead",
+      "tier": "T4",
+      "tracks": [
+        "just_say_so"
+      ],
+      "fans": []
+    },
+    {
+      "name": "Vluestar",
+      "tier": "T4",
+      "tracks": [
+        "see_me"
+      ],
+      "fans": []
+    },
+    {
+      "name": "Vontee the Singer",
+      "tier": "T4",
+      "tracks": [
+        "i_like_girls"
+      ],
+      "fans": []
+    },
+    {
+      "name": "VSN Black",
+      "tier": "T4",
+      "tracks": [
+        "just_say_so"
+      ],
+      "fans": []
+    },
+    {
+      "name": "Wilfy D",
+      "tier": "T4",
+      "tracks": [
+        "sweet_frustration"
+      ],
+      "fans": []
+    },
+    {
+      "name": "Yaeji",
+      "tier": "T4",
+      "tracks": [
+        "sweet_frustration"
+      ],
+      "fans": []
+    },
+    {
+      "name": "Yatta Bandz",
+      "tier": "T4",
+      "tracks": [
+        "see_me"
+      ],
+      "fans": []
+    },
+    {
+      "name": "Ye Ali",
+      "tier": "T4",
+      "tracks": [
+        "i_like_girls"
+      ],
+      "fans": []
+    },
+    {
+      "name": "YNW Melly",
+      "tier": "T4",
+      "tracks": [
+        "like_i_did"
+      ],
+      "fans": []
+    },
+    {
+      "name": "YoungBoy Never Broke Again",
+      "tier": "T4",
+      "tracks": [
+        "like_i_did"
+      ],
+      "fans": []
+    },
+    {
+      "name": "Yung Crusha",
+      "tier": "T4",
+      "tracks": [
+        "i_like_girls"
+      ],
+      "fans": []
+    },
+    {
+      "name": "Yxng Bane",
+      "tier": "T4",
+      "tracks": [
+        "like_i_did"
+      ],
+      "fans": []
+    },
+    {
+      "name": "Zak Abel",
+      "tier": "T4",
+      "tracks": [
+        "origami"
+      ],
+      "fans": []
+    },
+    {
+      "name": "ZAYN",
+      "tier": "T4",
+      "tracks": [
+        "origami"
+      ],
+      "fans": []
+    },
+    {
+      "name": "Zedd",
+      "tier": "T4",
+      "tracks": [
+        "origami"
+      ],
+      "fans": []
+    },
+    {
+      "name": "Zhe Kamil",
+      "tier": "T4",
+      "tracks": [
+        "dance_with_him"
+      ],
+      "fans": []
+    },
+    {
+      "name": "ZIVA",
+      "tier": "T4",
+      "tracks": [
+        "east_side_love"
+      ],
+      "fans": []
+    },
+    {
+      "name": "$NOT",
+      "tier": "T3",
+      "tracks": [
+        "just_say_so"
+      ],
+      "fans": []
+    },
+    {
+      "name": "Aaron Holder",
+      "tier": "T3",
+      "tracks": [
+        "see_me"
+      ],
+      "fans": []
+    },
+    {
+      "name": "Adrian Swish",
+      "tier": "T3",
+      "tracks": [
+        "east_side_love"
+      ],
+      "fans": []
+    },
+    {
+      "name": "AgentEd",
+      "tier": "T3",
+      "tracks": [
+        "see_me"
+      ],
+      "fans": []
+    },
+    {
+      "name": "Allana Bee",
+      "tier": "T3",
+      "tracks": [
+        "see_me"
+      ],
+      "fans": []
+    },
+    {
+      "name": "Aminé",
+      "tier": "T3",
+      "tracks": [
+        "sweet_frustration"
+      ],
+      "fans": []
+    },
+    {
+      "name": "Angel",
+      "tier": "T3",
+      "tracks": [
+        "east_side_love"
+      ],
+      "fans": []
+    },
+    {
+      "name": "Anike",
+      "tier": "T3",
+      "tracks": [
+        "just_say_so"
+      ],
+      "fans": []
+    },
+    {
+      "name": "Archie Baker",
+      "tier": "T3",
+      "tracks": [
+        "see_me"
+      ],
+      "fans": []
+    },
+    {
+      "name": "ASTN",
+      "tier": "T3",
+      "tracks": [
+        "dance_with_him"
+      ],
+      "fans": []
+    },
+    {
+      "name": "B Young",
+      "tier": "T3",
+      "tracks": [
+        "like_i_did",
+        "east_side_love"
+      ],
+      "fans": []
+    },
+    {
+      "name": "beabadoobee",
+      "tier": "T3",
+      "tracks": [
+        "origami"
+      ],
+      "fans": []
+    },
+    {
+      "name": "Bebe Rexha",
+      "tier": "T3",
+      "tracks": [
+        "origami"
+      ],
+      "fans": []
+    },
+    {
+      "name": "Bino Rideaux",
+      "tier": "T3",
+      "tracks": [
+        "like_i_did"
+      ],
+      "fans": []
+    },
+    {
+      "name": "Blaq",
+      "tier": "T3",
+      "tracks": [
+        "see_me"
+      ],
+      "fans": []
+    },
+    {
+      "name": "Calvin Harris",
+      "tier": "T3",
+      "tracks": [
+        "sweet_frustration",
+        "origami"
+      ],
+      "fans": []
+    },
+    {
+      "name": "CASS",
+      "tier": "T3",
+      "tracks": [
+        "dance_with_him"
+      ],
+      "fans": []
+    },
+    {
+      "name": "Central Cee",
+      "tier": "T3",
+      "tracks": [
+        "like_i_did"
+      ],
+      "fans": []
+    },
+    {
+      "name": "Channel Tres",
+      "tier": "T3",
+      "tracks": [
+        "sweet_frustration"
+      ],
+      "fans": []
+    },
+    {
+      "name": "Chelsea Klein",
+      "tier": "T3",
+      "tracks": [
+        "see_me"
+      ],
+      "fans": []
+    },
+    {
+      "name": "chloe moriondo",
+      "tier": "T3",
+      "tracks": [
+        "just_say_so"
+      ],
+      "fans": []
+    },
+    {
+      "name": "Chyde",
+      "tier": "T3",
+      "tracks": [
+        "i_like_girls"
+      ],
+      "fans": []
+    },
+    {
+      "name": "Clever",
+      "tier": "T3",
+      "tracks": [
+        "just_say_so"
+      ],
+      "fans": []
+    },
+    {
+      "name": "conscience",
+      "tier": "T3",
+      "tracks": [
+        "i_like_girls"
+      ],
+      "fans": []
+    },
+    {
+      "name": "D-Trait",
+      "tier": "T3",
+      "tracks": [
+        "see_me"
+      ],
+      "fans": []
+    },
+    {
+      "name": "David Guetta",
+      "tier": "T3",
+      "tracks": [
+        "sweet_frustration",
+        "origami"
+      ],
+      "fans": []
+    },
+    {
+      "name": "Davido",
+      "tier": "T3",
+      "tracks": [
+        "east_side_love"
+      ],
+      "fans": []
+    },
+    {
+      "name": "Disclosure",
+      "tier": "T3",
+      "tracks": [
+        "sweet_frustration",
+        "origami"
+      ],
+      "fans": []
+    },
+    {
+      "name": "DJ Lostnfound",
+      "tier": "T3",
+      "tracks": [
+        "dance_with_him"
+      ],
+      "fans": []
+    },
+    {
+      "name": "Dlaurend",
+      "tier": "T3",
+      "tracks": [
+        "see_me"
+      ],
+      "fans": []
+    },
+    {
+      "name": "Duckwrth",
+      "tier": "T3",
+      "tracks": [
+        "sweet_frustration"
+      ],
+      "fans": []
+    },
+    {
+      "name": "Dxvn.",
+      "tier": "T3",
+      "tracks": [
+        "dance_with_him"
+      ],
+      "fans": []
+    },
+    {
+      "name": "Ellie Goulding",
+      "tier": "T3",
+      "tracks": [
+        "origami"
+      ],
+      "fans": []
+    },
+    {
+      "name": "Ely Waves",
+      "tier": "T3",
+      "tracks": [
+        "i_like_girls"
+      ],
+      "fans": []
+    },
+    {
+      "name": "ERLY",
+      "tier": "T3",
+      "tracks": [
+        "see_me"
+      ],
+      "fans": []
+    },
+    {
+      "name": "Fireboy DML",
+      "tier": "T3",
+      "tracks": [
+        "like_i_did",
+        "east_side_love"
+      ],
+      "fans": []
+    },
+    {
+      "name": "Flembrick Wright",
+      "tier": "T3",
+      "tracks": [
+        "see_me"
+      ],
+      "fans": []
+    },
+    {
+      "name": "Full Crate",
+      "tier": "T3",
+      "tracks": [
+        "sweet_frustration"
+      ],
+      "fans": []
+    },
+    {
+      "name": "guccihighwaters",
+      "tier": "T3",
+      "tracks": [
+        "i_like_girls",
+        "just_say_so"
+      ],
+      "fans": []
+    },
+    {
+      "name": "honestav",
+      "tier": "T3",
+      "tracks": [
+        "just_say_so"
+      ],
+      "fans": []
+    },
+    {
+      "name": "HUGEL",
+      "tier": "T3",
+      "tracks": [
+        "origami"
+      ],
+      "fans": []
+    },
+    {
+      "name": "J.Tajor",
+      "tier": "T3",
+      "tracks": [
+        "east_side_love",
+        "dance_with_him"
+      ],
+      "fans": []
+    },
+    {
+      "name": "Jackie F. Rubin",
+      "tier": "T3",
+      "tracks": [
+        "see_me"
+      ],
+      "fans": []
+    },
+    {
+      "name": "JENNIE",
+      "tier": "T3",
+      "tracks": [
+        "origami",
+        "dance_with_him"
+      ],
+      "fans": []
+    },
+    {
+      "name": "Joel Baraza",
+      "tier": "T3",
+      "tracks": [
+        "like_i_did"
+      ],
+      "fans": []
+    },
+    {
+      "name": "Jolene Lozano",
+      "tier": "T3",
+      "tracks": [
+        "see_me"
+      ],
+      "fans": []
+    },
+    {
+      "name": "Jonah Zed",
+      "tier": "T3",
+      "tracks": [
+        "just_say_so"
+      ],
+      "fans": []
+    },
+    {
+      "name": "JourNiee",
+      "tier": "T3",
+      "tracks": [
+        "see_me"
+      ],
+      "fans": []
+    },
+    {
+      "name": "Joyce Wrice",
+      "tier": "T3",
+      "tracks": [
+        "sweet_frustration"
+      ],
+      "fans": []
+    },
+    {
+      "name": "Justyn Ortiz",
+      "tier": "T3",
+      "tracks": [
+        "see_me"
+      ],
+      "fans": []
+    },
+    {
+      "name": "Juvon Taylor",
+      "tier": "T3",
+      "tracks": [
+        "see_me"
+      ],
+      "fans": []
+    },
+    {
+      "name": "King Promise",
+      "tier": "T3",
+      "tracks": [
+        "like_i_did"
+      ],
+      "fans": []
+    },
+    {
+      "name": "King_D_Majors",
+      "tier": "T3",
+      "tracks": [
+        "see_me"
+      ],
+      "fans": []
+    },
+    {
+      "name": "Kojo Funds",
+      "tier": "T3",
+      "tracks": [
+        "like_i_did"
+      ],
+      "fans": []
+    },
+    {
+      "name": "Lady Gaga",
+      "tier": "T3",
+      "tracks": [
+        "origami"
+      ],
+      "fans": []
+    },
+    {
+      "name": "Lily-Rose Depp",
+      "tier": "T3",
+      "tracks": [
+        "dance_with_him"
+      ],
+      "fans": []
+    },
+    {
+      "name": "luca.",
+      "tier": "T3",
+      "tracks": [
+        "i_like_girls"
+      ],
+      "fans": []
+    },
+    {
+      "name": "Megan Thee Stallion",
+      "tier": "T3",
+      "tracks": [
+        "origami"
+      ],
+      "fans": []
+    },
+    {
+      "name": "Mookigang",
+      "tier": "T3",
+      "tracks": [
+        "i_like_girls"
+      ],
+      "fans": []
+    },
+    {
+      "name": "Nao",
+      "tier": "T3",
+      "tracks": [
+        "east_side_love"
+      ],
+      "fans": []
+    },
+    {
+      "name": "Norman Perry",
+      "tier": "T3",
+      "tracks": [
+        "i_like_girls"
+      ],
+      "fans": []
+    },
+    {
+      "name": "Oh Wonder",
+      "tier": "T3",
+      "tracks": [
+        "just_say_so"
+      ],
+      "fans": []
+    },
+    {
+      "name": "Ozuna",
+      "tier": "T3",
+      "tracks": [
+        "origami"
+      ],
+      "fans": []
+    },
+    {
+      "name": "Peggy Gou",
+      "tier": "T3",
+      "tracks": [
+        "sweet_frustration",
+        "origami"
+      ],
+      "fans": []
+    },
+    {
+      "name": "Pheebz",
+      "tier": "T3",
+      "tracks": [
+        "east_side_love"
+      ],
+      "fans": []
+    },
+    {
+      "name": "Phrost",
+      "tier": "T3",
+      "tracks": [
+        "see_me"
+      ],
+      "fans": []
+    },
+    {
+      "name": "PinkPantheress",
+      "tier": "T3",
+      "tracks": [
+        "sweet_frustration"
+      ],
+      "fans": []
+    },
+    {
+      "name": "Riton",
+      "tier": "T3",
+      "tracks": [
+        "sweet_frustration"
+      ],
+      "fans": []
+    },
+    {
+      "name": "RØNIN",
+      "tier": "T3",
+      "tracks": [
+        "i_like_girls"
+      ],
+      "fans": []
+    },
+    {
+      "name": "Sam Gellaitry",
+      "tier": "T3",
+      "tracks": [
+        "sweet_frustration"
+      ],
+      "fans": []
+    },
+    {
+      "name": "Seafret",
+      "tier": "T3",
+      "tracks": [
+        "i_like_girls"
+      ],
+      "fans": []
+    },
+    {
+      "name": "Shyan Selah",
+      "tier": "T3",
+      "tracks": [
+        "see_me"
+      ],
+      "fans": []
+    },
+    {
+      "name": "Somm",
+      "tier": "T3",
+      "tracks": [
+        "i_like_girls"
+      ],
+      "fans": []
+    },
+    {
+      "name": "Stwo",
+      "tier": "T3",
+      "tracks": [
+        "dance_with_him"
+      ],
+      "fans": []
+    },
+    {
+      "name": "Syd",
+      "tier": "T3",
+      "tracks": [
+        "sweet_frustration",
+        "origami"
+      ],
+      "fans": []
+    },
+    {
+      "name": "T-Pain",
+      "tier": "T3",
+      "tracks": [
+        "like_i_did",
+        "east_side_love"
+      ],
+      "fans": []
+    },
+    {
+      "name": "T-RAN",
+      "tier": "T3",
+      "tracks": [
+        "see_me"
+      ],
+      "fans": []
+    },
+    {
+      "name": "Tame Impala",
+      "tier": "T3",
+      "tracks": [
+        "sweet_frustration",
+        "origami"
+      ],
+      "fans": []
+    },
+    {
+      "name": "Taylor Hill",
+      "tier": "T3",
+      "tracks": [
+        "dance_with_him"
+      ],
+      "fans": []
+    },
+    {
+      "name": "Tee Grizzley",
+      "tier": "T3",
+      "tracks": [
+        "like_i_did",
+        "east_side_love"
+      ],
+      "fans": []
+    },
+    {
+      "name": "The Neighbourhood",
+      "tier": "T3",
+      "tracks": [
+        "just_say_so"
+      ],
+      "fans": []
+    },
+    {
+      "name": "TheBoysFeelsToo",
+      "tier": "T3",
+      "tracks": [
+        "i_like_girls"
+      ],
+      "fans": []
+    },
+    {
+      "name": "Truth Teller RIE",
+      "tier": "T3",
+      "tracks": [
+        "see_me"
+      ],
+      "fans": []
+    },
+    {
+      "name": "Tyga",
+      "tier": "T3",
+      "tracks": [
+        "like_i_did"
+      ],
+      "fans": []
+    },
+    {
+      "name": "VanJess",
+      "tier": "T3",
+      "tracks": [
+        "sweet_frustration",
+        "east_side_love"
+      ],
+      "fans": []
+    },
+    {
+      "name": "Wretch 32",
+      "tier": "T3",
+      "tracks": [
+        "like_i_did"
+      ],
+      "fans": []
+    },
+    {
+      "name": "ZHU",
+      "tier": "T3",
+      "tracks": [
+        "origami"
+      ],
+      "fans": []
+    }
+  ]
+}

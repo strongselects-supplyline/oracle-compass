@@ -32,6 +32,10 @@ export type SundayChecklist = {
   // 20-min journaling session. Write to your father. Controlled exposure, not floodgates.
   // Only shown on Sundays on or after Apr 27.
   griefJournalDone?: boolean;
+  // IG Community Sprint tracking — Phase 2 (Apr 25+).
+  // Counts sprint blocks completed this week. Not a hard requirement — data only.
+  igSprintSessions?: number;
+  ledgerFansAdded?: number;
 };
 
 // ── Track list — EP model ───────────────────────────────────────────────────

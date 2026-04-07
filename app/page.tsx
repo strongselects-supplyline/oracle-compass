@@ -1,7 +1,7 @@
 "use client";
 
 import { useEffect, useState, useCallback } from "react";
-import { getDayType, isSacredDay, isStudioDay } from "@/lib/dayType";
+import { getDayType, isSacredDay, isStudioDay, isBizDay } from "@/lib/dayType";
 import { getDailyLog, saveDailyLog, DailyLog, getStoreValue, getTodayISO } from "@/lib/db";
 import { getSobrietyStreak } from "@/lib/streaks";
 import { getDynamicReleases, Release } from "@/lib/releases";
@@ -12,6 +12,7 @@ import { getLaneStatus, Lane } from "@/lib/lanes";
 import { getKillStats } from "@/lib/killList";
 import { getSundayChecklist, saveSundayChecklist, isGriefProtocolActive } from "@/lib/planner";
 import { getWeekKey } from "@/lib/oracle";
+import { getLedgerStats, LedgerStats } from "@/lib/audienceLedger";
 import WeeklyMirror from "@/components/WeeklyMirror";
 import CheckItem from "@/components/CheckItem";
 import Link from "next/link";
@@ -50,9 +51,10 @@ function getProtocolSteps(dayType: string): { tagline: string; steps: ProtocolSt
     steps: [
       { icon: "\uD83D\uDE97", action: "6 AM \u2192 DD Morning Sprint (1hr)" },
       { icon: "\u2600\uFE0F", action: "7 AM \u2192 Sovereignty Stack \u2192 log below" },
-      { icon: "\u2699\uFE0F", action: "Check ENGINE for pipeline tasks", tab: "engine" },
+      { icon: "\u2699\uFE0F", action: "9 AM \u2192 ENGINE: pipeline tasks", tab: "engine" },
+      { icon: "\uD83D\uDCF1", action: "9:30 AM \u2192 IG Community Sprint \u2014 20 min", tab: "kill" },
       { icon: "\uD83D\uDE97", action: "12 PM \u2192 DD Midday Sprint (2hrs)" },
-      { icon: "\uD83D\uDCE4", action: "Push content to IG/TikTok/YouTube" },
+      { icon: "\uD83D\uDCE4", action: "3 PM \u2192 Push content to IG/TikTok/YouTube" },
       { icon: "\uD83D\uDE97", action: "5:30 PM \u2192 DD Evening Sprint (2-3hrs)" },
       { icon: "\uD83D\uDD2E", action: "Read today's Oracle decree", tab: "oracle" },
     ]
@@ -98,6 +100,8 @@ export default function MorningMode() {
   // Grief protocol — Sunday journaling (starts Apr 27, 2026)
   const [griefJournalDone, setGriefJournalDone] = useState(false);
   const [griefProtocolActive, setGriefProtocolActive] = useState(false);
+  // Audience Ledger — BIZ DAY widget (Phase 2, Apr 25+)
+  const [ledgerStats, setLedgerStats] = useState<LedgerStats | null>(null);
 
   // Refresh lanes reactively after any state change
   const refreshLanes = useCallback(async () => {
@@ -140,6 +144,14 @@ export default function MorningMode() {
       if (isGriefProtocolActive(griefNow)) {
         const checklist = await getSundayChecklist(getWeekKey());
         setGriefJournalDone(checklist.griefJournalDone ?? false);
+      }
+      // Audience Ledger stats — only load on BIZ DAYs (post-EP)
+      const currentDayType = getDayType();
+      if (isBizDay(currentDayType)) {
+        try {
+          const ls = await getLedgerStats();
+          setLedgerStats(ls);
+        } catch (_e) { /* silent */ }
       }
     };
     init();
@@ -340,6 +352,36 @@ export default function MorningMode() {
                     {lanes.filter(l => l.touched).length}/6 lanes active
                   </span>
                 </div>
+              </div>
+            )}
+
+            {/* AUDIENCE LEDGER WIDGET — BIZ DAY only (Phase 2, Apr 25+) */}
+            {isBizDay(dayType as any) && ledgerStats && (
+              <div className="mb-8">
+                <h3 className="text-[10px] font-black tracking-[0.2em] text-[#555] uppercase mb-3 px-1">Audience Ledger</h3>
+                <Link href="/geo/sprint">
+                  <div className="card !p-4 flex justify-between items-center active:scale-[0.98] transition-all border-purple-500/10 hover:border-purple-500/20">
+                    <div className="flex gap-4">
+                      <div className="text-center">
+                        <p className="text-xl font-black text-white">{ledgerStats.verifiedArtists}</p>
+                        <p className="text-[7px] text-[#555] font-black uppercase tracking-wider">Artists</p>
+                      </div>
+                      <div className="text-center">
+                        <p className="text-xl font-black text-white">{ledgerStats.totalFans}</p>
+                        <p className="text-[7px] text-[#555] font-black uppercase tracking-wider">Fans</p>
+                      </div>
+                      <div className="text-center">
+                        <p className="text-xl font-black text-white">{ledgerStats.citiesReached}</p>
+                        <p className="text-[7px] text-[#555] font-black uppercase tracking-wider">Cities</p>
+                      </div>
+                      <div className="text-center">
+                        <p className="text-xl font-black text-purple-400">{ledgerStats.totalCommunities}</p>
+                        <p className="text-[7px] text-[#555] font-black uppercase tracking-wider">Nodes</p>
+                      </div>
+                    </div>
+                    <span className="text-[10px] text-amber-500 font-black tracking-widest">SPRINT →</span>
+                  </div>
+                </Link>
               </div>
             )}
 

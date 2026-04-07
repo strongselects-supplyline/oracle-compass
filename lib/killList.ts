@@ -12,6 +12,7 @@ import { getDayType, isStudioDay, isBizDay } from "@/lib/dayType";
 import { getWeekKey, OracleFlag } from "@/lib/oracle";
 import { openApp, amusePartnerNote } from "@/lib/toolchain";
 import { getTrackHoursSummaries } from "@/lib/studioLog";
+import { getLedgerStats, getUntouched } from "@/lib/audienceLedger";
 
 // ── Types ────────────────────────────────────────────────────────────
 
@@ -64,32 +65,47 @@ export async function deriveKillList(): Promise<KillTask[]> {
     }
   }
 
-  // ── 1.5 GORILLA GEO → Outreach Tasks ─────────────────────────────
-  try {
-    const geoRes = await fetch('/geo/geo-dashboard.json');
-    if (geoRes.ok) {
-        const geoData = await geoRes.json();
-        const connectors = (geoData.crossTrack || []).slice(0, 3);
-        for (const artist of connectors) {
-            tasks.push({
-                id: `geo-outreach-${hashStr(artist.name)}`,
-                title: `Contact ${artist.name} (Sonic Connector)`,
-                subtitle: `Overlap: ${artist.trackCount} tracks. This artist is perfectly aligned with your DNA.`,
-                howTo: [
-                    `Find ${artist.name} on Instagram or Spotify via the Gorilla Geo dashboard.`,
-                    `Pitch Angle: "Yo, I've noticed our sonic DNA is perfectly aligned on ${artist.trackCount} of my upcoming releases."`,
-                    `Ask for a collab or feedback. This is a high-probability conversion.`,
-                    "Tap ✓ once you have sent the initial message."
-                ],
-                urgency: "AMBER",
-                pillar: "business",
-                timeBlock: "biz",
-                action: async () => {} // Purely a tracking task
-            });
-        }
+  // ── 1.5 IG COMMUNITY SPRINT (BIZ DAY only — Phase 2, Apr 25+) ──────────
+  if (isBizDay(dayType)) {
+    try {
+      const igSprintKey = `ig_sprint_clear:${today}`;
+      const igSprintDone = await getStoreValue<boolean>(igSprintKey);
+      if (!igSprintDone) {
+        const [ledgerStats, untouched] = await Promise.all([
+          getLedgerStats(),
+          getUntouched('T4'),
+        ]);
+        const nextArtist = untouched[0];
+        const hasData = ledgerStats.totalFans > 0 || ledgerStats.verifiedArtists > 0;
+        tasks.push({
+          id: 'ig-community-sprint',
+          title: 'IG Community Sprint — 20 min',
+          subtitle: hasData
+            ? `${ledgerStats.verifiedArtists} artists · ${ledgerStats.totalFans} fans · ${ledgerStats.citiesReached} cities · ${ledgerStats.totalCommunities} community nodes`
+            : 'Audience ledger is empty. Start building it — Sprint Terminal at /geo/sprint.',
+          howTo: [
+            nextArtist
+              ? `Start with: ${nextArtist.name} (${nextArtist.tier} — ${nextArtist.tracks.join(', ')})`
+              : 'Open /geo/sprint — Sprint Queue shows your next targets.',
+            'Search each artist on IG. Verify handle + city from their bio. Log in Sprint Terminal.',
+            'Scroll their posts. Comment genuinely. Like 2-3. Be present in the community.',
+            'Open active commenters → public profiles. Note: handle, name, city, snap/contact if visible.',
+            'Check their reposts and engagement → note community pages they interact with.',
+            'Check tagged posts → adjacent friend networks → add high-signal profiles.',
+            'Work T4 first, then T3. T1/T2 pages are for finding watering holes — not for DMs.',
+            'Target depth over breadth — 2-3 artist pages fully traversed beats 15 surface hits.',
+            'Log everything in the Sprint Terminal at /geo/sprint after the block.',
+            'Tap ✓ when done. One block per BIZ DAY. 20 min hard cap.',
+          ],
+          urgency: !hasData ? 'RED' : 'AMBER',
+          pillar: 'business',
+          timeBlock: 'biz',
+          action: async () => { await setStoreValue(igSprintKey, true); },
+        });
+      }
+    } catch (_e) {
+      // Silence if ledger unavailable
     }
-  } catch (e) {
-      // Silence if geo dashboard not yet generated
   }
 
   // ── 2. FUEL → Tasks ──────────────────────────────────────────────
