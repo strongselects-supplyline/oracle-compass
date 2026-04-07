@@ -28,6 +28,10 @@ export type SundayChecklist = {
   tracksUpdated: boolean;
   batchPrepSet: boolean;
   weekLoadedIntoOracle: boolean;
+  // Grief protocol — committed post-EP (starts Apr 27, 2026).
+  // 20-min journaling session. Write to your father. Controlled exposure, not floodgates.
+  // Only shown on Sundays on or after Apr 27.
+  griefJournalDone?: boolean;
 };
 
 // ── Track list — EP model ───────────────────────────────────────────────────
@@ -60,6 +64,13 @@ function defaultTrackStatuses(): TrackProductionStatus[] {
   ];
 }
 
+// Grief protocol starts Apr 27, 2026 (first Sunday after EP drops)
+const GRIEF_PROTOCOL_START = new Date("2026-04-27T00:00:00");
+
+export function isGriefProtocolActive(date: Date = new Date()): boolean {
+  return date >= GRIEF_PROTOCOL_START;
+}
+
 function defaultSundayChecklist(weekKey: string): SundayChecklist {
   return {
     weekKey,
@@ -67,6 +78,7 @@ function defaultSundayChecklist(weekKey: string): SundayChecklist {
     tracksUpdated: false,
     batchPrepSet: false,
     weekLoadedIntoOracle: false,
+    griefJournalDone: false,
   };
 }
 
@@ -168,13 +180,18 @@ export function computeTrackProgress(statuses: TrackProductionStatus[]): {
   };
 }
 
-export function isSundayChecklistComplete(checklist: SundayChecklist): boolean {
-  return (
+export function isSundayChecklistComplete(checklist: SundayChecklist, date: Date = new Date()): boolean {
+  const baseComplete = (
     checklist.sprintReviewed &&
     checklist.tracksUpdated &&
     checklist.batchPrepSet &&
     checklist.weekLoadedIntoOracle
   );
+  // Grief protocol required after Apr 27
+  if (isGriefProtocolActive(date)) {
+    return baseComplete && (checklist.griefJournalDone ?? false);
+  }
+  return baseComplete;
 }
 
 // Phase display helpers

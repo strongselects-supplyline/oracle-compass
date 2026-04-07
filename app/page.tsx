@@ -10,6 +10,8 @@ import { getMakeModeWeek } from "@/lib/oracle";
 import type { OracleDecree } from "@/lib/oracle";
 import { getLaneStatus, Lane } from "@/lib/lanes";
 import { getKillStats } from "@/lib/killList";
+import { getSundayChecklist, saveSundayChecklist, isGriefProtocolActive } from "@/lib/planner";
+import { getWeekKey } from "@/lib/oracle";
 import WeeklyMirror from "@/components/WeeklyMirror";
 import CheckItem from "@/components/CheckItem";
 import Link from "next/link";
@@ -93,6 +95,9 @@ export default function MorningMode() {
   const [showProtocol, setShowProtocol] = useState(false);
   const [killRedCount, setKillRedCount] = useState(0);
   const { syncStatus, sync: handleSync } = useCloudSync();
+  // Grief protocol — Sunday journaling (starts Apr 27, 2026)
+  const [griefJournalDone, setGriefJournalDone] = useState(false);
+  const [griefProtocolActive, setGriefProtocolActive] = useState(false);
 
   // Refresh lanes reactively after any state change
   const refreshLanes = useCallback(async () => {
@@ -129,6 +134,13 @@ export default function MorningMode() {
       setLanes(await getLaneStatus());
       const stats = await getKillStats();
       setKillRedCount(stats.redRemaining);
+      // Grief protocol — load Sunday checklist state
+      const griefNow = new Date();
+      setGriefProtocolActive(isGriefProtocolActive(griefNow));
+      if (isGriefProtocolActive(griefNow)) {
+        const checklist = await getSundayChecklist(getWeekKey());
+        setGriefJournalDone(checklist.griefJournalDone ?? false);
+      }
     };
     init();
   }, []);
@@ -206,6 +218,28 @@ export default function MorningMode() {
             <div className="text-6xl mb-6">{"\uD83D\uDED1"}</div>
             <h2 className="text-xl font-black mb-2">Sunday is sacred.</h2>
             <p className="text-[#666] text-sm">Zero building.<br />Nadi Shodhana. Rest.<br />The week depends on this.</p>
+            {griefProtocolActive && (
+              <div className="mt-8 mx-auto max-w-xs text-left">
+                <p className="text-[10px] font-black tracking-[0.2em] text-[#444] uppercase mb-3">Grief Protocol</p>
+                <button
+                  onClick={async () => {
+                    const next = !griefJournalDone;
+                    setGriefJournalDone(next);
+                    const checklist = await getSundayChecklist(getWeekKey());
+                    await saveSundayChecklist({ ...checklist, griefJournalDone: next });
+                  }}
+                  className={`w-full flex items-center gap-3 p-4 rounded-xl border text-left transition-all ${griefJournalDone ? 'border-green-500/30 bg-green-500/5' : 'border-[#222] bg-[#0a0a0a]'}`}
+                >
+                  <span className={`w-5 h-5 rounded-full border-2 flex items-center justify-center flex-shrink-0 transition-all ${griefJournalDone ? 'border-green-500 bg-green-500' : 'border-[#444]'}`}>
+                    {griefJournalDone && <span className="text-black text-xs font-black">✓</span>}
+                  </span>
+                  <div>
+                    <p className={`text-sm font-bold ${griefJournalDone ? 'text-green-400' : 'text-white'}`}>Write to your father — 20 min</p>
+                    <p className="text-[11px] text-[#555] mt-0.5">What you'd say. What you'd ask. What you grieve.</p>
+                  </div>
+                </button>
+              </div>
+            )}
           </div>
         ) : (
           <>
