@@ -941,6 +941,145 @@ export async function deriveKillList(): Promise<KillTask[]> {
     });
   }
 
+  // ── 8.5 SOCIAL INFRASTRUCTURE (from Apr 7 audit) ─────────────────
+  // One-time setup tasks surfaced until cleared. Bio fix is RED — do before SF uploads.
+
+  const bioDone = await getStoreValue<boolean>('social_bio_fixed');
+  if (!bioDone) {
+    tasks.push({
+      id: 'social-bio-fix',
+      title: 'Fix IG bio — 5 min, do today',
+      subtitle: '"Artist" is the lowest-value word in your bio. Replace it.',
+      howTo: [
+        'Open Instagram → Edit Profile.',
+        'Replace current bio with:',
+        '  past.El noir Records',
+        '  Hearing In Color 🎨🎶✨',
+        '  Milwaukee → everywhere',
+        '  all lovE EP — Apr 24',
+        '  [Spotify link or Linktree URL]',
+        'The world first, not the job title.',
+        'Tap ✓ when saved.',
+      ],
+      urgency: 'RED',
+      pillar: 'business',
+      timeBlock: 'any',
+      action: async () => { await setStoreValue('social_bio_fixed', true); },
+    });
+  }
+
+  const igLinkDone = await getStoreValue<boolean>('social_ig_link_set');
+  if (!igLinkDone) {
+    tasks.push({
+      id: 'social-ig-link',
+      title: 'Add Spotify/Linktree link to IG bio',
+      subtitle: 'New listeners click through from Spotify — there needs to be somewhere to land.',
+      howTo: [
+        'If Linktree is set up: paste Linktree URL in bio link field.',
+        'If not: paste Spotify for Artists profile link directly.',
+        'Make sure the link is live and routes to music.',
+        'Bridge for every release: add YouTube link to story/bio when you drop each track.',
+        'One sentence: "Music video is on YouTube." That\'s all it takes.',
+        'Tap ✓ when link is live in bio.',
+      ],
+      urgency: 'RED',
+      pillar: 'business',
+      timeBlock: 'any',
+      action: async () => { await setStoreValue('social_ig_link_set', true); },
+    });
+  }
+
+  const twitterDone = await getStoreValue<boolean>('social_twitter_resolved');
+  if (!twitterDone) {
+    tasks.push({
+      id: 'social-twitter-handle',
+      title: 'Resolve Twitter — @babybluepayton vs @iamethanpayton',
+      subtitle: 'Brand fragmentation. Fans searching you on Twitter find a different name.',
+      howTo: [
+        'Decision: do you want to maintain Twitter at all right now?',
+        'Option A: Rename @babybluepayton → @iamethanpayton (Settings → Account → Username).',
+        'Option B: Pin a final tweet ("Find me at @iamethanpayton on IG") and go dark.',
+        'Option C: Delete. You don\'t have bandwidth for a third active platform.',
+        'Recommendation: rename or go dark. Don\'t maintain two identities.',
+        'Tap ✓ once decided and executed.',
+      ],
+      urgency: 'AMBER',
+      pillar: 'business',
+      timeBlock: 'any',
+      action: async () => { await setStoreValue('social_twitter_resolved', true); },
+    });
+  }
+
+  const followForFollowDone = await getStoreValue<boolean>('social_stop_follow_for_follow');
+  if (!followForFollowDone) {
+    tasks.push({
+      id: 'social-stop-fxf',
+      title: 'Stop follow-for-follow — permanently',
+      subtitle: '2,200 followers / 2,001 following = 1:1 ratio. Algorithm penalizes low engagement rate.',
+      howTo: [
+        'Context: a large chunk of your 2,200 followers are courtesy/reciprocal follows.',
+        'They don\'t engage → engagement rate tanks → algorithm suppresses your reach → real fans don\'t see posts.',
+        'Every new follow-for-follow adds to the penalty.',
+        'From now: only follow accounts you genuinely watch. Not for reciprocity.',
+        'The gorilla-geo outreach builds real listeners — not vanity follows.',
+        'Post-EP: run a gradual unfollow audit (Oracle will remind you).',
+        'Tap ✓ to acknowledge and commit.',
+      ],
+      urgency: 'AMBER',
+      pillar: 'business',
+      timeBlock: 'any',
+      action: async () => { await setStoreValue('social_stop_follow_for_follow', true); },
+    });
+  }
+
+  const ytShortsDone = await getStoreValue<boolean>('social_yt_shorts_pipeline');
+  if (!ytShortsDone) {
+    tasks.push({
+      id: 'social-yt-shorts',
+      title: 'Set up YouTube Shorts pipeline',
+      subtitle: 'Every CF4 reel also uploads as a YouTube Short — zero extra creative work.',
+      howTo: [
+        'The workflow: every Content Factory reel you make → also upload to YouTube Shorts same day.',
+        'YouTube Shorts are vertical, ≤60s — your reels already fit the format.',
+        'Download reel from IG (or export from Premiere before IG upload).',
+        'Upload to YouTube → select "Short" format.',
+        'Title: same as reel caption hook. No description needed.',
+        'This passively feeds Shorts feed and keeps the channel alive.',
+        'SEE ME music video: go to YT now, share the link in your next IG story. One sentence.',
+        'Tap ✓ once you understand the workflow and have done it once.',
+      ],
+      urgency: 'AMBER',
+      pillar: 'business',
+      timeBlock: 'biz',
+      action: async () => { await setStoreValue('social_yt_shorts_pipeline', true); },
+    });
+  }
+
+  // Unfollow audit — post-EP only (Phase 2, Apr 25+). Surfaces on BIZ DAY.
+  if (isBizDay(dayType)) {
+    const unfollowDone = await getStoreValue<boolean>('social_unfollow_audit_done');
+    if (!unfollowDone) {
+      tasks.push({
+        id: 'social-unfollow-audit',
+        title: 'Run gradual IG unfollow audit',
+        subtitle: 'Dead weight on your engagement rate. Work through it slowly over BIZ DAY blocks.',
+        howTo: [
+          'Goal: move from 1:1 follower-to-following ratio toward 3:1 or 4:1.',
+          'Not aggressive — gradual. 20-30 unfollows per BIZ DAY block.',
+          'Criteria: no engagement on your content in 6+ months, clearly inactive, not a real connection.',
+          'Use IG "Following" list → sort by "Least interacted with."',
+          'Skip: collaborators, real-life contacts, artists you genuinely follow.',
+          'Blue check on 2,200 is already a power move — a cleaner ratio amplifies it.',
+          'Tap ✓ when you\'ve run a full pass (can take multiple BIZ DAY sessions).',
+        ],
+        urgency: 'GREEN',
+        pillar: 'business',
+        timeBlock: 'biz',
+        action: async () => { await setStoreValue('social_unfollow_audit_done', true); },
+      });
+    }
+  }
+
   // ── 9. 414 DAY PREP (Apr 14, 2026) ──────────────────────────────
   const fourteenDayDate = new Date("2026-04-14T00:00:00");
   const daysUntil414 = Math.ceil((fourteenDayDate.getTime() - now.getTime()) / 86400000);
