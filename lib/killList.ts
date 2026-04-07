@@ -414,25 +414,122 @@ export async function deriveKillList(): Promise<KillTask[]> {
     });
   }
   if (!dailyLog.movement && hour < 16) {
-    tasks.push({
-      id: "grind-movement",
-      title: "Move your body before working",
-      subtitle: "Physical activation before creative work",
-      howTo: [
-        "Choose one: lift, run, bodyweight circuit, or deep stretch",
-        "Minimum 20 minutes — you need to sweat",
-        "Do this BEFORE opening the DAW or laptop",
-        "Log pushups on the Log tab if applicable",
-      ],
-      urgency: "GREEN",
-      pillar: "body",
-      timeBlock: "any",
-      action: async () => {
-        const log = await getDailyLog(today);
-        log.movement = true;
-        await saveDailyLog(log);
+    const dow = new Date().getDay(); // 0=Sun, 1=Mon, 2=Tue...
+
+    // Day-specific training program — see docs/training_program.md
+    const workoutByDay: Record<number, { id: string; title: string; subtitle: string; howTo: string[] }> = {
+      1: { // Monday — Push/Core Calisthenics
+        id: "grind-calisthenics-push",
+        title: "Calisthenics — Push/Core (25 min)",
+        subtitle: "Upper body strength + core stability. Stage foundation.",
+        howTo: [
+          "Warm-up (3 min): arm circles, shoulder dislocates, cat-cow, high knees.",
+          "Main work — 3 rounds, 45 sec rest between exercises:",
+          "  Push-ups: 12–15 reps",
+          "  Pike push-ups: 8–10 reps",
+          "  Dips (chair/counter): 8–12 reps",
+          "  Hollow body hold: 30 sec",
+          "  Plank to push-up: 8 each arm",
+          "  Mountain climbers: 20 total",
+          "Finisher: max push-ups in 60 sec (track the number weekly).",
+          "Full program details: docs/training_program.md",
+          "Tap ✓ when done.",
+        ],
       },
-    });
+      2: { // Tuesday — Run (BIZ DAY)
+        id: "grind-run",
+        title: "Run — 30 min easy pace",
+        subtitle: "Cardio base. Conversational pace — if you can't talk, slow down.",
+        howTo: [
+          "Pre-run: banana or toast + PB, 20 min before. Don't run fasted.",
+          "Pace target: 11:30–12:30/mi. If you can only mouth-breathe, too fast.",
+          "Week 1–2: run 3 min / walk 2 min, repeat x6.",
+          "Week 3–4: run 5 min / walk 1 min, repeat x5.",
+          "Week 5+: 30 min continuous.",
+          "Post-run: +16 oz water. Add carbs to breakfast (oatmeal, rice).",
+          "Don't record vocals for 30+ min after — let breathing normalize.",
+          "Tap ✓ when done.",
+        ],
+      },
+      3: { // Wednesday — Dance (STUDIO DAY)
+        id: "grind-dance-floor",
+        title: "Dance — Floor Work (20 min)",
+        subtitle: "Movement vocabulary to your own tracks. Not choreo — YOUR body language.",
+        howTo: [
+          "Pick one track from the EP. Play it 4 times:",
+          "  Listen 1: Stand still. Feel where your body wants to move.",
+          "  Listen 2: Move freely. Eyes closed. Find what feels natural.",
+          "  Listen 3: Mirror or phone camera. Repeat what felt good. Add intention.",
+          "  Listen 4: Film it. Full run. Reference + content.",
+          "Focus: isolations (chest/shoulders/hips), weight transfer, hand vocabulary.",
+          "Key question: what does stillness vs movement look like in each section?",
+          "This is stage rehearsal AND Content Factory material.",
+          "Tap ✓ when done.",
+        ],
+      },
+      4: { // Thursday — Run (BIZ DAY)
+        id: "grind-run",
+        title: "Run — 30 min easy pace",
+        subtitle: "Cardio base. Same progression as Tuesday.",
+        howTo: [
+          "Pre-run: banana or toast + PB, 20 min before. Don't run fasted.",
+          "Pace target: 11:30–12:30/mi. Conversational — full sentences.",
+          "Follow the same week progression as Tuesday.",
+          "Post-run: +16 oz water. Add carbs to breakfast.",
+          "Tap ✓ when done.",
+        ],
+      },
+      5: { // Friday — Pull/Legs Calisthenics
+        id: "grind-calisthenics-pull",
+        title: "Calisthenics — Pull/Legs (25 min)",
+        subtitle: "Lower body + posterior chain. Stage movement power.",
+        howTo: [
+          "Warm-up (3 min): bodyweight squats, hip circles, lunge with twist, jumping jacks.",
+          "Main work — 3 rounds, 45 sec rest between exercises:",
+          "  Bodyweight squats: 15–20 reps",
+          "  Lunges: 10 each leg",
+          "  Glute bridges: 15 reps",
+          "  Inverted rows (table edge): 8–12 reps",
+          "  Pull-ups if bar available: 5–8 (or negatives)",
+          "  Calf raises: 20 reps",
+          "Core finisher: L-sit 3x15sec, side plank 30 sec each, flutter kicks 30 sec.",
+          "Sauna after if available — recovery day.",
+          "Tap ✓ when done.",
+        ],
+      },
+      6: { // Saturday — Performance Run (Dance)
+        id: "grind-dance-performance",
+        title: "Dance — Performance Run (20–30 min)",
+        subtitle: "Full song run-throughs with vocals. Film everything.",
+        howTo: [
+          "Pick 2–3 songs from the setlist.",
+          "Full performance: half-voice vocals + movement + transitions.",
+          "Film everything — this is stage rehearsal AND content.",
+          "Watch playback once. Note: one thing to KEEP, one thing to CHANGE.",
+          "This is where you build the performer, not just the musician.",
+          "Tap ✓ when done.",
+        ],
+      },
+    };
+
+    // Sunday (0) = rest day, no movement task
+    const workout = workoutByDay[dow];
+    if (workout) {
+      tasks.push({
+        id: workout.id,
+        title: workout.title,
+        subtitle: workout.subtitle,
+        howTo: workout.howTo,
+        urgency: "GREEN" as const,
+        pillar: "body" as const,
+        timeBlock: "any" as const,
+        action: async () => {
+          const log = await getDailyLog(today);
+          log.movement = true;
+          await saveDailyLog(log);
+        },
+      });
+    }
   }
 
   // ── 4 & 5. PER-RELEASE CHECKLIST ─────────────────────────────────
