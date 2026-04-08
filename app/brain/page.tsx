@@ -144,6 +144,9 @@ export default function BrainPage() {
         {/* ── TEXTURED PRODUCTION ── */}
         <TexturedProduction />
 
+        {/* ── THE LUFS MIXING LADDER ── */}
+        <MixingProtocol />
+
         {/* ── Mission Statement ── */}
         <div className="border-t border-[#1e1e1e] pt-8 pb-4">
           <p className="text-[10px] font-black tracking-[0.15em] text-[#666] uppercase leading-relaxed">
@@ -527,18 +530,35 @@ function TexturedProduction() {
         </p>
       </div>
 
-      {/* FL Studio Equivalents */}
+      {/* Your Actual Plugin Cabinet */}
       <div className="card">
-        <p className="text-[10px] font-black tracking-[0.18em] text-[#555] uppercase mb-3">FL Studio Plugin Map</p>
+        <p className="text-[10px] font-black tracking-[0.18em] text-[#555] uppercase mb-3">Your Plugin Cabinet (Confirmed)</p>
         {[
-          { effect: "Compression", fl: "Fruity Limiter (compressor mode)" },
-          { effect: "RC-20 style warmth", fl: "iZotope Vinyl (free) or RC-20" },
-          { effect: "Saturation", fl: "CamelCrusher or Fruity Fast Dist" },
-          { effect: "Pitch shift (cents)", fl: "Pitcher or Edison pitch shift" },
-          { effect: "Stereo width", fl: "Fruity Stereo Shaper / Enhancer" },
-          { effect: "Auto-pan", fl: "Fruity Panomatic (slow LFO)" },
-          { effect: "Phaser", fl: "Fruity Phaser" },
-          { effect: "Delay throws", fl: "Fruity Delay 3 (100% wet send)" },
+          { effect: "Compression (transparent)", fl: "Pro-C 2 (FabFilter)" },
+          { effect: "Compression (FET / transient)", fl: "FG-116 (Slate / UAD)" },
+          { effect: "Compression (bus glue)", fl: "SSL G Bus Compressor (SSL bundle)" },
+          { effect: "Channel strip suite", fl: "VMR — Virtual Mix Rack (Slate)" },
+          { effect: "Surgical EQ", fl: "Pro-Q 3 (FabFilter)" },
+          { effect: "Resonance cleaning", fl: "Soothe2" },
+          { effect: "Saturation / analog warmth", fl: "Black Box Analog Saturator" },
+          { effect: "Early reflections / space", fl: "Black Vortex" },
+          { effect: "Reverb", fl: "Valhalla Verb" },
+          { effect: "Delay", fl: "Valhalla Delay" },
+          { effect: "Transient shaping / clipping", fl: "Gold Clip / Standard Clip" },
+          { effect: "Kick / drum punch", fl: "KNOCK" },
+          { effect: "Tape warmth", fl: "UAD Oxide Tape / ATR-102" },
+          { effect: "Spectral / time manipulation", fl: "Portal by Output" },
+          { effect: "Harmonic enhancement", fl: "Oxford Inflator @ 0dB" },
+          { effect: "Limiting (master)", fl: "Oxford Limiter / Ozone 12 IRC" },
+          { effect: "Mix bus cohesion", fl: "God Particle" },
+          { effect: "Vocal processing suite", fl: "Nectar (iZotope)" },
+          { effect: "Vocal compression", fl: "Waves R-Comp / Silk Vocal" },
+          { effect: "Full mix / mastering suite", fl: "Ozone 12 (iZotope) — IRC limiter, Imager, EQ" },
+          { effect: "Noise / repair", fl: "RX (iZotope)" },
+          { effect: "Creative FX", fl: "SoundToys bundle (EchoBoy, Decapitator, PanMan, etc.)" },
+          { effect: "Filter / creative EQ", fl: "Storch Filter (Slate)" },
+          { effect: "Reverb (algorithmic)", fl: "VerbSuite Classics (Slate)" },
+          { effect: "Pitch shift (cents)", fl: "Pitcher (FL native) or Edison" },
         ].map((item, i) => (
           <div key={i} className="flex justify-between items-center py-2 border-b border-[#1a1a1a] last:border-0">
             <span className="text-[11px] font-bold text-[#ccc]">{item.effect}</span>
@@ -549,3 +569,215 @@ function TexturedProduction() {
     </ScrollSection>
   );
 }
+
+function MixingProtocol() {
+  return (
+    <ScrollSection title="The Mixing Ladder" icon="🎚️" accent="#3b82f6">
+
+      {/* Golden Rule */}
+      <div className="card" style={{ borderColor: "#3b82f622" }}>
+        <p className="text-[10px] font-black tracking-[0.18em] text-[#555] uppercase mb-2">The Golden Rule</p>
+        <p className="text-sm font-black text-blue-400 leading-snug italic">
+          &quot;Mix in blocks. Treat loudness like a ladder. Lock each rung before climbing to the next.&quot;
+        </p>
+        <p className="text-[10px] text-[#555] mt-2">
+          Mix drums on mid-range drivers only (disable tweeter + woofer). If kick and bass punch through a single mid-range cone, they translate everywhere. Switch to full-range periodically to check, but do the work in the mid.
+        </p>
+      </div>
+
+      {/* Session Layout */}
+      <div className="card">
+        <p className="text-[10px] font-black tracking-[0.18em] text-[#555] uppercase mb-3">FL Session Layout (Top → Bottom)</p>
+        {[
+          { group: "DRUMS BUS (5)", tracks: "Kick Aux (layered kicks) → Snare Aux (layered snares) → Verb/Accent Snares → Percs → Bongos → Hat Loops", color: "#f59e0b" },
+          { group: "PERC BUS (separate)", tracks: "Percs, bongos, hats only — NO kick or snare. Processed independently for stereo image control.", color: "#f59e0b" },
+          { group: "808 / BASS", tracks: "Bass track → Sample Bus → Instru.L Bus (4)", color: "#ef4444" },
+          { group: "INSTRUMENTS", tracks: "Keys, Pads, Leads, Secondary Synths → Instru.L Bus (4)", color: "#a855f7" },
+          { group: "FX / TRANSITIONS", tracks: "Vocal effects, whooshes, reverses, sound design", color: "#6366f1" },
+          { group: "LEAD VOCALS (10-12)", tracks: "Verse / Pre-Chorus / Chorus — each on separate tracks → Lead Bus (9) → Vox Bus (6)", color: "#3b82f6" },
+          { group: "BG VOCALS (14-21)", tracks: "Stacks of 2 per harmony. Chorus ODs, Accents, Supporting harms → BG Bus (13) → Vox Bus (6)", color: "#3b82f6" },
+          { group: "TIME-BASED FX", tracks: "Verb, Delay, Chorus sends → FX Bus", color: "#555" },
+        ].map((item, i) => (
+          <div key={i} className="flex items-start gap-2 py-2 border-b border-[#1a1a1a] last:border-0">
+            <span style={{ color: item.color }} className="text-[10px] mt-0.5 flex-shrink-0">■</span>
+            <div>
+              <span className="text-[11px] font-bold text-[#ccc]">{item.group}</span>
+              <span className="text-[10px] text-[#555] ml-1">— {item.tracks}</span>
+            </div>
+          </div>
+        ))}
+        <div className="mt-3 p-3 bg-blue-500/5 border border-blue-500/10 rounded-lg">
+          <p className="text-[10px] text-blue-400 font-bold">
+            Key: Split Percs from Shells. Kick/Snare stay center, compressed for punch. Percs go wide with saturation and movement. Different bus = different stereo strategy.
+          </p>
+        </div>
+      </div>
+
+      {/* The LUFS Ladder */}
+      <div className="card">
+        <p className="text-[10px] font-black tracking-[0.18em] text-[#555] uppercase mb-3">The Short-Term LUFS Ladder</p>
+
+        <div className="py-2.5 border-b border-[#1a1a1a]">
+          <div className="flex items-center gap-2 mb-1">
+            <span className="text-blue-400 font-black text-xs">01</span>
+            <span className="text-white font-bold text-[11px]">Drums Only (Foundation)</span>
+            <span className="ml-auto text-blue-400 font-black text-[10px] bg-blue-500/10 px-1.5 py-0.5 rounded">-10 to -11 LUFS</span>
+          </div>
+          <p className="text-[10px] text-[#555]">Gold Clip on kick — shave 1.5-2dB of peak transient (soft clip mode). This reclaims headroom without losing perceived volume. Route Kick/Snare to Drums Bus (5). SSL G Bus Comp on the bus for 2-3dB GR. Tape (Oxide or ATR-102) on the bus for one stage of saturation. Gold Clip on the bus output for final headroom control.</p>
+        </div>
+
+        <div className="py-2.5 border-b border-[#1a1a1a]">
+          <div className="flex items-center gap-2 mb-1">
+            <span className="text-blue-400 font-black text-xs">02</span>
+            <span className="text-white font-bold text-[11px]">Drums + Bass (Weight)</span>
+            <span className="ml-auto text-blue-400 font-black text-[10px] bg-blue-500/10 px-1.5 py-0.5 rounded">-9 LUFS</span>
+          </div>
+          <p className="text-[10px] text-[#555]">Saturate the bass mid-range harmonics so it cuts through small speakers. Sidechain sub frequencies (under 70Hz) to the kick for headroom. SSL G Bus Comp + Tape + Gold Clip on the Instru.L Bus (same chain as drums). Peak stays at -1.2dB. The sustained bass energy pushes LUFS from -11 up to -9.</p>
+        </div>
+
+        <div className="py-2.5 border-b border-[#1a1a1a]">
+          <div className="flex items-center gap-2 mb-1">
+            <span className="text-blue-400 font-black text-xs">03</span>
+            <span className="text-white font-bold text-[11px]">+ ONE Key Instrument + Lead Vocal</span>
+            <span className="ml-auto text-blue-400 font-black text-[10px] bg-blue-500/10 px-1.5 py-0.5 rounded">-8 LUFS</span>
+          </div>
+          <p className="text-[10px] text-[#555]">Unmute the main chord instrument ONLY. Mix the lead vocal against Drums + Bass + that ONE anchor. Vocal chain: Nectar (surgical EQ → de-esser → vocal rider) → Pro-Q 3 (surgical cuts) → FG-116 (FET compression, the ONLY compressor in FL on lead) → SD-PE1 (tube EQ, presence after compression) → VCC Channel (console color). Lock the vocal-to-music relationship before adding anything else.</p>
+        </div>
+
+        <div className="py-2.5 border-b border-[#1a1a1a]">
+          <div className="flex items-center gap-2 mb-1">
+            <span className="text-blue-400 font-black text-xs">04</span>
+            <span className="text-white font-bold text-[11px]">Fill — Remaining Instruments + FX</span>
+          </div>
+          <p className="text-[10px] text-[#555]">Bring in secondary pads, synths, foley. Carve harshness with Soothe or Pro-Q 3. Add depth/width/movement with FX sends. Peak stays locked at -1.2dB. The vocal relationship is already set — everything you add now supports it.</p>
+        </div>
+
+        <div className="py-2.5">
+          <div className="flex items-center gap-2 mb-1">
+            <span className="text-blue-400 font-black text-xs">05</span>
+            <span className="text-white font-bold text-[11px]">Polish — BG Vocals (The Final Push)</span>
+            <span className="ml-auto text-red-500 font-black text-[10px] bg-red-500/10 px-1.5 py-0.5 rounded">-7 LUFS Target</span>
+          </div>
+          <p className="text-[10px] text-[#555]">BG Bus chain: SSL 4K E (gentle bus compression) → FairChild R&amp;B Ahh BGVox (character) → SSL Fusion Stereo Image (width) → Black Vortex OR Black Box Saturator (ONE saturation, not both) → Gold Clip. Heavy compression keeps BGs as an unmoving pad behind the lead. This sustained wall of voice pushes you to the final -7 LUFS commercial target.</p>
+        </div>
+      </div>
+
+      {/* Bus Chain Reference */}
+      <div className="card">
+        <p className="text-[10px] font-black tracking-[0.18em] text-[#555] uppercase mb-3">Your Bus Chains (Audited Mar 1)</p>
+        {[
+          { bus: "LEAD BUS (9)", chain: "Pro-Q 3 → Soothe (BEFORE color) → SSL Fusion Transformer → Tape → Gold Clip", note: "Soothe cleans first, Fusion adds color to clean signal" },
+          { bus: "BG BUS (13)", chain: "SSL 4K E → FairChild R&B → SSL Fusion Stereo Image → Black Vortex OR Verve → Gold Clip", note: "ONE saturation stage only — two causes BGs to fight the lead" },
+          { bus: "VOX BUS (6)", chain: "SSL G Bus Comp (2-3dB GR) → Gold Clip", note: "No tape here. Enough tape exists upstream (Studer print + Lead Bus)" },
+          { bus: "DRUMS / INSTRU.L", chain: "SSL G Bus Comp → Tape (Oxide or ATR-102) → Gold Clip", note: "Same chain on both. Consistent subgroup treatment." },
+          { bus: "PRE MASTER (2)", chain: "God Particle", note: "One plugin. Mix cohesion, thickness, width. Let it breathe." },
+        ].map((item, i) => (
+          <div key={i} className="py-2.5 border-b border-[#1a1a1a] last:border-0">
+            <div className="text-[11px] font-bold text-blue-400">{item.bus}</div>
+            <div className="text-[10px] text-[#888] mt-0.5 font-medium">{item.chain}</div>
+            <div className="text-[10px] text-[#444] mt-0.5 italic">{item.note}</div>
+          </div>
+        ))}
+      </div>
+
+      {/* Master Chain */}
+      <div className="card">
+        <p className="text-[10px] font-black tracking-[0.18em] text-[#555] uppercase mb-3">Master Chain (Stage 9)</p>
+        {[
+          { step: "1", plugin: "Massive Passive EQ", job: "Broad musical shaping across full mix" },
+          { step: "2", plugin: "Soothe2", job: "Clean resonances BEFORE adding final harmonics" },
+          { step: "3", plugin: "Oxford Inflator @ 0dB", job: "Color only — NOT loudness. Harmonics only." },
+          { step: "4", plugin: "Ozone 12 IRC", job: "Final limit. -1.0 dBTP ceiling." },
+          { step: "5", plugin: "SSL Meter Pro", job: "Verify LUFS / LU / True Peak" },
+        ].map((item) => (
+          <div key={item.step} className="flex items-start gap-3 py-2 border-b border-[#1a1a1a] last:border-0">
+            <span className="text-blue-400 font-black text-[10px] flex-shrink-0 mt-0.5">{item.step}</span>
+            <div>
+              <div className="text-xs font-bold text-white">{item.plugin}</div>
+              <div className="text-[10px] text-[#444] mt-0.5">{item.job}</div>
+            </div>
+          </div>
+        ))}
+        <div className="mt-3 p-3 bg-blue-500/5 border border-blue-500/10 rounded-lg">
+          <p className="text-[10px] text-blue-400 font-bold">
+            Soothe2 BEFORE Inflator — not after. Inflator generates harmonics. If Soothe runs after, they fight each other.
+          </p>
+        </div>
+      </div>
+
+      {/* Loudness Targets */}
+      <div className="card">
+        <p className="text-[10px] font-black tracking-[0.18em] text-[#555] uppercase mb-3">Loudness Targets</p>
+        {[
+          { target: "Mix print", lufs: "-9 to -11 LUFS integrated", peak: "-1.0 dBTP", note: "Your audited mastering target from the Mar 1 signal chain audit" },
+          { target: "Short-term (chorus)", lufs: "-7 to -6.5 LUFS", peak: "-1.0 dBTP", note: "The loudest moment should hit -7 on the short-term meter" },
+          { target: "Spotify normalization", lufs: "-14 LUFS", peak: "n/a", note: "Spotify will turn you down. Master for YOUR sound, not the algorithm." },
+        ].map((item, i) => (
+          <div key={i} className="py-2 border-b border-[#1a1a1a] last:border-0">
+            <div className="flex items-center justify-between">
+              <span className="text-[11px] font-bold text-white">{item.target}</span>
+              <span className="text-blue-400 font-black text-[10px]">{item.lufs}</span>
+            </div>
+            <div className="text-[10px] text-[#444] mt-0.5">{item.note}</div>
+          </div>
+        ))}
+      </div>
+
+      {/* Techniques */}
+      <div className="card">
+        <p className="text-[10px] font-black tracking-[0.18em] text-[#555] uppercase mb-3">Advanced Techniques</p>
+        {[
+          { name: "Gold Clip on Kicks (Headroom Recovery)", desc: "Soft clip 1.5-2dB off the kick peak. You get 2dB of headroom back without losing perceived volume. The clipping increases sustain on the transient, making it feel thicker. Your Ozone limiter on Master won't have to work as hard.", color: "#f59e0b" },
+          { name: "Perception of Brightness (Snare Trick)", desc: "Boost the Air EQ band on the snare for excitement, then immediately put a high-cut after it to roll the brightness back off. You FEEL the high-end energy but don't HEAR it competing with your vocal's air region (where SD-PE1 pushes presence).", color: "#34d399" },
+          { name: "Sidechain Vocal → Reverb", desc: "Sidechain the lead vocal to your reverb return. When the vocal sings, the reverb ducks — giving clarity. When the vocal stops, the reverb blooms and fills the space. Washy reverb without muddying the lead.", color: "#818cf8" },
+          { name: "Mid-Only Compression on Pre Master", desc: "On God Particle / Pre Master: ignore lows, ignore highs, ignore side information. Compress ONLY the mono mid-range. Gives glue and perceived volume to the center without touching the stereo image or frequency extremes.", color: "#f472b6" },
+          { name: "Clip Gain > Compression for One-Off Moments", desc: "If one vocal phrase is too loud but everything else is fine — don't increase the FG-116 ratio. Just clip-gain that single moment down. Surgical, not systemic.", color: "#60a5fa" },
+          { name: "The Surgical Walkaway", desc: "Never loop until you hate the song. Drums locked = walk away. Bass locked = walk away. Vocals seated = walk away. Build the mix in aggressive sprints with ear resets between each block.", color: "#ef4444" },
+          { name: "Treat Yourself Like a Client", desc: "The processing on your rough vocal tracks (from Apollo: CL 1B, Auto-Tune, Studer) — LEAVE IT. Don't touch it. Bus the output to Lead Bus (9) and do all surgical work there. Preserve the vibe, only enhance it.", color: "#a855f7" },
+        ].map((item, i) => (
+          <div key={i} className="py-3 border-b border-[#1a1a1a] last:border-0">
+            <div className="flex items-center gap-2 mb-1">
+              <span style={{ color: item.color }} className="text-[10px] font-black">→</span>
+              <span className="text-xs font-bold text-white">{item.name}</span>
+            </div>
+            <p className="text-[10px] text-[#555] leading-relaxed ml-4">{item.desc}</p>
+          </div>
+        ))}
+      </div>
+
+      {/* Saturation Audit */}
+      <div className="card" style={{ borderColor: "#3b82f622" }}>
+        <p className="text-[10px] font-black tracking-[0.18em] text-[#555] uppercase mb-2">Saturation Audit (3 Stages Max)</p>
+        <p className="text-[10px] text-[#888] font-medium leading-relaxed mb-2">
+          You went from 6 saturation stages to 3. Never add more without removing one first.
+        </p>
+        {[
+          { stage: "Apollo Print", what: "Studer A800 (tape color, always printed)" },
+          { stage: "Lead Bus", what: "Tape (one stage — Oxide or ATR-102)" },
+          { stage: "Master", what: "Oxford Inflator @ 0dB (harmonics only, NOT loudness)" },
+        ].map((item, i) => (
+          <div key={i} className="flex items-center justify-between py-1.5 border-b border-[#1a1a1a] last:border-0">
+            <span className="text-[11px] font-bold text-[#ccc]">{item.stage}</span>
+            <span className="text-[10px] text-blue-400/70 font-medium">{item.what}</span>
+          </div>
+        ))}
+      </div>
+
+      {/* Physics */}
+      <div className="card" style={{ borderColor: "#3b82f622" }}>
+        <p className="text-[10px] font-black tracking-[0.18em] text-[#555] uppercase mb-2">Why This Works (The Physics)</p>
+        <p className="text-[11px] text-[#888] font-medium leading-relaxed">
+          A kick drum hits -1.2dB Peak instantly — but it&apos;s a millisecond spike surrounded by silence.
+          LUFS measures <span className="text-blue-400 font-bold">average</span> energy over time. At drums-only, the silence drags the average down to -11.
+          As you add bass, pads, vocals — you fill in the silence. Peak stays locked at -1.2dB (your Gold Clips and limiters hold the ceiling).
+          LUFS climbs from -11 to -7 simply because there is less empty space between the transients.
+        </p>
+        <p className="text-[10px] text-[#555] mt-2 italic">
+          This is why the ladder works: you never push harder. You just fill in more space.
+        </p>
+      </div>
+
+    </ScrollSection>
+  );
+}
+
