@@ -97,7 +97,11 @@ export default function BrainPage() {
             <Anchor text="The mind is an organ. Not an identity." />
             <p className="text-[#888] text-sm font-medium leading-relaxed mt-3 ml-1">
               Observe it. Don&apos;t become it.<br />
-              <span className="text-[11px] text-[#555] italic">When stuck: &ldquo;What is my mind doing right now?&rdquo;</span>
+              Your nervous system branches like a river. Your heartbeat has a healthy fractal rhythm.<br />
+              The mind that can watch itself is the mind that can change itself.
+            </p>
+            <p className="text-[10px] text-[#555] italic mt-2 ml-1">
+              Interrupt: &ldquo;What is my mind doing right now?&rdquo; — not &ldquo;Why am I like this?&rdquo;
             </p>
           </div>
           <div>
@@ -130,6 +134,9 @@ export default function BrainPage() {
             ))}
           </div>
         </div>
+
+        {/* ── WAKING MIND PROTOCOL ── */}
+        <WakingMindProtocol />
 
         {/* ── BLITZKRIEG PROTOCOL ── */}
         <BlitzkriegProtocol />
@@ -190,6 +197,179 @@ function ScrollSection({ title, icon, accent, children }: { title: string; icon:
       </button>
       {open && <div className="mt-2 space-y-3 animate-fade-in">{children}</div>}
     </div>
+  );
+}
+
+function WakingMindProtocol() {
+  return (
+    <ScrollSection title="The Waking Mind" icon="🧠" accent="#6366f1">
+
+      {/* Core Frame */}
+      <div className="card" style={{ borderColor: "#6366f122" }}>
+        <p className="text-[10px] font-black tracking-[0.18em] text-[#555] uppercase mb-2">The Core Insight</p>
+        <p className="text-sm font-black text-indigo-400 leading-snug italic">
+          &quot;Nobody in your bloodline, going back through all of human history, has ever known this about themselves.&quot;
+        </p>
+        <p className="text-[10px] text-[#555] mt-2">
+          Your neurons produce computational processes with knowledge — but not meta-knowledge.
+          Meta-knowledge can direct the whole. You are the first generation to have it available as a practice.
+        </p>
+      </div>
+
+      {/* 3-System Model */}
+      <div className="card">
+        <p className="text-[10px] font-black tracking-[0.18em] text-[#555] uppercase mb-3">The 3-System Model</p>
+        {[
+          {
+            num: "3",
+            title: "System 3 — Metacognitive Layer",
+            desc: "Symbols that refer to your own mental states. \"I'm distracted.\" \"I'm in a threat state.\" This layer can reach into and rewire Systems 1 & 2. No ceiling.",
+            color: "#818cf8"
+          },
+          {
+            num: "2",
+            title: "System 2 — Working Memory",
+            desc: "Deliberate, effortful, fact-based reasoning. Planning, executing, deciding. Slow. Where most conscious thought happens.",
+            color: "#34d399"
+          },
+          {
+            num: "1",
+            title: "System 1 — Automatic",
+            desc: "Fast, unconscious, habitual. Your default mode. Drives you unless System 3 is active. Low ceiling on its own.",
+            color: "#f59e0b"
+          },
+        ].map((item) => (
+          <div key={item.num} className="flex items-start gap-3 py-2.5 border-b border-[#1a1a1a] last:border-0">
+            <span style={{ color: item.color }} className="font-black text-[10px] flex-shrink-0 mt-0.5">{item.num}</span>
+            <div>
+              <div className="text-xs font-bold text-white">{item.title}</div>
+              <div className="text-[10px] text-[#444] mt-0.5 leading-relaxed">{item.desc}</div>
+            </div>
+          </div>
+        ))}
+        <div className="mt-3 p-3 bg-indigo-500/5 border border-indigo-500/10 rounded-lg">
+          <p className="text-[10px] text-indigo-400 font-bold">
+            Key: System 3 instructions have a different key than System 2 instructions.
+            Telling yourself &quot;be calm&quot; at S2 does almost nothing. Naming the state at S3 — &quot;I&apos;m in a threat loop&quot; — reaches S1 directly.
+          </p>
+        </div>
+      </div>
+
+      {/* Monitoring vs Control */}
+      <div className="card">
+        <p className="text-[10px] font-black tracking-[0.18em] text-[#555] uppercase mb-3">Two Modes — Both Trainable</p>
+        {[
+          {
+            mode: "MONITORING",
+            desc: "Noticing and naming your mental state in real time.",
+            example: "\"I\u2019m distracted.\"  \"My energy is low.\"  \"I know I know this.\"",
+            color: "#818cf8"
+          },
+          {
+            mode: "CONTROL",
+            desc: "Actively redirecting what\u2019s happening once you\u2019ve noticed it.",
+            example: "Choose to focus. Slow the breath. Defer the argument. Return to the session.",
+            color: "#34d399"
+          },
+        ].map((item) => (
+          <div key={item.mode} className="py-2.5 border-b border-[#1a1a1a] last:border-0">
+            <div className="flex items-center gap-2 mb-1">
+              <span style={{ color: item.color }} className="text-[9px] font-black tracking-widest">{item.mode}</span>
+            </div>
+            <div className="text-xs font-bold text-white">{item.desc}</div>
+            <div className="text-[10px] text-[#444] mt-0.5 italic">{item.example}</div>
+          </div>
+        ))}
+      </div>
+
+      {/* Interoception Stack */}
+      <div className="card">
+        <p className="text-[10px] font-black tracking-[0.18em] text-[#555] uppercase mb-3">The Signal Stack</p>
+        {[
+          { label: "Metacognition", role: "The engineer at the mixing board", note: "Represents and directs mental states. Can choose what to do with the signal.", color: "#818cf8" },
+          { label: "Interoception", role: "The microphone picking up the room", note: "Heartbeat, breath, gut tension, muscle state. Raw body data — pre-symbolic.", color: "#34d399" },
+          { label: "Sensation", role: "The raw electrical signal", note: "Below conscious access. Always running. Temperature, pain, proprioception.", color: "#f59e0b" },
+        ].map((item) => (
+          <div key={item.label} className="flex items-start gap-3 py-2.5 border-b border-[#1a1a1a] last:border-0">
+            <div>
+              <div className="flex items-center gap-2">
+                <span style={{ color: item.color }} className="text-xs font-black">{item.label}</span>
+                <span className="text-[9px] text-[#555] italic">{item.role}</span>
+              </div>
+              <div className="text-[10px] text-[#444] mt-0.5">{item.note}</div>
+            </div>
+          </div>
+        ))}
+        <div className="mt-3 p-3 bg-indigo-500/5 border border-indigo-500/10 rounded-lg">
+          <p className="text-[10px] text-indigo-400 font-bold">
+            High interoception + no metacognition = flooded by signals you can&apos;t regulate.<br />
+            High metacognition + good interoception = rich data, skilled response. That&apos;s the target.
+          </p>
+        </div>
+      </div>
+
+      {/* Fractal Insight */}
+      <div className="card">
+        <p className="text-[10px] font-black tracking-[0.18em] text-[#555] uppercase mb-3">The Fractal Principle</p>
+        <p className="text-[11px] text-[#888] font-medium leading-relaxed mb-3">
+          Your nervous system branches like a river. Your lungs use the same geometry as a tree. Your heartbeat has a healthy fractal rhythm (HRV) — and when it becomes too regular, that&apos;s pathology.
+        </p>
+        {[
+          { system: "Rivers", pattern: "Branch to drain maximum land with minimum material", color: "#60a5fa" },
+          { system: "Trees / Lungs", pattern: "Branch to pack infinite surface area into finite volume", color: "#34d399" },
+          { system: "Nervous system", pattern: "Branch to reach every cell with minimum signal-distance", color: "#818cf8" },
+          { system: "Your workflow", pattern: "Each session mirrors the sprint. Each sprint mirrors the arc.", color: "#f59e0b" },
+        ].map((item, i) => (
+          <div key={i} className="flex items-start gap-2 py-1.5">
+            <span className="text-indigo-500/50 text-[10px] mt-0.5">◆</span>
+            <div>
+              <span className="text-[11px] font-bold text-[#ccc]">{item.system}</span>
+              <span className="text-[10px] text-[#555] ml-1">— {item.pattern}</span>
+            </div>
+          </div>
+        ))}
+        <div className="mt-3 p-3 bg-indigo-500/5 border border-indigo-500/10 rounded-lg">
+          <p className="text-[10px] text-indigo-400 font-bold italic">
+            &quot;There is no single gene, law, or brain making all these things fractal.
+            Each system independently found the same answer: self-similar branching is what optimality looks like.&quot;
+          </p>
+        </div>
+      </div>
+
+      {/* Activation Interrupts */}
+      <div className="card" style={{ borderColor: "#6366f122" }}>
+        <p className="text-[10px] font-black tracking-[0.18em] text-[#555] uppercase mb-3">System 3 Activation Interrupts</p>
+        {[
+          { trigger: "Feeling scattered", interrupt: "\"What is my mind doing right now?\" — wait for the answer. Don\u2019t judge it.", color: "#818cf8" },
+          { trigger: "Stuck in a session", interrupt: "Rate your mental state 1-10. Now rate it again in 60 seconds. The act of rating breaks the loop.", color: "#34d399" },
+          { trigger: "About to react", interrupt: "Name the emotion: \"I\u2019m in a threat state.\" Naming it activates metacognitive regulation — not suppression.", color: "#f59e0b" },
+          { trigger: "Low energy spiral", interrupt: "Is this a body signal (interoception) or a thought loop? Different cause, different fix.", color: "#f472b6" },
+          { trigger: "Distraction pull", interrupt: "\"What does my distraction tell me about what I\u2019m avoiding?\" Curiosity, not judgment.", color: "#60a5fa" },
+        ].map((item, i) => (
+          <div key={i} className="flex items-start gap-3 py-2.5 border-b border-[#1a1a1a] last:border-0">
+            <span style={{ color: item.color }} className="font-black text-[10px] flex-shrink-0 mt-0.5">→</span>
+            <div>
+              <div className="text-xs font-bold text-white">{item.trigger}</div>
+              <div className="text-[10px] text-[#444] mt-0.5 leading-relaxed">{item.interrupt}</div>
+            </div>
+          </div>
+        ))}
+      </div>
+
+      {/* No Ceiling */}
+      <div className="card" style={{ borderColor: "#6366f122" }}>
+        <p className="text-[10px] font-black tracking-[0.18em] text-[#555] uppercase mb-2">The No-Ceiling Principle</p>
+        <p className="text-sm font-black text-white leading-snug">
+          Object-level intelligence has a low ceiling.<br />
+          <span className="text-indigo-400">Metacognitive intelligence has no ceiling.</span>
+        </p>
+        <p className="text-[10px] text-[#555] mt-2">
+          Memory champions don&apos;t have bigger brains. Olympic athletes don&apos;t have different muscles.
+          The gap is always System 3 — the metacognitive layer that unlocks what the hardware already has.
+        </p>
+      </div>
+
+    </ScrollSection>
   );
 }
 
