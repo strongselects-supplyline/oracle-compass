@@ -109,6 +109,34 @@ export async function deriveKillList(): Promise<KillTask[]> {
     }
   }
 
+  // ── 1.7 S3 METACOGNITIVE CHECK-IN (STUDIO DAY, morning only) ──────
+  // Fires before any studio task — prevents autopilot sessions.
+  // One-time per day. Uses storeValue so no DailyLog schema change needed.
+  if (isStudioDay(dayType as any) && hour < 13) {
+    const s3DoneKey = `s3_checkin:${today}`;
+    const s3Done = await getStoreValue<boolean>(s3DoneKey);
+    if (!s3Done) {
+      tasks.push({
+        id: 's3-checkin',
+        title: 'S3 Check-in: Name Your Mental State',
+        subtitle: 'Before opening the DAW — 90 seconds. Prevents autopilot sessions.',
+        howTo: [
+          'Close your eyes for 10 seconds. No phone.',
+          'Ask: "What is my body doing right now?" — feel it, don\'t think it. (S1 / Sensation)',
+          'Ask: "What am I trying to hold in working memory right now?" (S2 / Load)',
+          'Ask: "Am I monitoring or controlling right now?" (S3 / Metacognition)',
+          'Finish this sentence: "I am [state]. I will [intention today]."',
+          'Tap ✓ — you are now operating from System 3.',
+        ],
+        urgency: 'AMBER',
+        pillar: 'creative',
+        timeBlock: 'studio',
+        action: async () => { await setStoreValue(s3DoneKey, true); },
+        needle: true,
+      });
+    }
+  }
+
   // ── 2. FUEL → Tasks ──────────────────────────────────────────────
   if (isStudioDay(dayType as any)) {
     if (!dailyLog.fuelPreSession && hour < 16) {

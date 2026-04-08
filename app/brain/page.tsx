@@ -585,6 +585,36 @@ function MixingProtocol() {
         </p>
       </div>
 
+      {/* Pre-DAW Apollo Hardware Chain */}
+      <div className="card" style={{ borderColor: "#3b82f622" }}>
+        <p className="text-[10px] font-black tracking-[0.18em] text-[#555] uppercase mb-2">Stage 2 — Pre-DAW Apollo Console Chain</p>
+        <p className="text-[10px] text-[#555] font-medium mb-3">
+          Every vocal is hardware-processed before FL even opens. This is your sound — not your plugins.
+        </p>
+        {[
+          { step: "1", label: "TLM 103", note: "Source. Cardioid large-diaphragm condenser. Position: 6–8 inches, slight off-axis. -18dBFS RMS target into Apollo.", color: "#60a5fa" },
+          { step: "2", label: "VT-737sp (Avalon)", note: "Mic pre + opto comp + EQ. Gain: 40–50dB. Comp: light (4:1, 2-3dB GR). EQ: boost 10kHz air, cut ~300Hz mud.", color: "#34d399" },
+          { step: "3", label: "CL 1B mkII (UAD)", note: "Primary vocal compressor. Opto, slow attack. 4–6dB GR. Fast program-dependent release. Keeps.", color: "#818cf8" },
+          { step: "4", label: "C-Vox (UAD)", note: "Character and presence. Harmonic thickness. Not a compressor — a color stage.", color: "#f59e0b" },
+          { step: "5", label: "Auto-Tune RT (Antares)", note: "Real-time pitch correction. Retune speed: 20ms (natural). Do NOT zero it — that's a style choice, not a fix.", color: "#f472b6" },
+          { step: "6", label: "Studer A800 (UAD)", note: "Tape saturation printed to file. One saturation stage. IPS: 15. Bias: +2. ALWAYS on. This is Stage 1 of 3 allowed saturation stages.", color: "#ef4444" },
+          { step: "7", label: "Into FL Studio", note: "Target: -18dBFS RMS. Peaks: -10 to -6 dBFS. NEVER clip the interface. Leave headroom for FL processing.", color: "#a855f7" },
+        ].map((item) => (
+          <div key={item.step} className="flex items-start gap-3 py-2.5 border-b border-[#1a1a1a] last:border-0">
+            <span style={{ color: item.color }} className="font-black text-[10px] flex-shrink-0 mt-0.5">{item.step}</span>
+            <div>
+              <div className="text-xs font-bold text-white">{item.label}</div>
+              <div className="text-[10px] text-[#555] mt-0.5 leading-relaxed">{item.note}</div>
+            </div>
+          </div>
+        ))}
+        <div className="mt-3 p-3 bg-blue-500/5 border border-blue-500/10 rounded-lg">
+          <p className="text-[10px] text-blue-400 font-bold">
+            Rule: Do NOT touch this chain in FL. Bus the Apollo output directly to Lead Bus (9) and do ALL surgical work there. The Apollo print is your vibe — preserve it.
+          </p>
+        </div>
+      </div>
+
       {/* Session Layout */}
       <div className="card">
         <p className="text-[10px] font-black tracking-[0.18em] text-[#555] uppercase mb-3">FL Session Layout (Top → Bottom)</p>
@@ -759,6 +789,33 @@ function MixingProtocol() {
           <div key={i} className="flex items-center justify-between py-1.5 border-b border-[#1a1a1a] last:border-0">
             <span className="text-[11px] font-bold text-[#ccc]">{item.stage}</span>
             <span className="text-[10px] text-blue-400/70 font-medium">{item.what}</span>
+          </div>
+        ))}
+      </div>
+
+      {/* Compression Audit */}
+      <div className="card" style={{ borderColor: "#3b82f622" }}>
+        <p className="text-[10px] font-black tracking-[0.18em] text-[#555] uppercase mb-2">Compression Audit (Audited Mar 1)</p>
+        <p className="text-[10px] text-[#888] font-medium leading-relaxed mb-2">
+          Over-compression kills dynamics and makes records sound flat. These are the ONLY compressors allowed in the chain.
+        </p>
+        {[
+          { stage: "Apollo Print", plugin: "CL 1B mkII (UAD)", verdict: "KEEP", note: "Primary vocal opto-comp. Hardware. Cannot be removed — it's printed.", color: "#34d399" },
+          { stage: "Lead Bus (FL)", plugin: "FG-116 (Slate/UAD)", verdict: "KEEP", note: "FET compression. Fast transient snap. ONLY compressor on lead in FL.", color: "#34d399" },
+          { stage: "Vox Bus (6)", plugin: "SSL G Bus Comp", verdict: "KEEP", note: "Light bus glue. 2-3dB GR max. Keeps lead and BGs cohesive.", color: "#34d399" },
+          { stage: "Drums/InstruL Bus", plugin: "SSL G Bus Comp", verdict: "KEEP", note: "Same bus glue treatment. Consistency across subgroups.", color: "#34d399" },
+          { stage: "Lead Bus (FL)", plugin: "FG-2A (Opto)", verdict: "REMOVED", note: "Two compressors in series on lead = squashed dynamics. Redundant with CL 1B Apollo print.", color: "#ef4444" },
+          { stage: "Lead Bus (FL)", plugin: "SSL 4K E", verdict: "REMOVED", note: "EQ character fine — but NOT as a compressor on lead. Was stacking with FG-116.", color: "#ef4444" },
+        ].map((item, i) => (
+          <div key={i} className="flex items-center justify-between py-1.5 border-b border-[#1a1a1a] last:border-0">
+            <div className="flex-1">
+              <div className="flex items-center gap-2">
+                <span className="text-[11px] font-bold text-[#ccc]">{item.plugin}</span>
+                <span className="text-[9px] text-[#444] italic">({item.stage})</span>
+              </div>
+              <div className="text-[10px] text-[#444] mt-0.5">{item.note}</div>
+            </div>
+            <span style={{ color: item.color }} className="text-[9px] font-black tracking-wider ml-3 flex-shrink-0">{item.verdict}</span>
           </div>
         ))}
       </div>

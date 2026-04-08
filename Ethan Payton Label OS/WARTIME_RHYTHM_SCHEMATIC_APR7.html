@@ -1,0 +1,1554 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+<meta charset="UTF-8">
+<meta name="viewport" content="width=device-width, initial-scale=1.0">
+<title>WARTIME RHYTHM — past.El noir Records</title>
+<style>
+  :root {
+    --gold: #c9a227;
+    --emerald: #1e6b4a;
+    --noir: #080810;
+    --off-white: #f0ede6;
+    --muted: #8a8a9a;
+    --accent-red: #c0392b;
+    --accent-blue: #2980b9;
+    --card-bg: #0f0f1e;
+    --border: rgba(201, 162, 39, 0.2);
+  }
+
+  * { margin: 0; padding: 0; box-sizing: border-box; }
+
+  body {
+    background: var(--noir);
+    color: var(--off-white);
+    font-family: 'Georgia', 'Times New Roman', serif;
+    font-size: 15px;
+    line-height: 1.75;
+    max-width: 900px;
+    margin: 0 auto;
+    padding: 48px 32px;
+  }
+
+  /* ─── HEADER ─── */
+  .masthead {
+    text-align: center;
+    border-bottom: 1px solid var(--gold);
+    padding-bottom: 40px;
+    margin-bottom: 56px;
+  }
+  .label-name {
+    font-family: 'Courier New', monospace;
+    font-size: 11px;
+    letter-spacing: 6px;
+    color: var(--gold);
+    text-transform: uppercase;
+    margin-bottom: 16px;
+  }
+  .masthead h1 {
+    font-size: 42px;
+    font-weight: 400;
+    letter-spacing: 4px;
+    color: var(--off-white);
+    line-height: 1.1;
+    margin-bottom: 12px;
+  }
+  .masthead .subtitle {
+    color: var(--muted);
+    font-size: 13px;
+    letter-spacing: 3px;
+    text-transform: uppercase;
+    font-family: 'Courier New', monospace;
+  }
+  .masthead .tagline {
+    margin-top: 20px;
+    font-size: 17px;
+    color: var(--gold);
+    font-style: italic;
+  }
+
+  /* ─── PART HEADERS ─── */
+  .part-header {
+    margin: 56px 0 32px;
+    padding: 20px 24px;
+    background: var(--emerald);
+    border-left: 4px solid var(--gold);
+  }
+  .part-header .part-num {
+    font-family: 'Courier New', monospace;
+    font-size: 10px;
+    letter-spacing: 5px;
+    color: rgba(201, 162, 39, 0.7);
+    text-transform: uppercase;
+    margin-bottom: 4px;
+  }
+  .part-header h2 {
+    font-size: 22px;
+    font-weight: 400;
+    letter-spacing: 2px;
+    color: var(--off-white);
+  }
+
+  /* ─── SECTION HEADERS ─── */
+  h3 {
+    font-size: 14px;
+    font-weight: 400;
+    letter-spacing: 4px;
+    text-transform: uppercase;
+    color: var(--gold);
+    margin: 36px 0 16px;
+    font-family: 'Courier New', monospace;
+    border-bottom: 1px solid var(--border);
+    padding-bottom: 8px;
+  }
+  h4 {
+    font-size: 15px;
+    color: var(--off-white);
+    font-weight: 700;
+    margin: 24px 0 10px;
+    letter-spacing: 1px;
+  }
+
+  /* ─── TEXT ─── */
+  p {
+    margin-bottom: 16px;
+    color: #ccc8c0;
+  }
+  .lead {
+    font-size: 18px;
+    line-height: 1.9;
+    color: var(--off-white);
+    font-style: italic;
+    margin-bottom: 24px;
+  }
+  strong {
+    color: var(--off-white);
+    font-weight: 700;
+  }
+  em {
+    color: var(--gold);
+    font-style: normal;
+  }
+
+  /* ─── CALLOUT BOXES ─── */
+  .callout {
+    border: 1px solid var(--border);
+    background: var(--card-bg);
+    padding: 20px 24px;
+    margin: 24px 0;
+    border-left: 3px solid var(--gold);
+  }
+  .callout.red { border-left-color: var(--accent-red); }
+  .callout.emerald { border-left-color: var(--emerald); background: rgba(30, 107, 74, 0.08); }
+  .callout.blue { border-left-color: var(--accent-blue); }
+  .callout-label {
+    font-family: 'Courier New', monospace;
+    font-size: 10px;
+    letter-spacing: 4px;
+    color: var(--gold);
+    text-transform: uppercase;
+    margin-bottom: 8px;
+  }
+  .callout.red .callout-label { color: var(--accent-red); }
+  .callout.emerald .callout-label { color: var(--emerald); }
+  .callout p { margin-bottom: 0; }
+
+  /* ─── TABLES ─── */
+  table {
+    width: 100%;
+    border-collapse: collapse;
+    margin: 20px 0;
+    font-size: 13.5px;
+  }
+  th {
+    background: rgba(201, 162, 39, 0.12);
+    color: var(--gold);
+    font-family: 'Courier New', monospace;
+    font-size: 10px;
+    letter-spacing: 3px;
+    text-transform: uppercase;
+    padding: 10px 14px;
+    text-align: left;
+    border-bottom: 1px solid var(--border);
+  }
+  td {
+    padding: 10px 14px;
+    border-bottom: 1px solid rgba(255,255,255,0.04);
+    color: #ccc8c0;
+    vertical-align: top;
+  }
+  tr:last-child td { border-bottom: none; }
+  tr:hover td { background: rgba(201, 162, 39, 0.03); }
+  td strong { color: var(--off-white); }
+
+  /* ─── PHASE BAR ─── */
+  .phase-bar {
+    display: flex;
+    gap: 0;
+    margin: 32px 0;
+    border: 1px solid var(--border);
+    overflow: hidden;
+  }
+  .phase-block {
+    flex: 1;
+    padding: 16px;
+    text-align: center;
+  }
+  .phase-block:nth-child(1) { background: rgba(192, 57, 43, 0.15); border-right: 1px solid var(--border); }
+  .phase-block:nth-child(2) { background: rgba(30, 107, 74, 0.15); border-right: 1px solid var(--border); }
+  .phase-block:nth-child(3) { background: rgba(41, 128, 185, 0.15); }
+  .phase-block .phase-label {
+    font-family: 'Courier New', monospace;
+    font-size: 10px;
+    letter-spacing: 3px;
+    text-transform: uppercase;
+    color: var(--muted);
+    margin-bottom: 4px;
+  }
+  .phase-block .phase-name {
+    font-size: 15px;
+    color: var(--off-white);
+    font-weight: 700;
+  }
+  .phase-block .phase-dates {
+    font-family: 'Courier New', monospace;
+    font-size: 11px;
+    color: var(--gold);
+    margin-top: 4px;
+  }
+
+  /* ─── PILLARS ─── */
+  .pillars {
+    display: grid;
+    grid-template-columns: 1fr 1fr;
+    gap: 16px;
+    margin: 24px 0;
+  }
+  .pillar {
+    background: var(--card-bg);
+    border: 1px solid var(--border);
+    padding: 20px;
+  }
+  .pillar-num {
+    font-family: 'Courier New', monospace;
+    font-size: 28px;
+    color: var(--gold);
+    opacity: 0.3;
+    line-height: 1;
+    margin-bottom: 8px;
+  }
+  .pillar h4 { margin-top: 0; margin-bottom: 8px; }
+  .pillar p { margin-bottom: 0; font-size: 13.5px; }
+
+  /* ─── TIMELINE ─── */
+  .timeline-item {
+    display: flex;
+    gap: 20px;
+    padding: 12px 0;
+    border-bottom: 1px solid rgba(255,255,255,0.04);
+    align-items: baseline;
+  }
+  .timeline-date {
+    font-family: 'Courier New', monospace;
+    font-size: 12px;
+    color: var(--gold);
+    min-width: 80px;
+    flex-shrink: 0;
+  }
+  .timeline-action { font-size: 13.5px; color: #ccc8c0; }
+  .timeline-action strong { color: var(--off-white); }
+
+  /* ─── METRICS GRID ─── */
+  .metrics-grid {
+    display: grid;
+    grid-template-columns: repeat(3, 1fr);
+    gap: 16px;
+    margin: 24px 0;
+  }
+  .metric-card {
+    background: var(--card-bg);
+    border: 1px solid var(--border);
+    padding: 16px;
+    text-align: center;
+  }
+  .metric-card .metric-val {
+    font-size: 24px;
+    color: var(--gold);
+    font-weight: 700;
+    display: block;
+    margin-bottom: 4px;
+  }
+  .metric-card .metric-label {
+    font-family: 'Courier New', monospace;
+    font-size: 10px;
+    letter-spacing: 2px;
+    text-transform: uppercase;
+    color: var(--muted);
+  }
+
+  /* ─── ANTI-DRIFT RULES ─── */
+  .rule-list {
+    counter-reset: rule-counter;
+    list-style: none;
+    margin: 16px 0;
+  }
+  .rule-list li {
+    counter-increment: rule-counter;
+    padding: 14px 0 14px 52px;
+    border-bottom: 1px solid rgba(255,255,255,0.04);
+    position: relative;
+    color: #ccc8c0;
+    font-size: 14px;
+  }
+  .rule-list li::before {
+    content: counter(rule-counter, decimal-leading-zero);
+    position: absolute;
+    left: 0;
+    top: 14px;
+    font-family: 'Courier New', monospace;
+    font-size: 13px;
+    color: var(--gold);
+    font-weight: 700;
+  }
+
+  /* ─── MORNING PROTOCOL ─── */
+  .protocol-step {
+    display: flex;
+    gap: 16px;
+    padding: 12px 0;
+    border-bottom: 1px solid rgba(255,255,255,0.04);
+    align-items: baseline;
+  }
+  .protocol-time {
+    font-family: 'Courier New', monospace;
+    font-size: 12px;
+    color: var(--gold);
+    min-width: 70px;
+    flex-shrink: 0;
+  }
+  .protocol-action { font-size: 14px; color: #ccc8c0; }
+
+  /* ─── IDENTITY BLOCK ─── */
+  .identity-block {
+    background: var(--card-bg);
+    border: 1px solid var(--border);
+    padding: 32px;
+    margin: 24px 0;
+    text-align: center;
+  }
+  .identity-block .world-name {
+    font-size: 11px;
+    letter-spacing: 6px;
+    color: var(--gold);
+    text-transform: uppercase;
+    font-family: 'Courier New', monospace;
+    margin-bottom: 12px;
+  }
+  .identity-block .identity-statement {
+    font-size: 20px;
+    line-height: 1.6;
+    color: var(--off-white);
+    font-style: italic;
+    margin-bottom: 16px;
+  }
+  .identity-block .identity-sub {
+    font-size: 13px;
+    color: var(--muted);
+    letter-spacing: 1px;
+  }
+
+  /* ─── HORIZON BLOCK ─── */
+  .horizon-item {
+    padding: 16px 20px;
+    border-left: 2px solid var(--border);
+    margin: 12px 0;
+    color: #8a8a9a;
+    font-size: 13.5px;
+  }
+  .horizon-item span {
+    display: block;
+    font-family: 'Courier New', monospace;
+    font-size: 10px;
+    letter-spacing: 3px;
+    color: var(--muted);
+    margin-bottom: 4px;
+    text-transform: uppercase;
+  }
+
+  /* ─── SOBRIETY TRACK ─── */
+  .sobriety-track {
+    display: flex;
+    gap: 0;
+    margin: 24px 0;
+    overflow: hidden;
+    border: 1px solid var(--border);
+  }
+  .sober-phase {
+    padding: 14px 16px;
+    flex: 1;
+    border-right: 1px solid var(--border);
+  }
+  .sober-phase:last-child { border-right: none; }
+  .sober-phase .sober-window {
+    font-family: 'Courier New', monospace;
+    font-size: 10px;
+    color: var(--muted);
+    letter-spacing: 2px;
+    text-transform: uppercase;
+    margin-bottom: 4px;
+  }
+  .sober-phase .sober-state {
+    font-size: 13px;
+    font-weight: 700;
+    color: var(--off-white);
+    margin-bottom: 4px;
+  }
+  .sober-phase .sober-note {
+    font-size: 12px;
+    color: #8a8a9a;
+  }
+
+  /* ─── DIVIDER ─── */
+  .divider {
+    border: none;
+    border-top: 1px solid var(--border);
+    margin: 40px 0;
+  }
+
+  /* ─── FOOTER ─── */
+  .doc-footer {
+    text-align: center;
+    padding-top: 48px;
+    border-top: 1px solid var(--border);
+    margin-top: 64px;
+  }
+  .doc-footer .footer-label {
+    font-family: 'Courier New', monospace;
+    font-size: 10px;
+    letter-spacing: 4px;
+    color: var(--muted);
+    text-transform: uppercase;
+  }
+  .doc-footer .footer-sig {
+    font-size: 13px;
+    color: var(--muted);
+    margin-top: 12px;
+    font-style: italic;
+  }
+
+  /* ─── PRINT STYLES ─── */
+  @media print {
+    body {
+      background: white;
+      color: #111;
+      font-size: 11pt;
+      padding: 24px;
+      max-width: 100%;
+    }
+    .masthead h1 { color: #111; font-size: 28pt; }
+    .label-name, .masthead .subtitle { color: #8a6a00; }
+    .masthead .tagline { color: #8a6a00; }
+    .masthead { border-bottom: 2px solid #8a6a00; }
+    .part-header { background: #1a4a33; }
+    .part-header h2, .part-header .part-num { color: white; }
+    h3 { color: #8a6a00; border-bottom-color: #ccc; }
+    p, td, .timeline-action, .protocol-action, .rule-list li { color: #333; }
+    strong { color: #111; }
+    em { color: #8a6a00; }
+    th { color: #8a6a00; background: #faf6e8; }
+    td { border-bottom-color: #ddd; }
+    .callout { border: 1px solid #ddd; background: #f9f9f9; border-left-color: #8a6a00; }
+    .callout.red { border-left-color: #c0392b; }
+    .callout.emerald { border-left-color: #1e6b4a; background: #f0f7f4; }
+    .callout-label { color: #8a6a00; }
+    .pillar, .metric-card, .identity-block { background: #f9f9f9; border-color: #ddd; }
+    .pillar-num { color: #8a6a00; }
+    .phase-block:nth-child(1) { background: #fde9e8; }
+    .phase-block:nth-child(2) { background: #e8f5ee; }
+    .phase-block:nth-child(3) { background: #e8f0fa; }
+    .phase-block .phase-name { color: #111; }
+    .phase-block .phase-dates { color: #8a6a00; }
+    .timeline-date, .protocol-time { color: #8a6a00; }
+    .rule-list li::before { color: #8a6a00; }
+    .metric-card .metric-val { color: #8a6a00; }
+    .metric-card .metric-label { color: #666; }
+    .identity-block .world-name, .identity-block .identity-statement { color: #111; }
+    .identity-block .identity-sub, .horizon-item span, .doc-footer .footer-label { color: #666; }
+    .horizon-item { color: #333; }
+    .sobriety-track { border-color: #ddd; }
+    .sober-phase { border-right-color: #ddd; }
+    .sober-phase .sober-window { color: #666; }
+    .sober-phase .sober-state { color: #111; }
+    .sober-phase .sober-note { color: #666; }
+    .doc-footer .footer-sig, .muted { color: #666; }
+    .phase-bar { border-color: #ddd; }
+    .phase-block { border-right-color: #ddd !important; }
+    .rule-list li { border-bottom-color: #eee; }
+    .part-header { border-left-color: #8a6a00; }
+    a { color: inherit; text-decoration: none; }
+  }
+</style>
+</head>
+<body>
+
+<!-- ══════════════════════════════════════════════════════════════════ -->
+<!-- MASTHEAD -->
+<!-- ══════════════════════════════════════════════════════════════════ -->
+<div class="masthead">
+  <div class="label-name">past.El noir Records · Label OS</div>
+  <h1>WARTIME RHYTHM</h1>
+  <div class="subtitle">90-Day Sovereign Action Schematic · April 6 → July 5, 2026</div>
+  <div class="tagline">"The algorithm won't build your career. You will."</div>
+</div>
+
+
+<!-- ══════════════════════════════════════════════════════════════════ -->
+<!-- PART I: IDENTITY -->
+<!-- ══════════════════════════════════════════════════════════════════ -->
+<div class="part-header">
+  <div class="part-num">Part I</div>
+  <h2>WHO YOU ARE</h2>
+</div>
+
+<div class="identity-block">
+  <div class="world-name">The World · Hearing In Color</div>
+  <div class="identity-statement">
+    "You make music that has a color. A temperature. A texture people can feel<br>before they understand it. That is your irreducible thing."
+  </div>
+  <div class="identity-sub">past.El · Milwaukee · Cinematic R&B · past.El noir Records</div>
+</div>
+
+<h3>The Artist Definition</h3>
+<p>You are not a content creator who makes music. You are a <strong>recording artist who uses content as distribution infrastructure</strong>. The music is the primary object. Everything else is world-building in service of it.</p>
+
+<p>Your sonic identity is verified, not claimed: <em>High Danceability / Low Energy</em> — the cocktail hour pocket. Sexy (>0.76), Chill (>0.56), Happy (>0.49). This is the Cyanite data. This is also who you are in a room. The music is autobiography, not aesthetic exercise.</p>
+
+<p>You are doing what <strong>major labels stopped doing</strong>: developing an artist with rigor, intentionality, and a long-game view. Bryan-Michael Cox, Johntá Austin, Troy Taylor — they all said it. Artist development is a lost art. Label OS is the machine that replaced it. <em>You are your own A&amp;R.</em></p>
+
+<h3>The Verified Timing</h3>
+<p>R&B is coming back. "Analog is the new luxury." The genre veterans named it in the room. Your sonic identity — warm, cinematic, synesthetic, emotionally present — is not a niche. It is the future pocket. The ALL LOVE EP launches into a rising tide. That is not luck. That is data alignment.</p>
+
+<div class="callout emerald">
+  <div class="callout-label">The Troy Taylor Standard</div>
+  <p>"How many times you gonna sing that?" — Obsessive repetition is not perfectionism. It is the refusal to let a great song settle for a good take. Every session, every mix pass, every Cyanite verification loop is Troy Taylor in the room asking that question. You don't need a hit. You need to have run the play 10,000 times.</p>
+</div>
+
+<h3>The Mystique Protocol</h3>
+<p>Mystique is gone. Even Michael Jackson couldn't survive ignoring social media as a new artist in 2026. You must be on the platform. But you control <em>how</em> you show up.</p>
+
+<p>The answer is <strong>selective revelation</strong>: the difference between a journal and a novel. Both are personal. One is edited. You reveal emotional truth — the feeling behind the record, the world the song lives in. You protect the creative process itself. The music reveals the soul. The content reveals the world. The person remains slightly beyond reach. That trace of mystery is what makes someone click the profile after seeing a comment.</p>
+
+<table>
+  <tr>
+    <th>Reveal</th>
+    <th>Protect</th>
+  </tr>
+  <tr>
+    <td>The emotion behind the record</td>
+    <td>The studio sessions themselves</td>
+  </tr>
+  <tr>
+    <td>The world the song lives in (Milwaukee, 3AM, that specific longing)</td>
+    <td>The technical process</td>
+  </tr>
+  <tr>
+    <td>The feeling you want the listener to have</td>
+    <td>Your daily schedule / logistics</td>
+  </tr>
+  <tr>
+    <td>Vulnerability — what the song cost you</td>
+    <td>Unfinished work, draft takes</td>
+  </tr>
+  <tr>
+    <td>The city. The neighborhood. The roots.</td>
+    <td>Relationships you haven't named publicly</td>
+  </tr>
+</table>
+
+
+<!-- ══════════════════════════════════════════════════════════════════ -->
+<!-- PART II: CONTENT BRAND -->
+<!-- ══════════════════════════════════════════════════════════════════ -->
+<div class="part-header">
+  <div class="part-num">Part II</div>
+  <h2>THE CONTENT BRAND</h2>
+</div>
+
+<p class="lead">Your page is your portfolio. When someone lands on it, they should immediately know: <em>they've entered a world.</em> Not a feed. A world.</p>
+
+<p>The through line that connects everything you post becomes your identity. Define it once, enforce it always. For past.El, the vessel is <strong>Hearing In Color</strong> — synesthetic sound that makes you feel something visual. That's the identity. Everything else hangs off it.</p>
+
+<h3>The Five Content Pillars</h3>
+<p>These are not separate content types. They are five doors into the same world. Range within the lane — depth, not width.</p>
+
+<div class="pillars">
+  <div class="pillar">
+    <div class="pillar-num">01</div>
+    <h4>The Release</h4>
+    <p>The music itself. Announcement posts, Canvas loops, snippets. Always sells the <em>transformation</em>, not the product. Not "new song out." What does someone feel before and after they hear this?</p>
+  </div>
+  <div class="pillar">
+    <div class="pillar-num">02</div>
+    <h4>Talk to 'Em</h4>
+    <p>Face. Direct address. The emotional truth behind the record. SEE ME's "I know you hear me, but do you SEE me?" got this right. The hook is always in the first line — before the fold.</p>
+  </div>
+  <div class="pillar">
+    <div class="pillar-num">03</div>
+    <h4>World-Building</h4>
+    <p>Milwaukee. The east side. 3AM. The specific geography and emotional weather that the music lives inside. This is the storytelling pillar. What neighborhood does this song belong to?</p>
+  </div>
+  <div class="pillar">
+    <div class="pillar-num">04</div>
+    <h4>Cinematic Visual</h4>
+    <p>Canvas loops, B-roll, the visual language of past.El noir: deep emerald, gold warmth, noir shadow, grainy 35mm film aesthetic. No random aesthetics. This is the consistent visual signature.</p>
+  </div>
+  <div class="pillar">
+    <div class="pillar-num">05</div>
+    <h4>Community Trace</h4>
+    <p>Comments on T4 artist pages. Gorilla Geo outreach DMs. Reaction clips from real listeners. The social proof layer. This is Lane 1 before Lane 2 — leave a trace before you knock on the door.</p>
+  </div>
+</div>
+
+<h3>The Portfolio Test</h3>
+<div class="callout">
+  <div class="callout-label">Ask this before every post</div>
+  <p><strong>"Would this attract the collaborators, playlist curators, and listeners I want to be in Year 2?"</strong> Post what you want to be discovered as. Not what's trending. Not what's easy. The page is a resume. Every post is a portfolio entry. If it doesn't represent the artist you're becoming, it doesn't go up.</p>
+</div>
+
+<h3>The Caption Doctrine</h3>
+<p><strong>Line 1 must stop the scroll</strong> before the "more" cutoff. The deep philosophical voice lives in lines 2+. The SEE ME post ("I KNOW YOU HEAR ME, BUT DO YOU SEE ME?") executed this correctly. Every caption: hook first, world-building second, CTA (save, listen, share) only if it feels natural — never if it feels like a sales pitch.</p>
+
+<p><strong>Selling through storytelling:</strong> You're not selling a song. You're selling who someone becomes after they hear it. "East Side Love" isn't a track — it's late night Milwaukee, that specific ache of a neighborhood you know by feel. Invite them into the feeling, not the product.</p>
+
+<h3>The Bio (Fix Today — 5 Minutes)</h3>
+<div class="callout red">
+  <div class="callout-label">Urgent — Current bio says "Artist" (lowest-value word possible)</div>
+  <p><strong>Replace with:</strong> <em>past.El noir Records / Hearing In Color 🎨🎶✨ / Milwaukee → everywhere / all lovE EP — Apr 24 / [Spotify link]</em></p>
+  <p style="margin-top: 12px; margin-bottom: 0; font-size: 13px; color: #8a8a9a;">This is the first five words someone reads. It should place them in a world, not describe a job title.</p>
+</div>
+
+<h3>Platform Roles (The Structure)</h3>
+<table>
+  <tr>
+    <th>Platform</th>
+    <th>Job</th>
+    <th>Cadence</th>
+    <th>Note</th>
+  </tr>
+  <tr>
+    <td><strong>Instagram</strong></td>
+    <td>Primary content engine + funnel</td>
+    <td>Pillar 1–4 rotating. Release sprints at max.</td>
+    <td>All five pillars live here. This is the portfolio.</td>
+  </tr>
+  <tr>
+    <td><strong>YouTube</strong></td>
+    <td>Catalog archive + SEO long tail</td>
+    <td>Visualizers, live sets, audio drops. No pressure cadence.</td>
+    <td>Every music video is evergreen. It compounds without effort.</td>
+  </tr>
+  <tr>
+    <td><strong>Twitter/X</strong></td>
+    <td>Consolidate or cut</td>
+    <td>Minimal. Repurpose IG captions if anything.</td>
+    <td>Don't maintain a platform you're not committed to. Presence implies activity.</td>
+  </tr>
+  <tr>
+    <td><strong>TikTok</strong></td>
+    <td>Phase 3 consideration only</td>
+    <td>Not now.</td>
+    <td>Bandwidth is finite. IG first. TikTok when the infrastructure can hold it.</td>
+  </tr>
+</table>
+
+<h3>The Follower Ratio Issue</h3>
+<p>2,200 followers / 2,001 following = <strong>1:1 ratio = follow-back pattern</strong>. This suppresses your engagement rate. Suppressed engagement rate suppresses algorithmic reach. The verified badge on 2,200 is disproportionately powerful for outreach — the blue check signals legitimacy in comments before anyone clicks. Protect that signal by not diluting it with a wall-of-follows.</p>
+<p><strong>Gradual fix (post-EP, start May 1):</strong> Slow unfollow audit — reduce toward a 3:1 or 4:1 follower-to-following ratio over 60 days. No mass unfollow. One session per week, Sunday batch. Track it.</p>
+
+
+<!-- ══════════════════════════════════════════════════════════════════ -->
+<!-- PART III: THE 90-DAY ARC -->
+<!-- ══════════════════════════════════════════════════════════════════ -->
+<div class="part-header">
+  <div class="part-num">Part III</div>
+  <h2>THE 90-DAY ARC</h2>
+</div>
+
+<p class="lead">You are not choosing between war mode and sustainability. You are running a phased campaign — each phase feeds the next.</p>
+
+<div class="phase-bar">
+  <div class="phase-block">
+    <div class="phase-label">Phase 1 · 18 Days</div>
+    <div class="phase-name">THE SPRINT</div>
+    <div class="phase-dates">Apr 6 → Apr 24</div>
+  </div>
+  <div class="phase-block">
+    <div class="phase-label">Phase 2 · 37 Days</div>
+    <div class="phase-name">THE COMPOUND</div>
+    <div class="phase-dates">Apr 25 → May 31</div>
+  </div>
+  <div class="phase-block">
+    <div class="phase-label">Phase 3 · 35 Days</div>
+    <div class="phase-name">THE SUMMER</div>
+    <div class="phase-dates">Jun 1 → Jul 5</div>
+  </div>
+</div>
+
+<h3>The Sobriety Arc (Wired Through All Phases)</h3>
+<div class="sobriety-track">
+  <div class="sober-phase">
+    <div class="sober-window">Apr 2–30 · Days 1–28</div>
+    <div class="sober-state">Detox</div>
+    <div class="sober-note">Executive function LOW. Ignition structures carry you. Checkboxes are victories.</div>
+  </div>
+  <div class="sober-phase">
+    <div class="sober-window">May 1–15 · Days 29–43</div>
+    <div class="sober-state">Recovery</div>
+    <div class="sober-note">Clarity returns. CREAM pre-production benefits from improving focus.</div>
+  </div>
+  <div class="sober-phase">
+    <div class="sober-window">May 16–Jul 5 · Days 44–94</div>
+    <div class="sober-state">Stabilization</div>
+    <div class="sober-note">Rhythm begins to feel like play. The Sovereignty Framework activates here.</div>
+  </div>
+</div>
+
+<h3>Phase 1: The Sprint (Apr 6–24)</h3>
+
+<p><strong>Core thesis:</strong> The sprint is the strategy. You don't produce new music. You execute the campaign. 4 actions per day, in order, hard time limits.</p>
+
+<table>
+  <tr>
+    <th>Action</th>
+    <th>Description</th>
+    <th>Time Cap</th>
+  </tr>
+  <tr>
+    <td><strong>ACTION 0: IGNITION</strong></td>
+    <td>Captain's Chair + Kill List scan</td>
+    <td>5 min</td>
+  </tr>
+  <tr>
+    <td><strong>ACTION 1: UPLOAD/PITCH</strong></td>
+    <td>The single most important business task of the day (Amuse, Spotify pitches, editorial)</td>
+    <td>30 min</td>
+  </tr>
+  <tr>
+    <td><strong>ACTION 2: CONTENT ASSET</strong></td>
+    <td>One asset: Canvas, announcement post, or CF4 reel</td>
+    <td>2 hrs max</td>
+  </tr>
+  <tr>
+    <td><strong>ACTION 3: SURPLUS</strong></td>
+    <td>Pre-write comments, gorilla-geo DM prep, Variable Swap Sheet, press emails</td>
+    <td>Sub-30 min</td>
+  </tr>
+</table>
+
+<p><strong>Content map per release:</strong></p>
+<table>
+  <tr>
+    <th>Release</th>
+    <th>Sprint Window</th>
+    <th>Content Priority</th>
+  </tr>
+  <tr>
+    <td><strong>Sweet Frustration</strong></td>
+    <td>Apr 7–10 (3 days compressed)</td>
+    <td>Canvas loop + announcement. Storytelling shifts to ESL window.</td>
+  </tr>
+  <tr>
+    <td><strong>East Side Love</strong></td>
+    <td>Apr 8–14 (7 days + 414 Day)</td>
+    <td>Canvas (late-night Milwaukee). Talk to 'Em on "East Side." 414 Day = live set capture. Crowd + GF reaction.</td>
+  </tr>
+  <tr>
+    <td><strong>Like I Did</strong></td>
+    <td>Apr 9–17 (8-day full sprint)</td>
+    <td>Canvas (wistful, D minor). "Did they ever love you like I did?" — direct, personal. Gorilla Geo DMs begin.</td>
+  </tr>
+  <tr>
+    <td><strong>ALL LOVE EP</strong></td>
+    <td>Apr 14–24 (10-day window)</td>
+    <td>Maximum push. 4-single montage. Origin story: "I made this in 4 weeks from my apartment." All 5 pillars in 48 hrs.</td>
+  </tr>
+</table>
+
+<div class="callout emerald">
+  <div class="callout-label">414 Day — Apr 14 — Protected</div>
+  <p>No system tasks. Perform. Capture everything. GF films the show. This is the emotional peak of the entire 90 days and the gift for the Reactions content pillar. Be present. The system can wait. This cannot.</p>
+</div>
+
+<h3>Phase 2: The Compound (Apr 25–May 31)</h3>
+
+<p><strong>Core thesis:</strong> Serotonin takes over from dopamine. The rhythm becomes the system. CREAM pre-production begins.</p>
+
+<table>
+  <tr>
+    <th>Day</th>
+    <th>AM Block</th>
+    <th>Studio / Work Block</th>
+    <th>Evening</th>
+  </tr>
+  <tr>
+    <td><strong>Monday</strong></td>
+    <td>Compressed or Full ignition</td>
+    <td>Business admin — registration, Amuse Insights, DoorDash income log</td>
+    <td>DoorDash if needed</td>
+  </tr>
+  <tr>
+    <td><strong>Tuesday</strong></td>
+    <td>Full S-Tier (trataka + exercise)</td>
+    <td>CREAM studio — heavy production (mix/master 1 track). <em>Song Structure Study: 20 min, 1 track from overlap artists.</em></td>
+    <td>DoorDash or rest</td>
+  </tr>
+  <tr>
+    <td><strong>Wednesday</strong></td>
+    <td>Full S-Tier</td>
+    <td>CREAM studio + Gorilla Geo Sprint (20 min, /geo/sprint, Sweet Frustration T4 first)</td>
+    <td>DoorDash if needed</td>
+  </tr>
+  <tr>
+    <td><strong>Thursday</strong></td>
+    <td>Full S-Tier</td>
+    <td>CREAM studio — mixing/mastering, Illangelo chain. Cyanite verify on finish.</td>
+    <td>DoorDash if needed</td>
+  </tr>
+  <tr>
+    <td><strong>Friday</strong></td>
+    <td>Full S-Tier</td>
+    <td>Content creation + deployment (1 piece minimum). Storytelling dominates.</td>
+    <td>Light — wind down</td>
+  </tr>
+  <tr>
+    <td><strong>Saturday</strong></td>
+    <td>DoorDash (morning surge)</td>
+    <td>System maintenance (1 task max, strict time-box). Gradual IG unfollow audit (5 min).</td>
+    <td>Rest</td>
+  </tr>
+  <tr>
+    <td><strong>Sunday</strong></td>
+    <td>Sleep in</td>
+    <td>Grief journaling 20 min → Weekly data pull (Spotify for Artists) 40–60 min</td>
+    <td>Meal batch prep + next-week scan</td>
+  </tr>
+</table>
+
+<p><strong>CREAM production target:</strong> 4 tracks locked (mixed, mastered, Cyanite-verified) by May 31. Illangelo chain: Phase 1 clean → Phase 2 intentional chaos → G-Clip → multi-limiter → -6 LUFS / -0.3dB True Peak.</p>
+
+<h3>Phase 3: The Summer (Jun 1–Jul 5)</h3>
+
+<p><strong>Core thesis:</strong> Data-informed launch. CREAM executes on what ALL LOVE proved. Content increases to 3 pieces/week during the 32-day launch window.</p>
+
+<table>
+  <tr>
+    <th>Date</th>
+    <th>Action</th>
+  </tr>
+  <tr>
+    <td><strong>Jun 1</strong></td>
+    <td>Gorilla Geo re-run with EP listener data — CREAM-specific targets</td>
+  </tr>
+  <tr>
+    <td><strong>Jun 5</strong></td>
+    <td>CREAM editorial pitches drafted</td>
+  </tr>
+  <tr>
+    <td><strong>Jun 8</strong></td>
+    <td>CREAM upload to Amuse + editorial pitch same day</td>
+  </tr>
+  <tr>
+    <td><strong>Jun 15</strong></td>
+    <td>CREAM geo ads live (25-day pre-release exposure)</td>
+  </tr>
+  <tr>
+    <td><strong>Jul 5</strong></td>
+    <td>90-day checkpoint. Review all metrics. Decide FREAKSHOW scope.</td>
+  </tr>
+  <tr>
+    <td><strong>Jul 13</strong></td>
+    <td>CREAM Registration Monday (ASCAP, MLC, Songtrust, Musixmatch)</td>
+  </tr>
+</table>
+
+
+<!-- ══════════════════════════════════════════════════════════════════ -->
+<!-- PART IV: DAILY ARCHITECTURE -->
+<!-- ══════════════════════════════════════════════════════════════════ -->
+<div class="part-header">
+  <div class="part-num">Part IV</div>
+  <h2>THE DAILY ARCHITECTURE</h2>
+</div>
+
+<h3>Sleep (The Upstream Constraint — Non-Negotiable)</h3>
+<table>
+  <tr>
+    <td><strong>Lights out</strong></td>
+    <td>10:30 PM — hard rule</td>
+  </tr>
+  <tr>
+    <td><strong>Caffeine cutoff</strong></td>
+    <td>1:00 PM — hard rule</td>
+  </tr>
+  <tr>
+    <td><strong>DoorDash wheels down</strong></td>
+    <td>8:30 PM</td>
+  </tr>
+  <tr>
+    <td><strong>Evening wind-down</strong></td>
+    <td>Mullein tea. No social media post-8 PM. No screens post-9:30 PM.</td>
+  </tr>
+</table>
+<p style="font-size: 13px; color: #8a8a9a;">Sleep is where neuroplasticity happens, dopamine receptors upregulate, and vocal cords recover. Everything else is downstream of this. Skipping this is skipping the compound interest.</p>
+
+<h3>Full S-Tier Morning (Non-DoorDash or Late-Start Days)</h3>
+<div class="protocol-step">
+  <div class="protocol-time">Wake</div>
+  <div class="protocol-action">32oz water + sea salt immediately. Rehydration, cortisol response.</div>
+</div>
+<div class="protocol-step">
+  <div class="protocol-time">+5 min</div>
+  <div class="protocol-action">Jnana Mudra + OM, 90 seconds (Mula Bandha engaged) — Captain's Chair ignition. Replaces doom-scroll.</div>
+</div>
+<div class="protocol-step">
+  <div class="protocol-time">+10 min</div>
+  <div class="protocol-action">Nadi Shodhana pranayama, 5 min — ANS balance, serotonin baseline.</div>
+</div>
+<div class="protocol-step">
+  <div class="protocol-time">+15 min</div>
+  <div class="protocol-action"><strong>(Phase 2+)</strong> Exercise: pushups, squats, walk — 30 min. BDNF, dopamine receptor upregulation.</div>
+</div>
+<div class="protocol-step">
+  <div class="protocol-time">+50 min</div>
+  <div class="protocol-action">High-protein meal: eggs, oats, banana. Tyrosine — dopamine precursor. Non-negotiable during sobriety gap.</div>
+</div>
+<div class="protocol-step">
+  <div class="protocol-time">+60 min</div>
+  <div class="protocol-action"><strong>90-second Kill List scan</strong> — open Oracle, read RED items, close it. Hard exit at 90 seconds. No rabbit holes.</div>
+</div>
+<div class="protocol-step">
+  <div class="protocol-time">+63 min</div>
+  <div class="protocol-action"><strong>S3 Check-in (STUDIO DAYs only)</strong> — "Name your mental state before opening the DAW." 30 seconds, no judgment. Rate 1–10. This is System 3 metacognitive monitoring. It activates regulation, not suppression. If you're scattered, name it. If you're energized, name it. The act of labeling IS the intervention.</div>
+</div>
+<div class="protocol-step">
+  <div class="protocol-time">+65 min</div>
+  <div class="protocol-action">DAW open. Work begins.</div>
+</div>
+
+<h3>Compressed Ignition (DoorDash by 6:30 AM)</h3>
+<div class="protocol-step">
+  <div class="protocol-time">Wake</div>
+  <div class="protocol-action">32oz water + sea salt.</div>
+</div>
+<div class="protocol-step">
+  <div class="protocol-time">+3 min</div>
+  <div class="protocol-action">Jnana Mudra + OM, 60 seconds.</div>
+</div>
+<div class="protocol-step">
+  <div class="protocol-time">+5 min</div>
+  <div class="protocol-action">Protein meal — Option B: hardboiled eggs + banana (prepped night before).</div>
+</div>
+<div class="protocol-step">
+  <div class="protocol-time">+15 min</div>
+  <div class="protocol-action">90-second Kill List scan, close it.</div>
+</div>
+<div class="protocol-step">
+  <div class="protocol-time">+17 min</div>
+  <div class="protocol-action">DoorDash.</div>
+</div>
+
+<h3>DoorDash Architecture</h3>
+<p><strong>Monthly target: $1,800.</strong> Once hit, DoorDash is done for the month. This is the only DoorDash metric. Track weekly progress so you're never cramming the last weekend.</p>
+<table>
+  <tr>
+    <td><strong>Primary block</strong></td>
+    <td>6:30–9:00 AM (2.5 hrs, morning surge pricing)</td>
+  </tr>
+  <tr>
+    <td><strong>Secondary block</strong></td>
+    <td>5:30–8:30 PM as needed to hit monthly number</td>
+  </tr>
+  <tr>
+    <td><strong>Rule</strong></td>
+    <td>Once $1,800 is hit, protect studio days. No unnecessary runs.</td>
+  </tr>
+</table>
+
+<h3>Sovereign Fuel Protocol (Non-Negotiable)</h3>
+<table>
+  <tr>
+    <td><strong>Sunday batch prep</strong></td>
+    <td>30–45 min, sacred. 3 cups dry rice → 6 cooked. 6–8 chicken thighs at 400°F/25 min. 6–8 hardboiled eggs. 3–4 PB&amp;J bagged. $38–48/week at Aldi.</td>
+  </tr>
+  <tr>
+    <td><strong>Pre-session protein</strong></td>
+    <td>Non-negotiable. Skipping crashes executive function at hour 3.</td>
+  </tr>
+  <tr>
+    <td><strong>Mid-session fuel</strong></td>
+    <td>Stays at the desk. If you have to leave the room to eat, you won't.</td>
+  </tr>
+  <tr>
+    <td><strong>Sugar cravings</strong></td>
+    <td>Banana first. Every time. Sobriety detox drives hard cravings weeks 1–4.</td>
+  </tr>
+  <tr>
+    <td><strong>Vocal sessions</strong></td>
+    <td>No dairy 2 hours before takes. Warm water + honey before tracking. Stay hydrated.</td>
+  </tr>
+</table>
+
+<h3>Grief Protocol</h3>
+<table>
+  <tr>
+    <td><strong>Phase 1 (Apr 6–24)</strong></td>
+    <td>No formal grief work. The 414 Day performance IS emotional processing through art. Let it be.</td>
+  </tr>
+  <tr>
+    <td><strong>Phase 2 (Apr 27+)</strong></td>
+    <td>20-min Sunday journaling. Write to your father. What you'd say. What you'd ask. What you're angry about. What you grieve. Controlled exposure — not floodgates.</td>
+  </tr>
+  <tr>
+    <td><strong>Phase 3 (Jun 1+)</strong></td>
+    <td>If Sunday journaling is running consistently (4+ entries), research one trauma-oriented therapist (EMDR or IFS). Goal: one consultation before Jul 5.</td>
+  </tr>
+</table>
+
+
+<!-- ══════════════════════════════════════════════════════════════════ -->
+<!-- PART V: THE STUDIO DISCIPLINE -->
+<!-- ══════════════════════════════════════════════════════════════════ -->
+<div class="part-header">
+  <div class="part-num">Part V</div>
+  <h2>THE STUDIO DISCIPLINE</h2>
+</div>
+
+<h3>Song Format Study (Phase 2 Addition — New)</h3>
+<p>The veterans in the room named this clearly: the knowledge of song structure — 251s, bridge construction, second verse elevation — is a lost art in the current generation. It was learned by osmosis in the record store era, by studying credits, by sitting with albums until their architecture became instinct.</p>
+
+<p>You learn it deliberately. <strong>Starting May 1, one Tuesday studio session per week begins with a 20-minute format study:</strong></p>
+
+<div class="callout blue">
+  <div class="callout-label">Song Structure Study Protocol</div>
+  <p>Pick one track from the Core Drive Builder artist overlap list (artists whose fans also save your music). Play it twice: once to feel it, once to map it. Mark the 251 moments. Note where the bridge lands, what it does harmonically, how the second verse is elevated from the first. 20 minutes. Write one observation in your phone notes. That's it. Over 5 weeks, this compounds into a library of structural intuition that shows up in CREAM.</p>
+</div>
+
+<h3>The Cyanite Verification Loop</h3>
+<p>Every finished CREAM master runs through Cyanite before approval. This is not optional. Targets: <em>Sexy >0.76, Chill >0.56</em>. These are the verified coordinates of the past.El sonic pocket. Drift from them and you've made a different album.</p>
+
+<p>Upload each CREAM candidate to Cyanite <em>as it finishes</em> — never batch at the end. You want feedback while the session is fresh, not when the mix is cold.</p>
+
+<h3>The Publishing Protocol (Standing Rule — New)</h3>
+<div class="callout red">
+  <div class="callout-label">Immutable Rule — No Exceptions</div>
+  <p><strong>Before any collaboration begins, splits are agreed in writing before production starts.</strong> Not after. Not "we'll figure it out." Before the session opens. Troy Taylor signed away publishing in perpetuity without a lawyer. That's the cautionary tale. Label OS exists precisely to prevent that story from being yours. A simple text confirmation with percentages is binding enough to start. A proper split sheet before any commercial release. Always.</p>
+</div>
+
+<h3>CREAM Pre-Production Targets</h3>
+<table>
+  <tr>
+    <th>Checkpoint</th>
+    <th>Target</th>
+  </tr>
+  <tr>
+    <td>Apr 25</td>
+    <td>CREAM pre-production begins. First session establishes the sonic frame.</td>
+  </tr>
+  <tr>
+    <td>May 14</td>
+    <td>2 tracks mixed and Cyanite-verified (first month checkpoint)</td>
+  </tr>
+  <tr>
+    <td>May 31</td>
+    <td>4 tracks locked. If not: identify the bottleneck and triage ruthlessly.</td>
+  </tr>
+  <tr>
+    <td>Jun 1</td>
+    <td>All tracks mixed + Cyanite-verified. Campaign begins.</td>
+  </tr>
+</table>
+
+
+<div class="callout" style="background: rgba(59,130,246,0.06); border-left-color: #3b82f6; margin-top: 1.5rem;">
+  <div class="callout-label" style="color: #3b82f6;">Studio Reference — Full Mixing Chain</div>
+  <p><strong>The complete signal path (Apollo Console → FL Studio → Master) lives in two places:</strong><br>
+  <strong>Oracle Compass:</strong> Brain → The Mixing Ladder (LUFS Ladder, Bus Chains, Master Chain, Apollo Hardware Chain, Compression Audit, Physics)<br>
+  <strong>Offline:</strong> <code>mixing_ladder_guide.html</code> in /scratch/ — full station-by-station reference, printable, no internet required.<br>
+  Saturation: 3 stages max (Apollo Studer print → Lead Bus Tape → Master Inflator). Compression: CL 1B + FG-116 + SSL G Bus only. Everything else is removed.</p>
+</div>
+
+<!-- ══════════════════════════════════════════════════════════════════ -->
+<!-- PART V-B: THE WAKING MIND PROTOCOL -->
+<!-- ══════════════════════════════════════════════════════════════════ -->
+<div class="part-header" style="background: #2d2563; border-left-color: #818cf8;">
+  <div class="part-num" style="color: rgba(129, 140, 248, 0.7);">Part V-B</div>
+  <h2>THE WAKING MIND PROTOCOL</h2>
+</div>
+
+<p class="lead">Metacognition is the mind's ability to observe, represent, and direct its own processes in real time. It is not "thinking about thinking" — it is the capacity that reaches into and rewires the operating system beneath conscious thought.</p>
+
+<h3>The 3-System Model</h3>
+<table>
+  <tr>
+    <th>System</th>
+    <th>Layer</th>
+    <th>What It Does</th>
+  </tr>
+  <tr>
+    <td><strong>System 1</strong></td>
+    <td>Automatic</td>
+    <td>Fast, unconscious, habitual. Low ceiling. Drives you unless S3 is active.</td>
+  </tr>
+  <tr>
+    <td><strong>System 2</strong></td>
+    <td>Working Memory</td>
+    <td>Deliberate, effortful, fact-based. Most conscious thought lives here.</td>
+  </tr>
+  <tr>
+    <td><strong>System 3</strong></td>
+    <td>Metacognitive</td>
+    <td>Symbols referring to your OWN mental states. Can reach into and rewire S1 & S2. <em>No ceiling.</em></td>
+  </tr>
+</table>
+
+<p><strong>Critical distinction:</strong> S2 instructions ("Be calm") do almost nothing to S1. S3 instructions ("I'm in a threat loop") reach S1 directly. This is why the labeling protocol works — it's System 3 surgery on System 1 wiring.</p>
+
+<h3>The Signal Stack</h3>
+<p>Four layers, bottom to top. Know which one you're operating on at any given moment:</p>
+<table>
+  <tr>
+    <th>Layer</th>
+    <th>What It Is</th>
+    <th>Analogy</th>
+  </tr>
+  <tr>
+    <td><strong>Sensation</strong></td>
+    <td>Raw nerve impulse. Below conscious access. Always running.</td>
+    <td>The room itself</td>
+  </tr>
+  <tr>
+    <td><strong>Interoception</strong></td>
+    <td>Body data — heartbeat, breath, gut, tension. Pre-symbolic.</td>
+    <td>The microphone picking up the room</td>
+  </tr>
+  <tr>
+    <td><strong>Metacognition</strong></td>
+    <td>Awareness of your mental states. Directs what to do with the signal.</td>
+    <td>The sound engineer at the mixing board</td>
+  </tr>
+  <tr>
+    <td><strong>Hyperawareness</strong></td>
+    <td>The gain dial. Can be transcendent or overwhelming depending on whether the engineer is present.</td>
+    <td>The gain knob — volume control</td>
+  </tr>
+</table>
+
+<p style="font-size: 13px; color: #8a8a9a;">The anterior insular cortex is the brain hub for both interoception and metacognitive monitoring. High activation = better body sensing AND better awareness. The same region is hyperactive in anxiety — the difference is whether System 3 regulation is layered on top.</p>
+
+<h3>System 3 Activation Interrupts (Kill List Integration)</h3>
+<p>These are designed as 30-second micro-protocols. They slot into the Kill List on STUDIO DAYs and can be triggered on demand during any session.</p>
+
+<table>
+  <tr>
+    <th>Trigger</th>
+    <th>S3 Interrupt</th>
+  </tr>
+  <tr>
+    <td><strong>Feeling scattered</strong></td>
+    <td>"What is my mind doing right now?" — wait for the answer. Don't judge it.</td>
+  </tr>
+  <tr>
+    <td><strong>Stuck in a session</strong></td>
+    <td>Rate mental state 1–10. Rate it again in 60 seconds. The act of rating breaks the loop.</td>
+  </tr>
+  <tr>
+    <td><strong>About to react</strong></td>
+    <td>Name the emotion: "I'm in a threat state." Naming activates regulation, not suppression.</td>
+  </tr>
+  <tr>
+    <td><strong>Low energy spiral</strong></td>
+    <td>Is this a body signal (interoception) or a thought loop (metacognition)? Different cause, different fix.</td>
+  </tr>
+  <tr>
+    <td><strong>Distraction pull</strong></td>
+    <td>"What does my distraction tell me about what I'm avoiding?" Curiosity, not judgment.</td>
+  </tr>
+</table>
+
+<div class="callout" style="border-left-color: #818cf8;">
+  <div class="callout-label" style="color: #818cf8;">The Fractal Principle</div>
+  <p><strong>The system works the same at every zoom level.</strong> Each session mirrors the sprint logic. Each sprint mirrors the full 90-day arc. If a pattern doesn't repeat at every scale, it isn't sovereign — it's just another to-do list. This is not a metaphor. Rivers, lungs, nervous systems, and hearts all independently converge on fractal geometry because self-similar branching is what optimality looks like in a physical universe. A healthy heartbeat isn't metronomic — it has fractal variability (HRV). Rigidity is pathological. The system breathes.</p>
+</div>
+
+<div class="callout" style="background: rgba(99,102,241,0.06); border-left-color: #6366f1; margin-top: 1rem;">
+  <div class="callout-label" style="color: #6366f1;">Waking Mind Reference — Full Protocol</div>
+  <p><strong>Oracle Compass:</strong> Brain → The Waking Mind (3-System Model, Signal Stack, Activation Interrupts, Fractal Principle, No-Ceiling Principle)<br>
+  <strong>Offline:</strong> <code>mind_fractals_guide.html</code> in /scratch/ — complete reference, printable.<br>
+  S3 Check-in is now wired into the Kill List as a daily morning task on Studio days.</p>
+</div>
+
+
+<!-- ══════════════════════════════════════════════════════════════════ -->
+<!-- PART V-C: ACTIVE TOOLS & SYSTEMS -->
+<!-- ══════════════════════════════════════════════════════════════════ -->
+<div class="part-header">
+  <div class="part-num">Part V-C</div>
+  <h2>ACTIVE TOOLS & SYSTEMS</h2>
+</div>
+
+<p>These are the tools that exist and work. No new infrastructure until post-Jul 5. Use what's built.</p>
+
+<table>
+  <tr>
+    <th>Tool</th>
+    <th>Location</th>
+    <th>Status</th>
+    <th>Role</th>
+  </tr>
+  <tr>
+    <td><strong>Oracle Compass</strong></td>
+    <td>oracle-compass-ni8g.vercel.app</td>
+    <td>v24 deployed at main</td>
+    <td>Daily operating system. Kill List, Oracle decrees, Lane Dashboard, Brain page, AIE Sprint Terminal.</td>
+  </tr>
+  <tr>
+    <td><strong>Gorilla Geo</strong></td>
+    <td>Local: /scratch/gorilla-geo/</td>
+    <td>Pipeline complete. 346 artists classified.</td>
+    <td>5-module push engine. Credential fix deployed (process.env). 2,783 artists in ig-handles-template.csv. Module 2b retired (heuristic handles unreliable). Manual IG lookup during sprint blocks.</td>
+  </tr>
+  <tr>
+    <td><strong>Core Drive Builder</strong></td>
+    <td>Local: /scratch/core-drive-builder/</td>
+    <td>Active. Cyanite fallback live.</td>
+    <td>Spotify embed scraper + Cyanite audio features. Produces artist overlap matrices for targeting.</td>
+  </tr>
+  <tr>
+    <td><strong>Content Factory V4</strong></td>
+    <td>Local: /scratch/content-factory-v4/</td>
+    <td>Active. ALL LOVE jutsu template added.</td>
+    <td>OBS → Whisper → Claude → FFmpeg pipeline. --jutsu all-love template (Deep Emerald/Gold/Navy).</td>
+  </tr>
+  <tr>
+    <td><strong>AIE Sprint Terminal</strong></td>
+    <td>Oracle Compass /geo/sprint</td>
+    <td>Deployed at commit 4e37768. Mobile UI refinement pending (post-Apr 25).</td>
+    <td>20-min BIZ DAY IG sprint interface. 5-layer CRM: Track → Artist → Fan → Community Node → Friend. 325 artists seeded. IndexedDB audience_ledger store.</td>
+  </tr>
+  <tr>
+    <td><strong>Catalog Refresh</strong></td>
+    <td>brain/refresh-catalog.mjs</td>
+    <td>Active.</td>
+    <td>Spotify API auto-update for popularity scores in catalog_intelligence_matrix.json.</td>
+  </tr>
+</table>
+
+<h3>Two-Lane Outreach Strategy (Gorilla Geo → AIE)</h3>
+<table>
+  <tr>
+    <th>Lane</th>
+    <th>What</th>
+    <th>When</th>
+  </tr>
+  <tr>
+    <td><strong>Lane 1: Community Presence</strong></td>
+    <td>Comments and likes on T4 artist pages. Leave a trace. The verified badge + engagement history = credibility before any DM.</td>
+    <td>Start immediately during Phase 1. 5 Chaotic Good comments per release day. Ongoing.</td>
+  </tr>
+  <tr>
+    <td><strong>Lane 2: Peer Fan DMs</strong></td>
+    <td>Personalized outreach from God Tier list. Track-specific angle per artist. 3–5 DMs/day max. Never mass spam.</td>
+    <td>Start Apr 21 (7 days before EP drop). Full activation post-Apr 25 via AIE Sprint Terminal, 20 min/BIZ DAY.</td>
+  </tr>
+</table>
+<p style="font-size: 13px; color: #8a8a9a;"><strong>Lane 1 must precede Lane 2.</strong> People check the engagement trace on your profile before responding to a DM. If there's no prior presence in their world, the DM looks cold. The trace makes it warm.</p>
+
+
+<!-- ══════════════════════════════════════════════════════════════════ -->
+<!-- PART VI: THE PIPELINE -->
+<!-- ══════════════════════════════════════════════════════════════════ -->
+<div class="part-header">
+  <div class="part-num">Part VI</div>
+  <h2>THE PIPELINE</h2>
+</div>
+
+<p class="lead">Every date is a trigger, not a suggestion. Execute the action, move forward. The 8-day sprint window is ALL marketing work. Compliance happens the Monday AFTER release. Not before.</p>
+
+<h3>Phase 1 Pipeline (Apr 6–24)</h3>
+<div class="timeline-item">
+  <div class="timeline-date">Apr 7</div>
+  <div class="timeline-action"><strong>TODAY:</strong> SF + ESL upload to Amuse. SF editorial pitch in Spotify for Artists. SF Canvas in After Effects. IG bio fix (5 min).</div>
+</div>
+<div class="timeline-item">
+  <div class="timeline-date">Apr 8</div>
+  <div class="timeline-action">ESL editorial pitch in Spotify for Artists. SF geo ads: Denver $20 / Minneapolis $15 / Dallas $15.</div>
+</div>
+<div class="timeline-item">
+  <div class="timeline-date">Apr 9</div>
+  <div class="timeline-action">LID upload to Amuse. LID editorial pitch. Gorilla Geo: Modules 2b→5 if 2b produces usable handles (manual lookup fallback). Produce God Tier DM list. 60–90 min max.</div>
+</div>
+<div class="timeline-item">
+  <div class="timeline-date">Apr 10</div>
+  <div class="timeline-action"><strong>SF RELEASE.</strong> GF deploys 5 Chaotic Good comments within 5 min of release.</div>
+</div>
+<div class="timeline-item">
+  <div class="timeline-date">Apr 13–14</div>
+  <div class="timeline-action">ALL LOVE EP upload to Amuse.</div>
+</div>
+<div class="timeline-item">
+  <div class="timeline-date">Apr 14</div>
+  <div class="timeline-action"><strong>ESL RELEASE. 414 DAY.</strong> GF films the show. Be present.</div>
+</div>
+<div class="timeline-item">
+  <div class="timeline-date">Apr 15</div>
+  <div class="timeline-action">Core Drive Builder re-run with SF listener data for fresher EP targeting overlap matrices.</div>
+</div>
+<div class="timeline-item">
+  <div class="timeline-date">Apr 17</div>
+  <div class="timeline-action"><strong>LID RELEASE.</strong> Inner circle 5 comments.</div>
+</div>
+<div class="timeline-item">
+  <div class="timeline-date">Apr 20</div>
+  <div class="timeline-action">Compliance — SF + ESL batch registration: ASCAP, MLC, Songtrust, Musixmatch. Pull ISRCs from Amuse first.</div>
+</div>
+<div class="timeline-item">
+  <div class="timeline-date">Apr 21</div>
+  <div class="timeline-action">Begin DM outreach from God Tier list. LID/EP angle. 3–5 DMs/day. Track in Audience Intelligence Engine at /geo/sprint.</div>
+</div>
+<div class="timeline-item">
+  <div class="timeline-date">Apr 24</div>
+  <div class="timeline-action"><strong>ALL LOVE EP RELEASE.</strong> Maximum push — all 5 content pillars in 48 hrs.</div>
+</div>
+<div class="timeline-item">
+  <div class="timeline-date">Apr 27</div>
+  <div class="timeline-action">Deluxe Decision. Review EP first-week numbers. Compound or move to CREAM. Data decides.</div>
+</div>
+<div class="timeline-item">
+  <div class="timeline-date">Apr 28</div>
+  <div class="timeline-action">LID registration (ASCAP, MLC, Songtrust, Musixmatch).</div>
+</div>
+
+<h3>Phase 2 Pipeline (Apr 25–May 31)</h3>
+<div class="timeline-item">
+  <div class="timeline-date">Every Sun</div>
+  <div class="timeline-action">Spotify for Artists weekly data pull — all live tracks, save rates, top cities. Fill Track Intelligence Profiles. SEE ME baseline first (live since Mar 13).</div>
+</div>
+<div class="timeline-item">
+  <div class="timeline-date">May 4</div>
+  <div class="timeline-action">ALL LOVE EP registration (ASCAP, MLC, Songtrust, Musixmatch).</div>
+</div>
+<div class="timeline-item">
+  <div class="timeline-date">May 11</div>
+  <div class="timeline-action">SEE ME Layer 4 data available (T+28 from Mar 13). Pull and save.</div>
+</div>
+<div class="timeline-item">
+  <div class="timeline-date">May 14</div>
+  <div class="timeline-action">SF Layer 4 data available (T+28 from Apr 10). CREAM track 2 checkpoint.</div>
+</div>
+<div class="timeline-item">
+  <div class="timeline-date">May 21</div>
+  <div class="timeline-action">ESL Layer 4 data (T+28 from Apr 14).</div>
+</div>
+<div class="timeline-item">
+  <div class="timeline-date">May 28</div>
+  <div class="timeline-action">LID Layer 4 data (T+28 from Apr 17).</div>
+</div>
+<div class="timeline-item">
+  <div class="timeline-date">May 31</div>
+  <div class="timeline-action">CREAM pre-production checkpoint: 4 tracks locked? If yes: Phase 3 begins. If no: identify bottleneck, triage.</div>
+</div>
+
+<h3>Phase 3 Pipeline (Jun 1–Jul 5)</h3>
+<div class="timeline-item">
+  <div class="timeline-date">Jun 1</div>
+  <div class="timeline-action">Gorilla Geo re-run with EP listener data. CREAM-specific targets.</div>
+</div>
+<div class="timeline-item">
+  <div class="timeline-date">Jun 5</div>
+  <div class="timeline-action">CREAM editorial pitches drafted (Spotify for Artists, SubmitHub, playlist curators).</div>
+</div>
+<div class="timeline-item">
+  <div class="timeline-date">Jun 8</div>
+  <div class="timeline-action">CREAM upload to Amuse + editorial pitch same day.</div>
+</div>
+<div class="timeline-item">
+  <div class="timeline-date">Jun 15</div>
+  <div class="timeline-action">CREAM geo ads live (Denver, Minneapolis, Dallas + 1 new market from EP city data).</div>
+</div>
+<div class="timeline-item">
+  <div class="timeline-date">Jul 5</div>
+  <div class="timeline-action">90-day review. All metrics assessed. FREAKSHOW scope decision begins.</div>
+</div>
+<div class="timeline-item">
+  <div class="timeline-date">Jul 13</div>
+  <div class="timeline-action">CREAM Registration Monday.</div>
+</div>
+
+
+<!-- ══════════════════════════════════════════════════════════════════ -->
+<!-- PART VII: NORTH STAR METRICS -->
+<!-- ══════════════════════════════════════════════════════════════════ -->
+<div class="part-header">
+  <div class="part-num">Part VII</div>
+  <h2>NORTH STAR METRICS</h2>
+</div>
+
+<p>Check every Sunday. These are the only numbers that matter. Everything else is noise.</p>
+
+<div class="metrics-grid">
+  <div class="metric-card">
+    <span class="metric-val">1,600+</span>
+    <div class="metric-label">Spotify Followers · Apr 24</div>
+  </div>
+  <div class="metric-card">
+    <span class="metric-val">2,500+</span>
+    <div class="metric-label">Spotify Followers · Jul 5</div>
+  </div>
+  <div class="metric-card">
+    <span class="metric-val">3%+</span>
+    <div class="metric-label">Save Rate · SF Target</div>
+  </div>
+  <div class="metric-card">
+    <span class="metric-val">4%+</span>
+    <div class="metric-label">Save Rate · CREAM Target</div>
+  </div>
+  <div class="metric-card">
+    <span class="metric-val">500+</span>
+    <div class="metric-label">EP First-Week Streams</div>
+  </div>
+  <div class="metric-card">
+    <span class="metric-val">1,000+</span>
+    <div class="metric-label">CREAM First-Week Streams</div>
+  </div>
+  <div class="metric-card">
+    <span class="metric-val">10+</span>
+    <div class="metric-label">God Tier DM Responses · Apr 24</div>
+  </div>
+  <div class="metric-card">
+    <span class="metric-val">2+</span>
+    <div class="metric-label">Editorial Playlist Adds</div>
+  </div>
+  <div class="metric-card">
+    <span class="metric-val">$1,800</span>
+    <div class="metric-label">DoorDash Monthly Target</div>
+  </div>
+  <div class="metric-card">
+    <span class="metric-val">Day 94</span>
+    <div class="metric-label">Sobriety Streak · Jul 5</div>
+  </div>
+  <div class="metric-card">
+    <span class="metric-val">8+</span>
+    <div class="metric-label">Grief Journal Entries · Jul 5</div>
+  </div>
+  <div class="metric-card">
+    <span class="metric-val">4+</span>
+    <div class="metric-label">CREAM Tracks Locked · May 31</div>
+  </div>
+</div>
+
+<h3>The Single Lever</h3>
+<div class="callout">
+  <div class="callout-label">Everything serves this chain</div>
+  <p><strong>Save rate → Discover Weekly → algorithm → organic growth.</strong> Every content decision, every caption, every DM, every Chaotic Good comment exists to drive saves. Saves tell Spotify that listeners are investing in the record — not just passively streaming. That signal feeds the recommendation engine. The algorithm builds the audience. You built the system that feeds the algorithm.</p>
+</div>
+
+
+<!-- ══════════════════════════════════════════════════════════════════ -->
+<!-- PART VIII: ANTI-DRIFT RULES -->
+<!-- ══════════════════════════════════════════════════════════════════ -->
+<div class="part-header">
+  <div class="part-num">Part VIII</div>
+  <h2>ANTI-DRIFT RULES</h2>
+</div>
+
+<p>These are not suggestions. These are the load-bearing walls. If you break one, name it and fix it. Don't compound the drift.</p>
+
+<ol class="rule-list">
+  <li><strong>Never trust Antigravity's claimed file writes.</strong> Verify against the live filesystem via MCP reads before accepting any claim as truth. Check timestamps after every edit.</li>
+  <li><strong>Software work is open as needed</strong> — permitted when it directly serves the active release cycle or CREAM pre-production. No speculative builds. No new infrastructure. Fix what's blocking. Nothing else.</li>
+  <li><strong>Kill List is the single source of truth for daily priorities.</strong> Not your gut feeling about what needs to happen. Oracle. 90-second scan. Then close it.</li>
+  <li><strong>The 8-day content sprint window (upload → release) is ALL marketing work.</strong> This is when you create the future listener relationships. Treat it like it's finite because it is.</li>
+  <li><strong>Compliance/registrations happen the Monday AFTER release.</strong> Not before. Doing it before is anxiety management disguised as productivity. Let the record hit first.</li>
+  <li><strong>Distributor is Amuse.</strong> Always has been. Do not change without explicit instruction. Prior docs may say DistroKid — those docs are stale.</li>
+  <li><strong>Builder-avoidance loops are neurochemical, not laziness.</strong> When the urge to "fix the system" hits during execution windows, that is dopamine-seeking behavior, not necessity. Open the DAW instead.</li>
+  <li><strong>The 90-second exit signal is sacred.</strong> Morning Kill List scan = 90 seconds max, then close it. No rabbit holes. The scan is ignition, not research.</li>
+  <li><strong>Phase 2 rhythm is protected.</strong> Apr 25 is a hard boundary. Do not let Phase 1 sprint energy bleed into May. Rest, then rhythm.</li>
+  <li><strong>ALL LOVE Deluxe is data-dependent.</strong> Decide Apr 27 after reviewing EP first-week numbers. Not before. Not based on feeling.</li>
+  <li><strong>Before any collaboration, splits are agreed in writing before production begins.</strong> Not after the session. Before it opens. This is non-negotiable and it is how Label OS protects its catalog.</li>
+  <li><strong>Post what you want to be discovered as.</strong> The portfolio test applies to every post. If it doesn't represent the artist you're becoming, it doesn't go up. Trending is a dead-end path.</li>
+  <li><strong>Lane discipline on content.</strong> No jumping niches. Range within the lane — music, world-building, vulnerability, Milwaukee, cinematic visuals. Five pillars. One world. Depth, not width.</li>
+  <li><strong>Don't reset the clock.</strong> 94 days is the target. The ignition structures carry you through the detox window. By Day 30, clarity returns. By Day 44, the rhythm feels like play. Trust the arc.</li>
+</ol>
+
+
+<!-- ══════════════════════════════════════════════════════════════════ -->
+<!-- PART IX: THE HORIZON -->
+<!-- ══════════════════════════════════════════════════════════════════ -->
+<div class="part-header">
+  <div class="part-num">Part IX</div>
+  <h2>THE HORIZON</h2>
+</div>
+
+<p class="lead">These exist. They are not ignored. They are scheduled. The machine is being built so that when these doors open, you can walk through them.</p>
+
+<div class="horizon-item">
+  <span>Q3 2026 · Post-Jul 5</span>
+  <strong>DoorDash Exit Timeline.</strong> After 2 full release cycles of streaming data, assess whether streaming + other income is approaching DoorDash coverage. This is the Q3/Q4 conversation. Not now.
+</div>
+<div class="horizon-item">
+  <span>Oct 23, 2026</span>
+  <strong>FREAKSHOW.</strong> The fourth album. Architecture begins Jul 6 after the 90-day review. CREAM first. FREAKSHOW inherits the audience CREAM builds.
+</div>
+<div class="horizon-item">
+  <span>Phase 3+ · Label OS Product Layer</span>
+  <strong>The Ecosystem.</strong> past.El noir Records doesn't just release music. What's the product layer? Stem packs in the past.El sonic identity? Vocal samples? Production tutorials? The "Hearing In Color" framework as a teachable methodology? Build the audience first. Then build what they'd buy from you specifically.
+</div>
+<div class="horizon-item">
+  <span>Post-Jul 5</span>
+  <strong>Strong Selects Revival.</strong> Saturday maintenance only pending legal rulings. Not active client-facing. Monitor the ruling. Don't touch it until it's clear.
+</div>
+<div class="horizon-item">
+  <span>Home Purchase</span>
+  <strong>Delegate and respond when needed.</strong> It is handled when it needs to be handled. Don't let it occupy cognitive bandwidth during the sprint.
+</div>
+<div class="horizon-item">
+  <span>Phase 3+ · IG Unfollow Audit</span>
+  <strong>Restore the engagement rate.</strong> Gradual reduction of the 2,001 following toward a 3:1–4:1 follower-to-following ratio over 60 days. 5-min Sunday batches. Never mass unfollow — that triggers algorithmic penalties. Slow is smooth.
+</div>
+
+<h3>What Compounding Looks Like by Day 94 (Jul 5)</h3>
+<table>
+  <tr>
+    <td><strong>Catalog</strong></td>
+    <td>8+ tracks live (SEE ME through CREAM). Each one a Discover Weekly seed. Each one Cyanite-verified and in the right sonic pocket.</td>
+  </tr>
+  <tr>
+    <td><strong>Audience Intelligence</strong></td>
+    <td>Real listener data across 3 release cycles. Top cities. Save rates by track. Listener-to-follower ratio. The Audience Intelligence Engine at /geo/sprint has the contact history.</td>
+  </tr>
+  <tr>
+    <td><strong>Marketing Engine</strong></td>
+    <td>Gorilla Geo tested and proven. Two-lane outreach (community presence → DMs) has a response rate. God Tier list 30+ engaged.</td>
+  </tr>
+  <tr>
+    <td><strong>Body of Work</strong></td>
+    <td>IG portfolio reflects the artist becoming. Five pillars represented. One consistent world. Bio lands in a universe, not a bio.</td>
+  </tr>
+  <tr>
+    <td><strong>Sobriety</strong></td>
+    <td>Day 94. The clarity from here is real and compounding. The machine runs cleaner. The decisions are sharper.</td>
+  </tr>
+</table>
+
+
+<!-- ══════════════════════════════════════════════════════════════════ -->
+<!-- FOOTER -->
+<!-- ══════════════════════════════════════════════════════════════════ -->
+<div class="doc-footer">
+  <div class="footer-label">past.El noir Records · Label OS · Wartime Rhythm Schematic</div>
+  <div class="footer-sig">Finalized April 7, 2026 — Claude, Lead Architect<br>Sources: SOVEREIGN_ACTION_PLAN_FINAL (Apr 6), Sessions Podcast (BMC / Johntá Austin / Troy Taylor), Creators Desk Transcript, Antigravity Session 2 Handoff, GLOBAL_BRAIN, Apr 4 Handoff, Systems Audit v2, S-Tier Protocol</div>
+  <div style="margin-top: 20px; font-family: 'Courier New', monospace; font-size: 10px; letter-spacing: 3px; color: var(--muted);">DISTRIBUTOR: AMUSE · ALWAYS HAS BEEN</div>
+</div>
+
+</body>
+</html>
