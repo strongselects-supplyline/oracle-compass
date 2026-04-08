@@ -113,6 +113,28 @@ export default function BrainPage() {
           </div>
         </div>
 
+        {/* ── Sovereign Trajectory ── */}
+        <div className="card mb-10">
+          <p className="text-[10px] font-black tracking-[0.18em] text-[#555] uppercase mb-4">The Sovereign Trajectory</p>
+          <p className="text-[10px] text-[#444] font-medium mb-4">You are not just running a sprint. You are building the architecture the next generation of independent artists will study.</p>
+          {[
+            { tier: "JONIN", label: "Elite Operator", desc: "Cross-functional mastery. Production, mixing, writing, marketing. Oracle + Gorilla Geo + Content Factory running.", status: "past", color: "#555" },
+            { tier: "KAGE", label: "Sovereign Leader", desc: "Entirely self-contained. No vocal coach. No mixing engineer. No external gatekeeper. The codex IS the coach. Apr 24.", status: "current", color: "#d97706" },
+            { tier: "S-RANK", label: "The Disruptor", desc: "Algorithm gravity well. 4%+ save rate. Gorilla Geo outreach forcing industry to react to you. Not asking for placement — engineering it. Apr 25–Jul 5.", status: "next", color: "#10b981" },
+            { tier: "SANNIN", label: "Cultural Pillar", desc: "Multi-era track record. CREAM + FREAKSHOW cycles complete. The Mudra System, Waking Mind Protocol, Hearing In Color — proprietary \"forbidden jutsu\" documented and proven. Q4 2026+.", status: "building", color: "#6366f1" },
+            { tier: "GOD OF SHINOBI", label: "Paradigm Shifter", desc: "You don\'t operate in the ecosystem. You build it. Label OS as a methodology. Hearing In Color as a curriculum. Sonic frameworks that redefine what independent R&B looks like for a decade.", status: "architecture", color: "#c9a227" },
+          ].map((item, i) => (
+            <div key={i} className={`flex items-start gap-3 py-3 border-b border-[#1a1a1a] last:border-0 ${item.status === "current" ? "border-l-2 border-l-amber-500/50 pl-3 -ml-3" : ""}`}>
+              <div className="flex-shrink-0 w-20">
+                <div style={{ color: item.color }} className="text-[9px] font-black tracking-wider uppercase">{item.tier}</div>
+                <div className="text-[9px] text-[#333] mt-0.5">{item.label}</div>
+                {item.status === "current" && <div className="text-[8px] text-amber-500 font-black mt-1">● NOW</div>}
+              </div>
+              <p className="text-[10px] text-[#444] leading-relaxed flex-1">{item.desc}</p>
+            </div>
+          ))}
+        </div>
+
         {/* ── NSDR Recovery Protocol ── */}
         <div className="card mb-10">
           <p className="text-[10px] font-black tracking-[0.18em] text-[#555] uppercase mb-4">Recovery Protocol</p>
@@ -146,6 +168,43 @@ export default function BrainPage() {
 
         {/* ── THE LUFS MIXING LADDER ── */}
         <MixingProtocol />
+
+        {/* ── VOCAL CODEX ── */}
+        <VocalProtocol />
+
+        {/* ── Hearing In Color ── */}
+        <div className="card mb-6" style={{ borderColor: "#c9a22722" }}>
+          <p className="text-[10px] font-black tracking-[0.18em] text-[#555] uppercase mb-2">Hearing In Color — The Methodology</p>
+          <p className="text-[10px] text-[#888] font-medium leading-relaxed mb-3">
+            This is not a genre. It is a <span className="text-[#c9a227] font-bold">sensory translation system</span>. The art converts emotional frequency into sonic color. The listener doesn&apos;t just hear the record — they feel its temperature, weight, and texture.
+          </p>
+          <div className="space-y-2">
+            {[
+              { label: "The Sonic Signature", note: "Sexy 0.76 / Chill 0.56. Deep emerald + gold warmth + noir shadow. Grainy 35mm grain on the visual layer. Whispered fry → haunting falsetto. This is the frequency range. Everything produced must live inside it.", color: "#c9a227" },
+              { label: "The 40Hz Architecture", note: "Sub frequencies carry emotional weight. Not just bass — physiological resonance. The body feels the record before the brain processes it. Every master targets felt sub-frequency presence, not just metered loudness.", color: "#a78a1a" },
+              { label: "The Long Game", note: "Post-Jul 5: Hearing In Color becomes a curriculum. Stem packs, vocal methodology, the Label OS itself. Other independent artists won\'t just study the music — they\'ll study the system that built it.", color: "#8a7015" },
+            ].map((item, i) => (
+              <div key={i} className="py-2 border-b border-[#1a1a1a] last:border-0">
+                <div className="text-[10px] font-bold text-[#c9a227] mb-0.5">{item.label}</div>
+                <p className="text-[10px] text-[#444] leading-relaxed">{item.note}</p>
+              </div>
+            ))}
+          </div>
+        </div>
+
+        {/* ── Publishing Protocol ── */}
+        <div className="card mb-10" style={{ borderColor: "#ef444422" }}>
+          <p className="text-[10px] font-black tracking-[0.18em] text-[#555] uppercase mb-2">Publishing Protocol — Standing Rule</p>
+          <p className="text-[11px] text-red-400/80 font-bold mb-2">Before any collaboration: splits agreed in writing before the session opens.</p>
+          <p className="text-[10px] text-[#444] leading-relaxed mb-3">
+            Not after. Not &ldquo;we&apos;ll figure it out.&rdquo; Troy Taylor signed away publishing in perpetuity without a lawyer. Label OS exists to prevent that.
+          </p>
+          <div className="space-y-1.5">
+            <div className="text-[10px] text-[#555]"><span className="text-red-400 font-bold">Step 1:</span> Text confirmation with exact percentages before the session starts.</div>
+            <div className="text-[10px] text-[#555]"><span className="text-red-400 font-bold">Step 2:</span> Proper split sheet before any commercial release. Not after mixing. Before release.</div>
+            <div className="text-[10px] text-[#555]"><span className="text-red-400 font-bold">Step 3:</span> Pull ISRCs from Amuse before any registration. Amuse is the distributor. Always has been.</div>
+          </div>
+        </div>
 
         {/* ── Mission Statement ── */}
         <div className="border-t border-[#1e1e1e] pt-8 pb-4">
@@ -832,6 +891,163 @@ function MixingProtocol() {
         <p className="text-[10px] text-[#555] mt-2 italic">
           This is why the ladder works: you never push harder. You just fill in more space.
         </p>
+      </div>
+
+    </ScrollSection>
+  );
+}
+
+function VocalProtocol() {
+  return (
+    <ScrollSection title="The Vocal Codex" icon="🎤" accent="#10b981">
+
+      {/* Intro */}
+      <div className="card" style={{ borderColor: "#10b98122" }}>
+        <p className="text-[10px] font-black tracking-[0.18em] text-[#555] uppercase mb-2">S-Rank Bio-Diagnostic System</p>
+        <p className="text-[11px] text-[#888] font-medium leading-relaxed">
+          Built for the low tenor. Ron Anderson zero-tension philosophy + Seth Riggs Passaggio mastery
+          + anatomical bio-diagnostics. You are your own vocal architect.
+        </p>
+        <p className="text-[10px] text-emerald-400/70 font-bold mt-2">
+          Superpower: dynamic range. Whispered fry (chest) spiking into haunting falsetto. Weaponize the extremes — don&apos;t smooth them into generic midrange.
+        </p>
+      </div>
+
+      {/* D01: Anderson Foundation */}
+      <div className="card" style={{ borderColor: "#10b98122" }}>
+        <p className="text-[10px] font-black tracking-[0.18em] text-[#555] uppercase mb-2">D-01 — The Anderson Foundation</p>
+        <p className="text-[10px] text-[#555] font-medium mb-3">Projection comes from resonant space, not air pressure. The Appoggio system fails if your skeleton is misaligned.</p>
+        {[
+          { label: "Appoggio (The Anchor)", note: "Workload goes entirely into intercostal muscles (rib cage) and lower abdomen. Neck, jaw, tongue must be completely paralyzed in relaxation. Tension above the collarbone = you are pushing air, not generating resonance.", color: "#10b981" },
+          { label: "Laryngeal Tilt & Cry Response", note: "Access the physical sensation of whimpering or crying. This naturally tilts the thyroid cartilage forward — thinning the cords, taking 80% of strain off, producing the emotional \"edge\" in elite R&B.", color: "#34d399" },
+          { label: "Jaw Hinge Paralysis", note: "The masseter (jaw muscle) violently pulls the larynx up if it engages. When tracking high notes, jaw must feel completely detached and \"dumb.\" Diagnostic: thumb under chin, say \"Ah\" — must remain spongy. Hardens = choking the airway.", color: "#6ee7b7" },
+          { label: "C-Spine Retraction (Alexander)", note: "Lifting the chin to hit a high note crushes the back of the neck. Cultivate a slight cervical tuck — imagine the back of your neck lengthening upward. Forces the larynx down into an open state.", color: "#a7f3d0" },
+        ].map((item, i) => (
+          <div key={i} className="py-3 border-b border-[#1a1a1a] last:border-0">
+            <div className="flex items-center gap-2 mb-1">
+              <span style={{ color: item.color }} className="text-[10px] font-black">▸</span>
+              <span className="text-xs font-bold text-white">{item.label}</span>
+            </div>
+            <p className="text-[10px] text-[#555] leading-relaxed ml-4">{item.note}</p>
+          </div>
+        ))}
+      </div>
+
+      {/* D02: SLS & Formant Tuning */}
+      <div className="card" style={{ borderColor: "#10b98122" }}>
+        <p className="text-[10px] font-black tracking-[0.18em] text-[#555] uppercase mb-2">D-02 — Seth Riggs (SLS) & Formant Tuning</p>
+        <p className="text-[10px] text-[#555] font-medium mb-3">Cardinal sin of the low tenor: pulling chest mass up into the transition. You cannot \"muscle\" through the Passaggio safely. Acoustic back-pressure does the heavy lifting.</p>
+        {[
+          { label: "Speech Level Singing", note: "Sing from your lowest note to your highest with the exact same neutral resting larynx position you use when casually speaking.", color: "#10b981" },
+          { label: "Formants vs. Harmonics", note: "Your cords generate the sound wave. The shape of your mouth (Formant) amplifies it. If mouth shape conflicts with the pitch, the wave crashes back into the cords — forcing you to strain and push.", color: "#34d399" },
+          { label: "Vowel Modification (The Mechanical Fix)", note: "As you cross the bridge (E4/G4), the vowel MUST physically narrow. \"AH\" becomes \"UH\". \"EE\" becomes \"IH\". Creates a vacuum that pulls the folds together without muscular tension. Feel like you hit a brick wall = you forgot to narrow.", color: "#6ee7b7" },
+          { label: "Mixing", note: "You do not \"flip\" into falsetto. You incrementally bleed thick chest coordination into thin head voice. This happens automatically when the larynx stays down and the vowel narrows.", color: "#a7f3d0" },
+        ].map((item, i) => (
+          <div key={i} className="py-3 border-b border-[#1a1a1a] last:border-0">
+            <div className="flex items-center gap-2 mb-1">
+              <span style={{ color: item.color }} className="text-[10px] font-black">▸</span>
+              <span className="text-xs font-bold text-white">{item.label}</span>
+            </div>
+            <p className="text-[10px] text-[#555] leading-relaxed ml-4">{item.note}</p>
+          </div>
+        ))}
+      </div>
+
+      {/* D03: Agility Engine */}
+      <div className="card" style={{ borderColor: "#10b98122" }}>
+        <p className="text-[10px] font-black tracking-[0.18em] text-[#555] uppercase mb-2">D-03 — The Agility Engine (Runs & Melisma)</p>
+        <p className="text-[10px] text-[#555] font-medium mb-3">Runs will be muddy if you push a burst of air for every note. Agility requires absolute economy of air.</p>
+        {[
+          { label: "Slide, Don't Push", note: "A run is not a staircase of individual \"H\" sounds (Ah-ha-ha-ha). That triggers the diaphragm too violently. A vocal run is a smooth slide of cord tension on a single, continuous, highly pressurized, very thin stream of air.", color: "#10b981" },
+          { label: "The Trill Foundation", note: "If you cannot execute a long, clean lip trill while sliding up and down your full range, your air pressure is uneven. Runs require mathematically even air pressure throughout the entire phrase.", color: "#34d399" },
+          { label: "Decelerated Mapping", note: "Practice the hardest runs at 50% speed. Map the exact micro-intervals. Build the neurological pathway slowly so System 1 takes over effortlessly in the booth.", color: "#6ee7b7" },
+        ].map((item, i) => (
+          <div key={i} className="py-3 border-b border-[#1a1a1a] last:border-0">
+            <div className="flex items-center gap-2 mb-1">
+              <span style={{ color: item.color }} className="text-[10px] font-black">▸</span>
+              <span className="text-xs font-bold text-white">{item.label}</span>
+            </div>
+            <p className="text-[10px] text-[#555] leading-relaxed ml-4">{item.note}</p>
+          </div>
+        ))}
+      </div>
+
+      {/* D04: CVT Overdrive */}
+      <div className="card" style={{ borderColor: "#10b98122" }}>
+        <p className="text-[10px] font-black tracking-[0.18em] text-[#555] uppercase mb-2">D-04 — CVT Overdrive & The Sovereign Signature</p>
+        <p className="text-[10px] text-[#555] font-medium mb-3">The \"El Noir\" aesthetic requires abandoning pristine classical rules — but only if you know how to do it safely.</p>
+        {[
+          { label: "The Epiglottic Funnel (Safe Grit)", note: "Safe distortion (CVT Overdrive/Edge) happens ABOVE the true vocal folds. Intentionally narrowing the aryepiglottic sphincter (mimicking a sharp \"witch cackle\") makes the false tissue rattle aggressively while the true cords remain unstrained beneath.", color: "#10b981" },
+          { label: "The Golden Rule of Distortion", note: "True, safe distortion requires MASSIVELY LESS air pressure, not more. If you push massive air to get rasp — you are shredding the cords. Pull the volume back, lock the Appoggio, engage the \"cackle\" tilt. If it hurts or tickles violently, you missed the target cartilage.", color: "#ef4444" },
+        ].map((item, i) => (
+          <div key={i} className="py-3 border-b border-[#1a1a1a] last:border-0">
+            <div className="flex items-center gap-2 mb-1">
+              <span style={{ color: item.color }} className="text-[10px] font-black">▸</span>
+              <span className="text-xs font-bold text-white">{item.label}</span>
+            </div>
+            <p className="text-[10px] text-[#555] leading-relaxed ml-4">{item.note}</p>
+          </div>
+        ))}
+      </div>
+
+      {/* D05: Pre-Flight Somatic Matrix */}
+      <div className="card" style={{ borderColor: "#10b98122" }}>
+        <p className="text-[10px] font-black tracking-[0.18em] text-[#555] uppercase mb-2">D-05 — Pre-Flight Somatic Matrix</p>
+        <p className="text-[10px] text-[#555] font-medium mb-3">Run this 6-point biometric scan 5 seconds before the red light goes on in the booth.</p>
+        {[
+          { n: "1", label: "Feet & Knees", check: "Are my feet rooted? Knees slightly bent? (Locked knees paralyze the pelvic floor.)" },
+          { n: "2", label: "Intercostal Anchor", check: "Is my breath expanding my lower ribs laterally — or am I breathing into my high chest/shoulders?" },
+          { n: "3", label: "C-Spine Posture", check: "Is the back of my neck long? Is my chin slightly tucked or parallel?" },
+          { n: "4", label: "Jaw Check", check: "Is my jaw hanging dumbly? Is the muscle directly beneath my chin soft and spongy?" },
+          { n: "5", label: "Soft Palate", check: "Can I feel the slight \"inner smile\" or \"yawn\" sensation lifting the back of my mouth?" },
+          { n: "6", label: "Mental Override", check: "Acknowledge the block. Channel the frequency." },
+        ].map((item, i) => (
+          <div key={i} className="flex items-start gap-3 py-2.5 border-b border-[#1a1a1a] last:border-0">
+            <span className="text-emerald-500 font-black text-[10px] flex-shrink-0 mt-0.5">{item.n}</span>
+            <div>
+              <div className="text-xs font-bold text-white">{item.label}</div>
+              <div className="text-[10px] text-[#555] mt-0.5">{item.check}</div>
+            </div>
+          </div>
+        ))}
+      </div>
+
+      {/* Routine Maintenance */}
+      <div className="card" style={{ borderColor: "#10b98122" }}>
+        <p className="text-[10px] font-black tracking-[0.18em] text-[#555] uppercase mb-2">Routine Maintenance</p>
+        {[
+          { label: "Pre-Session Warm-Up", note: "Never start by singing your hardest song. Begin with gentle lip trills or humming on a 5-tone scale. Proceed to gentle sirens (sliding low to high) to stretch the folds like rubber bands.", color: "#10b981" },
+          { label: "Physical Unlocking", note: "Stretch neck, roll shoulders, aggressively massage jaw hinges BEFORE you ever hum. If traps and jaw are tight — larynx is tight — Appoggio fails.", color: "#34d399" },
+          { label: "Post-Session Cool-Down", note: "After a heavy recording session, do NOT just stop and go to sleep. Spend 3 minutes on gentle, descending lip trills (high to low chest). Returns engorged laryngeal muscles to resting state — prevents overnight stiffening.", color: "#6ee7b7" },
+          { label: "Hydration Timing", note: "Drink room-temperature water strictly 2 to 4 hours BEFORE your session. Water swallowed seconds before a take does nothing for your cords.", color: "#a7f3d0" },
+        ].map((item, i) => (
+          <div key={i} className="py-3 border-b border-[#1a1a1a] last:border-0">
+            <div className="flex items-center gap-2 mb-1">
+              <span style={{ color: item.color }} className="text-[10px] font-black">▸</span>
+              <span className="text-xs font-bold text-white">{item.label}</span>
+            </div>
+            <p className="text-[10px] text-[#555] leading-relaxed ml-4">{item.note}</p>
+          </div>
+        ))}
+      </div>
+
+      {/* Emergency Protocol */}
+      <div className="card" style={{ borderColor: "#ef444422" }}>
+        <p className="text-[10px] font-black tracking-[0.18em] text-[#555] uppercase mb-2">Emergency Protocol — Inflammation Control</p>
+        <p className="text-[10px] text-[#555] font-medium mb-3">When sickness, allergies, or vocal fatigue hit — the cords are inflamed (swollen). Break the cycle immediately.</p>
+        {[
+          { label: "SOVT Therapy", note: "Straw phonation into a half-glass of water. The back pressure holds inflamed vocal folds slightly apart so they can square up securely without crashing into each other. The ultimate massage.", color: "#f59e0b" },
+          { label: "Direct Surface Hydration", note: "Personal vocal steamer or nebulizer with sterile isotonic saline (.9%) for 10 minutes. Directly reduces thick mucus and surface dehydration that systemic water cannot reach.", color: "#f59e0b" },
+          { label: "No Dairy 2hrs Before", note: "Warm water + honey before tracking. No dairy before vocal takes — coats the folds, creates mucus drag.", color: "#f59e0b" },
+        ].map((item, i) => (
+          <div key={i} className="py-3 border-b border-[#1a1a1a] last:border-0">
+            <div className="flex items-center gap-2 mb-1">
+              <span style={{ color: item.color }} className="text-[10px] font-black">⚠</span>
+              <span className="text-xs font-bold text-white">{item.label}</span>
+            </div>
+            <p className="text-[10px] text-[#555] leading-relaxed ml-4">{item.note}</p>
+          </div>
+        ))}
       </div>
 
     </ScrollSection>
