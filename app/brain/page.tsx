@@ -53,7 +53,7 @@ export default function BrainPage() {
         </div>
 
         {/* ── The 6 Scrolls ── */}
-        <div className="card mb-10" style={{ borderColor: 'var(--accent)', borderWidth: '1px' }}>
+        <div className="card mb-6" style={{ borderColor: 'var(--accent)', borderWidth: '1px' }}>
           <p className="text-[10px] font-black tracking-[0.18em] uppercase mb-4" style={{ color: 'var(--accent)' }}>📜 The 6 Scrolls</p>
           <div className="grid grid-cols-2 gap-2">
             {[
@@ -79,6 +79,9 @@ export default function BrainPage() {
             ))}
           </div>
         </div>
+
+        {/* ── Sovereignty Dashboard ── */}
+        <SovereigntyDashboard />
 
         {/* ── Phase Bar ── */}
         <div className="mb-12">
@@ -251,6 +254,271 @@ export default function BrainPage() {
 
       </div>
     </main>
+  );
+}
+
+// ─────────────────────────────────────────────
+// SOVEREIGNTY DASHBOARD — Live progress tracker
+// ─────────────────────────────────────────────
+const SOBRIETY_START = new Date("2026-04-02T00:00:00"); // Day 1
+
+const ANBU_BENCHMARKS = [
+  "ALL LOVE EP Released — Apr 24 data logged",
+  "3 tracks Live on Spotify — SF, ESL, Like I Did",
+  "Save Rate 3%+ on at least 1 track",
+  "Gorilla Geo Activated — 3–5 DMs/day consistent",
+  "Sobriety Day 60 — clock not reset",
+  "Content Factory — 3+ assets/week consistent",
+  "DoorDash $1,800/mo — April confirmed",
+  "DoorDash $1,800/mo — May confirmed",
+  "S3 Check-in running every studio day",
+  "Grief Protocol — first journal entry by Apr 27",
+  "ALL LOVE Deluxe decision logged by Apr 27",
+  "Instagram bio updated and verified",
+];
+
+function SovereigntyDashboard() {
+  const [sobrietyDays, setSobrietyDays] = useState(0);
+  const [checks, setChecks] = useState<boolean[]>(Array(ANBU_BENCHMARKS.length).fill(false));
+  const [griefEntry, setGriefEntry] = useState("");
+  const [griefLog, setGriefLog] = useState<{ date: string; text: string }[]>([]);
+  const [weeklyData, setWeeklyData] = useState({ spotify: "", saves: "", doordash: "", geo: "" });
+  const [weeklyLog, setWeeklyLog] = useState<{ date: string; data: typeof weeklyData }[]>([]);
+  const [activeTab, setActiveTab] = useState<"sobriety" | "anbu" | "grief" | "data">("sobriety");
+  const [saved, setSaved] = useState(false);
+
+  useEffect(() => {
+    // Sobriety days
+    const now = new Date();
+    const diff = Math.floor((now.getTime() - SOBRIETY_START.getTime()) / (1000 * 60 * 60 * 24));
+    setSobrietyDays(Math.max(0, diff));
+
+    // Load persisted state
+    try {
+      const sc = localStorage.getItem("anbu-checks");
+      if (sc) setChecks(JSON.parse(sc));
+      const gl = localStorage.getItem("grief-log");
+      if (gl) setGriefLog(JSON.parse(gl));
+      const wl = localStorage.getItem("weekly-data-log");
+      if (wl) setWeeklyLog(JSON.parse(wl));
+    } catch {}
+  }, []);
+
+  const toggleCheck = (i: number) => {
+    const next = [...checks];
+    next[i] = !next[i];
+    setChecks(next);
+    localStorage.setItem("anbu-checks", JSON.stringify(next));
+  };
+
+  const submitGrief = () => {
+    if (!griefEntry.trim()) return;
+    const entry = { date: new Date().toLocaleDateString("en-US", { month: "short", day: "numeric", year: "numeric" }), text: griefEntry.trim() };
+    const next = [entry, ...griefLog].slice(0, 20);
+    setGriefLog(next);
+    localStorage.setItem("grief-log", JSON.stringify(next));
+    setGriefEntry("");
+    setSaved(true);
+    setTimeout(() => setSaved(false), 2000);
+  };
+
+  const submitData = () => {
+    if (!weeklyData.spotify && !weeklyData.doordash) return;
+    const entry = { date: new Date().toLocaleDateString("en-US", { month: "short", day: "numeric" }), data: { ...weeklyData } };
+    const next = [entry, ...weeklyLog].slice(0, 12);
+    setWeeklyLog(next);
+    localStorage.setItem("weekly-data-log", JSON.stringify(next));
+    setWeeklyData({ spotify: "", saves: "", doordash: "", geo: "" });
+    setSaved(true);
+    setTimeout(() => setSaved(false), 2000);
+  };
+
+  const checkedCount = checks.filter(Boolean).length;
+  const daysToAnbu = Math.max(0, Math.ceil((new Date("2026-06-01").getTime() - Date.now()) / 86400000));
+  const sobrietyPct = Math.min(100, Math.round((sobrietyDays / 60) * 100));
+
+  const tabs = [
+    { id: "sobriety" as const, label: "⏱ Clock", },
+    { id: "anbu" as const, label: "🎯 ANBU", },
+    { id: "grief" as const, label: "📓 Journal", },
+    { id: "data" as const, label: "📊 Data", },
+  ];
+
+  return (
+    <div className="card mb-10" style={{ borderColor: 'var(--border)' }}>
+      <p className="text-[10px] font-black tracking-[0.18em] uppercase mb-3" style={{ color: 'var(--accent)' }}>⚔️ Sovereignty Dashboard</p>
+
+      {/* Tab Bar */}
+      <div className="flex gap-1 mb-4 border-b" style={{ borderColor: 'var(--border)' }}>
+        {tabs.map(t => (
+          <button
+            key={t.id}
+            onClick={() => setActiveTab(t.id)}
+            className="pb-2 px-2 text-[10px] font-black tracking-wider uppercase transition-all"
+            style={{
+              color: activeTab === t.id ? 'var(--accent)' : 'var(--text-muted)',
+              borderBottom: activeTab === t.id ? '2px solid var(--accent)' : '2px solid transparent',
+              marginBottom: '-1px',
+            }}
+          >{t.label}</button>
+        ))}
+      </div>
+
+      {/* SOBRIETY TAB */}
+      {activeTab === "sobriety" && (
+        <div>
+          <div className="text-center mb-4">
+            <div className="text-6xl font-black mb-1" style={{ color: sobrietyDays >= 60 ? '#10b981' : 'var(--accent)' }}>
+              {sobrietyDays}
+            </div>
+            <div className="text-[11px] font-black tracking-widest uppercase" style={{ color: 'var(--text-muted)' }}>
+              Days Clean · Since Apr 2
+            </div>
+          </div>
+          <div className="mb-3">
+            <div className="h-2 rounded-full overflow-hidden" style={{ background: 'var(--surface-2)' }}>
+              <div className="h-full rounded-full transition-all" style={{ width: `${sobrietyPct}%`, background: sobrietyDays >= 60 ? '#10b981' : '#d97706' }} />
+            </div>
+            <div className="flex justify-between mt-1 text-[9px]" style={{ color: 'var(--text-muted)' }}>
+              <span>Day 0</span>
+              <span className="font-black" style={{ color: 'var(--accent)' }}>Day 60 = ANBU</span>
+            </div>
+          </div>
+          <div className="grid grid-cols-2 gap-2 mt-4">
+            <div className="p-3 rounded-xl text-center" style={{ background: 'var(--surface-2)' }}>
+              <div className="text-lg font-black" style={{ color: 'var(--text-primary)' }}>{daysToAnbu}</div>
+              <div className="text-[9px] uppercase tracking-wider" style={{ color: 'var(--text-muted)' }}>Days to ANBU</div>
+            </div>
+            <div className="p-3 rounded-xl text-center" style={{ background: 'var(--surface-2)' }}>
+              <div className="text-lg font-black" style={{ color: checkedCount >= 12 ? '#10b981' : 'var(--accent)' }}>{checkedCount}/12</div>
+              <div className="text-[9px] uppercase tracking-wider" style={{ color: 'var(--text-muted)' }}>Benchmarks</div>
+            </div>
+          </div>
+          {sobrietyDays >= 60 && (
+            <div className="mt-4 p-3 rounded-xl text-center" style={{ background: 'rgba(16,185,129,0.1)', borderColor: '#10b981', borderWidth: 1 }}>
+              <p className="text-[11px] font-black" style={{ color: '#10b981' }}>🟢 SOBRIETY GATE: PASSED — DAY 60 COMPLETE</p>
+            </div>
+          )}
+        </div>
+      )}
+
+      {/* ANBU CHECKLIST TAB */}
+      {activeTab === "anbu" && (
+        <div>
+          <div className="flex items-center justify-between mb-3">
+            <span className="text-[10px]" style={{ color: 'var(--text-muted)' }}>Gate closes June 1, 2026 — {daysToAnbu} days away</span>
+            <span className="text-[10px] font-black" style={{ color: checkedCount === 12 ? '#10b981' : 'var(--accent)' }}>{checkedCount}/12</span>
+          </div>
+          <div className="space-y-2">
+            {ANBU_BENCHMARKS.map((b, i) => (
+              <button
+                key={i}
+                onClick={() => toggleCheck(i)}
+                className="w-full flex items-start gap-3 p-2 rounded-lg text-left transition-all active:scale-[0.98]"
+                style={{ background: checks[i] ? 'rgba(16,185,129,0.08)' : 'var(--surface-2)' }}
+              >
+                <span className="flex-shrink-0 mt-0.5 text-sm font-black" style={{ color: checks[i] ? '#10b981' : 'var(--text-muted)' }}>
+                  {checks[i] ? '✓' : '□'}
+                </span>
+                <span className="text-[11px] font-medium leading-snug" style={{ color: checks[i] ? 'var(--text-muted)' : 'var(--text-primary)', textDecoration: checks[i] ? 'line-through' : 'none' }}>
+                  {b}
+                </span>
+              </button>
+            ))}
+          </div>
+          {checkedCount === 12 && (
+            <div className="mt-4 p-3 rounded-xl text-center" style={{ background: 'rgba(16,185,129,0.1)', borderColor: '#10b981', borderWidth: 1 }}>
+              <p className="text-[11px] font-black" style={{ color: '#10b981' }}>⚡ ALL BENCHMARKS MET — PROMOTION CEREMONY READY</p>
+            </div>
+          )}
+        </div>
+      )}
+
+      {/* GRIEF JOURNAL TAB */}
+      {activeTab === "grief" && (
+        <div>
+          <p className="text-[10px] font-medium mb-3" style={{ color: 'var(--text-muted)' }}>
+            Required: 1 entry/week from Apr 27. Grief protocol = ANBU gate requirement.
+          </p>
+          <textarea
+            value={griefEntry}
+            onChange={e => setGriefEntry(e.target.value)}
+            placeholder="What surfaced this week? What are you carrying? What needs to move?"
+            className="w-full text-[12px] p-3 rounded-xl border resize-none outline-none leading-relaxed"
+            style={{ background: 'var(--surface-2)', borderColor: 'var(--border)', color: 'var(--text-primary)', minHeight: '100px' }}
+          />
+          <button
+            onClick={submitGrief}
+            className="mt-2 w-full py-2.5 rounded-xl text-[11px] font-black tracking-wider uppercase transition-all active:scale-[0.98]"
+            style={{ background: 'var(--accent)', color: '#0a0a0a' }}
+          >
+            {saved ? '✓ LOGGED' : 'LOG ENTRY'}
+          </button>
+          {griefLog.length > 0 && (
+            <div className="mt-4 space-y-3">
+              <p className="text-[9px] font-black uppercase tracking-widest" style={{ color: 'var(--text-muted)' }}>Previous Entries ({griefLog.length})</p>
+              {griefLog.slice(0, 3).map((e, i) => (
+                <div key={i} className="p-3 rounded-xl" style={{ background: 'var(--surface-2)' }}>
+                  <p className="text-[9px] font-black mb-1" style={{ color: 'var(--accent)' }}>{e.date}</p>
+                  <p className="text-[11px] leading-snug" style={{ color: 'var(--text-secondary)' }}>{e.text}</p>
+                </div>
+              ))}
+            </div>
+          )}
+        </div>
+      )}
+
+      {/* WEEKLY DATA TAB */}
+      {activeTab === "data" && (
+        <div>
+          <p className="text-[10px] font-medium mb-3" style={{ color: 'var(--text-muted)' }}>
+            Pull every Sunday. The data is the judge.
+          </p>
+          <div className="space-y-2">
+            {[
+              { key: "spotify" as const, label: "Spotify Followers", placeholder: "e.g. 1,247" },
+              { key: "saves" as const, label: "Best Save Rate %", placeholder: "e.g. 4.2%" },
+              { key: "doordash" as const, label: "DoorDash Revenue (mo)", placeholder: "e.g. $1,840" },
+              { key: "geo" as const, label: "Gorilla Geo God-Tier Responses", placeholder: "e.g. 3 this week" },
+            ].map(f => (
+              <div key={f.key}>
+                <label className="text-[9px] font-black uppercase tracking-wider block mb-1" style={{ color: 'var(--text-muted)' }}>{f.label}</label>
+                <input
+                  value={weeklyData[f.key]}
+                  onChange={e => setWeeklyData(prev => ({ ...prev, [f.key]: e.target.value }))}
+                  placeholder={f.placeholder}
+                  className="w-full text-[12px] px-3 py-2 rounded-xl border outline-none"
+                  style={{ background: 'var(--surface-2)', borderColor: 'var(--border)', color: 'var(--text-primary)' }}
+                />
+              </div>
+            ))}
+          </div>
+          <button
+            onClick={submitData}
+            className="mt-3 w-full py-2.5 rounded-xl text-[11px] font-black tracking-wider uppercase transition-all active:scale-[0.98]"
+            style={{ background: 'var(--accent)', color: '#0a0a0a' }}
+          >
+            {saved ? '✓ LOGGED' : 'LOG NUMBERS'}
+          </button>
+          {weeklyLog.length > 0 && (
+            <div className="mt-4 space-y-2">
+              <p className="text-[9px] font-black uppercase tracking-widest" style={{ color: 'var(--text-muted)' }}>History</p>
+              {weeklyLog.slice(0, 4).map((e, i) => (
+                <div key={i} className="p-3 rounded-xl" style={{ background: 'var(--surface-2)' }}>
+                  <p className="text-[9px] font-black mb-1" style={{ color: 'var(--accent)' }}>{e.date}</p>
+                  <div className="grid grid-cols-2 gap-x-4 gap-y-0.5">
+                    {e.data.spotify && <p className="text-[10px]" style={{ color: 'var(--text-secondary)' }}>Followers: <span style={{ color: 'var(--text-primary)' }}>{e.data.spotify}</span></p>}
+                    {e.data.saves && <p className="text-[10px]" style={{ color: 'var(--text-secondary)' }}>Save Rate: <span style={{ color: 'var(--text-primary)' }}>{e.data.saves}</span></p>}
+                    {e.data.doordash && <p className="text-[10px]" style={{ color: 'var(--text-secondary)' }}>DoorDash: <span style={{ color: 'var(--text-primary)' }}>{e.data.doordash}</span></p>}
+                    {e.data.geo && <p className="text-[10px]" style={{ color: 'var(--text-secondary)' }}>Geo Hits: <span style={{ color: 'var(--text-primary)' }}>{e.data.geo}</span></p>}
+                  </div>
+                </div>
+              ))}
+            </div>
+          )}
+        </div>
+      )}
+    </div>
   );
 }
 
