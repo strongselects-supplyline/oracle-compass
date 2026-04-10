@@ -1,0 +1,687 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>SOVEREIGN BODY CODEX — past.El noir Records</title>
+    <style>
+        * { margin: 0; padding: 0; box-sizing: border-box; }
+
+        body {
+            font-family: Georgia, serif;
+            background-color: #f8f6f0;
+            color: #1a1a1a;
+            line-height: 1.7;
+            padding: 20px;
+        }
+
+        .container { max-width: 900px; margin: 0 auto; }
+
+        .masthead {
+            text-align: center;
+            margin-bottom: 40px;
+            padding-bottom: 20px;
+            border-bottom: 2px solid #a07818;
+        }
+
+        .label-os {
+            font-family: 'Courier New', monospace;
+            font-size: 12px;
+            letter-spacing: 2px;
+            color: #a07818;
+            text-transform: uppercase;
+            margin-bottom: 10px;
+            font-weight: bold;
+        }
+
+        h1 {
+            font-size: 42px;
+            color: #1e6b4a;
+            margin-bottom: 5px;
+            font-weight: bold;
+            letter-spacing: -1px;
+        }
+
+        .subtitle {
+            font-family: 'Courier New', monospace;
+            font-size: 13px;
+            color: #a07818;
+            letter-spacing: 1px;
+            text-transform: uppercase;
+            margin-top: 8px;
+        }
+
+        /* SECTION HEADERS */
+        .section-header {
+            background-color: #1e6b4a;
+            color: #f8f6f0;
+            padding: 20px 25px;
+            margin: 40px 0 0 0;
+        }
+
+        .section-header h2 {
+            font-size: 22px;
+            font-weight: bold;
+            color: #c9a227;
+            text-transform: uppercase;
+            letter-spacing: 2px;
+            margin-bottom: 5px;
+        }
+
+        .section-header .section-subtitle {
+            font-size: 14px;
+            color: #f8f6f0;
+            font-style: italic;
+            opacity: 0.85;
+        }
+
+        /* DIAGNOSTIC CARDS */
+        .diag-card {
+            background-color: white;
+            border-left: 5px solid #a07818;
+            padding: 25px 30px;
+            margin-bottom: 20px;
+            box-shadow: 0 2px 8px rgba(0,0,0,0.05);
+        }
+
+        .diag-card h3 {
+            color: #1e6b4a;
+            font-size: 18px;
+            font-weight: bold;
+            margin-bottom: 12px;
+            text-transform: uppercase;
+            letter-spacing: 0.5px;
+        }
+
+        .diag-card p {
+            color: #333;
+            font-size: 15px;
+            margin-bottom: 10px;
+            line-height: 1.7;
+        }
+
+        /* STATUS INDICATORS */
+        .status-row {
+            display: flex;
+            gap: 12px;
+            margin: 16px 0;
+            flex-wrap: wrap;
+        }
+
+        .status-pill {
+            padding: 6px 14px;
+            border-radius: 20px;
+            font-family: 'Courier New', monospace;
+            font-size: 11px;
+            font-weight: bold;
+            text-transform: uppercase;
+            letter-spacing: 1px;
+        }
+
+        .status-green { background-color: #d4edda; color: #155724; }
+        .status-yellow { background-color: #fff3cd; color: #856404; }
+        .status-red { background-color: #f8d7da; color: #721c24; }
+        .status-gold { background-color: #fff8e1; color: #7d5a00; border: 1px solid #c9a227; }
+
+        /* RULES TABLE */
+        .rules-table {
+            width: 100%;
+            border-collapse: collapse;
+            margin: 20px 0;
+            font-size: 14px;
+        }
+
+        .rules-table th {
+            background-color: #1e6b4a;
+            color: #c9a227;
+            padding: 10px 14px;
+            text-align: left;
+            font-family: 'Courier New', monospace;
+            font-size: 11px;
+            text-transform: uppercase;
+            letter-spacing: 1px;
+        }
+
+        .rules-table td {
+            padding: 10px 14px;
+            border-bottom: 1px solid #e0ddd5;
+            vertical-align: top;
+            line-height: 1.5;
+        }
+
+        .rules-table tr:nth-child(even) td { background-color: #fafaf7; }
+
+        .rules-table .label-col {
+            font-weight: bold;
+            color: #1e6b4a;
+            white-space: nowrap;
+            width: 180px;
+        }
+
+        /* CALLOUT */
+        .callout {
+            background-color: #fffbf0;
+            border-left: 4px solid #a07818;
+            padding: 16px 20px;
+            margin: 20px 0;
+            font-size: 15px;
+            line-height: 1.6;
+        }
+
+        .callout-title {
+            font-weight: bold;
+            color: #1e6b4a;
+            margin-bottom: 6px;
+            text-transform: uppercase;
+            font-size: 11px;
+            letter-spacing: 1px;
+        }
+
+        /* PHASE UNLOCK GRID */
+        .phase-grid {
+            display: grid;
+            grid-template-columns: 140px 1fr;
+            gap: 0;
+            margin: 20px 0;
+            border: 1px solid #e0ddd5;
+        }
+
+        .phase-label {
+            background-color: #1e6b4a;
+            color: #c9a227;
+            padding: 16px;
+            font-family: 'Courier New', monospace;
+            font-size: 11px;
+            font-weight: bold;
+            text-transform: uppercase;
+            letter-spacing: 1px;
+            display: flex;
+            align-items: center;
+            border-bottom: 1px solid rgba(255,255,255,0.1);
+        }
+
+        .phase-content {
+            padding: 16px;
+            font-size: 14px;
+            line-height: 1.6;
+            border-bottom: 1px solid #e0ddd5;
+            background-color: white;
+        }
+
+        .phase-content strong { color: #1e6b4a; }
+
+        /* SIGNAL DECODER */
+        .signal-row {
+            display: grid;
+            grid-template-columns: 120px 1fr 1fr;
+            gap: 0;
+            border-bottom: 1px solid #e0ddd5;
+        }
+
+        .signal-row:first-child {
+            background-color: #1e6b4a;
+        }
+
+        .signal-row:first-child .signal-cell {
+            color: #c9a227;
+            font-family: 'Courier New', monospace;
+            font-size: 11px;
+            font-weight: bold;
+            text-transform: uppercase;
+            letter-spacing: 1px;
+        }
+
+        .signal-cell {
+            padding: 12px 16px;
+            font-size: 14px;
+            line-height: 1.5;
+            border-right: 1px solid #e0ddd5;
+        }
+
+        .signal-cell:last-child { border-right: none; }
+
+        .signal-type {
+            font-weight: bold;
+            font-family: 'Courier New', monospace;
+            font-size: 13px;
+        }
+
+        .sig-real { color: #721c24; }
+        .sig-stress { color: #856404; }
+        .sig-detox { color: #0c5460; }
+
+        /* SECTION DIVIDER */
+        .section-body {
+            margin-bottom: 40px;
+        }
+
+        /* FOOTER */
+        .footer {
+            text-align: center;
+            padding-top: 30px;
+            border-top: 2px solid #a07818;
+            margin-top: 50px;
+            font-size: 12px;
+            color: #666;
+        }
+
+        .footer-line {
+            margin-bottom: 8px;
+            font-family: 'Courier New', monospace;
+            letter-spacing: 1px;
+        }
+
+        strong { color: #1e6b4a; font-weight: bold; }
+        em { font-style: italic; color: #444; }
+
+        @media (max-width: 768px) {
+            body { padding: 15px; }
+            h1 { font-size: 30px; }
+            .phase-grid { grid-template-columns: 1fr; }
+            .phase-label { border-bottom: none; }
+            .signal-row { grid-template-columns: 1fr; }
+            .rules-table .label-col { width: auto; white-space: normal; }
+        }
+    </style>
+</head>
+<body>
+<div class="container">
+
+    <!-- MASTHEAD -->
+    <div class="masthead">
+        <div class="label-os">past.El noir Records · Label OS</div>
+        <h1>SOVEREIGN BODY CODEX</h1>
+        <div class="subtitle">Full Kinetic Chain Diagnostic Manual — April 2026</div>
+    </div>
+
+    <!-- SECTION 1: LOWER CHAIN DIAGNOSTIC -->
+    <div class="section-header">
+        <h2>Section I: Lower Chain Diagnostic</h2>
+        <div class="section-subtitle">Right knee meniscal history · Left knee infrapatellar fat pad · Pelvic floor · Fascial tension map</div>
+    </div>
+    <div class="section-body">
+
+        <div class="diag-card">
+            <h3>Right Knee — Meniscal History</h3>
+            <p>Multiple surgeries over approximately 5 years due to improper initial healing. Fully recovered as of April 2026. Currently in active fascial and muscular re-activation. The kinetic chain around this knee has years of learned compensation patterns that must be systematically released and retrained, not forced.</p>
+            <div class="status-row">
+                <div class="status-pill status-green">Current Status: Recovered</div>
+                <div class="status-pill status-gold">Phase: Re-Activation</div>
+            </div>
+            <table class="rules-table">
+                <tr>
+                    <th class="label-col">Rule</th>
+                    <th>Protocol</th>
+                </tr>
+                <tr>
+                    <td class="label-col">Squat Depth</td>
+                    <td>No below-parallel until Phase 2 (Anbu rank) and only after 6+ consecutive green pre-movement checks. Start wall sits at parallel or above.</td>
+                </tr>
+                <tr>
+                    <td class="label-col">Single-Leg Work</td>
+                    <td>Yellow or Red pre-movement check = no single-leg work that day. Green only.</td>
+                </tr>
+                <tr>
+                    <td class="label-col">Plyometrics</td>
+                    <td>Not available until Kage rank minimum. No jumping, bounding, or lateral cutting in Phase 1 or 2.</td>
+                </tr>
+                <tr>
+                    <td class="label-col">Ginga (Capoeira)</td>
+                    <td>Phase 3 (Kage → S-Rank) only. Must have 6+ weeks of consistent green checks before introduction.</td>
+                </tr>
+                <tr>
+                    <td class="label-col">Compensation Watch</td>
+                    <td>If right hip is notably tighter than left, or right foot pronates more than left — the knee is still offloading. Run Practice 08 before movement block that day.</td>
+                </tr>
+            </table>
+        </div>
+
+        <div class="diag-card">
+            <h3>Left Knee — Infrapatellar Fat Pad (Hoffa's Pad) Compression</h3>
+            <p>Infrapatellar fat pad injury (approximately 1 year prior, April 2025). The Hoffa's fat pad is the primary shock-absorber beneath the patella. Compression injuries create chronic irritation when the knee is forced into full extension under load — the pad gets pinched. This is a <strong>permanent protocol adjustment</strong>, not a temporary restriction.</p>
+            <div class="status-row">
+                <div class="status-pill status-green">Status: Healed</div>
+                <div class="status-pill status-gold">Permanent Protocol: Active</div>
+            </div>
+            <table class="rules-table">
+                <tr>
+                    <th class="label-col">Rule</th>
+                    <th>Protocol</th>
+                </tr>
+                <tr>
+                    <td class="label-col">Full Extension</td>
+                    <td>Never lock out the left knee under load. Stop 10–15 degrees before full extension on all squats, leg work, and standing exercises. This applies permanently, regardless of rank.</td>
+                </tr>
+                <tr>
+                    <td class="label-col">Kneeling</td>
+                    <td>Kneeling is available — animal flow and knees-over-toes work has been completed and the knee handles it. Use a mat for comfort on hard surfaces, not as a structural restriction. No protection protocol required.</td>
+                </tr>
+                <tr>
+                    <td class="label-col">Heel Raises</td>
+                    <td>Fine. The fat pad is not stressed by plantarflexion. Use heel raises freely for calf activation.</td>
+                </tr>
+                <tr>
+                    <td class="label-col">Split Squats</td>
+                    <td>Front leg (left) only. Back knee (left, when applicable) must be cushioned. Keep depth shallow — 2–3 inch drop only.</td>
+                </tr>
+                <tr>
+                    <td class="label-col">Flare Signs</td>
+                    <td>Anterior knee pain just below kneecap that increases with knee extension or prolonged standing. If present: ice, elevate, no leg work for 48 hours.</td>
+                </tr>
+            </table>
+        </div>
+
+        <div class="diag-card">
+            <h3>Pelvic Floor — The Master Lock</h3>
+            <p>The pelvic floor is the compression hub of the lower chain. When the hip flexors are tight (from driving, sitting), the pelvic floor enters chronic tension — Mula Bandha involuntarily engaged. This locks breath support, degrades vocal power, and creates upward compression through the lumbar spine. The right knee compensation pattern also feeds into this: any limp or lateral offloading over years of surgical recovery shifts pelvic alignment.</p>
+            <div class="callout">
+                <div class="callout-title">The Two Modes of the Pelvic Floor</div>
+                <div class="callout-text"><strong>Locked (Bad Default):</strong> Chronic tonic contraction from hip tightness, stress, and sitting. Blocks breath support. Locks the Appoggio. Increases vocal cord tension. Makes the body feel "braced."<br><br>
+                <strong>Responsive (Target State):</strong> Drops and opens on inhale (passive unlock), rises and engages on exhale (Mula Bandha), releases completely between breaths. This is what Practice 08 Step 5 trains daily.</div>
+            </div>
+            <table class="rules-table">
+                <tr>
+                    <th class="label-col">Diagnostic</th>
+                    <th>What to Check</th>
+                </tr>
+                <tr>
+                    <td class="label-col">Morning Baseline</td>
+                    <td>Upon waking, before rising: take one deep inhale. Does your lower belly drop outward? (Good — floor is responsive.) Does it feel blocked or tight? (Floor is locked — begin Practice 08 before anything else.)</td>
+                </tr>
+                <tr>
+                    <td class="label-col">Vocal Booth Check</td>
+                    <td>Unlocked knees immediately releases pelvic floor tension. If voice feels "thin" or breath runs out early — check knee lock first before adjusting technique.</td>
+                </tr>
+                <tr>
+                    <td class="label-col">Stress Spike</td>
+                    <td>During detox stress waves or high-anxiety days, the floor will lock before you consciously notice it. The first signal is often jaw clenching or breath shortening — these are upstream symptoms of the same clench.</td>
+                </tr>
+            </table>
+        </div>
+    </div>
+
+    <!-- SECTION 2: UPPER CHAIN DIAGNOSTIC -->
+    <div class="section-header">
+        <h2>Section II: Upper Chain Diagnostic</h2>
+        <div class="section-subtitle">Forward head · Rolled shoulders · Jaw clamp · C-spine compression · Studio driver collapse</div>
+    </div>
+    <div class="section-body">
+
+        <div class="diag-card">
+            <h3>The Caveman Hunch — Structural Pattern</h3>
+            <p>Thousands of hours hunched over a DAW combined with DoorDash driving posture produces a predictable collapse: forward head position, protracted and internally rotated shoulders, shortened pectorals, inhibited rhomboids and lower trapezius. The visual result is a C-curve from neck to mid-back. The functional result is degraded breath capacity, vocal cord tension, and reduced stage presence.</p>
+            <div class="status-row">
+                <div class="status-pill status-yellow">Active Pattern — In Correction</div>
+                <div class="status-pill status-gold">Timeline: 6–12 weeks to structural change</div>
+            </div>
+            <table class="rules-table">
+                <tr>
+                    <th class="label-col">Zone</th>
+                    <th>Pattern</th>
+                    <th>Correction (Practice 09)</th>
+                </tr>
+                <tr>
+                    <td class="label-col">Head/Neck</td>
+                    <td>Forward head — ear in front of shoulder</td>
+                    <td>C-spine decompress + Wall Stand Reset daily</td>
+                </tr>
+                <tr>
+                    <td class="label-col">Shoulders</td>
+                    <td>Protracted/internally rotated — rolled forward</td>
+                    <td>Door Frame Rows + Floor Prone Angels</td>
+                </tr>
+                <tr>
+                    <td class="label-col">Mid-Back</td>
+                    <td>Inhibited rhomboids/lower traps — switched off</td>
+                    <td>Floor Prone Angels — primary activation</td>
+                </tr>
+                <tr>
+                    <td class="label-col">Jaw/Neck</td>
+                    <td>Jaw-neck coupling — tension travels between both</td>
+                    <td>Jaw-Neck Decoupling (Practice 09, Step 5) daily</td>
+                </tr>
+            </table>
+        </div>
+
+        <div class="diag-card">
+            <h3>Vocal Chain — Alexander Technique Targets</h3>
+            <p>The Appoggio vocal support system (intercostal breath anchor) fails when the jaw clamps, the neck tenses, or the C-spine is compressed. All three are downstream effects of the Caveman Hunch. Practice 09 is a prerequisite for Practice 05 (Pre-Flight Somatic Matrix) — they target the same chain from different directions.</p>
+            <table class="rules-table">
+                <tr>
+                    <th class="label-col">Diagnostic</th>
+                    <th>Test</th>
+                    <th>Fail Signal</th>
+                </tr>
+                <tr>
+                    <td class="label-col">Jaw Check</td>
+                    <td>Thumb under chin soft triangle. Say "Ah." Rotate head L/R.</td>
+                    <td>Tissue hardens into a ball. Root tongue is choking the airway.</td>
+                </tr>
+                <tr>
+                    <td class="label-col">C-Spine Length</td>
+                    <td>"String from crown" — does chin drop slightly toward parallel?</td>
+                    <td>Chin juts forward. Larynx is compressed. Voice will sit in the throat.</td>
+                </tr>
+                <tr>
+                    <td class="label-col">Breath Anchor</td>
+                    <td>Hands on lower ribs. Inhale. Do ribs expand laterally?</td>
+                    <td>Shoulders rise. Clavicular breathing. Breath support is gone.</td>
+                </tr>
+                <tr>
+                    <td class="label-col">Soft Palate</td>
+                    <td>Beginning of yawn — does the back of the mouth lift 20%?</td>
+                    <td>No lift. Resonance chamber is closed. Voice sounds pinched or nasal.</td>
+                </tr>
+            </table>
+        </div>
+
+        <div class="diag-card">
+            <h3>DoorDash Driver's Recovery Protocol</h3>
+            <p>A 3-hour DoorDash block creates specific damage: cervical spine locked in slight flexion + rotation (checking mirrors), shoulders rolled forward on steering wheel, lumbar compressed in seat. Entering the vocal booth or DAW directly after without a reset means recording with a kinetically compromised instrument.</p>
+            <div class="callout">
+                <div class="callout-title">Minimum Reset (3 Minutes)</div>
+                <div class="callout-text">
+                    1. Park. Stay seated. Roll shoulders backward 5 times.<br>
+                    2. Drop chin to chest, hold 15 sec. Tilt right ear to right shoulder, hold 15 sec. Repeat left.<br>
+                    3. Step out of vehicle. Door Frame Row against any door frame — 12 reps.<br>
+                    4. Wall Stand Reset against any wall — 30 seconds.<br>
+                    5. Jaw-Neck Decoupling check — thumb under chin, rotate. Must be soft before entering booth.
+                </div>
+            </div>
+        </div>
+    </div>
+
+    <!-- SECTION 3: SOMATIC SIGNAL DECODER -->
+    <div class="section-header">
+        <h2>Section III: Somatic Signal Decoder</h2>
+        <div class="section-subtitle">Real pain vs. somatized stress vs. detox spike — how to tell the difference</div>
+    </div>
+    <div class="section-body">
+
+        <div class="diag-card">
+            <h3>The Three Signal Types</h3>
+            <p>Since removing weed eliminated the interoceptive dampener, raw biological signals now run unmediated. The body is louder than it was before. This is not a malfunction — it's accurate data. The problem is that three different signal types can feel identical on the surface. Misreading them leads either to training through real injury (bad) or stopping for stress signals (also bad). Learn to distinguish.</p>
+
+            <div class="signal-row">
+                <div class="signal-cell"><strong>Signal Type</strong></div>
+                <div class="signal-cell"><strong>Characteristics</strong></div>
+                <div class="signal-cell"><strong>Response</strong></div>
+            </div>
+            <div class="signal-row">
+                <div class="signal-cell"><span class="signal-type sig-real">Real Pain</span></div>
+                <div class="signal-cell">Sharp, localized, bright. Increases with movement or load. Specific anatomical location — "the outside of the right knee" not "my whole leg." Consistent across 5+ minutes regardless of breathing or attention.</div>
+                <div class="signal-cell"><strong>Stop. Do not train. Elevate. If present for 48+ hours, assess with professional. No heroics.</strong></div>
+            </div>
+            <div class="signal-row">
+                <div class="signal-cell"><span class="signal-type sig-stress">Somatized Stress</span></div>
+                <div class="signal-cell">Dull, diffuse, moves around. Often bilateral (both knees at once). Rises and falls with breath. Correlates with emotional state — spikes during high-anxiety moments, release tasks, grief waves, or detox cravings. Decreases within 5 minutes of Practice 08 Step 5.</div>
+                <div class="signal-cell"><strong>Continue gently. This is the body processing what the mind hasn't fully released. Movement helps. Stopping reinforces the association.</strong></div>
+            </div>
+            <div class="signal-row">
+                <div class="signal-cell"><span class="signal-type sig-detox">Detox Spike</span></div>
+                <div class="signal-cell">Knee tension that rises in waves, often timed with craving cycles (especially weeks 1–4 of sobriety gap). Body-wide restlessness alongside the joint sensation. Not localized to one anatomical point. Often accompanied by jaw clenching and pelvic floor lock simultaneously.</div>
+                <div class="signal-cell"><strong>Do not train through this — rest and the banana protocol. The joint sensation is the craving speaking. It clears with time, hydration, and protein.</strong></div>
+            </div>
+
+            <div class="callout">
+                <div class="callout-title">The 5-Minute Test</div>
+                <div class="callout-text">Lie down. Elevate both legs. Do 10 pelvic floor unlock breaths. <br>Then ask: Is the signal the same? → Real pain. <br>Has it decreased? → Somatized stress. <br>Did it shift location or become whole-body restlessness? → Detox spike.</div>
+            </div>
+        </div>
+
+        <div class="diag-card">
+            <h3>The Grief-Body Link</h3>
+            <p>The primary trauma event — biological father located and murdered before first contact — has a known somatic signature in the body. Unprocessed grief and the freeze response of unresolved anticipatory connection lodge specifically in the hips, sternum, and throat. These are the same zones that block the breath anchor, the vocal resonance, and the pelvic floor unlock. The practices in this Codex are not separate from grief processing — they are part of the same protocol.</p>
+            <div class="callout">
+                <div class="callout-title">When Body Work Triggers Emotion</div>
+                <div class="callout-text">Hip flexor release (Practice 08, Step 4) and the pelvic floor breath sometimes surface unexpected emotion — sadness, anger, pressure in the chest or throat. This is correct. The fascia holds what the nervous system stores. <strong>Do not stop the practice when this happens. Breathe into it. It is the work.</strong> Note the experience afterward in the Sunday journaling protocol.</div>
+            </div>
+        </div>
+    </div>
+
+    <!-- SECTION 4: PHASE-LOCKED MOVEMENT PROGRESSIONS -->
+    <div class="section-header">
+        <h2>Section IV: Phase-Locked Movement Progressions</h2>
+        <div class="section-subtitle">What opens at each rank · What is not yet earned · What unlocks next</div>
+    </div>
+    <div class="section-body">
+
+        <div class="diag-card">
+            <h3>Movement Gates by Rank</h3>
+            <div class="phase-grid">
+                <div class="phase-label">Jonin → Anbu<br>(Phase 1)</div>
+                <div class="phase-content">
+                    <strong>Available:</strong> Wall Sit (parallel+), Floor Prone Angels, Pike Push-Ups, Door Frame Rows, Dead Bug, Supported Split Squat (2-inch depth only), all Practice 08 fascial release, all Practice 09 correctives.<br>
+                    <strong>Locked:</strong> Below-parallel squats, single-leg work on Yellow/Red days, all plyometrics, Tai Chi, Capoeira, Muay Thai.<br>
+                    <strong>Unlock Condition:</strong> 3 consecutive weeks of daily green pre-movement checks. Consistent Practice 08 daily.
+                </div>
+                <div class="phase-label">Anbu → Kage<br>(Phase 2)</div>
+                <div class="phase-content">
+                    <strong>Newly Available:</strong> Tai Chi (10-min Yang short form at start of movement block), wall sit depth increase (+5 degrees per month if right knee green), Goblet Squat (light weight, above parallel).<br>
+                    <strong>Still Locked:</strong> Plyometrics, Capoeira ginga, Muay Thai.<br>
+                    <strong>Unlock Condition:</strong> Tai Chi instruction — find an instructor, not YouTube-only. The precision of weight transfer matters for knee safety.
+                </div>
+                <div class="phase-label">Kage → S-Rank<br>(Phase 3)</div>
+                <div class="phase-content">
+                    <strong>Newly Available:</strong> Capoeira ginga (footwork only, no kicks, no acrobatics), moderate squat depth, lateral movement patterns.<br>
+                    <strong>Right Knee Gate:</strong> Must have 6+ weeks of consistent green checks before ginga begins. The rotational loading is the most advanced knee stress in the program.<br>
+                    <strong>Still Locked:</strong> Full Capoeira acrobatics, Muay Thai, high-impact plyometrics.
+                </div>
+                <div class="phase-label">S-Rank → God of Shinobi<br>(Phase 4)</div>
+                <div class="phase-content">
+                    <strong>Newly Available:</strong> Muay Thai clinch and pad work (with instructor). Standing clinch protocol only — no lateral cutting patterns that stress the meniscus.<br>
+                    <strong>Left Knee Note:</strong> Kneeling and floor work is available — animal flow and knees-over-toes training has been completed. Primary caution remains full extension under load (locking out), not kneeling or deep flexion.<br>
+                    <strong>Unlock Condition:</strong> Find an actual instructor. This phase cannot be self-taught safely given the bilateral knee history.
+                </div>
+            </div>
+        </div>
+
+        <div class="diag-card">
+            <h3>V-Taper Aesthetic Progression</h3>
+            <p>The target physique is the V-taper — broad shoulders, developed upper back, narrow functional waist. This is built entirely through upper-body pushing/pulling and mid-back activation, with zero need for high-impact lower body work. The lower chain progressions serve joint health and kinetic integration; the upper chain work builds the visible structure.</p>
+            <table class="rules-table">
+                <tr>
+                    <th>Movement</th>
+                    <th>Target</th>
+                    <th>Phase Available</th>
+                </tr>
+                <tr>
+                    <td>Floor Prone Angels</td>
+                    <td>Mid-back reactivation, V-taper foundation</td>
+                    <td>Phase 1 (now)</td>
+                </tr>
+                <tr>
+                    <td>Door Frame Rows</td>
+                    <td>Rhomboids, lower traps — the "shelf" of the upper back</td>
+                    <td>Phase 1 (now)</td>
+                </tr>
+                <tr>
+                    <td>Pike Push-Ups</td>
+                    <td>Posterior deltoids, upper trap — shoulder width</td>
+                    <td>Phase 1 (now)</td>
+                </tr>
+                <tr>
+                    <td>Pull-Up Progressions</td>
+                    <td>Latissimus dorsi — the primary V-taper muscle</td>
+                    <td>Phase 2 (when shoulder chain is stable)</td>
+                </tr>
+                <tr>
+                    <td>Dips / Ring Dips</td>
+                    <td>Triceps, lower pecs — arm/chest definition</td>
+                    <td>Phase 2</td>
+                </tr>
+            </table>
+        </div>
+    </div>
+
+    <!-- SECTION 5: DOORDASHDRIVERRECOVERY -->
+    <div class="section-header">
+        <h2>Section V: The DoorDash Driver's Recovery Stack</h2>
+        <div class="section-subtitle">Specific protocols for steering-wheel posture damage · Per-block recovery · Season survival</div>
+    </div>
+    <div class="section-body">
+
+        <div class="diag-card">
+            <h3>What 3 Hours of Driving Actually Does</h3>
+            <p>DoorDash driving from 6:30–9 AM creates a specific kinetic insult: cervical spine locked with slight forward flexion, shoulders braced against wheel, hip flexors in constant contracted position from pedal operation, left knee repeatedly flexed/extended with load (clutch pattern in body even in automatics — the leg doesn't fully relax). By the end of the block, the body is a coiled spring pointed in entirely the wrong direction for music making.</p>
+
+            <table class="rules-table">
+                <tr>
+                    <th class="label-col">Zone Affected</th>
+                    <th>What Happens</th>
+                    <th>Recovery Priority</th>
+                </tr>
+                <tr>
+                    <td class="label-col">Cervical Spine</td>
+                    <td>Locked in forward flexion + rotation. Sub-occipitals (base of skull) in spasm.</td>
+                    <td>High — C-spine decompress before entering booth</td>
+                </tr>
+                <tr>
+                    <td class="label-col">Shoulders</td>
+                    <td>Steering wheel drives protraction — forward roll deepens with every block.</td>
+                    <td>High — Door Frame Row immediately post-block</td>
+                </tr>
+                <tr>
+                    <td class="label-col">Hip Flexors</td>
+                    <td>Locked short from sustained seat position. Pulls pelvic floor into tension.</td>
+                    <td>Medium — hip flexor release (Practice 08 Step 4) post-block</td>
+                </tr>
+                <tr>
+                    <td class="label-col">Left Knee</td>
+                    <td>Infrapatellar fat pad may be mildly compressed from seat pressure against dash. Minor only, but cumulative.</td>
+                    <td>Low — elevation not required unless flare present</td>
+                </tr>
+                <tr>
+                    <td class="label-col">Jaw / Voice</td>
+                    <td>City driving creates micro-stress events (traffic, navigation) that load the jaw and clamp the throat before you're aware of it.</td>
+                    <td>High if recording same day — jaw-neck decoupling is non-negotiable</td>
+                </tr>
+            </table>
+        </div>
+
+        <div class="diag-card">
+            <h3>Post-Block to Booth: Full Reset Sequence</h3>
+            <div class="callout">
+                <div class="callout-title">Total Time: 8 Minutes</div>
+                <div class="callout-text">
+                    <strong>In the car (1 min):</strong> Park. Shoulder rolls back x5. Chin to chest 15 sec. Right ear to shoulder 15 sec. Left ear 15 sec.<br><br>
+                    <strong>First door (2 min):</strong> Door Frame Row x12. Jaw-neck decoupling — thumb under chin, rotate until soft.<br><br>
+                    <strong>Floor (3 min):</strong> Hip flexor release, 90 sec/side. Pelvic floor unlock breath x10.<br><br>
+                    <strong>Wall (1 min):</strong> Wall Stand Reset 30 sec. Unlocked knees check — four-corner foot contact confirmed.<br><br>
+                    <strong>S3 Check-in (1 min):</strong> "I am [state]. I will [intention]." Then Practice 05 (Pre-Flight Somatic Matrix).<br><br>
+                    <strong>Then and only then: enter the booth.</strong>
+                </div>
+            </div>
+        </div>
+    </div>
+
+    <!-- FOOTER -->
+    <div class="footer">
+        <div class="footer-line">past.El noir Records · Sovereign Body Codex</div>
+        <div class="footer-line">Companion to: S-Rank Vocal Codex · Sovereignty Stack Manual · Sovereign Rank Scroll</div>
+        <div class="footer-line">April 2026 · Distributor: Amuse. Always has been.</div>
+    </div>
+
+</div>
+</body>
+</html>

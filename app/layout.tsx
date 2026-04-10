@@ -3,6 +3,7 @@ import { Geist } from "next/font/google";
 import "./globals.css";
 import BottomNav from "@/components/BottomNav";
 import OracleTrigger from "@/components/OracleTrigger";
+import BrainDumpInput from "@/components/BrainDumpInput";
 import ErrorBoundary from "@/components/ErrorBoundary";
 
 const geist = Geist({
@@ -40,6 +41,7 @@ export default function RootLayout({
         <a href="#main-content" className="skip-link">Skip to main content</a>
         <ErrorBoundary>
           <OracleTrigger />
+          <BrainDumpInput />
           <main id="main-content">
             {children}
           </main>

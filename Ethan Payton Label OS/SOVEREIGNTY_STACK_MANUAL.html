@@ -1,0 +1,1169 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>The Sovereignty Stack - Physical Practice Manual</title>
+    <style>
+        * {
+            margin: 0;
+            padding: 0;
+            box-sizing: border-box;
+        }
+
+        body {
+            font-family: Georgia, serif;
+            background-color: #f8f6f0;
+            color: #1a1a1a;
+            line-height: 1.7;
+            padding: 20px;
+        }
+
+        .container {
+            max-width: 900px;
+            margin: 0 auto;
+        }
+
+        /* MASTHEAD */
+        .masthead {
+            text-align: center;
+            margin-bottom: 40px;
+            padding-bottom: 20px;
+            border-bottom: 2px solid #a07818;
+        }
+
+        .label-os {
+            font-family: 'Courier New', monospace;
+            font-size: 12px;
+            letter-spacing: 2px;
+            color: #a07818;
+            text-transform: uppercase;
+            margin-bottom: 10px;
+            font-weight: bold;
+        }
+
+        h1 {
+            font-size: 42px;
+            color: #1e6b4a;
+            margin-bottom: 5px;
+            font-weight: bold;
+            letter-spacing: -1px;
+        }
+
+        .subtitle {
+            font-family: 'Courier New', monospace;
+            font-size: 13px;
+            color: #a07818;
+            letter-spacing: 1px;
+            text-transform: uppercase;
+            margin-top: 8px;
+        }
+
+        /* PRACTICE CARDS */
+        .practice {
+            background-color: white;
+            border-left: 5px solid #a07818;
+            border-radius: 0;
+            padding: 30px;
+            margin-bottom: 25px;
+            box-shadow: 0 2px 8px rgba(0,0,0,0.05);
+        }
+
+        .practice-header {
+            display: flex;
+            justify-content: space-between;
+            align-items: baseline;
+            margin-bottom: 20px;
+            border-bottom: 1px solid #e0ddd5;
+            padding-bottom: 12px;
+        }
+
+        .practice h2 {
+            color: #1e6b4a;
+            font-size: 24px;
+            font-weight: bold;
+            margin: 0;
+        }
+
+        .practice-time {
+            font-family: 'Courier New', monospace;
+            font-size: 11px;
+            color: #a07818;
+            text-transform: uppercase;
+            letter-spacing: 1px;
+        }
+
+        .context {
+            background-color: #f8f6f0;
+            border-left: 3px solid #c9a227;
+            padding: 15px;
+            margin-bottom: 20px;
+            font-style: italic;
+            font-size: 14px;
+            line-height: 1.6;
+        }
+
+        .context strong {
+            color: #1e6b4a;
+        }
+
+        /* STEPS */
+        .steps {
+            margin-bottom: 20px;
+        }
+
+        .step {
+            margin-bottom: 18px;
+            padding-left: 0;
+        }
+
+        .step-number {
+            display: inline-block;
+            width: 28px;
+            height: 28px;
+            background-color: #1e6b4a;
+            color: white;
+            text-align: center;
+            line-height: 28px;
+            border-radius: 50%;
+            font-weight: bold;
+            font-size: 14px;
+            margin-right: 12px;
+            flex-shrink: 0;
+        }
+
+        .step-content {
+            display: inline-block;
+            width: calc(100% - 50px);
+            vertical-align: top;
+        }
+
+        .step-title {
+            font-weight: bold;
+            color: #1a1a1a;
+            margin-bottom: 4px;
+        }
+
+        .step-description {
+            color: #333;
+            font-size: 15px;
+        }
+
+        /* CALLOUT BOXES */
+        .callout {
+            background-color: #fffbf0;
+            border-left: 4px solid #a07818;
+            padding: 18px;
+            margin: 20px 0;
+            border-radius: 0;
+            font-size: 15px;
+            line-height: 1.6;
+        }
+
+        .callout-title {
+            font-weight: bold;
+            color: #1e6b4a;
+            margin-bottom: 8px;
+            text-transform: uppercase;
+            font-size: 12px;
+            letter-spacing: 1px;
+        }
+
+        .callout-text {
+            color: #333;
+        }
+
+        /* COMPRESSED VERSION */
+        .compressed {
+            background-color: #f0f8f5;
+            border-left: 4px solid #1e6b4a;
+            padding: 15px;
+            margin: 20px 0;
+            font-size: 14px;
+        }
+
+        .compressed strong {
+            color: #1e6b4a;
+        }
+
+        /* RULES LIST */
+        .rules-list {
+            margin-left: 0;
+        }
+
+        .rules-list li {
+            margin-bottom: 15px;
+            padding-left: 0;
+            line-height: 1.6;
+        }
+
+        .rule-number {
+            display: inline-block;
+            font-weight: bold;
+            color: #1e6b4a;
+            margin-right: 8px;
+        }
+
+        /* QUICK REFERENCE */
+        .quick-reference {
+            background-color: #1e6b4a;
+            color: #f8f6f0;
+            padding: 40px 30px;
+            margin-top: 40px;
+            margin-bottom: 40px;
+            border-radius: 0;
+        }
+
+        .quick-reference h3 {
+            font-size: 18px;
+            font-weight: bold;
+            color: #c9a227;
+            text-transform: uppercase;
+            letter-spacing: 2px;
+            margin-bottom: 20px;
+            margin-top: 0;
+        }
+
+        .quick-reference h3:first-child {
+            margin-top: 0;
+        }
+
+        .sequence {
+            background-color: rgba(255,255,255,0.08);
+            border-left: 3px solid #c9a227;
+            padding: 15px;
+            margin-bottom: 25px;
+            font-family: 'Courier New', monospace;
+            font-size: 13px;
+            line-height: 1.8;
+        }
+
+        .sequence-title {
+            font-weight: bold;
+            color: #c9a227;
+            font-size: 12px;
+            text-transform: uppercase;
+            letter-spacing: 1px;
+            margin-bottom: 10px;
+        }
+
+        .sequence-steps {
+            color: #f8f6f0;
+        }
+
+        /* FOOTER */
+        .footer {
+            text-align: center;
+            padding-top: 30px;
+            border-top: 2px solid #a07818;
+            margin-top: 50px;
+            font-size: 12px;
+            color: #666;
+        }
+
+        .footer-line {
+            margin-bottom: 8px;
+            font-family: 'Courier New', monospace;
+            letter-spacing: 1px;
+        }
+
+        /* RESPONSIVE */
+        @media (max-width: 768px) {
+            body {
+                padding: 15px;
+            }
+
+            h1 {
+                font-size: 32px;
+            }
+
+            .practice {
+                padding: 20px;
+            }
+
+            .practice-header {
+                flex-direction: column;
+                align-items: flex-start;
+            }
+
+            .practice-time {
+                margin-top: 8px;
+            }
+
+            .step-content {
+                width: calc(100% - 50px);
+            }
+
+            .quick-reference {
+                padding: 25px 20px;
+            }
+
+            .sequence {
+                font-size: 12px;
+            }
+        }
+
+        /* EMPHASIS */
+        strong {
+            color: #1e6b4a;
+            font-weight: bold;
+        }
+
+        em {
+            font-style: italic;
+            color: #333;
+        }
+    </style>
+</head>
+<body>
+    <div class="container">
+        <!-- MASTHEAD -->
+        <div class="masthead">
+            <div class="label-os">past.El noir Records · Label OS</div>
+            <h1>THE SOVEREIGNTY STACK</h1>
+            <div class="subtitle">Physical Practice Manual — The How-To Scroll</div>
+        </div>
+
+        <!-- PRACTICE 01 -->
+        <div class="practice">
+            <div class="practice-header">
+                <h2>Practice 01: Jnana Mudra + OM Activation</h2>
+                <div class="practice-time">90 Seconds</div>
+            </div>
+
+            <div class="context">
+                <strong>The Captain's Chair Ignition.</strong> This is the first thing you do after drinking water. It replaces the doom-scroll. The purpose is to activate your nervous system intentionally rather than letting your phone do it.
+            </div>
+
+            <div class="steps">
+                <div class="step">
+                    <span class="step-number">1</span>
+                    <span class="step-content">
+                        <div class="step-title">Find Your Seat</div>
+                        <div class="step-description">Sit upright on the edge of your bed or a chair. Spine straight but not rigid. Feet flat on the floor.</div>
+                    </span>
+                </div>
+
+                <div class="step">
+                    <span class="step-number">2</span>
+                    <span class="step-content">
+                        <div class="step-title">Jnana Mudra — The Connection</div>
+                        <div class="step-description">Touch the tip of your index finger to the tip of your thumb on each hand, forming a circle. The other three fingers extend naturally, relaxed. Palms face upward, resting on your knees.</div>
+                    </span>
+                </div>
+
+                <div class="step">
+                    <span class="step-number">3</span>
+                    <span class="step-content">
+                        <div class="step-title">The Physics Behind It</div>
+                        <div class="step-description">The thumb represents universal consciousness (Brahman). The index finger represents individual consciousness (Atman). Connecting them symbolizes unity. Physiologically, it creates a closed electrical circuit in the body that calms the nervous system.</div>
+                    </span>
+                </div>
+
+                <div class="step">
+                    <span class="step-number">4</span>
+                    <span class="step-content">
+                        <div class="step-title">Close Your Eyes & Breath In</div>
+                        <div class="step-description">Close your eyes. Take one full breath in through the nose.</div>
+                    </span>
+                </div>
+
+                <div class="step">
+                    <span class="step-number">5</span>
+                    <span class="step-content">
+                        <div class="step-title">Chant the OM</div>
+                        <div class="step-description">On the exhale, chant "OM" (pronounced AUM — three sounds blending together). "Ahhh" starts in the belly, "Ohhh" rises to the chest, "Mmmm" resonates in the skull. Feel the vibration physically in each zone.</div>
+                    </span>
+                </div>
+
+                <div class="step">
+                    <span class="step-number">6</span>
+                    <span class="step-content">
+                        <div class="step-title">Mula Bandha — The Root Lock</div>
+                        <div class="step-description">As you chant, gently engage the muscles of your pelvic floor — the same muscles you'd use to stop urinating mid-stream. Hold this light contraction through the entire OM. This is <strong>not a clench</strong> — it's a <strong>lift</strong>. Like pulling energy upward from the base of your spine.</div>
+                    </span>
+                </div>
+
+                <div class="step">
+                    <span class="step-number">7</span>
+                    <span class="step-content">
+                        <div class="step-title">Repeat</div>
+                        <div class="step-description">Do 3–5 OMs total. Each one should last 8–15 seconds (one full exhale).</div>
+                    </span>
+                </div>
+
+                <div class="step">
+                    <span class="step-number">8</span>
+                    <span class="step-content">
+                        <div class="step-title">Sit in Silence</div>
+                        <div class="step-description">After the final OM, sit in silence for 10 seconds with your eyes closed. Feel the residual vibration.</div>
+                    </span>
+                </div>
+
+                <div class="step">
+                    <span class="step-number">9</span>
+                    <span class="step-content">
+                        <div class="step-title">Open Your Eyes</div>
+                        <div class="step-description">You are now in the Captain's Chair. You chose your first input of the day. Not your phone. Not anxiety. <strong>You.</strong></div>
+                    </span>
+                </div>
+            </div>
+
+            <div class="callout">
+                <div class="callout-title">What It Should Feel Like</div>
+                <div class="callout-text">A gentle buzzing in your chest and skull after the OMs. A sense of being "landed" in your body. If you feel dizzy, you're pushing too hard — ease back on the exhale pressure.</div>
+            </div>
+
+            <div class="compressed">
+                <strong>Compressed Version (DoorDash by 6:30 AM):</strong> 3 OMs only, 60 seconds total. Same mudra, same Mula Bandha. Skip the 10-second silence. Stand up and go.
+            </div>
+        </div>
+
+        <!-- PRACTICE 02 -->
+        <div class="practice">
+            <div class="practice-header">
+                <h2>Practice 02: Nadi Shodhana</h2>
+                <div class="practice-time">5 Minutes</div>
+            </div>
+
+            <div class="context">
+                <strong>Alternate Nostril Breathing.</strong> This balances the autonomic nervous system. Left nostril = parasympathetic (calm). Right nostril = sympathetic (alert). Alternating brings them into equilibrium. This is the single most effective breathwork for ADHD executive function.
+            </div>
+
+            <div class="steps">
+                <div class="step">
+                    <span class="step-number">1</span>
+                    <span class="step-content">
+                        <div class="step-title">Return to Position</div>
+                        <div class="step-description">Sit in the same position as Practice 01. Spine straight, feet flat.</div>
+                    </span>
+                </div>
+
+                <div class="step">
+                    <span class="step-number">2</span>
+                    <span class="step-content">
+                        <div class="step-title">Left Hand: Jnana Mudra</div>
+                        <div class="step-description">Jnana Mudra on your left knee (same position as before).</div>
+                    </span>
+                </div>
+
+                <div class="step">
+                    <span class="step-number">3</span>
+                    <span class="step-content">
+                        <div class="step-title">Right Hand: Vishnu Mudra</div>
+                        <div class="step-description">Fold your index finger and middle finger into your palm. You'll use your right thumb to close your right nostril, and your right ring finger to close your left nostril.</div>
+                    </span>
+                </div>
+
+                <div class="step">
+                    <span class="step-number">4</span>
+                    <span class="step-content">
+                        <div class="step-title">The Breathing Cycle (One Round)</div>
+                        <div class="step-description">
+                            • Close right nostril with thumb. <strong>Inhale</strong> through left nostril for 4 counts.<br>
+                            • Close both nostrils. <strong>Hold</strong> for 4 counts.<br>
+                            • Release right nostril (keep left closed). <strong>Exhale</strong> through right nostril for 4 counts.<br>
+                            • Keep left closed. <strong>Inhale</strong> through right nostril for 4 counts.<br>
+                            • Close both nostrils. <strong>Hold</strong> for 4 counts.<br>
+                            • Release left nostril (keep right closed). <strong>Exhale</strong> through left nostril for 4 counts.<br>
+                            <strong>That is ONE complete round.</strong>
+                        </div>
+                    </span>
+                </div>
+
+                <div class="step">
+                    <span class="step-number">5</span>
+                    <span class="step-content">
+                        <div class="step-title">Duration & Rhythm</div>
+                        <div class="step-description">Repeat for 5 minutes (approximately 8–10 rounds at a relaxed pace). Use a mental count — "one-Mississippi, two-Mississippi" or just feel 4 heartbeats. Don't stress the precision. The rhythm matters more than the number.</div>
+                    </span>
+                </div>
+
+                <div class="step">
+                    <span class="step-number">6</span>
+                    <span class="step-content">
+                        <div class="step-title">Breathing Rules</div>
+                        <div class="step-description">Always through the nose. Quiet, smooth, no force. If one nostril is congested, breathe through whatever is open and let the other side gradually clear.</div>
+                    </span>
+                </div>
+
+                <div class="step">
+                    <span class="step-number">7</span>
+                    <span class="step-content">
+                        <div class="step-title">Finish</div>
+                        <div class="step-description">After 5 minutes, release both nostrils. Take 3 natural breaths with eyes closed. Open eyes.</div>
+                    </span>
+                </div>
+            </div>
+
+            <div class="callout">
+                <div class="callout-title">What It Should Feel Like</div>
+                <div class="callout-text">After 2–3 rounds, a noticeable calming. Mental chatter drops. The "spinning plates" feeling of ADHD quiets. By round 6–7, you may feel a symmetry — like both sides of your head are equally present. That's the balance.</div>
+            </div>
+
+            <div class="compressed">
+                <strong>If Congested (Allergies, Cold):</strong> Skip the holds. Just alternate inhale/exhale without the 4-count hold. Still works.
+            </div>
+        </div>
+
+        <!-- PRACTICE 03 -->
+        <div class="practice">
+            <div class="practice-header">
+                <h2>Practice 03: The S3 Check-In</h2>
+                <div class="practice-time">90 Seconds (Studio Days Only)</div>
+            </div>
+
+            <div class="context">
+                <strong>Metacognitive Awakening.</strong> This is the check-in from the Waking Mind Protocol. It fires before opening the DAW. The purpose is to prevent autopilot sessions — if you don't name your mental state, you'll operate on whatever state you woke up in, which during the detox window could be anxiety, scattered energy, or numb autopilot.
+            </div>
+
+            <div class="steps">
+                <div class="step">
+                    <span class="step-number">1</span>
+                    <span class="step-content">
+                        <div class="step-title">Remove Distractions + Set Mudra</div>
+                        <div class="step-description">Close your eyes. Form <strong>Dhyana Mudra</strong>: place your right hand in your left palm, both facing upward, thumbs lightly touching to form an oval. Rest in your lap. This is the witnessing mudra — used in Zen zazen and Vipassana for the same purpose you're using it now: to become the observer of your own mind, not the mind itself. No phone in hand.</div>
+                    </span>
+                </div>
+
+                <div class="step">
+                    <span class="step-number">2</span>
+                    <span class="step-content">
+                        <div class="step-title">System 1: Sensation</div>
+                        <div class="step-description">Ask yourself: "What is my <strong>BODY doing</strong> right now?" Don't think the answer. <strong>FEEL</strong> it. Notice your chest, your gut, your jaw, your shoulders. Is there tension? Ease? Heaviness? Buzzing? This is System 1 (S1) — sensation. Just observe.</div>
+                    </span>
+                </div>
+
+                <div class="step">
+                    <span class="step-number">3</span>
+                    <span class="step-content">
+                        <div class="step-title">System 2: Cognition</div>
+                        <div class="step-description">Ask yourself: "What am I trying to <strong>hold in working memory</strong> right now?" What's on your mental plate? DoorDash income? A lyric idea? Anxiety about the release? An unfinished conversation? This is System 2 (S2) — cognitive load. Just name it.</div>
+                    </span>
+                </div>
+
+                <div class="step">
+                    <span class="step-number">4</span>
+                    <span class="step-content">
+                        <div class="step-title">System 3: Metacognition</div>
+                        <div class="step-description">Ask yourself: "Am I <strong>monitoring or controlling</strong> right now?" Are you watching your mind (monitoring = healthy) or trying to force it into a state (controlling = counterproductive)? This is System 3 (S3) — metacognition. The question itself activates S3.</div>
+                    </span>
+                </div>
+
+                <div class="step">
+                    <span class="step-number">5</span>
+                    <span class="step-content">
+                        <div class="step-title">The Sentence</div>
+                        <div class="step-description">Finish this sentence out loud or in your head: "<strong>I am [state]. I will [intention today].</strong>"<br><br>Examples:<br>
+                        "I am scattered. I will focus on one vocal take at a time."<br>
+                        "I am anxious. I will use the anxiety as determination."<br>
+                        "I am numb. I will start with warmups and let the session wake me up."
+                        </div>
+                    </span>
+                </div>
+
+                <div class="step">
+                    <span class="step-number">6</span>
+                    <span class="step-content">
+                        <div class="step-title">Mark It Done</div>
+                        <div class="step-description">Tap the checkmark in Oracle Compass. You are now operating from System 3.</div>
+                    </span>
+                </div>
+            </div>
+
+            <div class="callout">
+                <div class="callout-title">What It Should Feel Like</div>
+                <div class="callout-text">A brief moment of clarity — like wiping fog off a window. You may not feel dramatically different. That's fine. The act of <strong>naming IS the intervention.</strong> You've shifted from being inside the weather to observing the weather.</div>
+            </div>
+
+            <div class="callout">
+                <div class="callout-title">The Science: Barrett's Interoception Model</div>
+                <div class="callout-text">Your brain makes predictions about what's coming. When those predictions are wrong (anxiety = "threat incoming"), you feel the mismatch as discomfort. Naming the state ("I am anxious") updates the prediction. The body settles because the brain is no longer surprised by the sensation.</div>
+            </div>
+        </div>
+
+        <!-- PRACTICE 04 -->
+        <div class="practice">
+            <div class="practice-header">
+                <h2>Practice 04: The 90-Second Kill List Scan</h2>
+                <div class="practice-time">90 Seconds</div>
+            </div>
+
+            <div class="context">
+                <strong>The Ignition Without the Rabbit Hole.</strong> You open Oracle Compass, read the RED items, and close it. 90 seconds max. This prevents ADHD hyperfocus from turning a "quick check" into 45 minutes of planning instead of doing.
+            </div>
+
+            <div class="steps">
+                <div class="step">
+                    <span class="step-number">1</span>
+                    <span class="step-content">
+                        <div class="step-title">Open the Compass</div>
+                        <div class="step-description">Open Oracle Compass on your phone (oracle-compass-ni8g.vercel.app)</div>
+                    </span>
+                </div>
+
+                <div class="step">
+                    <span class="step-number">2</span>
+                    <span class="step-content">
+                        <div class="step-title">Go to Kill List</div>
+                        <div class="step-description">Navigate to the Kill List.</div>
+                    </span>
+                </div>
+
+                <div class="step">
+                    <span class="step-number">3</span>
+                    <span class="step-content">
+                        <div class="step-title">Read RED Items Only</div>
+                        <div class="step-description">Read <strong>ONLY the RED</strong> (urgent) items. Don't open them. Don't start solving them. Just read the titles.</div>
+                    </span>
+                </div>
+
+                <div class="step">
+                    <span class="step-number">4</span>
+                    <span class="step-content">
+                        <div class="step-title">Ask the Question</div>
+                        <div class="step-description">Ask: "Which one of these is the single most important thing today?"</div>
+                    </span>
+                </div>
+
+                <div class="step">
+                    <span class="step-number">5</span>
+                    <span class="step-content">
+                        <div class="step-title">Close & Commit</div>
+                        <div class="step-description">Close the app. That one thing is your <strong>Action 1.</strong> Total time: 90 seconds.</div>
+                    </span>
+                </div>
+            </div>
+
+            <div class="callout">
+                <div class="callout-title">The 90-Second Exit Rule</div>
+                <div class="callout-text">If you're still scrolling at 90 seconds, close the app regardless. The system will still be there later. ADHD hyperfocus can turn a "quick check" into an hour. The hard exit prevents this.</div>
+            </div>
+        </div>
+
+        <!-- PRACTICE 05 -->
+        <div class="practice">
+            <div class="practice-header">
+                <h2>Practice 05: The Pre-Flight Somatic Matrix</h2>
+                <div class="practice-time">90 Seconds (Before Recording)</div>
+            </div>
+
+            <div class="context">
+                <strong>Vocal Readiness Checklist.</strong> A 6-point biometric scan, 5 seconds before the red light. This ensures your body is physically optimized for vocal recording.
+            </div>
+
+            <div class="steps">
+                <div class="step">
+                    <span class="step-number">1</span>
+                    <span class="step-content">
+                        <div class="step-title">Feet & Knees</div>
+                        <div class="step-description">Are my feet rooted? Knees slightly bent? (Locked knees paralyze the pelvic floor and cut off breath support.)</div>
+                    </span>
+                </div>
+
+                <div class="step">
+                    <span class="step-number">2</span>
+                    <span class="step-content">
+                        <div class="step-title">Intercostal Anchor</div>
+                        <div class="step-description">Place your hands on your lower ribs, fingers pointing forward. Breathe in. Do you feel the ribs expanding <strong>OUTWARD</strong> (laterally)? If your shoulders rise or your chest puffs up, you're breathing wrong. The expansion must be in the lower ribs and back.</div>
+                    </span>
+                </div>
+
+                <div class="step">
+                    <span class="step-number">3</span>
+                    <span class="step-content">
+                        <div class="step-title">C-Spine Posture</div>
+                        <div class="step-description">Imagine a string pulling the crown of your head toward the ceiling. Your chin drops slightly — not tucked hard, just parallel to the floor. The back of your neck should feel <strong>LONG.</strong> This opens the larynx.</div>
+                    </span>
+                </div>
+
+                <div class="step">
+                    <span class="step-number">4</span>
+                    <span class="step-content">
+                        <div class="step-title">Jaw Check</div>
+                        <div class="step-description">Let your jaw hang open like you're half-asleep. Place your thumb under your chin in the soft triangle area. Say "Ah." That muscle must stay <strong>SOFT and spongy.</strong> If it hardens into a rock, your root tongue is choking your airway.</div>
+                    </span>
+                </div>
+
+                <div class="step">
+                    <span class="step-number">5</span>
+                    <span class="step-content">
+                        <div class="step-title">Soft Palate</div>
+                        <div class="step-description">Create the beginning of a yawn — that slight lift you feel at the back of your mouth? Hold it there. Don't full-yawn. Just that first 20% of lift. That's your soft palate opening the resonance chamber.</div>
+                    </span>
+                </div>
+
+                <div class="step">
+                    <span class="step-number">6</span>
+                    <span class="step-content">
+                        <div class="step-title">Mental Override</div>
+                        <div class="step-description">Say to yourself: "<strong>Acknowledge the block. Channel the frequency.</strong>" Then hit record.</div>
+                    </span>
+                </div>
+            </div>
+        </div>
+
+        <!-- PRACTICE 06 -->
+        <div class="practice">
+            <div class="practice-header">
+                <h2>Practice 06: Post-Session Cool-Down</h2>
+                <div class="practice-time">3 Minutes (After Recording)</div>
+            </div>
+
+            <div class="context">
+                <strong>Vocal Recovery.</strong> After recording, your laryngeal muscles are engorged with blood. If you just stop, they stiffen overnight. This cool-down prevents vocal fatigue and maintains range.
+            </div>
+
+            <div class="steps">
+                <div class="step">
+                    <span class="step-number">1</span>
+                    <span class="step-content">
+                        <div class="step-title">Lip Trills</div>
+                        <div class="step-description">Close your lips loosely, exhale to make them buzz (like a motorboat sound). Start at a comfortable high pitch and slide slowly <strong>DOWN</strong> to your lowest comfortable note.</div>
+                    </span>
+                </div>
+
+                <div class="step">
+                    <span class="step-number">2</span>
+                    <span class="step-content">
+                        <div class="step-title">Repeat the Slide</div>
+                        <div class="step-description">Repeat 5–6 times, each one starting slightly lower.</div>
+                    </span>
+                </div>
+
+                <div class="step">
+                    <span class="step-number">3</span>
+                    <span class="step-content">
+                        <div class="step-title">Finish with Humming</div>
+                        <div class="step-description">Finish with 30 seconds of gentle humming on a comfortable pitch. Feel the vibration in your chest.</div>
+                    </span>
+                </div>
+
+                <div class="step">
+                    <span class="step-number">4</span>
+                    <span class="step-content">
+                        <div class="step-title">Hydrate</div>
+                        <div class="step-description">Drink room-temperature water.</div>
+                    </span>
+                </div>
+            </div>
+        </div>
+
+        <!-- PRACTICE 07 -->
+        <div class="practice">
+            <div class="practice-header">
+                <h2>Practice 07: Barrett Body Budget Rules</h2>
+                <div class="practice-time">Standing Protocol</div>
+            </div>
+
+            <div class="context">
+                <strong>Metabolic Non-Negotiables.</strong> These aren't practices — they're rules. They protect the metabolic budget that makes everything else work. Violate these and everything falls apart.
+            </div>
+
+            <ul class="rules-list">
+                <li>
+                    <span class="rule-number">1. Sleep:</span>
+                    Lights out 10:30 PM. Non-negotiable. This is where dopamine receptors upregulate, neuroplasticity happens, and vocal cords recover.
+                </li>
+
+                <li>
+                    <span class="rule-number">2. Caffeine Cutoff:</span>
+                    1:00 PM. Caffeine has a 6-hour half-life. After 1 PM it's stealing from tomorrow's budget.
+                </li>
+
+                <li>
+                    <span class="rule-number">3. Protein Pre-Session:</span>
+                    Eggs, oats, banana. Tyrosine (protein) is the dopamine precursor. Skipping this crashes executive function at hour 3. During sobriety detox, this is non-negotiable.
+                </li>
+
+                <li>
+                    <span class="rule-number">4. Hydration for Vocals:</span>
+                    Room-temperature water 2–4 <strong>HOURS</strong> before tracking. Water right before a take does nothing for your cords — it hasn't reached the tissue yet.
+                </li>
+
+                <li>
+                    <span class="rule-number">5. No Dairy 2 Hours Before Vocals:</span>
+                    Coats the folds, creates mucus drag. Warm water + honey instead.
+                </li>
+
+                <li>
+                    <span class="rule-number">6. Fruit Over Sugar:</span>
+                    Sobriety detox drives hard cravings weeks 1–4. Banana first. Every time.
+                </li>
+
+                <li>
+                    <span class="rule-number">7. Mid-Session Fuel at the Desk:</span>
+                    If you have to leave the room to eat, you won't do it. PB&J stays at the workstation.
+                </li>
+
+                <li>
+                    <span class="rule-number">8. Sunday Meal Prep:</span>
+                    30–45 min. Rice, chicken thighs, boiled eggs, PB&J sandwiches bagged. $38–48 at Aldi. Protects the entire week.
+                </li>
+            </ul>
+        </div>
+
+        <!-- PRACTICE 08 -->
+        <div class="practice">
+            <div class="practice-header">
+                <h2>Practice 08: Lower Chain Activation Protocol</h2>
+                <div class="practice-time">8–10 Minutes · Daily</div>
+            </div>
+
+            <div class="context">
+                <strong>Mudra Pairing: Prithvi Mudra</strong> — During all seated work in this practice, hold Prithvi Mudra: ring fingertip to thumb tip, other fingers extended, palms face upward on your knees. Earth element. Grounding. Stability. You're working the lower chain — the most earth-connected part of the body. Let the mudra signal to the nervous system that this is root work, not performance. Release the mudra during Step 6 (Wall Sit) and Step 7 (Standing Protocol) when hands are free at your sides.
+            </div>
+
+            <div class="context">
+                <strong>Fascial Unlock + Leg Re-Activation.</strong> After multiple meniscal surgeries and years of compensatory holding patterns, the kinetic chain from foot → calf → hamstring → pelvic floor has layered tension it learned to protect around. This sequence systematically releases that tension in the right order — distal to proximal — so the hip and pelvic floor can finally open without threatening the knee.
+            </div>
+
+            <div class="steps">
+                <div class="step">
+                    <span class="step-number">1</span>
+                    <span class="step-content">
+                        <div class="step-title">Somatic Check First</div>
+                        <div class="step-description">Before touching the floor, stand for 10 seconds with eyes closed. Feel both knees. Is the sensation dull background tension (normal baseline), sharp or bright (stop — don't train through this today), or a wave that rises with a breath (stress-somatized — continue gently). <strong>Only proceed if sensation is dull or baseline.</strong></div>
+                    </span>
+                </div>
+
+                <div class="step">
+                    <span class="step-number">2</span>
+                    <span class="step-content">
+                        <div class="step-title">Calf + Achilles Release (2 min)</div>
+                        <div class="step-description">Sit on the floor with legs extended. Use a foam roller, lacrosse ball, or your own hands. Work the calf from the Achilles up to the back of the knee in slow 2-inch passes. <strong>Pause for 5 full breaths on any spot that "catches."</strong> The calf is the first domino in pelvic floor tension — release it first, everything upstream softens.</div>
+                    </span>
+                </div>
+
+                <div class="step">
+                    <span class="step-number">3</span>
+                    <span class="step-content">
+                        <div class="step-title">Hamstring Fascial Breath (2 min)</div>
+                        <div class="step-description">Stay seated. Extend one leg, foot flexed. Place both hands on the thigh. Take a deep inhale — feel the hamstring lengthen AWAY from your sitting bone on the inhale. On the exhale, let it soften back. Repeat 6 times per leg. <strong>This is not a stretch. You're not pulling. You're breathing space into the tissue.</strong></div>
+                    </span>
+                </div>
+
+                <div class="step">
+                    <span class="step-number">4</span>
+                    <span class="step-content">
+                        <div class="step-title">Hip Flexor Floor Release (2 min)</div>
+                        <div class="step-description">From seated, move into a low lunge — back knee on floor, front foot flat. Keep your torso upright. <strong>Do NOT push forward.</strong> Just breathe and let gravity open the hip. 90-second hold per side. The hip flexors (psoas + iliacus) attach directly to the lumbar spine and pull the pelvic floor into lock when tight — releasing them is the master key.</div>
+                    </span>
+                </div>
+
+                <div class="step">
+                    <span class="step-number">5</span>
+                    <span class="step-content">
+                        <div class="step-title">Pelvic Floor Unlock Breath (2 min)</div>
+                        <div class="step-description">Lie on your back, knees bent, feet flat. Inhale deeply into your belly — let your lower back press gently into the floor and feel the pelvic floor drop and <strong>OPEN</strong> like an umbrella opening downward. On the exhale, it rises naturally. Repeat 10 times. This is the passive unlock — no Mula Bandha here. You're teaching the floor to release, not engage.</div>
+                    </span>
+                </div>
+
+                <div class="step">
+                    <span class="step-number">6</span>
+                    <span class="step-content">
+                        <div class="step-title">Wall Sit Activation (1 min)</div>
+                        <div class="step-description">Stand with your back flat against a wall. Slide down until your thighs are <strong>parallel to the floor or slightly above — never below parallel (meniscal protocol).</strong> Hold for 30–60 seconds. Breathe normally. This is your quad activation without any knee torque. If you feel any sensation behind the kneecap, come up 15 degrees.</div>
+                    </span>
+                </div>
+
+                <div class="step">
+                    <span class="step-number">7</span>
+                    <span class="step-content">
+                        <div class="step-title">Unlocked Knees Standing Protocol</div>
+                        <div class="step-description">Stand up. Consciously unlock your knees — soft bend, not stiff. Feel your weight distribute across all four corners of each foot (big toe mound, little toe mound, inner heel, outer heel). <strong>This is now your default standing position — in the vocal booth, waiting for DoorDash, at the stove. Every hour you stand locked is an hour the pelvic floor locks with it.</strong></div>
+                    </span>
+                </div>
+            </div>
+
+            <div class="callout">
+                <div class="callout-title">Knee Flare Protocol</div>
+                <div class="callout-text">If knee sensation spikes during the sequence: stop the movement, lie on your back, elevate the leg on a pillow. Do 10 pelvic floor unlock breaths. Then ask: <em>am I actually in pain or am I in stress?</em> Wait 5 minutes. If the sensation decreases — it was somatized. If it holds or increases — rest the leg today, resume tomorrow.</div>
+            </div>
+
+            <div class="callout">
+                <div class="callout-title">What Success Feels Like</div>
+                <div class="callout-text">After 2–3 weeks of consistent practice: a sense of "space" in the hip socket that wasn't there before. The knees will stop being the first place you feel stress. The pelvic floor will begin to release on exhale without you prompting it — that's full integration.</div>
+            </div>
+
+            <div class="compressed">
+                <strong>Compressed Version (5 min):</strong> Skip calf release. Do Steps 3 + 4 + 5 + 7 only. The hip flexor and pelvic floor breath are the non-negotiables.
+            </div>
+        </div>
+
+        <!-- PRACTICE 09 -->
+        <div class="practice">
+            <div class="practice-header">
+                <h2>Practice 09: Upper Chain Posture Reset</h2>
+                <div class="practice-time">5 Minutes · Post-DoorDash / Pre-Studio</div>
+            </div>
+
+            <div class="context">
+                <strong>Mudra Pairing: Prana Mudra (Wall Stand Reset only)</strong> — Hands are occupied during Steps 1–5 (gripping frame, lying prone, pressing wall). No mudra during the corrective exercises. At Step 6 (Wall Stand Reset), once your back is flat against the wall, form Prana Mudra: ring fingertip + pinky fingertip both touching thumb tip, other two fingers extended. Palms face forward at your sides. Prana Mudra activates dormant energy — you've just opened the posture, this seals the activation into the nervous system. Hold through the full 30 seconds.
+            </div>
+
+            <div class="context">
+                <strong>Reversing the Caveman Hunch.</strong> Thousands of hours over a DAW + DoorDash driving builds a forward-head, rolled-shoulder, internally-rotated collapse. This sequence directly counteracts those patterns. It also primes the C-spine and jaw for vocal work — the same chain that locks your posture locks your voice.
+            </div>
+
+            <div class="steps">
+                <div class="step">
+                    <span class="step-number">1</span>
+                    <span class="step-content">
+                        <div class="step-title">Cervical Spine Decompress (1 min)</div>
+                        <div class="step-description">Stand or sit. Drop your chin toward your chest gently — no force. Then slowly roll the right ear toward the right shoulder (30 seconds), return to center, then left ear to left shoulder (30 seconds). <strong>No full neck rolls — that's contraindicated for forward-head posture.</strong> You're creating traction in the C-spine, not rotation. Feel the back of the neck lengthen on each side.</div>
+                    </span>
+                </div>
+
+                <div class="step">
+                    <span class="step-number">2</span>
+                    <span class="step-content">
+                        <div class="step-title">Door Frame Row (1 min)</div>
+                        <div class="step-description">Stand in a doorway. Grip both sides of the frame at chest height. Lean back slightly so arms are extended. Pull your chest toward the door frame, squeezing your shoulder blades together. <strong>Hold 2 seconds at the top. Repeat 10–12 times.</strong> This directly counteracts the rolled-shoulder collapse by activating the rhomboids and lower traps that go completely dormant after hours of steering-wheel driving.</div>
+                    </span>
+                </div>
+
+                <div class="step">
+                    <span class="step-number">3</span>
+                    <span class="step-content">
+                        <div class="step-title">Floor Prone Angel (1 min)</div>
+                        <div class="step-description">Lie face down on the floor. Arms out to your sides in a "T," palms facing down. Slowly raise both arms off the floor 2–3 inches — just enough to lift the hands. <strong>Keep your neck neutral (forehead stays down or resting on folded hands).</strong> Hold 5 seconds, lower. Repeat 8 times. You will feel the mid-back muscles that have been completely switched off fire up. That activation is the V-taper re-emerging.</div>
+                    </span>
+                </div>
+
+                <div class="step">
+                    <span class="step-number">4</span>
+                    <span class="step-content">
+                        <div class="step-title">Pike Push-Up (1 min)</div>
+                        <div class="step-description">Start in a push-up position, then walk your feet toward your hands until your hips are high — body forms an inverted V. From here, bend your elbows and lower the top of your head toward the floor, then push back up. <strong>6–8 reps.</strong> This builds the posterior deltoid and upper trap strength that holds the "string-from-crown" posture without effort. The goal is effortless alignment, not constant muscular holding.</div>
+                    </span>
+                </div>
+
+                <div class="step">
+                    <span class="step-number">5</span>
+                    <span class="step-content">
+                        <div class="step-title">Jaw-Neck Decoupling (1 min)</div>
+                        <div class="step-description">Stand in front of a mirror if possible. Place your thumb in the soft triangle under your chin — that soft tissue between your chin and throat. Now slowly rotate your head left and right while keeping your jaw <strong>completely relaxed</strong>. The tissue under your thumb must stay soft and spongy throughout the rotation. <strong>If it hardens, you're carrying neck tension in your jaw — that's the pattern that kills the Appoggio support.</strong> Repeat until you can rotate 90 degrees with full jaw softness. This is a daily diagnostic, not just pre-recording.</div>
+                    </span>
+                </div>
+
+                <div class="step">
+                    <span class="step-number">6</span>
+                    <span class="step-content">
+                        <div class="step-title">Wall Stand Reset (30 sec)</div>
+                        <div class="step-description">Stand with your back flat against a wall — heels, calves, glutes, upper back, and the back of your skull all touching. Notice the gap at your lower back (lumbar curve is normal, 2–3 fingers width). Stand here for 30 seconds. This is your baseline posture. <strong>Walk away from the wall carrying this position.</strong> The muscle memory takes weeks to build — this is how you accelerate it.</div>
+                    </span>
+                </div>
+            </div>
+
+            <div class="callout">
+                <div class="callout-title">Post-DoorDash Priority Order</div>
+                <div class="callout-text">After a driving block, run Steps 1 → 2 → 6 minimum (3 min). The steering wheel locks the cervical spine, rounds the shoulders forward, and collapses the lower back. Entering the vocal booth without resetting this means you're recording with a compromised instrument.</div>
+            </div>
+
+            <div class="callout">
+                <div class="callout-title">What Success Feels Like</div>
+                <div class="callout-text">After 4–6 weeks: you'll notice yourself self-correcting mid-DoorDash block — sitting taller without thinking about it. The jaw check (Step 5) will start passing easily. When those two things happen, the V-taper becomes structural, not forced.</div>
+            </div>
+
+            <div class="compressed">
+                <strong>Compressed Version (2 min):</strong> Door Frame Row + Wall Stand Reset only. Enough to break the pattern without a full reset.
+            </div>
+        </div>
+
+        <!-- PRACTICE 10 -->
+        <div class="practice">
+            <div class="practice-header">
+                <h2>Practice 10: The 30-Minute Movement Block</h2>
+                <div class="practice-time">30 Minutes · Phase 1+ · Post-Breakfast</div>
+            </div>
+
+            <div class="context">
+                <strong>Mudra Pairing: Prithvi (check-in) → None (movement) → Dhyana (integration)</strong> — Three-phase mudra arc across the session. <strong>Pre-movement 3-breath check:</strong> Prithvi Mudra (ring to thumb) — same Earth grounding used in Practice 08, continuity of the lower chain protocol. <strong>During movement:</strong> No mudra — hands are active, that IS the work. <strong>Post-session integration (final 60 seconds):</strong> Come to stillness. Form Dhyana Mudra (right hand cradled in left, palms up, thumbs lightly touching). Eyes closed. 3 breaths. Let the body register what it just did. This is the neuroplastic window — the session's work gets encoded during the pause after it, not during.
+            </div>
+
+            <div class="context">
+                <strong>The Undefined Exercise Block — Now Defined.</strong> The Quick Reference Card has said "Exercise 30min" since Phase 1 without saying what that exercise IS. This is it. Phase-locked progressions: what's available at each rank, what's not yet earned, what unlocks next. Every session starts with a 3-breath interoceptive check — not a rep count. Intensity is secondary to presence.
+            </div>
+
+            <div class="steps">
+                <div class="step">
+                    <span class="step-number">1</span>
+                    <span class="step-content">
+                        <div class="step-title">Pre-Movement Interoceptive Check (3 Breaths)</div>
+                        <div class="step-description">Before every single session — 3 breaths. On each breath, scan: right knee (meniscal history), left knee front (infrapatellar fat pad history), lower back, pelvic floor. <strong>Traffic light system: Green = full session. Yellow = reduce range of motion, no single-leg work. Red = Practice 08 only, no movement block today.</strong> This is not weakness. This is how you train for decades, not months.</div>
+                    </span>
+                </div>
+
+                <div class="step">
+                    <span class="step-number">2</span>
+                    <span class="step-content">
+                        <div class="step-title">PHASE 1 — Jonin → Anbu: Bodyweight Foundation</div>
+                        <div class="step-description">
+                            <strong>Available now. Build this base before everything else.</strong><br><br>
+                            <em>Circuit (3 rounds, 45 sec work / 15 sec rest):</em><br>
+                            • Wall Sit — thighs parallel or above (never below) — quad activation, zero knee torque<br>
+                            • Floor Prone Angels — 8 reps, 5-second holds — mid-back reactivation<br>
+                            • Pike Push-Ups — 6–8 reps — posterior delts, upper trap<br>
+                            • Door Frame Rows — 12 reps — rhomboid/lower trap activation<br>
+                            • Dead Bug — 6 reps/side (lie on back, extend opposite arm/leg while holding lower back flat) — core stability without spinal load<br>
+                            • Supported Split Squat — front foot elevated 4–6 inches, back knee on folded mat, lower 2 inches only — <strong>right knee: stop if tracking issues. Left knee: no deep flexion, infrapatellar protocol.</strong>
+                        </div>
+                    </span>
+                </div>
+
+                <div class="step">
+                    <span class="step-number">3</span>
+                    <span class="step-content">
+                        <div class="step-title">PHASE 2 — Anbu → Kage: Tai Chi Enters</div>
+                        <div class="step-description">
+                            <strong>Unlocks at Anbu rank. Do not rush this gate.</strong><br><br>
+                            Add a 10-minute Tai Chi form to the beginning of the movement block. Yang-style short form (24 movements) is the standard entry point. The slow-movement requirement forces the proprioceptive pathways around both knees to rebuild intelligently — this is the most therapeutic movement system for post-surgical knees available. It also begins rewiring the CNS toward the "energy-protecting" movement vocabulary that feeds directly into Qigong and the Sovereignty Stack breathwork.<br><br>
+                            <em>Modified Phase 2 Circuit:</em> Same bodyweight circuit + 10-min Tai Chi form. Increase wall sit depth by 5 degrees only if right knee is green for 3 consecutive weeks.
+                        </div>
+                    </span>
+                </div>
+
+                <div class="step">
+                    <span class="step-number">4</span>
+                    <span class="step-content">
+                        <div class="step-title">PHASE 3 — Kage → S-Rank: Capoeira Ginga Returns</div>
+                        <div class="step-description">
+                            <strong>Unlocks at Kage rank. The childhood movement pattern re-emerges.</strong><br><br>
+                            Capoeira Ginga (the basic weight-transfer footwork) is reintroduced — not as performance, but as nervous system language you already speak from childhood in Milwaukee. The fascial pathways this re-activates are different from anything else because the body REMEMBERS the pattern. Start with ginga footwork only, no kicks, no acrobatics. The rotational and lateral loading is the most advanced knee stress in this program — <strong>right knee must be consistently green for 6+ weeks before ginga begins.</strong>
+                        </div>
+                    </span>
+                </div>
+
+                <div class="step">
+                    <span class="step-number">5</span>
+                    <span class="step-content">
+                        <div class="step-title">PHASE 4 — S-Rank → God of Shinobi: Muay Thai Clinch Work</div>
+                        <div class="step-description">
+                            <strong>Final unlock. Earned, not given.</strong><br><br>
+                            Muay Thai enters as clinch work and pad work — not full sparring. The standing clinch is the most structurally sound Muay Thai entry for post-surgical knees because it requires hip power and upper body control without the lateral cutting patterns that stress the meniscus. Find an instructor for this phase. I'll integrate whatever you learn into updated protocol here.
+                        </div>
+                    </span>
+                </div>
+
+                <div class="step">
+                    <span class="step-number">6</span>
+                    <span class="step-content">
+                        <div class="step-title">Infrapatellar Fat Pad Rules (Left Knee)</div>
+                        <div class="step-description">The infrapatellar fat pad (Hoffa's pad) is a shock absorber beneath the patella. The primary caution is <strong>full knee extension under load</strong> — "locking out" at the top of squats or leg movements. Always stop 10–15 degrees before full extension. Kneeling is fine — animal flow and knees-over-toes work has already been completed. <strong>The no-lockout-under-load rule applies indefinitely at all ranks.</strong></div>
+                    </span>
+                </div>
+            </div>
+
+            <div class="callout">
+                <div class="callout-title">The Non-Negotiable Rule</div>
+                <div class="callout-text">Every rep starts with breath. Not with counting. Inhale to prepare, exhale to exert. If you can't breathe, you're going too hard. This is CNS-protective training, not performance training. The dopamine hit comes from completion, not from pain. Protect the instrument.</div>
+            </div>
+
+            <div class="callout">
+                <div class="callout-title">What Success Feels Like</div>
+                <div class="callout-text">Week 1–2: soreness in muscles you forgot existed (mid-back, rhomboids). Week 3–4: the pre-movement check starts taking less time because the signal is cleaner. Week 6+: the unlocked-knees standing position becomes your resting default without thinking. That's integration.</div>
+            </div>
+
+            <div class="compressed">
+                <strong>Minimum Viable Session (10 min):</strong> 3-breath check + Dead Bug (3 min) + Door Frame Row (2 min) + Wall Sit (2 min) + Floor Prone Angel (2 min) + Wall Stand Reset (1 min). On days everything hurts, this is enough.
+            </div>
+        </div>
+
+        <!-- QUICK REFERENCE -->
+        <div class="quick-reference">
+            <h3>Daily Sequence — Quick Reference Card</h3>
+
+            <div class="sequence">
+                <div class="sequence-title">Full S-Tier Morning</div>
+                <div class="sequence-steps">
+                    Wake → 32oz water + sea salt →<br>
+                    Practice 01 (Jnana Mudra + OM, 90sec) →<br>
+                    Practice 02 (Nadi Shodhana, 5min) →<br>
+                    Practice 08 compressed (Lower Chain, 5min) →<br>
+                    Practice 09 compressed (Upper Chain, 2min) →<br>
+                    Protein meal →<br>
+                    Practice 10 (Movement Block, 30min) →<br>
+                    Practice 04 (Kill List scan, 90sec) →<br>
+                    Practice 03 (S3 Check-in, studio days) →<br>
+                    DAW open
+                </div>
+            </div>
+
+            <div class="sequence">
+                <div class="sequence-title">Compressed Ignition (DoorDash by 6:30 AM)</div>
+                <div class="sequence-steps">
+                    Wake → 32oz water + sea salt →<br>
+                    Practice 01 compressed (3 OMs, 60sec) →<br>
+                    Protein meal (Option B: boiled eggs + banana) →<br>
+                    Practice 04 (Kill List scan, 90sec) →<br>
+                    DoorDash
+                </div>
+            </div>
+
+            <div class="sequence">
+                <div class="sequence-title">Post-DoorDash Reset (Before Studio)</div>
+                <div class="sequence-steps">
+                    Practice 09 compressed (Cervical decompress + Door Frame Row + Wall Stand, 3min) →<br>
+                    Practice 03 (S3 Check-in, 90sec) →<br>
+                    Practice 05 (Pre-Flight Somatic Matrix) →<br>
+                    Record
+                </div>
+            </div>
+
+            <div class="sequence">
+                <div class="sequence-title">Pre-Recording (No DoorDash That Day)</div>
+                <div class="sequence-steps">
+                    Practice 05 (Pre-Flight Somatic Matrix) →<br>
+                    Record
+                </div>
+            </div>
+
+            <div class="sequence">
+                <div class="sequence-title">Post-Recording</div>
+                <div class="sequence-steps">
+                    Practice 06 (Cool-Down, 3min)
+                </div>
+            </div>
+
+            <div class="sequence">
+                <div class="sequence-title">Knee Flare Protocol</div>
+                <div class="sequence-steps">
+                    Somatic check (real pain vs. stress?) →<br>
+                    Lie down, elevate leg on pillow →<br>
+                    Practice 08 Step 5 only (Pelvic Floor Unlock Breath, 10 reps) →<br>
+                    Wait 5 min → reassess →<br>
+                    If decreased: somatized — continue gently.<br>
+                    If same or worse: rest today, resume tomorrow.
+                </div>
+            </div>
+
+            <div class="sequence">
+                <div class="sequence-title">Minimum Viable Day (Everything Hurts)</div>
+                <div class="sequence-steps">
+                    Practice 01 compressed (3 OMs) →<br>
+                    Practice 10 Minimum Viable Session (10min) →<br>
+                    Practice 07 (Barrett Body Budget Rules)
+                </div>
+            </div>
+
+            <div class="sequence">
+                <div class="sequence-title">Always</div>
+                <div class="sequence-steps">
+                    Practice 07 (Barrett Body Budget Rules)<br>
+                    Unlocked knees standing — all day, everywhere.<br>
+                    Left knee: never lock out under load (kneeling is fine).<br>
+                    Right knee: no below-parallel squat until Phase 2 clear.
+                </div>
+            </div>
+        </div>
+
+        <!-- FOOTER -->
+        <div class="footer">
+            <div class="footer-line">past.El noir Records · The Sovereignty Stack</div>
+            <div class="footer-line">Physical Practice Manual — April 2026</div>
+            <div class="footer-line">Distributor: Amuse. Always has been.</div>
+        </div>
+    </div>
+</body>
+</html>
