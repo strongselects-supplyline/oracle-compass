@@ -5,6 +5,7 @@ import BottomNav from "@/components/BottomNav";
 import OracleTrigger from "@/components/OracleTrigger";
 import BrainDumpInput from "@/components/BrainDumpInput";
 import ErrorBoundary from "@/components/ErrorBoundary";
+import ThemeProvider from "@/components/ThemeProvider";
 
 const geist = Geist({
   variable: "--font-geist-sans",
@@ -40,12 +41,14 @@ export default function RootLayout({
       <body className={`${geist.variable}`}>
         <a href="#main-content" className="skip-link">Skip to main content</a>
         <ErrorBoundary>
-          <OracleTrigger />
-          <BrainDumpInput />
-          <main id="main-content">
-            {children}
-          </main>
-          <BottomNav />
+          <ThemeProvider>
+            <OracleTrigger />
+            <BrainDumpInput />
+            <main id="main-content">
+              {children}
+            </main>
+            <BottomNav />
+          </ThemeProvider>
         </ErrorBoundary>
       </body>
     </html>

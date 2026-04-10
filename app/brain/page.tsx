@@ -52,6 +52,34 @@ export default function BrainPage() {
           </p>
         </div>
 
+        {/* ── The 6 Scrolls ── */}
+        <div className="card mb-10" style={{ borderColor: 'var(--accent)', borderWidth: '1px' }}>
+          <p className="text-[10px] font-black tracking-[0.18em] uppercase mb-4" style={{ color: 'var(--accent)' }}>📜 The 6 Scrolls</p>
+          <div className="grid grid-cols-2 gap-2">
+            {[
+              { n: "1", name: "Waking Mind", href: "#waking-mind", icon: "🧠" },
+              { n: "2", name: "Mudras & Breath", href: "/reference.html", icon: "🙏" },
+              { n: "3", name: "Body Budget", href: "/scroll-body-codex.html", icon: "⚡" },
+              { n: "4", name: "Rank Scroll", href: "/scroll-rank.html", icon: "🎯" },
+              { n: "5", name: "Mixing Codex", href: "#mixing-ladder", icon: "🎚️" },
+              { n: "6", name: "Vocal Codex", href: "#vocal-codex", icon: "🎤" },
+            ].map(s => (
+              <a
+                key={s.n}
+                href={s.href}
+                className="flex items-center gap-2 p-3 rounded-xl border transition-all active:scale-[0.97]"
+                style={{ borderColor: 'var(--border)', background: 'var(--surface-2)' }}
+              >
+                <span className="text-lg">{s.icon}</span>
+                <div>
+                  <span className="text-[9px] font-black tracking-wider uppercase" style={{ color: 'var(--accent)' }}>Scroll {s.n}</span>
+                  <p className="text-[11px] font-bold" style={{ color: 'var(--text-primary)' }}>{s.name}</p>
+                </div>
+              </a>
+            ))}
+          </div>
+        </div>
+
         {/* ── Phase Bar ── */}
         <div className="mb-12">
           <div className="waterfall-bar mb-3" style={{ height: "8px", borderRadius: "4px" }}>
@@ -158,7 +186,9 @@ export default function BrainPage() {
         </div>
 
         {/* ── WAKING MIND PROTOCOL ── */}
-        <WakingMindProtocol />
+        <div id="waking-mind">
+          <WakingMindProtocol />
+        </div>
 
         {/* ── BLITZKRIEG PROTOCOL ── */}
         <BlitzkriegProtocol />
@@ -167,10 +197,14 @@ export default function BrainPage() {
         <TexturedProduction />
 
         {/* ── THE LUFS MIXING LADDER ── */}
-        <MixingProtocol />
+        <div id="mixing-ladder">
+          <MixingProtocol />
+        </div>
 
         {/* ── VOCAL CODEX ── */}
-        <VocalProtocol />
+        <div id="vocal-codex">
+          <VocalProtocol />
+        </div>
 
         {/* ── Hearing In Color ── */}
         <div className="card mb-6" style={{ borderColor: "#c9a22722" }}>

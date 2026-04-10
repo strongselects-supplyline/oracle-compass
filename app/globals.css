@@ -1,6 +1,6 @@
 @import "tailwindcss";
 
-/* ── Design Tokens ─────────────────────────────────────── */
+/* ── Design Tokens (Dark — Default) ───────────────────── */
 :root {
   --bg:        #08090f;
   --surface:   #12141c;
@@ -24,6 +24,46 @@
 
   /* Nav height used for bottom padding calculation */
   --nav-height: 68px;
+
+  /* Overlay/backdrop tokens */
+  --nav-bg: rgba(8, 9, 15, 0.85);
+  --overlay-bg: rgba(0, 0, 0, 0.4);
+  --menu-bg: rgba(18, 20, 28, 0.9);
+  --menu-item-bg: rgba(0, 0, 0, 0.02);
+  --menu-item-border: rgba(0, 0, 0, 0.06);
+  --menu-item-active-bg: rgba(212, 168, 83, 0.08);
+  --nav-border-dark: #0a0a0a;
+  --check-done-text: #000;
+}
+
+/* ── Light Theme ──────────────────────────────────────── */
+[data-theme="light"] {
+  --bg:        #f8f6f0;
+  --surface:   #ffffff;
+  --surface-2: #f0ede4;
+  --surface-3: #e8e4d9;
+  --border:    #e0d9cc;
+  --border-2:  #d4cdbf;
+
+  --text-primary:   #1a1a1a;
+  --text-secondary: #5a5752;
+  --text-muted:     #8b8578;
+
+  --green:  #1e6b4a;
+  --amber:  #b8860b;
+  --red:    #d32f2f;
+  --gold:   #c9a227;
+  --accent: #c9a227;
+
+  /* Overlay/backdrop tokens — light */
+  --nav-bg: rgba(248, 246, 240, 0.92);
+  --overlay-bg: rgba(0, 0, 0, 0.2);
+  --menu-bg: rgba(255, 255, 255, 0.95);
+  --menu-item-bg: rgba(0, 0, 0, 0.02);
+  --menu-item-border: rgba(0, 0, 0, 0.08);
+  --menu-item-active-bg: rgba(201, 162, 39, 0.12);
+  --nav-border-dark: #e0d9cc;
+  --check-done-text: #fff;
 }
 
 /* ── Base ──────────────────────────────────────────────── */
@@ -38,8 +78,14 @@ html, body {
   -webkit-font-smoothing: antialiased;
   overscroll-behavior: none;
   height: 100%;
-  /* Subtle texture on OLED screens */
+  /* Subtle texture */
   background-image: radial-gradient(ellipse at top, rgba(212, 168, 83, 0.03) 0%, transparent 60%);
+  /* Smooth theme transitions */
+  transition: background-color 0.3s ease, color 0.3s ease;
+}
+
+[data-theme="light"] body {
+  background-image: radial-gradient(ellipse at top, rgba(201, 162, 39, 0.06) 0%, transparent 60%);
 }
 
 #__next, main {
@@ -172,7 +218,7 @@ html, body {
   bottom: 0;
   left: 0;
   right: 0;
-  background: rgba(8, 9, 15, 0.85);
+  background: var(--nav-bg);
   backdrop-filter: blur(20px) saturate(180%);
   -webkit-backdrop-filter: blur(20px) saturate(180%);
   border-top: 1px solid var(--border);
@@ -185,6 +231,7 @@ html, body {
   -ms-overflow-style: none;
   scrollbar-width: none;
   gap: 0;
+  transition: background 0.3s ease;
 }
 .bottom-nav::-webkit-scrollbar { display: none; }
 
@@ -192,7 +239,7 @@ html, body {
 .more-overlay {
   position: fixed;
   inset: 0;
-  background: rgba(0, 0, 0, 0.4);
+  background: var(--overlay-bg);
   backdrop-filter: blur(8px);
   z-index: 45;
   animation: fade-in 0.3s ease;
@@ -203,7 +250,7 @@ html, body {
   bottom: calc(var(--nav-height) + 12px);
   left: 12px;
   right: 12px;
-  background: rgba(18, 20, 28, 0.9);
+  background: var(--menu-bg);
   backdrop-filter: blur(25px) saturate(180%);
   -webkit-backdrop-filter: blur(25px) saturate(180%);
   border: 1px solid var(--border);
@@ -224,15 +271,15 @@ html, body {
   gap: 6px;
   padding: 12px 8px;
   border-radius: 16px;
-  background: rgba(0, 0, 0, 0.02);
-  border: 1px solid rgba(0, 0, 0, 0.06);
+  background: var(--menu-item-bg);
+  border: 1px solid var(--menu-item-border);
   transition: transform 0.1s, background 0.15s;
   text-decoration: none;
 }
-.more-item:active { transform: scale(0.95); background: rgba(0, 0, 0, 0.06); }
+.more-item:active { transform: scale(0.95); background: var(--surface-2); }
 .more-item .icon { font-size: 24px; }
 .more-item span { font-size: 10px; font-weight: 800; color: var(--text-secondary); letter-spacing: 0.05em; text-transform: uppercase; }
-.more-item.active { border-color: var(--accent); background: rgba(212, 168, 83, 0.08); }
+.more-item.active { border-color: var(--accent); background: var(--menu-item-active-bg); }
 .more-item.active span { color: var(--accent); }
 
 .nav-item {
@@ -298,6 +345,7 @@ html, body {
   border-radius: 18px;
   border: 1px solid var(--border);
   padding: 20px;
+  transition: background 0.3s ease, border-color 0.3s ease;
 }
 
 .card-sm {
@@ -478,4 +526,45 @@ html, body {
   background: rgba(34,197,94,0.08);
   border-color: rgba(34,197,94,0.25);
   color: #4ade80;
+}
+
+/* ── Light Mode: Override hardcoded dark-mode inline colors ── */
+/* These catch Tailwind classes like text-white, border-[#1a1a1a], etc. */
+
+[data-theme="light"] .text-white { color: var(--text-primary) !important; }
+[data-theme="light"] .text-\[\#ccc\] { color: var(--text-secondary) !important; }
+[data-theme="light"] .text-\[\#888\] { color: var(--text-muted) !important; }
+[data-theme="light"] .text-\[\#777\] { color: var(--text-muted) !important; }
+[data-theme="light"] .text-\[\#666\] { color: var(--text-muted) !important; }
+[data-theme="light"] .text-\[\#555\] { color: var(--text-secondary) !important; }
+[data-theme="light"] .text-\[\#444\] { color: var(--text-secondary) !important; }
+[data-theme="light"] .text-\[\#333\] { color: var(--text-primary) !important; }
+
+/* Borders */
+[data-theme="light"] .border-\[\#1a1a1a\] { border-color: var(--border) !important; }
+[data-theme="light"] .border-\[\#1e1e1e\] { border-color: var(--border) !important; }
+[data-theme="light"] .border-\[\#111\] { border-color: var(--border) !important; }
+[data-theme="light"] .border-\[\#222\] { border-color: var(--border) !important; }
+[data-theme="light"] .border-\[\#0a0a0a\] { border-color: var(--border) !important; }
+
+/* Backgrounds */
+[data-theme="light"] .bg-\[\#111\] { background-color: var(--surface-2) !important; }
+[data-theme="light"] .bg-\[\#0a0a0a\] { background-color: var(--surface) !important; }
+[data-theme="light"] .bg-\[\#1a1a1a\] { background-color: var(--surface-2) !important; }
+
+/* Accent-colored text that's fine in both modes */
+[data-theme="light"] .text-blue-400 { color: #2563eb !important; }
+[data-theme="light"] .text-blue-400\/70 { color: rgba(37, 99, 235, 0.7) !important; }
+[data-theme="light"] .text-emerald-400\/70 { color: rgba(5, 150, 105, 0.7) !important; }
+[data-theme="light"] .text-emerald-500 { color: #059669 !important; }
+
+/* Brain page ScrollSection specific */
+[data-theme="light"] .text-indigo-400 { color: #4f46e5 !important; }
+[data-theme="light"] .text-red-400 { color: #dc2626 !important; }
+[data-theme="light"] .text-purple-400 { color: #9333ea !important; }
+
+/* Theme transition for surfaces */
+[data-theme="light"] .card,
+[data-theme="light"] .card-sm {
+  box-shadow: 0 1px 3px rgba(0,0,0,0.06);
 }

@@ -9,6 +9,7 @@ import type { OracleDecree } from "@/lib/oracle";
 import { getSundayChecklist, isSundayChecklistComplete } from "@/lib/planner";
 import { getWeekKey } from "@/lib/oracle";
 import { getKillStats } from "@/lib/killList";
+import { useTheme } from "@/components/ThemeProvider";
 
 export default function BottomNav() {
     const pathname = usePathname();
@@ -19,6 +20,7 @@ export default function BottomNav() {
     const [plannerDot, setPlannerDot] = useState(false);
     const [killRed, setKillRed] = useState(false);
     const [killCount, setKillCount] = useState(0);
+    const { mode, resolved, cycle: cycleTheme } = useTheme();
 
     useEffect(() => {
         setBizDay(isBizDay(getDayType()));
@@ -106,6 +108,14 @@ export default function BottomNav() {
                                 </Link>
                             );
                         })}
+                        {/* Theme Toggle */}
+                        <button
+                            className="more-item"
+                            onClick={(e) => { e.stopPropagation(); cycleTheme(); }}
+                        >
+                            <span className="icon">{resolved === "light" ? "☀️" : "🌙"}</span>
+                            <span>{mode === "auto" ? "AUTO" : mode === "light" ? "LIGHT" : "DARK"}</span>
+                        </button>
                     </div>
                 </>
             )}
@@ -120,7 +130,7 @@ export default function BottomNav() {
                             <div className="text-2xl relative">
                                 {n.icon}
                                 {dotColor && (
-                                    <span className={`absolute -top-1 -right-2 w-2.5 h-2.5 ${dotColor} rounded-full border border-[#0a0a0a]`} />
+                                    <span className={`absolute -top-1 -right-2 w-2.5 h-2.5 ${dotColor} rounded-full border`} style={{ borderColor: 'var(--nav-border-dark)' }} />
                                 )}
                             </div>
                             <span>{n.name.toUpperCase()}</span>
@@ -137,7 +147,7 @@ export default function BottomNav() {
                     <div className="text-2xl relative">
                         {showMore ? "✕" : "•••"}
                         {hasMoreAlert && !showMore && (
-                            <span className="absolute -top-1 -right-2 w-2.5 h-2.5 bg-amber-500 rounded-full border border-[#0a0a0a]" />
+                            <span className="absolute -top-1 -right-2 w-2.5 h-2.5 bg-amber-500 rounded-full border" style={{ borderColor: 'var(--nav-border-dark)' }} />
                         )}
                     </div>
                     <span>MORE</span>
