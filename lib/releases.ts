@@ -125,34 +125,43 @@ export type Release = {
 };
 
 // Canonical defaults — source of truth for first seed only
-// EP tracks only: SEE ME, East Side Love, Sweet Frustration, Like I Did, ALL LOVE (EP)
-// 7 parked album tracks are NOT in this list — they do not drive Kill List tasks
+// EP tracks: SEE ME, Sweet Frustration, East Side Love, WANT U 2, Like I Did, GREEN LIGHTS, ALL LOVE (EP)
+// Upload/release dates for singles are TBD — gated on master completion, not calendar dates.
+// Amuse Pro = 48hr review. Upload the hour a master locks.
 const RELEASE_DEFAULTS: Release[] = [
-  { 
-    title: "SEE ME", uploadDate: "2026-03-09", releaseDate: "2026-03-13", status: "live", 
-    contentDeliverables: { ...DEFAULT_DELIVERABLES, coreDriveComplete: true, campaignKitGenerated: true, ascap: "pending", mlc: "pending", soundExchange: "complete", songtrust: "pending", notes: "Live Mar 13. Core Drive: 2,713 tracks / 38 playlists. Campaign kit in docs/handoff_mar24/." } 
+  {
+    title: "SEE ME", uploadDate: "2026-03-09", releaseDate: "2026-03-13", status: "live",
+    contentDeliverables: { ...DEFAULT_DELIVERABLES, coreDriveComplete: true, campaignKitGenerated: true, ascap: "pending", mlc: "pending", soundExchange: "complete", songtrust: "pending", notes: "Live Mar 13. Core Drive: 2,713 tracks / 38 playlists. Campaign kit in docs/handoff_mar24/." }
   },
-  { 
-    title: "East Side Love", uploadDate: "2026-04-07", releaseDate: "2026-04-14", status: "unreleased", 
-    contentDeliverables: { ...DEFAULT_DELIVERABLES, coreDriveComplete: true, campaignKitGenerated: true, soundExchange: "complete", notes: "Core Drive: 1,221 tracks / 20 playlists. Campaign kit in docs/handoff_mar24/. 414 Day drop — Milwaukee track on Milwaukee's day." } 
+  {
+    title: "Sweet Frustration", uploadDate: "2026-04-22", releaseDate: "2026-04-24", status: "unreleased",
+    contentDeliverables: { ...DEFAULT_DELIVERABLES, coreDriveComplete: true, campaignKitGenerated: true, soundExchange: "complete", notes: "Core Drive: 1,134 tracks / 20 playlists. KAYTRANADA lane. Mix26 bounced Apr 8 — closest to done. Upload when master locks." }
   },
-  { 
-    title: "Sweet Frustration", uploadDate: "2026-04-07", releaseDate: "2026-04-10", status: "unreleased", 
-    contentDeliverables: { ...DEFAULT_DELIVERABLES, coreDriveComplete: true, campaignKitGenerated: true, soundExchange: "complete", notes: "Core Drive: 1,134 tracks / 20 playlists. KAYTRANADA lane. Campaign kit in docs/handoff_mar24/." } 
+  {
+    title: "East Side Love", uploadDate: "2026-04-22", releaseDate: "2026-04-24", status: "unreleased",
+    contentDeliverables: { ...DEFAULT_DELIVERABLES, coreDriveComplete: true, campaignKitGenerated: true, soundExchange: "complete", notes: "Core Drive: 1,221 tracks / 20 playlists. Multiple bounces Apr 8 (25_5 series). Upload when master locks." }
   },
-  { 
-    title: "Like I Did", uploadDate: "2026-04-09", releaseDate: "2026-04-17", status: "unreleased", 
-    contentDeliverables: { ...DEFAULT_DELIVERABLES, coreDriveComplete: true, campaignKitGenerated: true, soundExchange: "complete", notes: "Core Drive: via Like I Did analysis (110 BPM D minor pocket). Campaign kit = worth_it_campaign_kit.md in docs/handoff_mar24/." } 
+  {
+    title: "WANT U 2", uploadDate: "2026-04-22", releaseDate: "2026-04-24", status: "unreleased",
+    contentDeliverables: { ...DEFAULT_DELIVERABLES, notes: "New EP addition (Apr 11 audit). ~10 hrs remaining. Recording + mixing + mastering. Upload when master locks." }
   },
-  { 
-    title: "ALL LOVE (EP)", uploadDate: "2026-04-14", releaseDate: "2026-04-24", status: "unreleased", 
-    contentDeliverables: { ...DEFAULT_DELIVERABLES, notes: "EP entity. Upload to Amuse by Apr 14. Drops Apr 24. Needs: EP cover art, track sequencing, UPC, EP-level Spotify pitch." }
+  {
+    title: "Like I Did", uploadDate: "2026-04-22", releaseDate: "2026-04-24", status: "unreleased",
+    contentDeliverables: { ...DEFAULT_DELIVERABLES, coreDriveComplete: true, campaignKitGenerated: true, soundExchange: "complete", notes: "Core Drive: via Like I Did analysis (110 BPM D minor pocket). Campaign kit = worth_it_campaign_kit.md in docs/handoff_mar24/. Upload when master locks." }
+  },
+  {
+    title: "GREEN LIGHTS", uploadDate: "2026-04-22", releaseDate: "2026-04-24", status: "unreleased",
+    contentDeliverables: { ...DEFAULT_DELIVERABLES, notes: "New EP addition (Apr 11 audit). ~10 hrs remaining. Recording + mixing + mastering. Upload when master locks." }
+  },
+  {
+    title: "ALL LOVE (EP)", uploadDate: "2026-04-22", releaseDate: "2026-04-24", status: "unreleased",
+    contentDeliverables: { ...DEFAULT_DELIVERABLES, notes: "6-track EP entity. Upload to Amuse by Apr 22 (48hr review). Drops Apr 24. Needs: EP cover art, track sequencing (Cyanite-informed), UPC, EP-level Spotify pitch." }
   },
 ];
 
 const RELEASES_KEY = "dynamic_releases";
 const RELEASES_VERSION_KEY = "releases_data_version";
-const RELEASE_DATA_VERSION = 24; // v24: Fix SF uploadDate (Apr 2→Apr 7), sovereign plan integration (grief protocol, auto phase switch)
+const RELEASE_DATA_VERSION = 25; // v25: Apr 11 audit — EP expanded to 6 tracks (added WANT U 2, GREEN LIGHTS). All dates gated on master completion. 414 Day cancelled. Upload deadline Apr 22 for 48hr Amuse Pro review.
 
 // Read from IndexedDB, seeding defaults on first call or after version bump
 export async function getDynamicReleases(): Promise<Release[]> {

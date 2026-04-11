@@ -36,20 +36,20 @@ export const PHASE_CONFIG: Record<Phase | 'BUFFER', { label: string; badge: stri
 };
 
 export const ALL_TRACKS: Track[] = [
-  // ── ALL LOVE EP — 4 active tracks ──
-  { id: 'al-02', name: 'See Me',             phase: 'ALL_LOVE' },
-  { id: 'al-03', name: 'East Side Love',     phase: 'ALL_LOVE' },
-  { id: 'al-08', name: 'Sweet Frustration',  phase: 'ALL_LOVE' },
-  { id: 'al-09', name: 'Like I Did',         phase: 'ALL_LOVE' },
+  // ── ALL LOVE EP — 6 active tracks (expanded Apr 11 audit) ──
+  { id: 'al-02', name: 'See Me',            phase: 'ALL_LOVE' },
+  { id: 'al-08', name: 'Sweet Frustration', phase: 'ALL_LOVE' },
+  { id: 'al-03', name: 'East Side Love',    phase: 'ALL_LOVE' },
+  { id: 'al-04', name: 'WANT U 2',          phase: 'ALL_LOVE' },
+  { id: 'al-09', name: 'Like I Did',        phase: 'ALL_LOVE' },
+  { id: 'al-05', name: 'GREEN LIGHTS',      phase: 'ALL_LOVE' },
 
-  // ── ALL LOVE — 7 parked tracks (post-EP release TBD) ──
-  { id: 'al-01', name: 'I Like Girls',        phase: 'ALL_LOVE', parked: true },
-  { id: 'al-04', name: 'Want U Bad',          phase: 'ALL_LOVE', parked: true },
-  { id: 'al-05', name: 'Green Light Patient', phase: 'ALL_LOVE', parked: true },
-  { id: 'al-06', name: 'Luxury',              phase: 'ALL_LOVE', parked: true },
-  { id: 'al-07', name: 'Worth It',            phase: 'ALL_LOVE', parked: true },
-  { id: 'al-10', name: 'Just Say So',         phase: 'ALL_LOVE', parked: true },
-  { id: 'al-11', name: 'Reconnect',           phase: 'ALL_LOVE', parked: true },
+  // ── ALL LOVE — 5 parked tracks (post-EP release TBD) ──
+  { id: 'al-01', name: 'I Like Girls',  phase: 'ALL_LOVE', parked: true },
+  { id: 'al-06', name: 'Luxury',        phase: 'ALL_LOVE', parked: true },
+  { id: 'al-07', name: 'Worth It',      phase: 'ALL_LOVE', parked: true },
+  { id: 'al-10', name: 'Just Say So',   phase: 'ALL_LOVE', parked: true },
+  { id: 'al-11', name: 'Reconnect',     phase: 'ALL_LOVE', parked: true },
 
   // ── DELUXE — 12 tracks ──
   { id: 'dl-01', name: 'All My Love (intro flip)', phase: 'DELUXE' },
@@ -108,23 +108,23 @@ export const SPRINT_WEEKS: SprintWeek[] = [
   },
   {
     wk: 4, dates: 'Mar 29\u2013Apr 4', startDate: '2026-03-29', endDate: '2026-04-04',
-    phase: 'ALL_LOVE', phaseBadge: 'ALL LOVE', target: 'ESL drops + SF/LID close', total: 2,
-    keyEvents: ['ESL Amuse upload Apr 7 (414 Day release) 🔥', 'SF mix/master close target Apr 1', 'LID mix/master close target Apr 1', 'East Side Love drops Apr 14 (414 Day) 🔥', '$1,000 DD bill due Apr 3', 'DoorDash bridge ends'],
+    phase: 'ALL_LOVE', phaseBadge: 'ALL LOVE', target: 'Production sprint begins', total: 1,
+    keyEvents: ['Apr 11 audit: EP expanded to 6 tracks', 'Production sprint active — masters not done', 'DoorDash morning block only during sprint'],
   },
   {
     wk: 5, dates: 'Apr 5\u201311', startDate: '2026-04-05', endDate: '2026-04-11',
-    phase: 'ALL_LOVE', phaseBadge: 'ALL LOVE', target: 'SF drops + LID upload', total: 3,
-    keyEvents: ['SF Amuse upload deadline Apr 6', 'Sweet Frustration drops Apr 10 🔥', 'ESL drops Apr 14 (414 Day) 🎤', 'LID Amuse upload deadline Apr 13', '$50 ad push — Denver, Minneapolis, Dallas, Calgary'],
+    phase: 'ALL_LOVE', phaseBadge: 'ALL LOVE', target: 'Master all 6 tracks', total: 1,
+    keyEvents: ['6 tracks × ~10 hrs = 50 hrs total', '~4 hrs/day studio after DoorDash', 'Upload each track the hour it locks (Amuse Pro = 48hr)'],
   },
   {
     wk: 6, dates: 'Apr 12\u201318', startDate: '2026-04-12', endDate: '2026-04-18',
-    phase: 'ALL_LOVE', phaseBadge: 'ALL LOVE', target: '414 Day + LID drops + EP upload', total: 4,
-    keyEvents: ['LID Amuse upload deadline Apr 13', 'EP Amuse upload deadline Apr 14', '414 Day performance Apr 14 🎤 (GF filming)', 'QR code at venue → Spotify pre-save', 'East Side Love drops Apr 14 (414 Day) 🔥', 'Like I Did drops Apr 17 🔥', 'All CTAs shift to "pre-save ALL LOVE EP"'],
+    phase: 'ALL_LOVE', phaseBadge: 'ALL LOVE', target: 'Singles rolling live as masters lock', total: 6,
+    keyEvents: ['Upload each single the hour master locks', 'EP upload deadline: Apr 22 (48hr Amuse review)', 'No content, no planning — studio only', '414 Day cancelled — focus stays in DAW'],
   },
   {
     wk: 7, dates: 'Apr 19\u201325', startDate: '2026-04-19', endDate: '2026-04-25',
-    phase: 'ALL_LOVE', phaseBadge: 'ALL LOVE', target: 'EP DROPS \u2014 north star', total: 4,
-    keyEvents: ['ALL LOVE EP drops Apr 24 \uD83D\uDD25', '$75 Spotify ad push (EP \u2014 all markets)', 'First week stream check (target score 20\u2192 25+)', 'Deploy 414 Day performance footage'],
+    phase: 'ALL_LOVE', phaseBadge: 'ALL LOVE', target: 'EP DROPS \u2014 north star', total: 6,
+    keyEvents: ['ALL LOVE EP drops Apr 24 \uD83D\uDD25 (6 tracks)', 'Sequence locked via Cyanite post-mastering', '$75 Spotify ad push (EP \u2014 all markets)', 'First week stream check (target score 20\u2192 25+)'],
   },
   {
     wk: 8, dates: 'Apr 26\u2013May 2', startDate: '2026-04-26', endDate: '2026-05-02',
@@ -164,12 +164,13 @@ export const SPRINT_WEEKS: SprintWeek[] = [
 ];
 
 export const SPRINT_RULES = [
-  { label: 'Studio Block',      value: '10 AM \u2013 2 PM (inviolable)' },
-  { label: 'DD Bridge',         value: '2 PM \u2013 8:30 PM (through Apr 3)' },
-  { label: 'Track Floor',       value: '10 hrs minimum per track' },
-  { label: 'Efficiency Curve',  value: '8% compounding per week' },
-  { label: 'Sundays',           value: 'SACRED \u2014 no sessions' },
-  { label: 'EP Tracks',         value: '4 active / 7 parked' },
+  { label: 'DoorDash',         value: '6:30\u20139 AM only (Phase 1). Protect studio.' },
+  { label: 'Studio Block',     value: '9:30 AM onward. One track. Closest to done first.' },
+  { label: 'On Master Lock',   value: 'Upload to Amuse same hour. Pitch same hour. Close project.' },
+  { label: 'Track Floor',      value: '~10 hrs per track remaining' },
+  { label: 'Amuse Pro',        value: '48hr review. EP upload by Apr 22.' },
+  { label: 'Sundays',          value: 'SACRED \u2014 no sessions' },
+  { label: 'EP Tracks',        value: '6 active / 5 parked. Sequence via Cyanite post-mastering.' },
 ];
 
 export const TOTAL_TRACKS = 43;

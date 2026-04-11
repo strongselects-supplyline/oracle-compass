@@ -338,84 +338,32 @@ export async function deriveKillList(): Promise<KillTask[]> {
     }
   }
 
-  // ── 2.7 "ITS ALL LOVE" CONTENT SPRINT (22-Day Protocol) ──────────
-  // Dynamic phase task based on days until Apr 24 EP drop.
+  // ── 2.7 "ITS ALL LOVE" CONTENT SPRINT ──────────
+  // PAUSED during Phase 1 production sprint (through Apr 24).
+  // No content creation during the mastering window — studio only.
+  // Content sprint activates on DROP DAY (Apr 24) only.
   const epDropDate = new Date("2026-04-24T00:00:00");
   const daysToEpDrop = Math.ceil((epDropDate.getTime() - new Date().getTime()) / 86400000);
   const contentSprKey = `content_sprint_clear:${today}`;
   const contentSprintCleared = await getStoreValue(contentSprKey);
 
-  if (!contentSprintCleared && daysToEpDrop >= 0 && daysToEpDrop <= 22) {
-    if (daysToEpDrop > 10) {
-      // Phase 1: Ambient Awareness (Apr 2-13)
-      tasks.push({
-        id: "content-sprint-phase1",
-        title: "Post \"Its All Love\" sip video",
-        subtitle: `Phase 1: Ambient Awareness. ${daysToEpDrop} days to EP. Own the phrase.`,
-        howTo: [
-          "White tee, glasses, mug of tea.",
-          "Setup → drop a 4K observation → sip → \"But it's all love.\"",
-          "Embed sub-frequency audio layer underneath softly.",
-          "EP snippet playing underneath softly.",
-          "Point. Shoot. Sip. Post. No editing required.",
-        ],
-        urgency: "RED" as const,
-        pillar: "creative" as const,
-        timeBlock: "content" as const,
-        action: async () => { await setStoreValue(contentSprKey, true); },
-      });
-    } else if (daysToEpDrop === 10) {
-      // Phase 2: 414 Day (Apr 14)
-      tasks.push({
-        id: "content-sprint-phase2",
-        title: "414 Day content shift — ESL + Milwaukee",
-        subtitle: "Phase 2: ESL drops today. Content pivots to the city.",
-        howTo: [
-          "Post BTS of ESL creation + Milwaukee-specific content.",
-          "\"Its All Love\" video that references the city.",
-          "One post: \"Happy 414. This one's for the city.\" + link.",
-          "3-4 pieces of content today. This is the hometown statement.",
-        ],
-        urgency: "RED" as const,
-        pillar: "creative" as const,
-        timeBlock: "content" as const,
-        action: async () => { await setStoreValue(contentSprKey, true); },
-      });
-    } else if (daysToEpDrop > 0) {
-      // Phase 3: EP Countdown (Apr 15-23)
-      tasks.push({
-        id: "content-sprint-phase3",
-        title: `EP Countdown content (${daysToEpDrop}d left)`,
-        subtitle: "Phase 3: Accelerate. 2 videos + 15s mix preview from DAW.",
-        howTo: [
-          "1-2 \"Its All Love\" sip videos today.",
-          "Record a 15-second mix preview from a different EP track.",
-          "Short studio session clip — just you in the booth, music playing.",
-          "The frequency of posts teaches the algorithm you're about to drop.",
-        ],
-        urgency: "RED" as const,
-        pillar: "creative" as const,
-        timeBlock: "content" as const,
-        action: async () => { await setStoreValue(contentSprKey, true); },
-      });
-    } else {
-      // Phase 4: Drop Day (Apr 24)
-      tasks.push({
-        id: "content-sprint-phase4",
-        title: "DROP DAY — ALL LOVE EP is here.",
-        subtitle: "Phase 4: Morning resolution, midday announce, evening live.",
-        howTo: [
-          "MORNING: Final \"Its All Love\" video — \"...but it's ALL LOVE. Out now.\"",
-          "MIDDAY: Full EP announcement post.",
-          "EVENING: Go live or post a longer-form reaction/listen-along.",
-          "This is the day. Execute the 3-post stack.",
-        ],
-        urgency: "RED" as const,
-        pillar: "creative" as const,
-        timeBlock: "content" as const,
-        action: async () => { await setStoreValue(contentSprKey, true); },
-      });
-    }
+  if (!contentSprintCleared && daysToEpDrop === 0) {
+    // DROP DAY ONLY — Apr 24
+    tasks.push({
+      id: "content-sprint-phase4",
+      title: "DROP DAY — ALL LOVE EP is here.",
+      subtitle: "6-track EP. Morning resolution, midday announce, evening live.",
+      howTo: [
+        "MORNING: Final \"Its All Love\" video — \"...but it's ALL LOVE. Out now.\"",
+        "MIDDAY: Full EP announcement post with all 6 tracks.",
+        "EVENING: Go live or post a longer-form reaction/listen-along.",
+        "This is the day. Execute the 3-post stack.",
+      ],
+      urgency: "RED" as const,
+      pillar: "creative" as const,
+      timeBlock: "content" as const,
+      action: async () => { await setStoreValue(contentSprKey, true); },
+    });
   }
 
   // ── 3. GRIND → Tasks ─────────────────────────────────────────────
@@ -1206,132 +1154,9 @@ export async function deriveKillList(): Promise<KillTask[]> {
     }
   }
 
-  // ── 9. 414 DAY PREP (Apr 14, 2026) ──────────────────────────────
-  const fourteenDayDate = new Date("2026-04-14T00:00:00");
-  const daysUntil414 = Math.ceil((fourteenDayDate.getTime() - now.getTime()) / 86400000);
-
-  if (daysUntil414 >= 0 && daysUntil414 <= 30) {
-    const live414Urg = (threshold: number): "RED" | "AMBER" | "GREEN" =>
-      daysUntil414 <= threshold ? "RED" : daysUntil414 <= threshold + 7 ? "AMBER" : "GREEN";
-
-    const setlistLocked = await getStoreValue<boolean>("414day_setlist_locked");
-    const rehearsal1 = await getStoreValue<boolean>("414day_rehearsal_1");
-    const rehearsal2 = await getStoreValue<boolean>("414day_rehearsal_2");
-    const gearChecked = await getStoreValue<boolean>("414day_gear_checked");
-    const contentCapturePlan = await getStoreValue<boolean>("414day_content_capture_plan");
-    const synesthesiaTested = await getStoreValue<boolean>("414day_synesthesia_tested");
-
-    if (!setlistLocked) {
-      tasks.push({
-        id: "414-setlist",
-        title: "Lock 414 Day setlist",
-        subtitle: `${daysUntil414} days until performance. 20-minute set.`,
-        howTo: [
-          "Pick 5-6 songs from ALL LOVE that flow well live",
-          "Order them: opener (energy), 2-3 mid songs, closer (biggest hit)",
-          "Time it — must fit in 20 minutes including transitions",
-          "Write it down. No changes after this is locked.",
-          "Consider: this is 3 days BEFORE album drop — tease unreleased tracks?",
-        ],
-        urgency: live414Urg(14),
-        pillar: "creative",
-        timeBlock: "any",
-        action: async () => { await setStoreValue("414day_setlist_locked", true); },
-      });
-    }
-
-    if (setlistLocked && !rehearsal1) {
-      tasks.push({
-        id: "414-rehearsal1",
-        title: "414 Day rehearsal #1",
-        subtitle: "Full run-through of the 20-minute set",
-        howTo: [
-          "Run the full setlist start to finish, no stops",
-          "Time it — are you under 20 minutes?",
-          "Note which transitions feel rough",
-          "Record yourself on your phone for review",
-        ],
-        urgency: live414Urg(10),
-        pillar: "creative",
-        timeBlock: "studio",
-        action: async () => { await setStoreValue("414day_rehearsal_1", true); },
-      });
-    }
-
-    if (rehearsal1 && !rehearsal2) {
-      tasks.push({
-        id: "414-rehearsal2",
-        title: "414 Day rehearsal #2 (final)",
-        subtitle: "Polish run — fix everything from rehearsal 1",
-        howTo: [
-          "Run the full set again with fixes from last time",
-          "Focus on transitions, energy management, stage movement",
-          "This is your final dress rehearsal",
-          "If it feels tight, you're ready",
-        ],
-        urgency: live414Urg(5),
-        pillar: "creative",
-        timeBlock: "studio",
-        action: async () => { await setStoreValue("414day_rehearsal_2", true); },
-      });
-    }
-
-    if (!gearChecked && daysUntil414 <= 7) {
-      tasks.push({
-        id: "414-gear",
-        title: "414 Day gear check",
-        subtitle: "Don't show up with dead batteries",
-        howTo: [
-          "Check in-ear monitors — batteries charged, working",
-          "Check cables — bring backups",
-          "Check microphone — is it yours or venue-provided?",
-          "Pack a bag the night before: cables, in-ears, phone charger, water",
-        ],
-        urgency: live414Urg(3),
-        pillar: "ops",
-        timeBlock: "any",
-        action: async () => { await setStoreValue("414day_gear_checked", true); },
-      });
-    }
-
-    if (!contentCapturePlan && daysUntil414 <= 14) {
-      tasks.push({
-        id: "414-content",
-        title: "Plan 414 Day content capture",
-        subtitle: "This is your biggest content day of the year",
-        howTo: [
-          "Who's filming? You need at least one person dedicated to camera",
-          "Minimum: phone on tripod for full set + handheld for BTS",
-          "Ideal: 2 angles (front of stage + crowd/side)",
-          "Plan: BTS arrival, soundcheck, crowd energy, performance clips, post-show",
-          "This footage feeds reels for 2-3 weeks of content",
-        ],
-        urgency: live414Urg(7),
-        pillar: "creative",
-        timeBlock: "any",
-        action: async () => { await setStoreValue("414day_content_capture_plan", true); },
-      });
-    }
-
-    if (!synesthesiaTested && daysUntil414 <= 14) {
-      tasks.push({
-        id: "414-synesthesia",
-        title: "Test Synesthesia Visualizer event mode",
-        subtitle: "Live visuals for the set — needs testing before the show",
-        howTo: [
-          "Open https://strongselects-supplyline.github.io/synesthesia-visualizer/?mode=event",
-          "Load the audio files for your setlist tracks",
-          "Run through the full set in event mode",
-          "Check transitions between tracks",
-          "Note any bugs or visual glitches to fix before April 14",
-        ],
-        urgency: live414Urg(10),
-        pillar: "creative",
-        timeBlock: "content",
-        action: async () => { await setStoreValue("414day_synesthesia_tested", true); },
-      });
-    }
-  }
+  // ── 9. 414 DAY PREP — CANCELLED ──────────────────────────────
+  // 414 Day live performance cancelled as of Apr 11 audit.
+  // No tasks generated. Section preserved for post-EP reactivation if needed.
 
   // ── 10. INSTRUMENTALS (EP tracks only — skip parked tracks) ──────
   // Sync licensing requires instrumentals. Don't gate on release date.
@@ -1340,7 +1165,7 @@ export async function deriveKillList(): Promise<KillTask[]> {
     // Skip if already rendered
     if (release.contentDeliverables.instrumentalRendered) continue;
     // Skip if this is a parked track (not on EP)
-    const EP_TRACKS = ['SEE ME', 'East Side Love', 'Sweet Frustration', 'Like I Did', 'ALL LOVE (EP)'];
+    const EP_TRACKS = ['SEE ME', 'Sweet Frustration', 'East Side Love', 'WANT U 2', 'Like I Did', 'GREEN LIGHTS', 'ALL LOVE (EP)'];
     if (!EP_TRACKS.includes(release.title)) continue;
     const t = release.title;
     tasks.push({
@@ -1387,8 +1212,8 @@ export async function deriveKillList(): Promise<KillTask[]> {
   }
 
   // ── 12. ANTI-DRIFT TELEMETRY ESCALATIONS ─────────────────────────
-  // Hard deadlines — EP upload by Apr 14, EP release Apr 24
-  const epUploadDeadline = new Date("2026-04-14T00:00:00");
+  // Hard deadlines — EP upload by Apr 22 (Amuse Pro 48hr review), EP release Apr 24
+  const epUploadDeadline = new Date("2026-04-22T00:00:00");
   const epReleaseDeadline = new Date("2026-04-24T00:00:00");
   const daysToUpload = Math.max(1, Math.ceil((epUploadDeadline.getTime() - now.getTime()) / 86400000));
   const daysToRelease = Math.max(1, Math.ceil((epReleaseDeadline.getTime() - now.getTime()) / 86400000));
@@ -1421,15 +1246,24 @@ export async function deriveKillList(): Promise<KillTask[]> {
   if (ddRemaining > 0 && !isSunday) {
     const ddUrgency = ddDailyTarget > 120 ? "RED" : ddDailyTarget > 80 ? "AMBER" : "GREEN";
 
-    // Morning sprint: 6-7 AM (~$20, 1hr)
+    // Phase 1 (through Apr 24): Morning block ONLY. Protect studio time.
+    // Phase 2 (Apr 25+): Multi-block DD schedule returns.
+    const isPhase1 = now < epReleaseDeadline;
+
+    // Morning sprint: 6:30-9 AM (~$50, 2.5hrs)
     const ddMornKey = `dd_morning:${today}`;
     const ddMornDone = await getStoreValue(ddMornKey);
-    if (!ddMornDone && hour >= 5 && hour < 8) {
+    if (!ddMornDone && hour >= 5 && hour < 10) {
       tasks.push({
         id: "dd-morning",
-        title: `DD Morning Sprint — 6-7 AM`,
-        subtitle: `$${telemetry.doordash_earned}/$${DD_MONTHLY_TARGET} (${ddPct}%) · ~$${Math.round(ddDailyTarget * 0.2)} target · ${ddWorkingDaysLeft}d left`,
-        howTo: [
+        title: isPhase1 ? `DD Morning Sprint — 6:30-9 AM (only block today)` : `DD Morning Sprint — 6:30-9 AM`,
+        subtitle: `$${telemetry.doordash_earned}/$${DD_MONTHLY_TARGET} (${ddPct}%) · ~$${Math.round(ddDailyTarget * (isPhase1 ? 1.0 : 0.2))} target · ${ddWorkingDaysLeft}d left`,
+        howTo: isPhase1 ? [
+          "2.5-hour morning surge. ~$50 net.",
+          "This is your ONLY DD block during the production sprint.",
+          "Stop at 9 AM. Home. Refuel. Studio by 9:30.",
+          "Tap ✓ when this sprint is done.",
+        ] : [
           "Quick 1-hour burst before your stack. ~$25 net.",
           "Breakfast rush = high tips. Stay in a tight radius.",
           "You only need 2 of 3 sprints to hit daily pace.",
@@ -1442,60 +1276,64 @@ export async function deriveKillList(): Promise<KillTask[]> {
       });
     }
 
-    // Midday sprint: 12-2 PM (~$35, 2hrs)
-    const ddMidKey = `dd_midday:${today}`;
-    const ddMidDone = await getStoreValue(ddMidKey);
-    if (!ddMidDone && hour >= 11 && hour < 15) {
-      tasks.push({
-        id: "dd-midday",
-        title: `DD Midday Sprint — 12-2 PM`,
-        subtitle: `$${telemetry.doordash_earned}/$${DD_MONTHLY_TARGET} (${ddPct}%) · ~$${Math.round(ddDailyTarget * 0.35)} target · ${ddWorkingDaysLeft}d left`,
-        howTo: [
-          "2-hour window between studio blocks. ~$50 net.",
-          "Lunch rush = consistent volume.",
-          "Stay efficient — decline orders under $6.",
-          "Back to Studio Block 2 at 2 PM.",
-        ],
-        urgency: ddUrgency,
-        pillar: "business",
-        timeBlock: "any",
-        action: async () => { await setStoreValue(ddMidKey, true); },
-      });
+    // Midday sprint: 12-2 PM (~$35, 2hrs) — Phase 2 only
+    if (!isPhase1) {
+      const ddMidKey = `dd_midday:${today}`;
+      const ddMidDone = await getStoreValue(ddMidKey);
+      if (!ddMidDone && hour >= 11 && hour < 15) {
+        tasks.push({
+          id: "dd-midday",
+          title: `DD Midday Sprint — 12-2 PM`,
+          subtitle: `$${telemetry.doordash_earned}/$${DD_MONTHLY_TARGET} (${ddPct}%) · ~$${Math.round(ddDailyTarget * 0.35)} target · ${ddWorkingDaysLeft}d left`,
+          howTo: [
+            "2-hour window between studio blocks. ~$50 net.",
+            "Lunch rush = consistent volume.",
+            "Stay efficient — decline orders under $6.",
+            "Back to Studio Block 2 at 2 PM.",
+          ],
+          urgency: ddUrgency,
+          pillar: "business",
+          timeBlock: "any",
+          action: async () => { await setStoreValue(ddMidKey, true); },
+        });
+      }
     }
 
-    // Evening sprint: 5:30-8:30+ PM (~$50, 2-3hrs)
-    const ddEveKey = `dd_evening:${today}`;
-    const ddEveDone = await getStoreValue(ddEveKey);
-    if (!ddEveDone && hour >= 17) {
-      tasks.push({
-        id: "dd-evening",
-        title: `DD Evening Sprint — 5:30-8:30 PM`,
-        subtitle: `$${telemetry.doordash_earned}/$${DD_MONTHLY_TARGET} (${ddPct}%) · ~$${Math.round(ddDailyTarget * 0.45)} target · ${ddWorkingDaysLeft}d left`,
-        howTo: [
-          "Biggest window — dinner rush. 2-3hrs = ~$50-75 net.",
-          "Flexible end time. Go until you hit daily target.",
-          "This is where the bulk of today's DD income lands.",
-          "Log earnings with the + button when done.",
-        ],
-        urgency: ddUrgency,
-        pillar: "business",
-        timeBlock: "evening",
-        action: async () => { await setStoreValue(ddEveKey, true); },
-      });
+    // Evening sprint: 5:30-8:30+ PM (~$50, 2-3hrs) — Phase 2 only
+    if (!isPhase1) {
+      const ddEveKey = `dd_evening:${today}`;
+      const ddEveDone = await getStoreValue(ddEveKey);
+      if (!ddEveDone && hour >= 17) {
+        tasks.push({
+          id: "dd-evening",
+          title: `DD Evening Sprint — 5:30-8:30 PM`,
+          subtitle: `$${telemetry.doordash_earned}/$${DD_MONTHLY_TARGET} (${ddPct}%) · ~$${Math.round(ddDailyTarget * 0.45)} target · ${ddWorkingDaysLeft}d left`,
+          howTo: [
+            "Biggest window — dinner rush. 2-3hrs = ~$50-75 net.",
+            "Flexible end time. Go until you hit daily target.",
+            "This is where the bulk of today's DD income lands.",
+            "Log earnings with the + button when done.",
+          ],
+          urgency: ddUrgency,
+          pillar: "business",
+          timeBlock: "evening",
+          action: async () => { await setStoreValue(ddEveKey, true); },
+        });
+      }
     }
   }
 
-  // SF Mixdown (11 hr target by EP upload Apr 14)
-  if (sfHours < 11 && now < epUploadDeadline) {
-    const dailyTargetSF = ((11 - sfHours) / daysToUpload).toFixed(1);
+  // SF Mixdown (10 hr target by EP upload Apr 22)
+  if (sfHours < 10 && now < epUploadDeadline) {
+    const dailyTargetSF = ((10 - sfHours) / daysToUpload).toFixed(1);
     const sfUrgency = parseFloat(dailyTargetSF) > 3 ? "RED" : parseFloat(dailyTargetSF) > 1.5 ? "AMBER" : "GREEN";
     tasks.push({
       id: "telemetry-sf",
       title: `Mix/Master SF: ${dailyTargetSF} hr pace`,
-      subtitle: `Sweet Frustration: ${sfHours} / 11 hrs logged. ${daysToUpload} days to upload.`,
+      subtitle: `Sweet Frustration: ${sfHours} / 10 hrs logged. ${daysToUpload} days to EP upload.`,
       howTo: [
-        "10-12 AM = Studio Block 1. 2-4 PM = Studio Block 2 (DD midday fills the gap).",
-        "Your only job is closing this track.",
+        "9:30 AM: S3 Check-in + DAW open. SF is closest to done — start here.",
+        "Work until it locks or you've hit a wall (3 bounce max rule).",
         "Sessions logged on the Log tab automatically update this pace."
       ],
       urgency: sfUrgency,
@@ -1505,17 +1343,17 @@ export async function deriveKillList(): Promise<KillTask[]> {
     });
   }
 
-  // LID Mixdown (11 hr target by EP upload Apr 14)
-  if (lidHours < 11 && now < epUploadDeadline) {
-    const dailyTargetLID = ((11 - lidHours) / daysToUpload).toFixed(1);
+  // LID Mixdown (10 hr target by EP upload Apr 22)
+  if (lidHours < 10 && now < epUploadDeadline) {
+    const dailyTargetLID = ((10 - lidHours) / daysToUpload).toFixed(1);
     const lidUrgency = parseFloat(dailyTargetLID) > 3 ? "RED" : parseFloat(dailyTargetLID) > 1.5 ? "AMBER" : "GREEN";
     tasks.push({
       id: "telemetry-lid",
       title: `Mix/Master LID: ${dailyTargetLID} hr pace`,
-      subtitle: `Like I Did: ${lidHours} / 11 hrs logged. ${daysToUpload} days to upload.`,
+      subtitle: `Like I Did: ${lidHours} / 10 hrs logged. ${daysToUpload} days to EP upload.`,
       howTo: [
-        "10-12 AM = Studio Block 1. 2-4 PM = Studio Block 2 (DD midday fills the gap).",
         "If SF is done, all your time goes here.",
+        "One track per session. Closest to done first.",
         "Sessions logged on the Log tab automatically update this pace."
       ],
       urgency: lidUrgency,
@@ -1525,55 +1363,31 @@ export async function deriveKillList(): Promise<KillTask[]> {
     });
   }
 
-  // ── 13. ESL EDITORIAL PITCH — 414 DAY (APR 14) ───────────────────
-  // ESL drops 414 Day (Apr 14). Upload by Apr 7. Pitch window opens after upload.
-  // Standard 7-day pitch window = submit by Apr 7 for guaranteed Release Radar.
-  const eslRelease = releases.find(r => r.title === "East Side Love");
-  if (eslRelease && eslRelease.status !== "live" && !eslRelease.contentDeliverables.spotifyPitchSubmitted) {
-    const eslUploadDate = new Date("2026-04-07T00:00:00");
-    const daysToEslUpload = Math.ceil((eslUploadDate.getTime() - now.getTime()) / 86400000);
-
-    if (now >= eslUploadDate) {
-      // Post-upload: pitch immediately
-      tasks.push({
-        id: "esl-pitch-same-day",
-        title: "Submit ESL editorial pitch NOW",
-        subtitle: "ESL is uploaded. Pitch immediately for 414 Day Release Radar.",
-        howTo: [
-          "Open Spotify for Artists (app or web).",
-          "Go to Music → East Side Love → tap 'Pitch a song'.",
-          "Genre: R&B / Soul. Mood: Romantic, Melancholic. Instruments: 808, Piano, Synth.",
-          "Culture: TrapSoul. Song description: 'Cinematic OVO-pocket R&B in the Bryson Tiller / Drake lane. Milwaukee anthem for 414 Day. Built for late-night editorial playlists and Release Radar discovery.'",
-          "Release date: April 14. Check all fields are filled. Submit.",
-          "Tap ✓ when submitted.",
-        ],
-        urgency: "RED",
-        pillar: "ops",
-        timeBlock: "biz",
-        action: async () => {
-          await updateContentDeliverables("East Side Love", { spotifyPitchSubmitted: true });
-        },
-      });
-    } else if (daysToEslUpload <= 7) {
-      // Pre-upload: prep the pitch copy
-      tasks.push({
-        id: "esl-pitch-prep",
-        title: `Prep ESL editorial pitch — upload in ${daysToEslUpload}d`,
-        subtitle: "Upload ESL to Amuse by Apr 7. Have pitch copy ready to paste.",
-        howTo: [
-          "Write your pitch copy NOW so you're ready on upload day.",
-          "Genre: R&B / Soul. Mood: Romantic, Melancholic.",
-          "Description: 'Cinematic OVO-pocket R&B in the Bryson Tiller / Drake lane. Milwaukee anthem dropping 414 Day. Late-night, emotional, built for editorial discovery.'",
-          "Save it in Notes — paste into Spotify for Artists right after Amuse confirms.",
-        ],
-        urgency: daysToEslUpload <= 3 ? "RED" : "AMBER",
-        pillar: "ops",
-        timeBlock: "biz",
-        action: async () => {
-          await setStoreValue("esl_pitch_prep_done", true);
-        },
-      });
-    }
+  // ── 13. EDITORIAL PITCH — fires when any single is uploaded (post-upload state) ──
+  // Pitch is submitted the same hour as Amuse upload. No pre-upload prep tasks.
+  // Gated on amuseUploaded = true AND spotifyPitchSubmitted = false.
+  for (const release of releases) {
+    if (release.status === "live") continue;
+    if (!release.contentDeliverables.amuseUploaded) continue;
+    if (release.contentDeliverables.spotifyPitchSubmitted) continue;
+    tasks.push({
+      id: `esl-pitch-same-day-${hashStr(release.title)}`,
+      title: `Submit editorial pitch — ${release.title}`,
+      subtitle: `${release.title} is uploaded to Amuse. Pitch immediately for Release Radar.`,
+      howTo: [
+        "Open Spotify for Artists (app or web).",
+        `Go to Music → ${release.title} → tap 'Pitch a song'.`,
+        "Genre: R&B / Soul. Mood: Romantic, Melancholic. Instruments: 808, Piano, Synth.",
+        "Culture: TrapSoul. Keep description specific: emotion, lane, audience.",
+        "Check all fields are filled. Submit. Tap ✓ when done.",
+      ],
+      urgency: "RED",
+      pillar: "ops",
+      timeBlock: "biz",
+      action: async () => {
+        await updateContentDeliverables(release.title, { spotifyPitchSubmitted: true });
+      },
+    });
   }
 
   // ── 14. SPOTIFY AD STUDIO — GEO TARGETS ──────────────────────────

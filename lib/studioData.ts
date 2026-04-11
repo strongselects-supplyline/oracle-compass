@@ -70,17 +70,19 @@ const placeholderTracks = (prefix: string, count: number): Track[] =>
 export const PROJECTS: Project[] = [
     {
         id: 'all-love', name: 'ALL LOVE', color: '#6ee7b7', emoji: '🔥',
-        role: 'EP — 4-track drop Apr 24 (7 album tracks parked post-EP)', trackCount: 4, targetDate: '2026-04-24',
+        role: 'EP — 6-track drop Apr 24. Sequence TBD (Cyanite post-mastering). 5 parked tracks post-EP.', trackCount: 6, targetDate: '2026-04-24',
         tracks: [
-            { title: 'I Like Girls', bpm: 107, key: 'F# min', rbConf: 0.74, sexy: 0.70, chill: 0.44, romantic: 0.32, happy: 0.35, uplifting: 0.34, energetic: 0.23, isrc: '', status: 'unreleased', releaseDate: null, pitchDeadline: null, isLeadSingle: false, leadRank: null },
+            // ── 6 ACTIVE EP TRACKS ──
             { title: 'SEE ME', bpm: 120, key: 'B min', rbConf: 0.68, sexy: 0.69, chill: 0.45, romantic: 0.46, happy: 0.50, uplifting: 0.46, energetic: 0.25, isrc: '', status: 'single_live', releaseDate: '2026-03-13', pitchDeadline: '2026-03-06', isLeadSingle: true, leadRank: 1 },
-            { title: 'East Side Love', bpm: 98, key: 'C# min', rbConf: 0.59, sexy: 0.87, chill: 0.63, romantic: 0.62, happy: 0.38, uplifting: 0.05, energetic: 0.10, isrc: '', status: 'unreleased', releaseDate: '2026-04-14', pitchDeadline: '2026-04-07', isLeadSingle: true, leadRank: 2 },
-            { title: 'Want U Bad', bpm: 114, key: 'G min', rbConf: 0.52, sexy: 0.56, chill: 0.65, romantic: 0.46, happy: 0.58, uplifting: 0.38, energetic: 0.12, isrc: '', status: 'unreleased', releaseDate: null, pitchDeadline: null, isLeadSingle: false, leadRank: null },
-            { title: 'Green Light Patient', bpm: 104, key: '', rbConf: null, sexy: null, chill: null, romantic: null, happy: null, uplifting: null, energetic: null, isrc: '', status: 'unreleased', releaseDate: null, pitchDeadline: null, isLeadSingle: false, leadRank: null },
+            { title: 'Sweet Frustration', bpm: 124, key: 'Bb min', rbConf: 0.25, sexy: 0.85, chill: 0.36, romantic: 0.37, happy: 0.69, uplifting: 0.58, energetic: 0.48, isrc: '', status: 'unreleased', releaseDate: '2026-04-24', pitchDeadline: null, isLeadSingle: true, leadRank: 2 },
+            { title: 'East Side Love', bpm: 98, key: 'C# min', rbConf: 0.59, sexy: 0.87, chill: 0.63, romantic: 0.62, happy: 0.38, uplifting: 0.05, energetic: 0.10, isrc: '', status: 'unreleased', releaseDate: '2026-04-24', pitchDeadline: null, isLeadSingle: true, leadRank: 3 },
+            { title: 'WANT U 2', bpm: 114, key: 'G min', rbConf: 0.52, sexy: 0.56, chill: 0.65, romantic: 0.46, happy: 0.58, uplifting: 0.38, energetic: 0.12, isrc: '', status: 'unreleased', releaseDate: '2026-04-24', pitchDeadline: null, isLeadSingle: true, leadRank: 4 },
+            { title: 'Like I Did', bpm: 110, key: 'D min', rbConf: 0.57, sexy: 0.60, chill: 0.73, romantic: 0.63, happy: 0.69, uplifting: 0.29, energetic: 0.17, isrc: '', status: 'unreleased', releaseDate: '2026-04-24', pitchDeadline: null, isLeadSingle: true, leadRank: 5 },
+            { title: 'GREEN LIGHTS', bpm: 104, key: '', rbConf: null, sexy: null, chill: null, romantic: null, happy: null, uplifting: null, energetic: null, isrc: '', status: 'unreleased', releaseDate: '2026-04-24', pitchDeadline: null, isLeadSingle: true, leadRank: 6 },
+            // ── 5 PARKED TRACKS (post-EP release TBD) ──
+            { title: 'I Like Girls', bpm: 107, key: 'F# min', rbConf: 0.74, sexy: 0.70, chill: 0.44, romantic: 0.32, happy: 0.35, uplifting: 0.34, energetic: 0.23, isrc: '', status: 'unreleased', releaseDate: null, pitchDeadline: null, isLeadSingle: false, leadRank: null },
             { title: 'Luxury', bpm: 100, key: '', rbConf: null, sexy: null, chill: null, romantic: null, happy: null, uplifting: null, energetic: null, isrc: '', status: 'unreleased', releaseDate: null, pitchDeadline: null, isLeadSingle: false, leadRank: null },
             { title: 'Worth It', bpm: 97, key: 'F min', rbConf: 0.57, sexy: 0.79, chill: 0.57, romantic: 0.35, happy: 0.35, uplifting: 0.30, energetic: 0.15, isrc: '', status: 'unreleased', releaseDate: null, pitchDeadline: null, isLeadSingle: false, leadRank: null },
-            { title: 'Sweet Frustration', bpm: 124, key: 'Bb min', rbConf: 0.25, sexy: 0.85, chill: 0.36, romantic: 0.37, happy: 0.69, uplifting: 0.58, energetic: 0.48, isrc: '', status: 'unreleased', releaseDate: '2026-04-10', pitchDeadline: '2026-04-03', isLeadSingle: true, leadRank: 3 },
-            { title: 'Like I Did', bpm: 110, key: 'D min', rbConf: 0.57, sexy: 0.60, chill: 0.73, romantic: 0.63, happy: 0.69, uplifting: 0.29, energetic: 0.17, isrc: '', status: 'unreleased', releaseDate: '2026-04-17', pitchDeadline: '2026-04-10', isLeadSingle: true, leadRank: 4 },
             { title: 'Just Say So', bpm: 122, key: 'Bb min', rbConf: 0.60, sexy: 0.73, chill: 0.59, romantic: 0.57, happy: 0.56, uplifting: 0.44, energetic: 0.24, isrc: '', status: 'unreleased', releaseDate: null, pitchDeadline: null, isLeadSingle: false, leadRank: null },
             { title: 'Reconnect', bpm: 82, key: 'D maj', rbConf: 0.56, sexy: 0.88, chill: 0.52, romantic: 0.35, happy: 0.40, uplifting: 0.25, energetic: 0.12, isrc: '', status: 'unreleased', releaseDate: null, pitchDeadline: null, isLeadSingle: false, leadRank: null },
         ],
@@ -117,11 +119,9 @@ export const LOOSIES: Loosie[] = [
 
 export const TIMELINE_EVENTS: TimelineEvent[] = [
     { date: '2026-03-13', label: 'SEE ME', project: 'all-love', type: 'single' },
-    { date: '2026-04-14', label: 'East Side Love', project: 'all-love', type: 'single' },
-    { date: '2026-04-10', label: 'Sweet Frustration', project: 'all-love', type: 'single' },
-    { date: '2026-04-17', label: 'Like I Did', project: 'all-love', type: 'single' },
-    { date: '2026-04-24', label: 'ALL LOVE EP', project: 'all-love', type: 'album' },
-    { date: '2026-04-11', label: 'Deluxe Single', project: 'all-love-deluxe', type: 'single' },
+    // Singles ship as masters lock — dates are approximate. EP collects all on Apr 24.
+    { date: '2026-04-24', label: 'ALL LOVE EP (6 tracks)', project: 'all-love', type: 'album' },
+    { date: '2026-04-29', label: 'Deluxe Single', project: 'all-love-deluxe', type: 'single' },
     { date: '2026-04-28', label: 'DELUXE 🎂', project: 'all-love-deluxe', type: 'album' },
     { date: '2026-05-09', label: 'L1', project: 'loosies', type: 'loosie' },
     { date: '2026-05-23', label: 'L2', project: 'loosies', type: 'loosie' },

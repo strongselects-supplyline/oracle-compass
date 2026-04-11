@@ -2,9 +2,10 @@
 // Core gating logic for Oracle Compass
 //
 // PHASE 1 — THE SPRINT (through Apr 24, 2026):
-//   Mon/Wed/Fri: STUDIO + SAUNA DAY
-//   Tue/Thu/Sat: STUDIO DAY
+//   Mon-Sat: STUDIO DAY — single-mode days, no multitasking
 //   Sunday: SACRED
+//   Daily structure: DoorDash 6:30-9 AM → Studio 9:30 AM onward → Wheels down 8:30 PM
+//   No content, no planning, no system building. Production only.
 //
 // PHASE 2 — THE COMPOUND (Apr 25 onward):
 //   Mon/Wed/Fri: STUDIO + SAUNA DAY
@@ -14,17 +15,18 @@
 //
 // Switch is automatic — no deploy needed. Triggered by EP_SPRINT_END date.
 //
-// DAILY BLOCK MAP:
-//   6-7 AM    → DD Morning Sprint (1hr ~$25)
-//   7-9 AM    → Sovereignty Stack + Movement
-//   10 AM-12  → Studio Block 1
-//   12-2 PM   → DD Midday Sprint (2hrs ~$50)
-//   2-4 PM    → Studio Block 2
-//   5:30-8:30 → DD Evening Sprint (2-3hrs ~$50-75)
-//   9 PM+     → Wind-down, Trataka
+// PHASE 1 DAILY BLOCK MAP (Apr 11-24):
+//   6:30-9 AM → DoorDash (morning surge only)
+//   9:30 AM   → S3 Check-in + DAW open
+//   9:35 AM+  → Studio (one track, closest to done)
+//   8:30 PM   → Wheels down
+//   10:30 PM  → Lights out
 //
-// DD TARGET: $1,800/mo @ $25/hr net = ~72 hrs/mo = ~2.8 hrs/day
-// Only need 2 of 3 sprints most days to hit target.
+// PHASE 2 DAILY BLOCK MAP (Apr 25+):
+//   Same as before — multi-block DD schedule returns
+//
+// DD TARGET: $1,800/mo @ $25/hr net = ~72 hrs/mo
+// Phase 1: morning block only. Phase 2: 2-3 sprints/day.
 
 // EP sprint ends after Apr 24. Phase 2 (COMPOUND) begins Apr 25.
 const EP_SPRINT_END = new Date("2026-04-25T00:00:00");
@@ -39,8 +41,13 @@ export function getDayType(date: Date = new Date()): DayType {
         return "\u{1F6D1} SACRED \u2014 no building";
     }
 
+    // Phase 1 (through Apr 24): every day is a studio day. No BIZ days. Production only.
+    if (!isPostEP) {
+        return "STUDIO DAY";
+    }
+
     // Phase 2+: Tue/Thu become BIZ DAY for registration, outreach, analytics
-    if (isPostEP && (dayIndex === 2 || dayIndex === 4)) {
+    if (dayIndex === 2 || dayIndex === 4) {
         return "BIZ DAY";
     }
 
@@ -48,7 +55,7 @@ export function getDayType(date: Date = new Date()): DayType {
         return "STUDIO + SAUNA DAY"; // Mon, Wed, Fri
     }
 
-    // Tue, Thu (sprint) + Sat — studio days
+    // Sat — studio day
     return "STUDIO DAY";
 }
 
