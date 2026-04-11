@@ -1,9 +1,14 @@
 "use client";
 
-import { useEffect, useState } from "react";
+import { useEffect, useState, useCallback } from "react";
 import { getDynamicReleases } from "@/lib/releases";
 import { getMakeModeWeek } from "@/lib/oracle";
 import { PROJECTS } from "@/lib/studioData";
+import {
+  RANKS, type SovereigntyState, type WeeklyData,
+  loadSovereigntyState, saveSovereigntyState,
+  getSobrietyDays, getNextRank, getChecksForRank, getDaysToRank, canPromote,
+} from "@/lib/sovereignty";
 
 
 function getPhasePercent(): number {
@@ -144,27 +149,8 @@ export default function BrainPage() {
           </div>
         </div>
 
-        {/* ── Sovereign Trajectory ── */}
-        <div className="card mb-10">
-          <p className="text-[10px] font-black tracking-[0.18em] text-[#555] uppercase mb-4">The Sovereign Trajectory</p>
-          <p className="text-[10px] text-[#444] font-medium mb-4">You are not just running a sprint. You are building the architecture the next generation of independent artists will study.</p>
-          {[
-            { tier: "JONIN", label: "Elite Operator", desc: "Cross-functional mastery. Production, mixing, writing, marketing. Oracle + Gorilla Geo + Content Factory running.", status: "past", color: "#555" },
-            { tier: "KAGE", label: "Sovereign Leader", desc: "Entirely self-contained. No vocal coach. No mixing engineer. No external gatekeeper. The codex IS the coach. Apr 24.", status: "current", color: "#d97706" },
-            { tier: "S-RANK", label: "The Disruptor", desc: "Algorithm gravity well. 4%+ save rate. Gorilla Geo outreach forcing industry to react to you. Not asking for placement — engineering it. Apr 25–Jul 5.", status: "next", color: "#10b981" },
-            { tier: "SANNIN", label: "Cultural Pillar", desc: "Multi-era track record. CREAM + FREAKSHOW cycles complete. The Mudra System, Waking Mind Protocol, Hearing In Color — proprietary \"forbidden jutsu\" documented and proven. Q4 2026+.", status: "building", color: "#6366f1" },
-            { tier: "GOD OF SHINOBI", label: "Paradigm Shifter", desc: "You don\'t operate in the ecosystem. You build it. Label OS as a methodology. Hearing In Color as a curriculum. Sonic frameworks that redefine what independent R&B looks like for a decade.", status: "architecture", color: "#c9a227" },
-          ].map((item, i) => (
-            <div key={i} className={`flex items-start gap-3 py-3 border-b border-[#1a1a1a] last:border-0 ${item.status === "current" ? "border-l-2 border-l-amber-500/50 pl-3 -ml-3" : ""}`}>
-              <div className="flex-shrink-0 w-20">
-                <div style={{ color: item.color }} className="text-[9px] font-black tracking-wider uppercase">{item.tier}</div>
-                <div className="text-[9px] text-[#333] mt-0.5">{item.label}</div>
-                {item.status === "current" && <div className="text-[8px] text-amber-500 font-black mt-1">● NOW</div>}
-              </div>
-              <p className="text-[10px] text-[#444] leading-relaxed flex-1">{item.desc}</p>
-            </div>
-          ))}
-        </div>
+        {/* ── Sovereign Trajectory (Dynamic) ── */}
+        <SovereignTrajectory />
 
         {/* ── NSDR Recovery Protocol ── */}
         <div className="card mb-10">
@@ -257,207 +243,246 @@ export default function BrainPage() {
   );
 }
 
-// ─────────────────────────────────────────────
-// SOVEREIGNTY DASHBOARD — Live progress tracker
-// ─────────────────────────────────────────────
-const SOBRIETY_START = new Date("2026-04-02T00:00:00"); // Day 1
+// ═══════════════════════════════════════════════════════════════════
+// SOVEREIGNTY DASHBOARD v2 — IndexedDB-backed, all 6 ranks, dynamic
+// ═══════════════════════════════════════════════════════════════════
 
-const ANBU_BENCHMARKS = [
-  "ALL LOVE EP Released — Apr 24 data logged",
-  "3 tracks Live on Spotify — SF, ESL, Like I Did",
-  "Save Rate 3%+ on at least 1 track",
-  "Gorilla Geo Activated — 3–5 DMs/day consistent",
-  "Sobriety Day 60 — clock not reset",
-  "Content Factory — 3+ assets/week consistent",
-  "DoorDash $1,800/mo — April confirmed",
-  "DoorDash $1,800/mo — May confirmed",
-  "S3 Check-in running every studio day",
-  "Grief Protocol — first journal entry by Apr 27",
-  "ALL LOVE Deluxe decision logged by Apr 27",
-  "Instagram bio updated and verified",
-];
-
-function SovereigntyDashboard() {
-  const [sobrietyDays, setSobrietyDays] = useState(0);
-  const [checks, setChecks] = useState<boolean[]>(Array(ANBU_BENCHMARKS.length).fill(false));
-  const [griefEntry, setGriefEntry] = useState("");
-  const [griefLog, setGriefLog] = useState<{ date: string; text: string }[]>([]);
-  const [weeklyData, setWeeklyData] = useState({ spotify: "", saves: "", doordash: "", geo: "" });
-  const [weeklyLog, setWeeklyLog] = useState<{ date: string; data: typeof weeklyData }[]>([]);
-  const [activeTab, setActiveTab] = useState<"sobriety" | "anbu" | "grief" | "data">("sobriety");
-  const [saved, setSaved] = useState(false);
+function useSovereignty() {
+  const [state, setState] = useState<SovereigntyState | null>(null);
 
   useEffect(() => {
-    // Sobriety days
-    const now = new Date();
-    const diff = Math.floor((now.getTime() - SOBRIETY_START.getTime()) / (1000 * 60 * 60 * 24));
-    setSobrietyDays(Math.max(0, diff));
-
-    // Load persisted state
-    try {
-      const sc = localStorage.getItem("anbu-checks");
-      if (sc) setChecks(JSON.parse(sc));
-      const gl = localStorage.getItem("grief-log");
-      if (gl) setGriefLog(JSON.parse(gl));
-      const wl = localStorage.getItem("weekly-data-log");
-      if (wl) setWeeklyLog(JSON.parse(wl));
-    } catch {}
+    loadSovereigntyState().then(setState);
   }, []);
 
-  const toggleCheck = (i: number) => {
-    const next = [...checks];
-    next[i] = !next[i];
-    setChecks(next);
-    localStorage.setItem("anbu-checks", JSON.stringify(next));
-  };
+  const save = useCallback(async (next: SovereigntyState) => {
+    setState(next);
+    await saveSovereigntyState(next);
+  }, []);
 
-  const submitGrief = () => {
-    if (!griefEntry.trim()) return;
-    const entry = { date: new Date().toLocaleDateString("en-US", { month: "short", day: "numeric", year: "numeric" }), text: griefEntry.trim() };
-    const next = [entry, ...griefLog].slice(0, 20);
-    setGriefLog(next);
-    localStorage.setItem("grief-log", JSON.stringify(next));
-    setGriefEntry("");
-    setSaved(true);
-    setTimeout(() => setSaved(false), 2000);
-  };
+  return { state, save };
+}
 
-  const submitData = () => {
-    if (!weeklyData.spotify && !weeklyData.doordash) return;
-    const entry = { date: new Date().toLocaleDateString("en-US", { month: "short", day: "numeric" }), data: { ...weeklyData } };
-    const next = [entry, ...weeklyLog].slice(0, 12);
-    setWeeklyLog(next);
-    localStorage.setItem("weekly-data-log", JSON.stringify(next));
-    setWeeklyData({ spotify: "", saves: "", doordash: "", geo: "" });
-    setSaved(true);
-    setTimeout(() => setSaved(false), 2000);
-  };
+function SovereignTrajectory() {
+  const { state } = useSovereignty();
+  const currentIdx = state?.currentRankIndex ?? 0;
 
+  return (
+    <div className="card mb-10">
+      <p className="text-[10px] font-black tracking-[0.18em] uppercase mb-4" style={{ color: 'var(--text-muted)' }}>The Sovereign Trajectory</p>
+      <p className="text-[10px] font-medium mb-4" style={{ color: 'var(--text-secondary)' }}>You are not just running a sprint. You are building the architecture the next generation of independent artists will study.</p>
+      {RANKS.map((rank, i) => {
+        const status = i < currentIdx ? 'earned' : i === currentIdx ? 'current' : 'locked';
+        return (
+          <div key={rank.id} className={`flex items-start gap-3 py-3 border-b last:border-0 ${status === 'current' ? 'border-l-2 pl-3 -ml-3' : ''}`}
+            style={{ borderColor: 'var(--border)', borderLeftColor: status === 'current' ? rank.color : undefined }}>
+            <div className="flex-shrink-0 w-20">
+              <div style={{ color: rank.color }} className="text-[9px] font-black tracking-wider uppercase">{rank.tier}</div>
+              <div className="text-[9px] mt-0.5" style={{ color: 'var(--text-muted)' }}>{rank.label}</div>
+              {status === 'current' && <div className="text-[8px] font-black mt-1" style={{ color: rank.color }}>● NOW</div>}
+              {status === 'earned' && <div className="text-[8px] font-black mt-1" style={{ color: '#10b981' }}>✓ EARNED</div>}
+            </div>
+            <p className="text-[10px] leading-relaxed flex-1" style={{ color: 'var(--text-secondary)' }}>{rank.desc}</p>
+          </div>
+        );
+      })}
+    </div>
+  );
+}
+
+function SovereigntyDashboard() {
+  const { state, save } = useSovereignty();
+  const [griefEntry, setGriefEntry] = useState("");
+  const [weeklyData, setWeeklyData] = useState<WeeklyData>({ spotify: "", saves: "", doordash: "", geo: "" });
+  const [activeTab, setActiveTab] = useState<"sobriety" | "benchmarks" | "grief" | "data">("sobriety");
+  const [saved, setSaved] = useState(false);
+  const [resetConfirm, setResetConfirm] = useState(false);
+
+  if (!state) return <div className="card mb-10" style={{ borderColor: 'var(--border)' }}><p className="text-[11px]" style={{ color: 'var(--text-muted)' }}>Loading sovereignty state...</p></div>;
+
+  const currentRank = RANKS[state.currentRankIndex];
+  const nextRank = getNextRank(state);
+  const sobrietyDays = getSobrietyDays(state.sobrietyStart);
+  const sobrietyTarget = nextRank?.sobrietyDay ?? 60;
+  const sobrietyPct = Math.min(100, Math.round((sobrietyDays / sobrietyTarget) * 100));
+  const checks = nextRank ? getChecksForRank(state, nextRank.id) : [];
   const checkedCount = checks.filter(Boolean).length;
-  const daysToAnbu = Math.max(0, Math.ceil((new Date("2026-06-01").getTime() - Date.now()) / 86400000));
-  const sobrietyPct = Math.min(100, Math.round((sobrietyDays / 60) * 100));
+  const totalBenchmarks = nextRank?.benchmarks.length ?? 0;
+  const daysToNext = nextRank ? getDaysToRank(nextRank) : 0;
+  const promotionReady = canPromote(state);
+
+  const flashSaved = () => { setSaved(true); setTimeout(() => setSaved(false), 2000); };
+
+  const toggleCheck = async (i: number) => {
+    if (!nextRank) return;
+    const current = getChecksForRank(state, nextRank.id);
+    current[i] = !current[i];
+    const next = { ...state, benchmarkChecks: { ...state.benchmarkChecks, [nextRank.id]: current } };
+    await save(next);
+  };
+
+  const resetSobriety = async () => {
+    const reset = {
+      ...state,
+      sobrietyStart: new Date().toISOString().split('T')[0],
+      sobrietyResets: [...state.sobrietyResets, { date: new Date().toISOString(), previousDay: sobrietyDays }],
+    };
+    await save(reset);
+    setResetConfirm(false);
+  };
+
+  const promote = async () => {
+    if (!nextRank || !promotionReady) return;
+    const next = {
+      ...state,
+      currentRankIndex: state.currentRankIndex + 1,
+      promotionLog: [...state.promotionLog, { rankId: nextRank.id, date: new Date().toISOString(), note: `Promoted to ${nextRank.tier}` }],
+    };
+    await save(next);
+  };
+
+  const submitGrief = async () => {
+    if (!griefEntry.trim()) return;
+    const entry = { date: new Date().toLocaleDateString('en-US', { month: 'short', day: 'numeric', year: 'numeric' }), text: griefEntry.trim() };
+    await save({ ...state, griefLog: [entry, ...state.griefLog].slice(0, 50) });
+    setGriefEntry('');
+    flashSaved();
+  };
+
+  const submitData = async () => {
+    if (!weeklyData.spotify && !weeklyData.doordash) return;
+    const entry = { date: new Date().toLocaleDateString('en-US', { month: 'short', day: 'numeric' }), data: { ...weeklyData } };
+    await save({ ...state, weeklyDataLog: [entry, ...state.weeklyDataLog].slice(0, 24) });
+    setWeeklyData({ spotify: '', saves: '', doordash: '', geo: '' });
+    flashSaved();
+  };
 
   const tabs = [
-    { id: "sobriety" as const, label: "⏱ Clock", },
-    { id: "anbu" as const, label: "🎯 ANBU", },
-    { id: "grief" as const, label: "📓 Journal", },
-    { id: "data" as const, label: "📊 Data", },
+    { id: 'sobriety' as const, label: '⏱ Clock' },
+    { id: 'benchmarks' as const, label: `🎯 ${nextRank?.tier ?? 'DONE'}` },
+    { id: 'grief' as const, label: '📓 Journal' },
+    { id: 'data' as const, label: '📊 Data' },
   ];
 
   return (
     <div className="card mb-10" style={{ borderColor: 'var(--border)' }}>
-      <p className="text-[10px] font-black tracking-[0.18em] uppercase mb-3" style={{ color: 'var(--accent)' }}>⚔️ Sovereignty Dashboard</p>
+      <div className="flex items-center justify-between mb-3">
+        <p className="text-[10px] font-black tracking-[0.18em] uppercase" style={{ color: 'var(--accent)' }}>⚔️ Sovereignty Dashboard</p>
+        <span className="text-[9px] font-black tracking-wider uppercase px-2 py-1 rounded-md" style={{ background: currentRank.color, color: '#0a0a0a' }}>{currentRank.tier}</span>
+      </div>
 
       {/* Tab Bar */}
       <div className="flex gap-1 mb-4 border-b" style={{ borderColor: 'var(--border)' }}>
         {tabs.map(t => (
-          <button
-            key={t.id}
-            onClick={() => setActiveTab(t.id)}
+          <button key={t.id} onClick={() => setActiveTab(t.id)}
             className="pb-2 px-2 text-[10px] font-black tracking-wider uppercase transition-all"
-            style={{
-              color: activeTab === t.id ? 'var(--accent)' : 'var(--text-muted)',
-              borderBottom: activeTab === t.id ? '2px solid var(--accent)' : '2px solid transparent',
-              marginBottom: '-1px',
-            }}
+            style={{ color: activeTab === t.id ? 'var(--accent)' : 'var(--text-muted)', borderBottom: activeTab === t.id ? '2px solid var(--accent)' : '2px solid transparent', marginBottom: '-1px' }}
           >{t.label}</button>
         ))}
       </div>
 
-      {/* SOBRIETY TAB */}
-      {activeTab === "sobriety" && (
+      {/* ── SOBRIETY TAB ── */}
+      {activeTab === 'sobriety' && (
         <div>
           <div className="text-center mb-4">
-            <div className="text-6xl font-black mb-1" style={{ color: sobrietyDays >= 60 ? '#10b981' : 'var(--accent)' }}>
-              {sobrietyDays}
-            </div>
-            <div className="text-[11px] font-black tracking-widest uppercase" style={{ color: 'var(--text-muted)' }}>
-              Days Clean · Since Apr 2
-            </div>
+            <div className="text-6xl font-black mb-1" style={{ color: sobrietyDays >= sobrietyTarget ? '#10b981' : 'var(--accent)' }}>{sobrietyDays}</div>
+            <div className="text-[11px] font-black tracking-widest uppercase" style={{ color: 'var(--text-muted)' }}>Days Clean · Since {new Date(state.sobrietyStart + 'T12:00:00').toLocaleDateString('en-US', { month: 'short', day: 'numeric' })}</div>
           </div>
           <div className="mb-3">
             <div className="h-2 rounded-full overflow-hidden" style={{ background: 'var(--surface-2)' }}>
-              <div className="h-full rounded-full transition-all" style={{ width: `${sobrietyPct}%`, background: sobrietyDays >= 60 ? '#10b981' : '#d97706' }} />
+              <div className="h-full rounded-full transition-all" style={{ width: `${sobrietyPct}%`, background: sobrietyDays >= sobrietyTarget ? '#10b981' : '#d97706' }} />
             </div>
             <div className="flex justify-between mt-1 text-[9px]" style={{ color: 'var(--text-muted)' }}>
               <span>Day 0</span>
-              <span className="font-black" style={{ color: 'var(--accent)' }}>Day 60 = ANBU</span>
+              <span className="font-black" style={{ color: 'var(--accent)' }}>Day {sobrietyTarget} = {nextRank?.tier ?? 'COMPLETE'}</span>
             </div>
           </div>
           <div className="grid grid-cols-2 gap-2 mt-4">
             <div className="p-3 rounded-xl text-center" style={{ background: 'var(--surface-2)' }}>
-              <div className="text-lg font-black" style={{ color: 'var(--text-primary)' }}>{daysToAnbu}</div>
-              <div className="text-[9px] uppercase tracking-wider" style={{ color: 'var(--text-muted)' }}>Days to ANBU</div>
+              <div className="text-lg font-black" style={{ color: 'var(--text-primary)' }}>{daysToNext}</div>
+              <div className="text-[9px] uppercase tracking-wider" style={{ color: 'var(--text-muted)' }}>Days to {nextRank?.tier ?? '—'}</div>
             </div>
             <div className="p-3 rounded-xl text-center" style={{ background: 'var(--surface-2)' }}>
-              <div className="text-lg font-black" style={{ color: checkedCount >= 12 ? '#10b981' : 'var(--accent)' }}>{checkedCount}/12</div>
+              <div className="text-lg font-black" style={{ color: checkedCount >= totalBenchmarks && totalBenchmarks > 0 ? '#10b981' : 'var(--accent)' }}>{checkedCount}/{totalBenchmarks}</div>
               <div className="text-[9px] uppercase tracking-wider" style={{ color: 'var(--text-muted)' }}>Benchmarks</div>
             </div>
           </div>
-          {sobrietyDays >= 60 && (
-            <div className="mt-4 p-3 rounded-xl text-center" style={{ background: 'rgba(16,185,129,0.1)', borderColor: '#10b981', borderWidth: 1 }}>
-              <p className="text-[11px] font-black" style={{ color: '#10b981' }}>🟢 SOBRIETY GATE: PASSED — DAY 60 COMPLETE</p>
+          {sobrietyDays >= sobrietyTarget && (
+            <div className="mt-4 p-3 rounded-xl text-center" style={{ background: 'rgba(16,185,129,0.1)', border: '1px solid #10b981' }}>
+              <p className="text-[11px] font-black" style={{ color: '#10b981' }}>🟢 SOBRIETY GATE: PASSED — DAY {sobrietyTarget}</p>
+            </div>
+          )}
+          {/* Reset Button */}
+          {!resetConfirm ? (
+            <button onClick={() => setResetConfirm(true)} className="mt-4 w-full py-2 rounded-xl text-[10px] font-black tracking-wider uppercase transition-all active:scale-[0.98]" style={{ background: 'transparent', border: '1px solid rgba(239,68,68,0.3)', color: '#ef4444' }}>Reset Sobriety Clock</button>
+          ) : (
+            <div className="mt-4 p-3 rounded-xl" style={{ background: 'rgba(239,68,68,0.08)', border: '1px solid rgba(239,68,68,0.3)' }}>
+              <p className="text-[11px] font-black mb-2" style={{ color: '#ef4444' }}>⚠ CLOCK RESET — THIS IS PERMANENT</p>
+              <p className="text-[10px] mb-3" style={{ color: 'var(--text-secondary)' }}>Day count resets to 0. Previous count ({sobrietyDays} days) will be logged. No grace period. The system depends on honesty.</p>
+              <div className="flex gap-2">
+                <button onClick={resetSobriety} className="flex-1 py-2 rounded-xl text-[10px] font-black uppercase" style={{ background: '#ef4444', color: 'white' }}>Confirm Reset</button>
+                <button onClick={() => setResetConfirm(false)} className="flex-1 py-2 rounded-xl text-[10px] font-black uppercase" style={{ background: 'var(--surface-2)', color: 'var(--text-primary)' }}>Cancel</button>
+              </div>
+            </div>
+          )}
+          {/* Reset History */}
+          {state.sobrietyResets.length > 0 && (
+            <div className="mt-3">
+              <p className="text-[9px] font-black uppercase tracking-widest mb-1" style={{ color: 'var(--text-muted)' }}>Reset History</p>
+              {state.sobrietyResets.map((r, i) => (
+                <p key={i} className="text-[10px]" style={{ color: 'var(--text-muted)' }}>{new Date(r.date).toLocaleDateString('en-US', { month: 'short', day: 'numeric' })} — Day {r.previousDay} reset</p>
+              ))}
             </div>
           )}
         </div>
       )}
 
-      {/* ANBU CHECKLIST TAB */}
-      {activeTab === "anbu" && (
+      {/* ── BENCHMARKS TAB (cascading through all ranks) ── */}
+      {activeTab === 'benchmarks' && nextRank && (
         <div>
           <div className="flex items-center justify-between mb-3">
-            <span className="text-[10px]" style={{ color: 'var(--text-muted)' }}>Gate closes June 1, 2026 — {daysToAnbu} days away</span>
-            <span className="text-[10px] font-black" style={{ color: checkedCount === 12 ? '#10b981' : 'var(--accent)' }}>{checkedCount}/12</span>
+            <span className="text-[10px]" style={{ color: 'var(--text-muted)' }}>{currentRank.tier} → {nextRank.tier} · {daysToNext} days</span>
+            <span className="text-[10px] font-black" style={{ color: checkedCount === totalBenchmarks ? '#10b981' : 'var(--accent)' }}>{checkedCount}/{totalBenchmarks}</span>
           </div>
           <div className="space-y-2">
-            {ANBU_BENCHMARKS.map((b, i) => (
-              <button
-                key={i}
-                onClick={() => toggleCheck(i)}
+            {nextRank.benchmarks.map((b, i) => (
+              <button key={i} onClick={() => toggleCheck(i)}
                 className="w-full flex items-start gap-3 p-2 rounded-lg text-left transition-all active:scale-[0.98]"
-                style={{ background: checks[i] ? 'rgba(16,185,129,0.08)' : 'var(--surface-2)' }}
-              >
-                <span className="flex-shrink-0 mt-0.5 text-sm font-black" style={{ color: checks[i] ? '#10b981' : 'var(--text-muted)' }}>
-                  {checks[i] ? '✓' : '□'}
-                </span>
-                <span className="text-[11px] font-medium leading-snug" style={{ color: checks[i] ? 'var(--text-muted)' : 'var(--text-primary)', textDecoration: checks[i] ? 'line-through' : 'none' }}>
-                  {b}
-                </span>
+                style={{ background: checks[i] ? 'rgba(16,185,129,0.08)' : 'var(--surface-2)' }}>
+                <span className="flex-shrink-0 mt-0.5 text-sm font-black" style={{ color: checks[i] ? '#10b981' : 'var(--text-muted)' }}>{checks[i] ? '✓' : '□'}</span>
+                <span className="text-[11px] font-medium leading-snug" style={{ color: checks[i] ? 'var(--text-muted)' : 'var(--text-primary)', textDecoration: checks[i] ? 'line-through' : 'none' }}>{b}</span>
               </button>
             ))}
           </div>
-          {checkedCount === 12 && (
-            <div className="mt-4 p-3 rounded-xl text-center" style={{ background: 'rgba(16,185,129,0.1)', borderColor: '#10b981', borderWidth: 1 }}>
-              <p className="text-[11px] font-black" style={{ color: '#10b981' }}>⚡ ALL BENCHMARKS MET — PROMOTION CEREMONY READY</p>
-            </div>
+          {promotionReady && (
+            <button onClick={promote}
+              className="mt-4 w-full py-3 rounded-xl text-[11px] font-black tracking-wider uppercase transition-all active:scale-[0.98]"
+              style={{ background: '#10b981', color: '#0a0a0a' }}>
+              ⚡ PROMOTE TO {nextRank.tier} — ALL BENCHMARKS MET
+            </button>
           )}
         </div>
       )}
+      {activeTab === 'benchmarks' && !nextRank && (
+        <div className="text-center py-8">
+          <div className="text-4xl mb-2">👑</div>
+          <p className="text-[12px] font-black" style={{ color: 'var(--accent)' }}>GOD OF SHINOBI — FINAL RANK ACHIEVED</p>
+          <p className="text-[10px] mt-2" style={{ color: 'var(--text-muted)' }}>You don&apos;t operate in the ecosystem. You build it.</p>
+        </div>
+      )}
 
-      {/* GRIEF JOURNAL TAB */}
-      {activeTab === "grief" && (
+      {/* ── GRIEF JOURNAL TAB ── */}
+      {activeTab === 'grief' && (
         <div>
-          <p className="text-[10px] font-medium mb-3" style={{ color: 'var(--text-muted)' }}>
-            Required: 1 entry/week from Apr 27. Grief protocol = ANBU gate requirement.
-          </p>
-          <textarea
-            value={griefEntry}
-            onChange={e => setGriefEntry(e.target.value)}
+          <p className="text-[10px] font-medium mb-3" style={{ color: 'var(--text-muted)' }}>Grief protocol — {state.griefLog.length} entries logged. Required: weekly from Apr 27.</p>
+          <textarea value={griefEntry} onChange={e => setGriefEntry(e.target.value)}
             placeholder="What surfaced this week? What are you carrying? What needs to move?"
             className="w-full text-[12px] p-3 rounded-xl border resize-none outline-none leading-relaxed"
-            style={{ background: 'var(--surface-2)', borderColor: 'var(--border)', color: 'var(--text-primary)', minHeight: '100px' }}
-          />
-          <button
-            onClick={submitGrief}
-            className="mt-2 w-full py-2.5 rounded-xl text-[11px] font-black tracking-wider uppercase transition-all active:scale-[0.98]"
-            style={{ background: 'var(--accent)', color: '#0a0a0a' }}
-          >
-            {saved ? '✓ LOGGED' : 'LOG ENTRY'}
-          </button>
-          {griefLog.length > 0 && (
+            style={{ background: 'var(--surface-2)', borderColor: 'var(--border)', color: 'var(--text-primary)', minHeight: '100px' }} />
+          <button onClick={submitGrief} className="mt-2 w-full py-2.5 rounded-xl text-[11px] font-black tracking-wider uppercase transition-all active:scale-[0.98]" style={{ background: 'var(--accent)', color: '#0a0a0a' }}>{saved ? '✓ LOGGED' : 'LOG ENTRY'}</button>
+          {state.griefLog.length > 0 && (
             <div className="mt-4 space-y-3">
-              <p className="text-[9px] font-black uppercase tracking-widest" style={{ color: 'var(--text-muted)' }}>Previous Entries ({griefLog.length})</p>
-              {griefLog.slice(0, 3).map((e, i) => (
+              <p className="text-[9px] font-black uppercase tracking-widest" style={{ color: 'var(--text-muted)' }}>Entries ({state.griefLog.length})</p>
+              {state.griefLog.slice(0, 5).map((e, i) => (
                 <div key={i} className="p-3 rounded-xl" style={{ background: 'var(--surface-2)' }}>
                   <p className="text-[9px] font-black mb-1" style={{ color: 'var(--accent)' }}>{e.date}</p>
                   <p className="text-[11px] leading-snug" style={{ color: 'var(--text-secondary)' }}>{e.text}</p>
@@ -468,42 +493,29 @@ function SovereigntyDashboard() {
         </div>
       )}
 
-      {/* WEEKLY DATA TAB */}
-      {activeTab === "data" && (
+      {/* ── WEEKLY DATA TAB ── */}
+      {activeTab === 'data' && (
         <div>
-          <p className="text-[10px] font-medium mb-3" style={{ color: 'var(--text-muted)' }}>
-            Pull every Sunday. The data is the judge.
-          </p>
+          <p className="text-[10px] font-medium mb-3" style={{ color: 'var(--text-muted)' }}>Pull every Sunday. The data is the judge. {state.weeklyDataLog.length} pulls logged.</p>
           <div className="space-y-2">
-            {[
-              { key: "spotify" as const, label: "Spotify Followers", placeholder: "e.g. 1,247" },
-              { key: "saves" as const, label: "Best Save Rate %", placeholder: "e.g. 4.2%" },
-              { key: "doordash" as const, label: "DoorDash Revenue (mo)", placeholder: "e.g. $1,840" },
-              { key: "geo" as const, label: "Gorilla Geo God-Tier Responses", placeholder: "e.g. 3 this week" },
-            ].map(f => (
+            {([
+              { key: 'spotify' as const, label: 'Spotify Followers', placeholder: 'e.g. 1,247' },
+              { key: 'saves' as const, label: 'Best Save Rate %', placeholder: 'e.g. 4.2%' },
+              { key: 'doordash' as const, label: 'DoorDash Revenue (mo)', placeholder: 'e.g. $1,840' },
+              { key: 'geo' as const, label: 'Gorilla Geo God-Tier Responses', placeholder: 'e.g. 3 this week' },
+            ]).map(f => (
               <div key={f.key}>
                 <label className="text-[9px] font-black uppercase tracking-wider block mb-1" style={{ color: 'var(--text-muted)' }}>{f.label}</label>
-                <input
-                  value={weeklyData[f.key]}
-                  onChange={e => setWeeklyData(prev => ({ ...prev, [f.key]: e.target.value }))}
-                  placeholder={f.placeholder}
-                  className="w-full text-[12px] px-3 py-2 rounded-xl border outline-none"
-                  style={{ background: 'var(--surface-2)', borderColor: 'var(--border)', color: 'var(--text-primary)' }}
-                />
+                <input value={weeklyData[f.key]} onChange={e => setWeeklyData(prev => ({ ...prev, [f.key]: e.target.value }))} placeholder={f.placeholder}
+                  className="w-full text-[12px] px-3 py-2 rounded-xl border outline-none" style={{ background: 'var(--surface-2)', borderColor: 'var(--border)', color: 'var(--text-primary)' }} />
               </div>
             ))}
           </div>
-          <button
-            onClick={submitData}
-            className="mt-3 w-full py-2.5 rounded-xl text-[11px] font-black tracking-wider uppercase transition-all active:scale-[0.98]"
-            style={{ background: 'var(--accent)', color: '#0a0a0a' }}
-          >
-            {saved ? '✓ LOGGED' : 'LOG NUMBERS'}
-          </button>
-          {weeklyLog.length > 0 && (
+          <button onClick={submitData} className="mt-3 w-full py-2.5 rounded-xl text-[11px] font-black tracking-wider uppercase transition-all active:scale-[0.98]" style={{ background: 'var(--accent)', color: '#0a0a0a' }}>{saved ? '✓ LOGGED' : 'LOG NUMBERS'}</button>
+          {state.weeklyDataLog.length > 0 && (
             <div className="mt-4 space-y-2">
               <p className="text-[9px] font-black uppercase tracking-widest" style={{ color: 'var(--text-muted)' }}>History</p>
-              {weeklyLog.slice(0, 4).map((e, i) => (
+              {state.weeklyDataLog.slice(0, 6).map((e, i) => (
                 <div key={i} className="p-3 rounded-xl" style={{ background: 'var(--surface-2)' }}>
                   <p className="text-[9px] font-black mb-1" style={{ color: 'var(--accent)' }}>{e.date}</p>
                   <div className="grid grid-cols-2 gap-x-4 gap-y-0.5">
