@@ -2,7 +2,7 @@
 
 import { useEffect, useState, useRef } from "react";
 import { getDayType, isBizDay, isSacredDay } from "@/lib/dayType";
-import { getStoreValue, setStoreValue, getDailyTelemetry, DailyTelemetry } from "@/lib/db";
+import { getStoreValue, setStoreValue, getDailyTelemetry, saveDailyTelemetry, DailyTelemetry } from "@/lib/db";
 import { getWeekKey } from "@/lib/oracle";
 import type { OracleFlag } from "@/lib/oracle";
 import ContentQueue from "@/components/engine/ContentQueue";
@@ -262,29 +262,63 @@ export default function EnginePage() {
           ))}
         </div>
 
-        <div className="card mt-6">
-          <p className="text-[10px] font-black tracking-[0.18em] text-[#555] uppercase mb-4">Engine Protocol Stack</p>
-          <div className="space-y-0">
-            {[
-              { label: "Delay first meal", detail: "IF window → fasted state = repair state active", color: "#22c55e" },
-              { label: "Protein first in eating window", detail: "Calorie restriction without protein = muscle loss", color: "#22c55e" },
-              { label: "Lift 3x/week minimum", detail: "Muscle is the longevity signal. IF alone isn't enough.", color: "#22c55e" },
-              { label: "Creatine 5g/day", detail: "Up to 20-25g when sleep-deprived (cognitive rescue)", color: "#f59e0b" },
-              { label: "Kill the black plastic", detail: "BPA + phthalates → 20% T-drop. Glass > plastic always.", color: "#ef4444" },
-              { label: "Visceral fat is the silent killer", detail: "Doubles early mortality risk. You can't see it until the belly.", color: "#ef4444" },
-            ].map((item, i) => (
-              <div key={i} className="flex items-start gap-3 py-2.5 border-b border-[#1a1a1a] last:border-0">
-                <div style={{ background: item.color }} className="w-1.5 h-1.5 rounded-full mt-1.5 flex-shrink-0" />
-                <div>
-                  <div className="text-xs font-bold text-white">{item.label}</div>
-                  <div className="text-[10px] text-[#444] mt-0.5">{item.detail}</div>
-                </div>
-              </div>
-            ))}
-          </div>
-        </div>
+        {/* ── DoorDash Quick-Add (moved from Home) ── */}
+        <DoorDashWidget telemetry={telemetry} onUpdate={async (tel) => {
+          setTelemetry(tel);
+        }} />
 
       </div>
     </main>
+  );
+}
+
+// ── DoorDash Widget ──────────────────────────────────────────────────
+function DoorDashWidget({ telemetry, onUpdate }: { telemetry: DailyTelemetry; onUpdate: (tel: DailyTelemetry) => void }) {
+  const [ddHours, setDdHours] = useState("");
+  const [ddRevenue, setDdRevenue] = useState("");
+  const [ddStatus, setDdStatus] = useState("");
+
+  const submit = async () => {
+    if (!ddHours || !ddRevenue) return;
+    setDdStatus("Logging...");
+    try {
+      const res = await fetch("/api/doordash", {
+        method: "POST", headers: { "Content-Type": "application/json" },
+        body: JSON.stringify({ date: new Date().toISOString().split("T")[0], hours: parseFloat(ddHours), revenue: parseFloat(ddRevenue), gas: 0, tips: 0, miles: 0 }),
+      });
+      if (res.ok) {
+        const { getDailyTelemetry, saveDailyTelemetry } = await import("@/lib/db");
+        const tel = await getDailyTelemetry();
+        tel.doordash_earned += parseFloat(ddRevenue) || 0;
+        await saveDailyTelemetry(tel);
+        onUpdate(tel);
+        setDdStatus("LOGGED ✓");
+        setTimeout(() => { setDdStatus(""); setDdHours(""); setDdRevenue(""); }, 2000);
+      } else { setDdStatus("FAILED"); }
+    } catch { setDdStatus("FAILED"); }
+  };
+
+  return (
+    <div className="card mt-6">
+      <div className="flex justify-between items-center mb-3">
+        <p className="text-[10px] font-black tracking-[0.18em] text-[#555] uppercase">DoorDash Log</p>
+        <div className="flex items-center gap-3">
+          <span className="text-sm font-black text-amber-400">${telemetry.doordash_earned}</span>
+          {ddStatus && (
+            <span className={`text-[10px] font-black tracking-widest ${ddStatus.includes("✓") ? "text-green-500" : ddStatus === "FAILED" ? "text-red-500" : "text-amber-500"}`}>
+              {ddStatus}
+            </span>
+          )}
+        </div>
+      </div>
+      <div className="flex gap-2">
+        <input type="number" placeholder="Hrs" value={ddHours} onChange={e => setDdHours(e.target.value)}
+          className="flex-1 bg-[#111] rounded-lg p-3 text-center text-sm font-black outline-none border border-transparent focus:border-[#333]" />
+        <input type="number" placeholder="$ Rev" value={ddRevenue} onChange={e => setDdRevenue(e.target.value)}
+          className="flex-1 bg-[#111] rounded-lg p-3 text-center text-sm font-black outline-none border border-transparent focus:border-[#333]" />
+        <button onClick={submit} disabled={!!ddStatus && !ddStatus.includes("✓") && ddStatus !== "FAILED"}
+          className="w-12 flex items-center justify-center rounded-lg bg-amber-500 text-black font-black active:scale-95 transition-all text-xl disabled:opacity-50">+</button>
+      </div>
+    </div>
   );
 }

@@ -1,20 +1,24 @@
 "use client";
 
-// app/kill/page.tsx
-// Dynamic Kill List — grouped by release with collapsible accordions.
-// Every task is derived from live system state. Nothing is hardcoded.
-// Tapping a task mutates the underlying data and the list re-derives.
-// When all RED items clear, the Oracle auto-recalibrates.
+// app/kill/page.tsx — EXECUTE
+// Unified priority stream: Oracle decree header + Kill List + DoorDash + Recalibrate.
+// Replaces the Oracle standalone page. One source of truth for "what do I do next?"
 //
 // Apr 7, 2026: Added Daily Focus anchor + Needle/Infrastructure split.
-// Dr. K insight: urgency ≠ importance. The page should answer "what's the one thing?"
-// first, then show everything else collapsed.
+// Apr 12, 2026 (v24 redesign): Merged Oracle decree, CompletionModal, DD quick-add,
+//   recalibrate button, What's Next auto-routing. One Thing now reads from getDailyLog.
 
 import { useState, useEffect, useCallback, useRef } from "react";
-import { getDailyTelemetry, saveDailyTelemetry, DailyTelemetry, getStoreValue, setStoreValue, getTodayISO } from "@/lib/db";
-import { deriveKillList, completeTask, getKillStats, KillTask } from "@/lib/killList";
+import {
+  getDailyTelemetry, saveDailyTelemetry, DailyTelemetry,
+  getStoreValue, setStoreValue, getTodayISO,
+  getDailyLog, saveDailyLog,
+} from "@/lib/db";
+import { deriveKillList, completeTask, getKillStats, KillTask, CompletionInput } from "@/lib/killList";
 import { recalibrateOracle } from "@/lib/recalibrate";
 import { getTrackHoursSummaries, TrackHoursSummary } from "@/lib/studioLog";
+import type { OracleDecree } from "@/lib/oracle";
+import Link from "next/link";
 
 const URGENCY_STYLES: Record<string, { color: string; bg: string; border: string }> = {
   RED:   { color: "#FF2D2D", bg: "rgba(255,45,45,0.06)",   border: "rgba(255,45,45,0.2)" },
@@ -27,56 +31,37 @@ const PILLAR_LABELS: Record<string, string> = {
 };
 
 // ── Needle vs Infrastructure classification ─────────────────────────
-// Needles = tasks that compound. The record, the releases, the performance, the outreach.
-// Infrastructure = one-time setup, socials, tools. Important but not the main stage.
-
 const NEEDLE_PREFIXES = [
-  // Creative core — the record
   "telemetry-", "session-", "content-sprint-", "instrumental-",
-  // Release pipeline — the drops
   "esl-pitch-", "414-",
-  // Outreach engine — the growth lever
   "ig-community-sprint", "biz-move", "biz-touches",
-  // Revenue — keeps the lights on
   "dd-",
-  // Oracle flags — system-level priority
   "flag-",
+  "s3-checkin",
 ];
 
 const INFRASTRUCTURE_PREFIXES = [
-  // Social audit items
   "social-", "fan-",
-  // Body/fuel — important but not "the work"
   "fuel-", "dayone-", "grind-", "mudra-",
-  // Maintenance
   "ss-menu-",
 ];
 
 function isNeedle(task: KillTask): boolean {
-  // Explicit override from derivation engine
   if (task.needle === true) return true;
   if (task.needle === false) return false;
-  // Pattern-match by ID prefix
   return NEEDLE_PREFIXES.some(p => task.id.startsWith(p));
 }
 
-// ── Extract release name from task title (format: "Task — Track Name") ──
 function getGroupKey(task: KillTask): string {
-  // Oracle flags and non-release tasks always go under "Today"
   if (task.id.startsWith("flag-") || task.id.startsWith("fuel-") ||
       task.id.startsWith("grind-") || task.id.startsWith("session-") ||
       task.id.startsWith("biz-") || task.id.startsWith("fan-") ||
-      task.id.startsWith("social-") || task.id.startsWith("ig-")) {
+      task.id.startsWith("social-") || task.id.startsWith("ig-") ||
+      task.id.startsWith("s3-")) {
     return "Today";
   }
-  // 414 Day prep tasks group together
-  if (task.id.startsWith("414-")) {
-    return "414 Day";
-  }
-  // Instrumentals group under their track name
-  if (task.id.startsWith("instrumental-")) {
-    return "Instrumentals";
-  }
+  if (task.id.startsWith("414-")) return "414 Day";
+  if (task.id.startsWith("instrumental-")) return "Instrumentals";
   const match = task.title.match(/\s—\s(.+)$/);
   if (match) return match[1];
   return "Today";
@@ -88,14 +73,177 @@ function getGroupUrgency(tasks: KillTask[]): "RED" | "AMBER" | "GREEN" {
   return "GREEN";
 }
 
-// ── Task Row (expandable how-to + separate complete button) ──────────
+// ── Completion Modal ─────────────────────────────────────────────────
+
+function CompletionModal({
+  task,
+  onSubmit,
+  onCancel,
+}: {
+  task: KillTask;
+  onSubmit: (task: KillTask, inputValue: string | Record<string, string>) => void;
+  onCancel: () => void;
+}) {
+  const input = task.completionInput!;
+  const [rating, setRating] = useState<number | null>(null);
+  const [numValue, setNumValue] = useState("");
+  const [textValue, setTextValue] = useState("");
+  const [ddHours, setDdHours] = useState("");
+  const [ddRevenue, setDdRevenue] = useState("");
+
+  const canSubmit = () => {
+    if (input.type === "rating") return rating !== null;
+    if (input.type === "number") return numValue.trim() !== "";
+    if (input.type === "text") return textValue.trim() !== "";
+    if (input.type === "doordash") return ddHours !== "" && ddRevenue !== "";
+    return true;
+  };
+
+  const handleSubmit = () => {
+    if (!canSubmit()) return;
+    if (input.type === "rating") onSubmit(task, String(rating));
+    else if (input.type === "number") onSubmit(task, numValue.trim());
+    else if (input.type === "text") onSubmit(task, textValue.trim());
+    else if (input.type === "doordash") onSubmit(task, { hours: ddHours, revenue: ddRevenue });
+    else onSubmit(task, "");
+  };
+
+  return (
+    <div className="fixed inset-0 z-50 flex items-end justify-center px-4 pb-8" style={{ background: "rgba(0,0,0,0.75)", backdropFilter: "blur(4px)" }}>
+      <div
+        className="w-full max-w-sm rounded-2xl overflow-hidden"
+        style={{
+          background: "rgba(12,12,12,0.98)",
+          border: "1px solid rgba(255,255,255,0.1)",
+          animation: "killFadeIn 0.2s ease both",
+        }}
+      >
+        {/* Header */}
+        <div className="px-5 pt-5 pb-3 border-b border-white/5">
+          <p className="text-[9px] font-black tracking-[0.25em] uppercase mb-1" style={{ color: "rgba(255,255,255,0.3)" }}>
+            COMPLETE TASK
+          </p>
+          <p className="text-sm font-black text-white leading-snug">{task.title.replace(/\s—\s.+$/, "")}</p>
+          <p className="text-[11px] mt-1" style={{ color: "rgba(255,255,255,0.4)" }}>{input.label}</p>
+        </div>
+
+        {/* Input */}
+        <div className="px-5 py-5">
+          {input.type === "rating" && (
+            <div>
+              <p className="text-[10px] font-black tracking-wider text-[#555] uppercase mb-3">Session Quality</p>
+              <div className="flex gap-3 justify-center">
+                {[1, 2, 3, 4, 5].map(n => (
+                  <button
+                    key={n}
+                    onClick={() => setRating(n)}
+                    className="w-12 h-12 rounded-xl text-lg font-black transition-all active:scale-90"
+                    style={{
+                      background: rating === n ? "rgba(212,168,83,0.2)" : "rgba(255,255,255,0.04)",
+                      border: `1.5px solid ${rating === n ? "#d4a853" : "rgba(255,255,255,0.08)"}`,
+                      color: rating === n ? "#d4a853" : "rgba(255,255,255,0.4)",
+                    }}
+                  >
+                    {n}
+                  </button>
+                ))}
+              </div>
+              {rating && (
+                <p className="text-center text-[10px] mt-3 font-bold" style={{ color: "#d4a853" }}>
+                  {rating === 1 ? "Rough session" : rating === 2 ? "Slow but real" : rating === 3 ? "Solid work" : rating === 4 ? "Strong session" : "Flow state ✓"}
+                </p>
+              )}
+            </div>
+          )}
+
+          {input.type === "number" && (
+            <div>
+              <p className="text-[10px] font-black tracking-wider text-[#555] uppercase mb-3">{input.label}</p>
+              <input
+                autoFocus
+                type="number"
+                placeholder={input.placeholder || "0"}
+                value={numValue}
+                onChange={e => setNumValue(e.target.value)}
+                onKeyDown={e => e.key === "Enter" && canSubmit() && handleSubmit()}
+                className="w-full bg-[#111] border border-[#222] rounded-xl px-4 py-3 text-xl font-black text-center text-white outline-none focus:border-[#444]"
+              />
+            </div>
+          )}
+
+          {input.type === "text" && (
+            <div>
+              <p className="text-[10px] font-black tracking-wider text-[#555] uppercase mb-3">{input.label}</p>
+              <input
+                autoFocus
+                type="text"
+                placeholder={input.placeholder || "Enter..."}
+                value={textValue}
+                onChange={e => setTextValue(e.target.value)}
+                onKeyDown={e => e.key === "Enter" && canSubmit() && handleSubmit()}
+                className="w-full bg-[#111] border border-[#222] rounded-xl px-4 py-3 text-sm font-bold text-white outline-none focus:border-[#444] placeholder-[#333]"
+              />
+            </div>
+          )}
+
+          {input.type === "doordash" && (
+            <div>
+              <p className="text-[10px] font-black tracking-wider text-[#555] uppercase mb-3">Log DoorDash Shift</p>
+              <div className="flex gap-3">
+                <input
+                  autoFocus
+                  type="number"
+                  placeholder="Hours"
+                  value={ddHours}
+                  onChange={e => setDdHours(e.target.value)}
+                  className="flex-1 bg-[#111] border border-[#222] rounded-xl px-3 py-3 text-center text-sm font-black text-white outline-none focus:border-[#444] placeholder-[#333]"
+                />
+                <input
+                  type="number"
+                  placeholder="$ Rev"
+                  value={ddRevenue}
+                  onChange={e => setDdRevenue(e.target.value)}
+                  onKeyDown={e => e.key === "Enter" && canSubmit() && handleSubmit()}
+                  className="flex-1 bg-[#111] border border-[#222] rounded-xl px-3 py-3 text-center text-sm font-black text-white outline-none focus:border-[#444] placeholder-[#333]"
+                />
+              </div>
+            </div>
+          )}
+        </div>
+
+        {/* Actions */}
+        <div className="flex gap-3 px-5 pb-5">
+          <button
+            onClick={onCancel}
+            className="flex-1 py-3 rounded-xl text-[11px] font-black tracking-widest uppercase transition-all active:scale-95"
+            style={{ background: "rgba(255,255,255,0.04)", color: "rgba(255,255,255,0.3)", border: "1px solid rgba(255,255,255,0.06)" }}
+          >
+            Cancel
+          </button>
+          <button
+            onClick={handleSubmit}
+            disabled={!canSubmit()}
+            className="flex-2 flex-grow py-3 rounded-xl text-[11px] font-black tracking-widest uppercase transition-all active:scale-95 disabled:opacity-30"
+            style={{ background: canSubmit() ? "#22c55e15" : "rgba(255,255,255,0.04)", color: canSubmit() ? "#22c55e" : "rgba(255,255,255,0.2)", border: `1px solid ${canSubmit() ? "#22c55e40" : "rgba(255,255,255,0.06)"}` }}
+          >
+            LOG + COMPLETE ✓
+          </button>
+        </div>
+      </div>
+    </div>
+  );
+}
+
+// ── Task Row ─────────────────────────────────────────────────────────
 
 function TaskRow({
   task,
   onComplete,
+  onOpenModal,
 }: {
   task: KillTask;
   onComplete: (task: KillTask) => void;
+  onOpenModal: (task: KillTask) => void;
 }) {
   const [expanded, setExpanded] = useState(false);
   const [clearing, setClearing] = useState(false);
@@ -103,6 +251,11 @@ function TaskRow({
 
   const handleComplete = (e: React.MouseEvent | React.TouchEvent) => {
     e.stopPropagation();
+    if (task.completionInput) {
+      // Open modal instead of immediately completing
+      onOpenModal(task);
+      return;
+    }
     setClearing(true);
     setTimeout(() => onComplete(task), 350);
   };
@@ -121,20 +274,14 @@ function TaskRow({
     );
   }
 
-  // Strip the track name from display (it's already in the accordion header)
   const displayTitle = task.title.replace(/\s—\s.+$/, "");
 
   return (
     <div
       className="border-b transition-all duration-200"
-      style={{
-        borderColor: "rgba(255,255,255,0.04)",
-        background: expanded ? "rgba(255,255,255,0.02)" : "transparent",
-      }}
+      style={{ borderColor: "rgba(255,255,255,0.04)", background: expanded ? "rgba(255,255,255,0.02)" : "transparent" }}
     >
-      {/* Main row — tap text to expand, tap circle to complete */}
       <div className="flex items-center justify-between px-4 py-3">
-        {/* Tap target: expand/collapse instructions */}
         <button
           onClick={() => setExpanded(!expanded)}
           className="flex-1 min-w-0 mr-3 text-left py-2 flex items-center gap-2"
@@ -144,24 +291,21 @@ function TaskRow({
         >
           <span
             className="text-[9px] transition-transform duration-200 flex-shrink-0"
-            style={{
-              color: "rgba(255,255,255,0.4)",
-              transform: expanded ? "rotate(90deg)" : "rotate(0deg)",
-            }}
+            style={{ color: "rgba(255,255,255,0.4)", transform: expanded ? "rotate(90deg)" : "rotate(0deg)" }}
           >
             ▶
           </span>
           <div className="min-w-0">
-            <p className="text-[13px] font-bold text-white leading-snug">
-              {displayTitle}
-            </p>
-            <p className="text-[11px] leading-relaxed mt-0.5" style={{ color: "rgba(255,255,255,0.45)" }}>
-              {task.subtitle}
-            </p>
+            <p className="text-[13px] font-bold text-white leading-snug">{displayTitle}</p>
+            <p className="text-[11px] leading-relaxed mt-0.5" style={{ color: "rgba(255,255,255,0.45)" }}>{task.subtitle}</p>
+            {task.completionInput && (
+              <p className="text-[9px] mt-1 font-black tracking-wider uppercase" style={{ color: "rgba(212,168,83,0.6)" }}>
+                TAP ✓ TO LOG + COMPLETE
+              </p>
+            )}
           </div>
         </button>
 
-        {/* Tap target: complete the task */}
         <div className="flex items-center gap-3 flex-shrink-0">
           <span className="text-[9px] font-black tracking-[0.15em] px-2 py-1 rounded-md bg-white/5 border border-white/5" style={{ color: style.color }}>
             {PILLAR_LABELS[task.pillar]}
@@ -179,28 +323,17 @@ function TaskRow({
         </div>
       </div>
 
-      {/* How-to drawer — step-by-step instructions */}
       {expanded && task.howTo.length > 0 && (
-        <div
-          className="px-4 pb-3 ml-6"
-          style={{ animation: "killFadeIn 0.2s ease both" }}
-        >
-          <div
-            className="rounded-lg px-3 py-2.5"
-            style={{ background: "rgba(255,255,255,0.03)", border: "1px solid rgba(255,255,255,0.06)" }}
-          >
+        <div className="px-4 pb-3 ml-6" style={{ animation: "killFadeIn 0.2s ease both" }}>
+          <div className="rounded-lg px-3 py-2.5" style={{ background: "rgba(255,255,255,0.03)", border: "1px solid rgba(255,255,255,0.06)" }}>
             <p className="text-[9px] font-black tracking-[0.15em] uppercase mb-2" style={{ color: "rgba(255,255,255,0.2)" }}>
               How to do this
             </p>
             <ol className="list-none space-y-1.5">
               {task.howTo.map((step, i) => (
                 <li key={i} className="flex gap-2">
-                  <span className="text-[10px] font-black flex-shrink-0 mt-px" style={{ color: style.color, opacity: 0.4, minWidth: "14px" }}>
-                    {i + 1}.
-                  </span>
-                  <span className="text-[11px] leading-relaxed" style={{ color: "rgba(255,255,255,0.55)" }}>
-                    {step}
-                  </span>
+                  <span className="text-[10px] font-black flex-shrink-0 mt-px" style={{ color: style.color, opacity: 0.4, minWidth: "14px" }}>{i + 1}.</span>
+                  <span className="text-[11px] leading-relaxed" style={{ color: "rgba(255,255,255,0.55)" }}>{step}</span>
                 </li>
               ))}
             </ol>
@@ -218,12 +351,14 @@ function ReleaseGroup({
   tasks,
   defaultOpen,
   onComplete,
+  onOpenModal,
   index,
 }: {
   name: string;
   tasks: KillTask[];
   defaultOpen: boolean;
   onComplete: (task: KillTask) => void;
+  onOpenModal: (task: KillTask) => void;
   index: number;
 }) {
   const [open, setOpen] = useState(defaultOpen);
@@ -231,6 +366,7 @@ function ReleaseGroup({
   const style = URGENCY_STYLES[urgency];
   const redCount = tasks.filter(t => t.urgency === "RED").length;
   const amberCount = tasks.filter(t => t.urgency === "AMBER").length;
+  const quickWins = tasks.filter(t => t.howTo.length <= 2).length;
 
   return (
     <div
@@ -241,7 +377,6 @@ function ReleaseGroup({
         animation: `killFadeIn 0.25s ease ${index * 0.04}s both`,
       }}
     >
-      {/* Header — tap to toggle */}
       <button
         onClick={() => setOpen(!open)}
         className="w-full flex items-center justify-between px-4 py-4 transition-all"
@@ -250,43 +385,91 @@ function ReleaseGroup({
         style={{ minHeight: "48px" }}
       >
         <div className="flex items-center gap-3">
-          <div
-            className="w-2 h-2 rounded-full flex-shrink-0"
-            style={{ backgroundColor: style.color, boxShadow: `0 0 6px ${style.color}40` }}
-          />
-          <span className="text-[13px] font-black text-white tracking-tight">
-            {name}
-          </span>
+          <div className="w-2 h-2 rounded-full flex-shrink-0" style={{ backgroundColor: style.color, boxShadow: `0 0 6px ${style.color}40` }} />
+          <span className="text-[13px] font-black text-white tracking-tight">{name}</span>
         </div>
         <div className="flex items-center gap-2">
           {redCount > 0 && (
-            <span className="text-[9px] font-black px-1.5 py-0.5 rounded" style={{ color: "#FF2D2D", background: "rgba(255,45,45,0.12)" }}>
-              {redCount}
-            </span>
+            <span className="text-[9px] font-black px-1.5 py-0.5 rounded" style={{ color: "#FF2D2D", background: "rgba(255,45,45,0.12)" }}>{redCount}</span>
           )}
           {amberCount > 0 && (
-            <span className="text-[9px] font-black px-1.5 py-0.5 rounded" style={{ color: "#FFB800", background: "rgba(255,184,0,0.1)" }}>
-              {amberCount}
+            <span className="text-[9px] font-black px-1.5 py-0.5 rounded" style={{ color: "#FFB800", background: "rgba(255,184,0,0.1)" }}>{amberCount}</span>
+          )}
+          {quickWins > 0 && !open && (
+            <span className="text-[9px] font-black px-1.5 py-0.5 rounded" style={{ color: "#22c55e", background: "rgba(34,197,94,0.08)" }}>
+              {quickWins} quick
             </span>
           )}
-          <span className="text-[10px] font-bold" style={{ color: "rgba(255,255,255,0.25)" }}>
-            {tasks.length}
-          </span>
-          <span
-            className="text-[10px] transition-transform duration-200"
-            style={{ color: "rgba(255,255,255,0.2)", transform: open ? "rotate(180deg)" : "rotate(0deg)" }}
-          >
-            ▾
-          </span>
+          <span className="text-[10px] font-bold" style={{ color: "rgba(255,255,255,0.25)" }}>{tasks.length}</span>
+          <span className="text-[10px] transition-transform duration-200" style={{ color: "rgba(255,255,255,0.2)", transform: open ? "rotate(180deg)" : "rotate(0deg)" }}>▾</span>
         </div>
       </button>
 
-      {/* Task list — only visible when open */}
       {open && (
         <div style={{ borderTop: `1px solid ${style.border}` }}>
           {tasks.map((task) => (
-            <TaskRow key={task.id} task={task} onComplete={onComplete} />
+            <TaskRow key={task.id} task={task} onComplete={onComplete} onOpenModal={onOpenModal} />
           ))}
+        </div>
+      )}
+    </div>
+  );
+}
+
+// ── Oracle Decree Banner ─────────────────────────────────────────────
+
+function OracleDecreeBanner({ decree }: { decree: OracleDecree }) {
+  const [expanded, setExpanded] = useState(false);
+  const severity = decree.severity ?? "GREEN";
+  const style = URGENCY_STYLES[severity] ?? URGENCY_STYLES.GREEN;
+  const summary = (decree.oracle_message || decree.assessment || "Oracle assessment complete.").slice(0, 120);
+
+  return (
+    <div
+      className="mb-5 rounded-xl overflow-hidden"
+      style={{
+        background: style.bg,
+        border: `1px solid ${style.border}`,
+        animation: "killFadeIn 0.25s ease both",
+      }}
+    >
+      <button
+        onClick={() => setExpanded(!expanded)}
+        className="w-full flex items-center justify-between px-4 py-3"
+        style={{ minHeight: "48px" }}
+      >
+        <div className="flex items-center gap-3 flex-1 min-w-0">
+          <span className="text-[9px] font-black tracking-[0.2em] uppercase flex-shrink-0" style={{ color: style.color }}>
+            🔮 ORACLE
+          </span>
+          <span className="text-[11px] font-bold text-white truncate">{summary}</span>
+        </div>
+        <div className="flex items-center gap-2 flex-shrink-0 ml-2">
+          <span className="text-[9px] font-black px-2 py-0.5 rounded" style={{ color: style.color, background: `${style.color}15` }}>
+            {severity}
+          </span>
+          <span className="text-[10px] transition-transform duration-200" style={{ color: "rgba(255,255,255,0.2)", transform: expanded ? "rotate(180deg)" : "rotate(0deg)" }}>▾</span>
+        </div>
+      </button>
+
+      {expanded && (
+        <div className="px-4 pb-4 border-t border-white/5" style={{ animation: "killFadeIn 0.2s ease both" }}>
+          {decree.assessment && (
+            <p className="text-[12px] text-white/70 leading-relaxed mt-3 mb-3">{decree.assessment}</p>
+          )}
+          {decree.realignments && decree.realignments.length > 0 && (
+            <div className="space-y-2">
+              {decree.realignments.filter(r => r.type === "flag_action").slice(0, 4).map((r, i) => (
+                <div key={i} className="flex gap-2">
+                  <span className="text-[9px] font-black flex-shrink-0 mt-0.5" style={{ color: style.color }}>→</span>
+                  <div>
+                    <p className="text-[12px] font-bold text-white leading-snug">{r.action}</p>
+                    <p className="text-[10px] mt-0.5" style={{ color: "rgba(255,255,255,0.4)" }}>{r.reason}</p>
+                  </div>
+                </div>
+              ))}
+            </div>
+          )}
         </div>
       )}
     </div>
@@ -298,22 +481,37 @@ function ReleaseGroup({
 export default function KillPage() {
   const [tasks, setTasks] = useState<KillTask[]>([]);
   const [stats, setStats] = useState({ total: 0, cleared: 0, redRemaining: 0 });
-  const [telemetry, setTelemetry] = useState<DailyTelemetry>({ doordash_earned: 0, doordash_month: '' });
+  const [telemetry, setTelemetry] = useState<DailyTelemetry>({ doordash_earned: 0, doordash_month: "" });
   const [trackSummaries, setTrackSummaries] = useState<TrackHoursSummary[]>([]);
   const [loading, setLoading] = useState(true);
   const [recalStatus, setRecalStatus] = useState<"idle" | "running" | "done">("idle");
+  const [decree, setDecree] = useState<OracleDecree | null>(null);
 
-  // Daily Focus — one sentence, persists for the day
-  const [focus, setFocus] = useState("");
-  const [focusEditing, setFocusEditing] = useState(false);
-  const [focusDraft, setFocusDraft] = useState("");
-  const focusInputRef = useRef<HTMLInputElement>(null);
+  // One Thing — reads from DailyLog (single source of truth)
+  const [oneThing, setOneThing] = useState("");
+  const [oneThingEditing, setOneThingEditing] = useState(false);
+  const [oneThingDraft, setOneThingDraft] = useState("");
+  const oneThingRef = useRef<HTMLInputElement>(null);
 
   // Infrastructure section — collapsed by default
   const [infraOpen, setInfraOpen] = useState(false);
 
+  // Completion modal
+  const [modalTask, setModalTask] = useState<KillTask | null>(null);
+  const [modalClearing, setModalClearing] = useState(false);
+
+  // DD quick-add
+  const [ddHours, setDdHours] = useState("");
+  const [ddRevenue, setDdRevenue] = useState("");
+  const [ddStatus, setDdStatus] = useState("");
+
   const refresh = useCallback(async () => {
-    const [t, s, tel, summaries] = await Promise.all([deriveKillList(), getKillStats(), getDailyTelemetry(), getTrackHoursSummaries()]);
+    const [t, s, tel, summaries] = await Promise.all([
+      deriveKillList(),
+      getKillStats(),
+      getDailyTelemetry(),
+      getTrackHoursSummaries(),
+    ]);
     setTasks(t);
     setStats(s);
     setTelemetry(tel);
@@ -321,26 +519,32 @@ export default function KillPage() {
     setLoading(false);
   }, []);
 
-  // Load focus on mount
   useEffect(() => {
     refresh();
-    const loadFocus = async () => {
-      const saved = await getStoreValue<string>(`daily_focus:${getTodayISO()}`);
-      if (saved) setFocus(saved);
-    };
-    loadFocus();
+    // Load One Thing from DailyLog (single source of truth — same as Today page)
+    getDailyLog().then(log => {
+      if (log.oneThing) setOneThing(log.oneThing);
+    });
+    // Load Oracle decree
+    getStoreValue<OracleDecree>(`oracle_decree:${getTodayISO()}`).then(d => {
+      if (d) setDecree(d);
+    });
   }, [refresh]);
 
-  const saveFocus = async () => {
-    const trimmed = focusDraft.trim();
-    setFocus(trimmed);
-    setFocusEditing(false);
-    await setStoreValue(`daily_focus:${getTodayISO()}`, trimmed);
+  const saveOneThing = async () => {
+    const trimmed = oneThingDraft.trim();
+    setOneThing(trimmed);
+    setOneThingEditing(false);
+    // Write to DailyLog — single source of truth shared with Today page
+    const log = await getDailyLog();
+    await saveDailyLog({ ...log, oneThing: trimmed });
   };
 
   const handleComplete = async (task: KillTask) => {
     await completeTask(task);
-    const [t, s, tel, summaries] = await Promise.all([deriveKillList(), getKillStats(), getDailyTelemetry(), getTrackHoursSummaries()]);
+    const [t, s, tel, summaries] = await Promise.all([
+      deriveKillList(), getKillStats(), getDailyTelemetry(), getTrackHoursSummaries(),
+    ]);
     setTasks(t);
     setStats(s);
     setTelemetry(tel);
@@ -348,28 +552,110 @@ export default function KillPage() {
 
     const redBefore = stats.redRemaining;
     const redAfter = t.filter(x => x.urgency === "RED").length;
-    if (redBefore > 0 && redAfter === 0) {
+    const allCleared = t.length === 0;
+
+    // Recalibrate when RED tasks all clear, or when full list clears
+    if ((redBefore > 0 && redAfter === 0) || allCleared) {
       setRecalStatus("running");
       try {
         await recalibrateOracle(true);
+        const newDecree = await getStoreValue<OracleDecree>(`oracle_decree:${getTodayISO()}`);
+        if (newDecree) setDecree(newDecree);
         setRecalStatus("done");
         setTimeout(async () => { await refresh(); setRecalStatus("idle"); }, 1500);
       } catch { setRecalStatus("idle"); }
     }
   };
 
+  // Modal submit — logs data AND completes the task
+  const handleModalSubmit = async (task: KillTask, value: string | Record<string, string>) => {
+    const input = task.completionInput!;
+    setModalClearing(true);
+
+    try {
+      // Write the input data to the appropriate store
+      if (input.type === "doordash" && typeof value === "object") {
+        const { hours, revenue } = value as { hours: string; revenue: string };
+        await fetch("/api/doordash", {
+          method: "POST",
+          headers: { "Content-Type": "application/json" },
+          body: JSON.stringify({
+            date: getTodayISO(),
+            hours: parseFloat(hours),
+            revenue: parseFloat(revenue),
+            gas: 0, tips: 0, miles: 0,
+          }),
+        });
+        const tel = await getDailyTelemetry();
+        tel.doordash_earned += parseFloat(revenue) || 0;
+        await saveDailyTelemetry(tel);
+      } else if (input.type === "rating" && typeof value === "string") {
+        await setStoreValue(input.storeTarget, parseInt(value));
+      } else if (typeof value === "string") {
+        await setStoreValue(input.storeTarget, value);
+      }
+    } catch (_e) { /* non-fatal */ }
+
+    setModalTask(null);
+    setModalClearing(false);
+    await handleComplete(task);
+  };
+
   const updateTelemetry = async (field: keyof DailyTelemetry, value: number) => {
     const newTel = { ...telemetry, [field]: value };
     setTelemetry(newTel);
     await saveDailyTelemetry(newTel);
-    refresh(); // Re-derive the kill list so tasks immediately recalibrate urgencies
+    refresh();
   };
 
-  // ── Split tasks: needles vs infrastructure ──
+  const submitDoorDash = async () => {
+    if (!ddHours || !ddRevenue) return;
+    setDdStatus("Logging...");
+    try {
+      const res = await fetch("/api/doordash", {
+        method: "POST",
+        headers: { "Content-Type": "application/json" },
+        body: JSON.stringify({
+          date: getTodayISO(),
+          hours: parseFloat(ddHours),
+          revenue: parseFloat(ddRevenue),
+          gas: 0, tips: 0, miles: 0,
+        }),
+      });
+      if (res.ok) {
+        const tel = await getDailyTelemetry();
+        tel.doordash_earned += parseFloat(ddRevenue) || 0;
+        await saveDailyTelemetry(tel);
+        setTelemetry(tel);
+        setDdStatus("LOGGED ✓");
+        setTimeout(() => { setDdStatus(""); setDdHours(""); setDdRevenue(""); }, 2000);
+        refresh();
+      } else {
+        setDdStatus("FAILED");
+      }
+    } catch {
+      setDdStatus("FAILED");
+    }
+  };
+
+  const handleRecalibrate = async () => {
+    setRecalStatus("running");
+    try {
+      await recalibrateOracle(true);
+      const newDecree = await getStoreValue<OracleDecree>(`oracle_decree:${getTodayISO()}`);
+      if (newDecree) setDecree(newDecree);
+      setRecalStatus("done");
+      await refresh();
+      setTimeout(() => setRecalStatus("idle"), 2000);
+    } catch {
+      setRecalStatus("idle");
+    }
+  };
+
+  // ── Split tasks ──
   const needleTasks = tasks.filter(isNeedle);
   const infraTasks = tasks.filter(t => !isNeedle(t));
 
-  // ── Group needle tasks by release/category ──
   const groups: { name: string; tasks: KillTask[] }[] = [];
   const groupMap = new Map<string, KillTask[]>();
 
@@ -379,7 +665,6 @@ export default function KillPage() {
     groupMap.get(key)!.push(task);
   }
 
-  // "Today" group first, then releases sorted by urgency
   const todayTasks = groupMap.get("Today");
   if (todayTasks && todayTasks.length > 0) {
     groups.push({ name: "Today", tasks: todayTasks });
@@ -395,7 +680,6 @@ export default function KillPage() {
 
   groups.push(...releaseGroups);
 
-  // ── Infrastructure grouped ──
   const infraGroups: { name: string; tasks: KillTask[] }[] = [];
   const infraGroupMap = new Map<string, KillTask[]>();
 
@@ -412,14 +696,16 @@ export default function KillPage() {
   }
   infraGroups.push(...Array.from(infraGroupMap.entries()).map(([name, tasks]) => ({ name, tasks })));
 
-  const sfHoursFromLog = trackSummaries.find(t => t.trackName.toUpperCase() === 'SWEET FRUSTRATION')?.totalHours || 0;
-  const lidHoursFromLog = trackSummaries.find(t => t.trackName.toUpperCase() === 'LIKE I DID')?.totalHours || 0;
+  const sfHoursFromLog = trackSummaries.find(t => t.trackName.toUpperCase() === "SWEET FRUSTRATION")?.totalHours || 0;
+  const lidHoursFromLog = trackSummaries.find(t => t.trackName.toUpperCase() === "LIKE I DID")?.totalHours || 0;
 
   const pct = stats.total > 0 ? Math.round((stats.cleared / stats.total) * 100) : 0;
   const statusColor = tasks.some(t => t.urgency === "RED") ? "#FF2D2D"
     : tasks.some(t => t.urgency === "AMBER") ? "#FFB800" : "#22c55e";
   const statusLabel = tasks.some(t => t.urgency === "RED") ? "ACTIVE"
     : tasks.length > 0 ? "CLEARING" : "CLEAR";
+
+  const hour = new Date().getHours();
 
   if (loading) {
     return (
@@ -431,6 +717,14 @@ export default function KillPage() {
 
   return (
     <main className="page animate-fade-in pb-28">
+      {modalTask && !modalClearing && (
+        <CompletionModal
+          task={modalTask}
+          onSubmit={handleModalSubmit}
+          onCancel={() => setModalTask(null)}
+        />
+      )}
+
       <style>{`
         @keyframes killFadeIn {
           from { opacity: 0; transform: translateY(6px); }
@@ -453,13 +747,10 @@ export default function KillPage() {
         <div className="mb-5" style={{ animation: "killFadeIn 0.25s ease both" }}>
           <div className="flex items-center justify-between mb-3">
             <h1 className="text-[10px] font-black tracking-[0.3em] uppercase" style={{ color: "rgba(255,255,255,0.3)" }}>
-              Kill List
+              Execute
             </h1>
             <div className="flex items-center gap-1.5">
-              <div
-                className="w-1.5 h-1.5 rounded-full"
-                style={{ backgroundColor: statusColor, boxShadow: `0 0 6px ${statusColor}` }}
-              />
+              <div className="w-1.5 h-1.5 rounded-full" style={{ backgroundColor: statusColor, boxShadow: `0 0 6px ${statusColor}` }} />
               <span
                 className="text-[10px] font-black tracking-wider"
                 style={{
@@ -472,53 +763,49 @@ export default function KillPage() {
             </div>
           </div>
 
-          {/* Progress bar */}
           <div className="flex items-center justify-between mb-1.5">
-            <span className="text-[10px]" style={{ color: "rgba(255,255,255,0.3)" }}>
-              {stats.cleared}/{stats.total} cleared
-            </span>
+            <span className="text-[10px]" style={{ color: "rgba(255,255,255,0.3)" }}>{stats.cleared}/{stats.total} cleared</span>
             <span className="text-[10px] font-black" style={{ color: statusColor }}>{pct}%</span>
           </div>
           <div className="h-1 rounded-full overflow-hidden" style={{ background: "rgba(255,255,255,0.06)" }}>
             <div
               className="h-full rounded-full transition-all duration-500 ease-out"
-              style={{
-                width: `${pct}%`,
-                background: `linear-gradient(90deg, ${statusColor}80, ${statusColor})`,
-                boxShadow: `0 0 8px ${statusColor}30`,
-              }}
+              style={{ width: `${pct}%`, background: `linear-gradient(90deg, ${statusColor}80, ${statusColor})`, boxShadow: `0 0 8px ${statusColor}30` }}
             />
           </div>
         </div>
 
-        {/* ── DAILY FOCUS — "What's the one thing?" ── */}
+        {/* ── Oracle Decree Banner ── */}
+        {decree && <OracleDecreeBanner decree={decree} />}
+
+        {/* ── ONE THING — reads from DailyLog (shared with Today page) ── */}
         <div
           className="mb-5 rounded-xl overflow-hidden"
           style={{
-            background: focus ? "rgba(212,168,83,0.04)" : "rgba(255,255,255,0.02)",
-            border: `1px solid ${focus ? "rgba(212,168,83,0.15)" : "rgba(255,255,255,0.06)"}`,
+            background: oneThing ? "rgba(212,168,83,0.04)" : "rgba(255,255,255,0.02)",
+            border: `1px solid ${oneThing ? "rgba(212,168,83,0.15)" : "rgba(255,255,255,0.06)"}`,
             animation: "killFadeIn 0.25s ease 0.05s both",
           }}
         >
           <div className="px-4 py-3">
-            <p className="text-[9px] font-black tracking-[0.2em] uppercase mb-2" style={{ color: focus ? "#d4a853" : "rgba(255,255,255,0.25)" }}>
-              {focus ? "Today's Focus" : "Set Your Focus"}
+            <p className="text-[9px] font-black tracking-[0.2em] uppercase mb-2" style={{ color: oneThing ? "#d4a853" : "rgba(255,255,255,0.25)" }}>
+              {oneThing ? "Today's One Thing" : "Set Your Focus"}
             </p>
 
-            {focusEditing ? (
+            {oneThingEditing ? (
               <div className="flex gap-2">
                 <input
-                  ref={focusInputRef}
+                  ref={oneThingRef}
                   type="text"
-                  value={focusDraft}
-                  onChange={e => setFocusDraft(e.target.value)}
-                  onKeyDown={e => { if (e.key === "Enter") saveFocus(); }}
+                  value={oneThingDraft}
+                  onChange={e => setOneThingDraft(e.target.value)}
+                  onKeyDown={e => { if (e.key === "Enter") saveOneThing(); }}
                   placeholder="What's the one thing today?"
                   className="flex-1 bg-[#0a0a0a] border border-[#222] rounded-lg px-3 py-2.5 text-[13px] font-bold text-white outline-none placeholder-[#333] focus:border-[#d4a853]/30"
                   autoFocus
                 />
                 <button
-                  onClick={saveFocus}
+                  onClick={saveOneThing}
                   className="px-4 py-2 rounded-lg bg-[#d4a853]/15 border border-[#d4a853]/25 text-[#d4a853] text-[10px] font-black tracking-widest uppercase active:scale-95 transition-all"
                 >
                   Set
@@ -526,12 +813,12 @@ export default function KillPage() {
               </div>
             ) : (
               <button
-                onClick={() => { setFocusDraft(focus); setFocusEditing(true); }}
+                onClick={() => { setOneThingDraft(oneThing); setOneThingEditing(true); }}
                 className="w-full text-left active:scale-[0.99] transition-transform"
                 style={{ minHeight: "36px" }}
               >
-                {focus ? (
-                  <p className="text-[15px] font-black text-white leading-snug">{focus}</p>
+                {oneThing ? (
+                  <p className="text-[15px] font-black text-white leading-snug">{oneThing}</p>
                 ) : (
                   <p className="text-[13px] font-bold leading-snug" style={{ color: "rgba(255,255,255,0.25)" }}>
                     Tap to set — everything below serves this.
@@ -540,7 +827,7 @@ export default function KillPage() {
               </button>
             )}
 
-            {focus && !focusEditing && (
+            {oneThing && !oneThingEditing && (
               <p className="text-[9px] mt-1.5" style={{ color: "rgba(255,255,255,0.15)" }}>
                 Everything below serves this. Tap to change.
               </p>
@@ -548,7 +835,7 @@ export default function KillPage() {
           </div>
         </div>
 
-        {/* ── Daily Telemetry (Anti-Drift Engine) ── */}
+        {/* ── Anti-Drift Telemetry ── */}
         <div className="mb-5 rounded-xl p-4" style={{ background: "rgba(255,255,255,0.02)", border: "1px solid rgba(255,255,255,0.06)" }}>
           <div className="flex items-center justify-between mb-3">
             <h2 className="text-[9px] font-black tracking-[0.2em] uppercase" style={{ color: "rgba(255,255,255,0.4)" }}>Anti-Drift Telemetry</h2>
@@ -557,25 +844,25 @@ export default function KillPage() {
             <div>
               <p className="text-[10px] uppercase font-bold text-white mb-2 opacity-80 text-center">SF Mixdown</p>
               <div className="text-center font-black text-[14px] text-white tabular-nums">
-                {sfHoursFromLog} <span className="opacity-40 text-[10px]">/ 11h (auto)</span>
+                {sfHoursFromLog} <span className="opacity-40 text-[10px]">/ 11h</span>
               </div>
             </div>
             <div>
               <p className="text-[10px] uppercase font-bold text-white mb-2 opacity-80 text-center">LID Mixdown</p>
               <div className="text-center font-black text-[14px] text-white tabular-nums">
-                {lidHoursFromLog} <span className="opacity-40 text-[10px]">/ 11h (auto)</span>
+                {lidHoursFromLog} <span className="opacity-40 text-[10px]">/ 11h</span>
               </div>
             </div>
           </div>
           <div>
             <p className="text-[10px] uppercase font-bold text-white mb-2 opacity-80 text-center">DoorDash Earned</p>
             <div className="flex gap-2 mb-3">
-              <button onClick={() => updateTelemetry('doordash_earned', telemetry.doordash_earned + 20)} className="flex-1 py-1.5 rounded bg-[#ffffff10] border border-[#ffffff1a] text-[#fff] text-[11px] font-black active:scale-95 transition-transform">+$20</button>
-              <button onClick={() => updateTelemetry('doordash_earned', telemetry.doordash_earned + 50)} className="flex-1 py-1.5 rounded bg-[#ffffff10] border border-[#ffffff1a] text-[#fff] text-[11px] font-black active:scale-95 transition-transform">+$50</button>
-              <button onClick={() => updateTelemetry('doordash_earned', telemetry.doordash_earned + 100)} className="flex-1 py-1.5 rounded bg-[#ffffff10] border border-[#ffffff1a] text-[#fff] text-[11px] font-black active:scale-95 transition-transform">+$100</button>
+              <button onClick={() => updateTelemetry("doordash_earned", telemetry.doordash_earned + 20)} className="flex-1 py-1.5 rounded bg-[#ffffff10] border border-[#ffffff1a] text-[#fff] text-[11px] font-black active:scale-95 transition-transform">+$20</button>
+              <button onClick={() => updateTelemetry("doordash_earned", telemetry.doordash_earned + 50)} className="flex-1 py-1.5 rounded bg-[#ffffff10] border border-[#ffffff1a] text-[#fff] text-[11px] font-black active:scale-95 transition-transform">+$50</button>
+              <button onClick={() => updateTelemetry("doordash_earned", telemetry.doordash_earned + 100)} className="flex-1 py-1.5 rounded bg-[#ffffff10] border border-[#ffffff1a] text-[#fff] text-[11px] font-black active:scale-95 transition-transform">+$100</button>
             </div>
             <p className="text-center font-black text-[15px] text-white">
-              ${telemetry.doordash_earned} <span className="opacity-40 text-[11px] w-14">/ $1000</span>
+              ${telemetry.doordash_earned} <span className="opacity-40 text-[11px]">/ $1,800 target</span>
             </p>
           </div>
         </div>
@@ -593,13 +880,14 @@ export default function KillPage() {
                 tasks={group.tasks}
                 defaultOpen={i === 0 || getGroupUrgency(group.tasks) === "RED"}
                 onComplete={handleComplete}
+                onOpenModal={setModalTask}
                 index={i}
               />
             ))}
           </div>
         )}
 
-        {/* ── INFRASTRUCTURE — collapsed by default ── */}
+        {/* ── INFRASTRUCTURE ── */}
         {infraTasks.length > 0 && (
           <div className="mb-5">
             <button
@@ -610,22 +898,17 @@ export default function KillPage() {
                 Infrastructure ({infraTasks.length})
               </h2>
               <div className="flex items-center gap-2">
+                {infraTasks.filter(t => t.howTo.length <= 2).length > 0 && (
+                  <span className="text-[8px] font-black px-1.5 py-0.5 rounded" style={{ color: "#22c55e", background: "rgba(34,197,94,0.08)" }}>
+                    {infraTasks.filter(t => t.howTo.length <= 2).length} quick wins
+                  </span>
+                )}
                 {infraTasks.some(t => t.urgency === "RED") && (
                   <span className="text-[8px] font-black px-1.5 py-0.5 rounded" style={{ color: "#FF2D2D", background: "rgba(255,45,45,0.12)" }}>
                     {infraTasks.filter(t => t.urgency === "RED").length}
                   </span>
                 )}
-                {infraTasks.some(t => t.urgency === "AMBER") && (
-                  <span className="text-[8px] font-black px-1.5 py-0.5 rounded" style={{ color: "#FFB800", background: "rgba(255,184,0,0.1)" }}>
-                    {infraTasks.filter(t => t.urgency === "AMBER").length}
-                  </span>
-                )}
-                <span
-                  className="text-[10px] transition-transform duration-200"
-                  style={{ color: "rgba(255,255,255,0.15)", transform: infraOpen ? "rotate(180deg)" : "rotate(0deg)" }}
-                >
-                  ▾
-                </span>
+                <span className="text-[10px] transition-transform duration-200" style={{ color: "rgba(255,255,255,0.15)", transform: infraOpen ? "rotate(180deg)" : "rotate(0deg)" }}>▾</span>
               </div>
             </button>
 
@@ -638,6 +921,7 @@ export default function KillPage() {
                     tasks={group.tasks}
                     defaultOpen={getGroupUrgency(group.tasks) === "RED"}
                     onComplete={handleComplete}
+                    onOpenModal={setModalTask}
                     index={i}
                   />
                 ))}
@@ -646,35 +930,121 @@ export default function KillPage() {
           </div>
         )}
 
-        {/* ── All Clear state ── */}
+        {/* ── All Clear / What's Next ── */}
         {tasks.length === 0 && (
           <div
-            className="text-center py-16 rounded-2xl"
-            style={{
-              background: "rgba(34,197,94,0.04)",
-              border: "1px solid rgba(34,197,94,0.1)",
-              animation: "killFadeIn 0.5s ease both",
-            }}
+            className="text-center py-12 rounded-2xl mb-5"
+            style={{ background: "rgba(34,197,94,0.04)", border: "1px solid rgba(34,197,94,0.1)", animation: "killFadeIn 0.5s ease both" }}
           >
-            <div
-              className="w-14 h-14 rounded-full mx-auto mb-4 flex items-center justify-center"
-              style={{ background: "rgba(34,197,94,0.1)", boxShadow: "0 0 24px rgba(34,197,94,0.15)" }}
-            >
+            <div className="w-14 h-14 rounded-full mx-auto mb-4 flex items-center justify-center" style={{ background: "rgba(34,197,94,0.1)", boxShadow: "0 0 24px rgba(34,197,94,0.15)" }}>
               <svg width="28" height="28" viewBox="0 0 24 24" fill="none" stroke="#22c55e" strokeWidth="2" strokeLinecap="round" strokeLinejoin="round">
                 <polyline points="20 6 9 17 4 12" />
               </svg>
             </div>
             <p className="text-sm font-bold" style={{ color: "#22c55e" }}>Kill list clear</p>
-            <p className="text-[11px] mt-1.5" style={{ color: "rgba(255,255,255,0.25)" }}>
-              Nothing derived. Execute freely.
-            </p>
             {stats.cleared > 0 && (
-              <p className="text-[10px] mt-3" style={{ color: "rgba(255,255,255,0.15)" }}>
+              <p className="text-[10px] mt-2" style={{ color: "rgba(255,255,255,0.2)" }}>
                 {stats.cleared} task{stats.cleared > 1 ? "s" : ""} cleared today
               </p>
             )}
           </div>
         )}
+
+        {/* What's Next routing — shows when all tasks cleared */}
+        {tasks.length === 0 && (
+          <div className="space-y-2 mb-5" style={{ animation: "killFadeIn 0.4s ease 0.2s both" }}>
+            {hour < 11 && (
+              <Link href="/">
+                <div className="card !p-4 flex items-center justify-between border-amber-500/20 hover:border-amber-500/40 active:scale-[0.98] transition-all">
+                  <div>
+                    <p className="text-[11px] font-black text-amber-400">Complete Morning Stack</p>
+                    <p className="text-[10px] text-[#555] mt-0.5">Today page → finish the protocol</p>
+                  </div>
+                  <span className="text-amber-400 font-black">→</span>
+                </div>
+              </Link>
+            )}
+            {hour >= 17 && telemetry.doordash_earned === 0 && (
+              <div className="card !p-4 flex items-center justify-between border-[#222] active:scale-[0.98] transition-all">
+                <div>
+                  <p className="text-[11px] font-black text-white">Log DoorDash</p>
+                  <p className="text-[10px] text-[#555] mt-0.5">No shift logged today</p>
+                </div>
+                <button
+                  onClick={() => setInfraOpen(true)}
+                  className="text-[10px] font-black text-amber-500 tracking-widest"
+                >
+                  ADD →
+                </button>
+              </div>
+            )}
+            {tasks.length === 0 && stats.cleared === 0 && (
+              <div className="text-center py-4">
+                <p className="text-[11px] font-bold" style={{ color: "rgba(255,255,255,0.25)" }}>
+                  Nothing derived. Execute freely.
+                </p>
+              </div>
+            )}
+            {tasks.length === 0 && stats.cleared > 0 && (
+              <div className="text-center py-4">
+                <p className="text-[11px] font-bold" style={{ color: "rgba(255,255,255,0.25)" }}>
+                  All clear. Rest or create freely.
+                </p>
+              </div>
+            )}
+          </div>
+        )}
+
+        {/* ── DoorDash Quick-Add ── */}
+        <div className="mb-5">
+          <div className="flex justify-between items-center mb-2 px-1">
+            <h3 className="text-[9px] font-black tracking-[0.2em] uppercase" style={{ color: "rgba(255,255,255,0.25)" }}>Log DoorDash Shift</h3>
+            {ddStatus && (
+              <span className={`text-[10px] font-black tracking-widest ${ddStatus.includes("✓") ? "text-green-500" : ddStatus === "FAILED" ? "text-red-500" : "text-amber-500"}`}>
+                {ddStatus}
+              </span>
+            )}
+          </div>
+          <div className="card flex gap-2 p-2">
+            <input
+              type="number"
+              placeholder="Hrs"
+              className="flex-1 bg-[#111] rounded-lg p-3 text-center text-sm font-black outline-none border border-transparent focus:border-[#333]"
+              value={ddHours}
+              onChange={e => setDdHours(e.target.value)}
+            />
+            <input
+              type="number"
+              placeholder="$ Rev"
+              className="flex-1 bg-[#111] rounded-lg p-3 text-center text-sm font-black outline-none border border-transparent focus:border-[#333]"
+              value={ddRevenue}
+              onChange={e => setDdRevenue(e.target.value)}
+            />
+            <button
+              onClick={submitDoorDash}
+              disabled={!!ddStatus && !ddStatus.includes("✓") && ddStatus !== "FAILED"}
+              className="w-12 flex items-center justify-center rounded-lg bg-amber-500 text-black font-black active:scale-95 transition-all text-xl disabled:opacity-50"
+            >
+              +
+            </button>
+          </div>
+        </div>
+
+        {/* ── Recalibrate Oracle ── */}
+        <div className="mb-8 text-center">
+          <button
+            onClick={handleRecalibrate}
+            disabled={recalStatus === "running"}
+            className="text-[9px] font-black tracking-[0.2em] uppercase px-4 py-2 rounded-lg transition-all active:scale-95 disabled:opacity-30"
+            style={{
+              color: "rgba(255,255,255,0.2)",
+              border: "1px solid rgba(255,255,255,0.06)",
+              background: "rgba(255,255,255,0.02)",
+            }}
+          >
+            {recalStatus === "running" ? "🔮 RECALIBRATING..." : recalStatus === "done" ? "🔮 DONE ✓" : "🔮 ASK ORACLE"}
+          </button>
+        </div>
 
       </div>
     </main>

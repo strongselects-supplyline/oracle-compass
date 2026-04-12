@@ -1,22 +1,28 @@
 "use client";
 
+// app/page.tsx — TODAY
+// 90-second morning ignition. One Thing → Protocol → 4-step Morning Stack → Execute CTA.
+// Progressive flow: each section auto-collapses when complete, revealing the next.
+// Sync fires automatically after Journal LOCK IN — no separate tap needed.
+//
+// v24 redesign (Apr 12, 2026):
+//   - Removed KPI row, Weekly Mirror, Lane Dashboard, Audience Ledger, DoorDash Quick-Add
+//   - Protocol auto-expands before 11 AM
+//   - Morning logging is now a 4-step progressive flow
+//   - Kill List CTA is auto-computed (red count drives urgency)
+
 import { useEffect, useState, useCallback } from "react";
-import { getDayType, isSacredDay, isStudioDay, isBizDay } from "@/lib/dayType";
-import { getDailyLog, saveDailyLog, DailyLog, getStoreValue, getTodayISO } from "@/lib/db";
-import { getSobrietyStreak } from "@/lib/streaks";
+import { getDayType, isSacredDay, isStudioDay } from "@/lib/dayType";
+import { getDailyLog, saveDailyLog, DailyLog } from "@/lib/db";
 import { getDynamicReleases, Release } from "@/lib/releases";
 import { useCloudSync } from "@/lib/useCloudSync";
-import { getMakeModeWeek } from "@/lib/oracle";
 import type { OracleDecree } from "@/lib/oracle";
-import { getLaneStatus, Lane } from "@/lib/lanes";
+import { getStoreValue, getTodayISO } from "@/lib/db";
 import { getKillStats } from "@/lib/killList";
 import { getSundayChecklist, saveSundayChecklist, isGriefProtocolActive } from "@/lib/planner";
 import { getWeekKey } from "@/lib/oracle";
-import { getLedgerStats, LedgerStats } from "@/lib/audienceLedger";
-import WeeklyMirror from "@/components/WeeklyMirror";
 import CheckItem from "@/components/CheckItem";
 import Link from "next/link";
-
 
 type ProtocolStep = { icon: string; action: string; tab?: string };
 
@@ -24,55 +30,53 @@ function getProtocolSteps(dayType: string): { tagline: string; steps: ProtocolSt
   if (dayType === "STUDIO + SAUNA DAY") return {
     tagline: "Split-Block Studio + Thermal Reset + DD Sprints.",
     steps: [
-      { icon: "\uD83D\uDE97", action: "6 AM \u2192 DD Morning Sprint (1hr)" },
-      { icon: "\u2600\uFE0F", action: "7 AM \u2192 Sovereignty Stack \u2192 log below" },
-      { icon: "\uD83C\uDFB9", action: "10 AM \u2192 Studio Block 1 (mix/vocals)" },
-      { icon: "\uD83D\uDE97", action: "12 PM \u2192 DD Midday Sprint (2hrs)" },
-      { icon: "\uD83C\uDFA4", action: "2 PM \u2192 Studio Block 2" },
-      { icon: "\uD83D\uDD25", action: "4 PM \u2192 Sauna (thermal reset)" },
-      { icon: "\uD83D\uDE97", action: "5:30 PM \u2192 DD Evening Sprint (2-3hrs)" },
-      { icon: "\uD83D\uDCF1", action: "Post content from STUDIO queue", tab: "studio" },
-    ]
+      { icon: "🚗", action: "6 AM → DD Morning Sprint (1hr)" },
+      { icon: "☀️", action: "7 AM → Sovereignty Stack → log below" },
+      { icon: "🎹", action: "10 AM → Studio Block 1 (mix/vocals)" },
+      { icon: "🚗", action: "12 PM → DD Midday Sprint (2hrs)" },
+      { icon: "🎤", action: "2 PM → Studio Block 2" },
+      { icon: "🔥", action: "4 PM → Sauna (thermal reset)" },
+      { icon: "🚗", action: "5:30 PM → DD Evening Sprint (2-3hrs)" },
+      { icon: "📱", action: "Post content from STUDIO queue", tab: "studio" },
+    ],
   };
   if (dayType === "STUDIO DAY") return {
     tagline: "Split-Block Studio + DD Sprints. No Distractions.",
     steps: [
-      { icon: "\uD83D\uDE97", action: "6 AM \u2192 DD Morning Sprint (1hr)" },
-      { icon: "\u2600\uFE0F", action: "7 AM \u2192 Sovereignty Stack \u2192 log below" },
-      { icon: "\uD83C\uDFB9", action: "10 AM \u2192 Studio Block 1 (mix/vocals)" },
-      { icon: "\uD83D\uDE97", action: "12 PM \u2192 DD Midday Sprint (2hrs)" },
-      { icon: "\uD83C\uDFA4", action: "2 PM \u2192 Studio Block 2" },
-      { icon: "\uD83D\uDE97", action: "5:30 PM \u2192 DD Evening Sprint (2-3hrs)" },
-      { icon: "\uD83D\uDCF1", action: "Post content from STUDIO queue", tab: "studio" },
-    ]
+      { icon: "🚗", action: "6 AM → DD Morning Sprint (1hr)" },
+      { icon: "☀️", action: "7 AM → Sovereignty Stack → log below" },
+      { icon: "🎹", action: "10 AM → Studio Block 1 (mix/vocals)" },
+      { icon: "🚗", action: "12 PM → DD Midday Sprint (2hrs)" },
+      { icon: "🎤", action: "2 PM → Studio Block 2" },
+      { icon: "🚗", action: "5:30 PM → DD Evening Sprint (2-3hrs)" },
+      { icon: "📱", action: "Post content from STUDIO queue", tab: "studio" },
+    ],
   };
   if (dayType === "BIZ DAY") return {
     tagline: "Pipeline moves + DD Sprints. ENGINE is Track 1.",
     steps: [
-      { icon: "\uD83D\uDE97", action: "6 AM \u2192 DD Morning Sprint (1hr)" },
-      { icon: "\u2600\uFE0F", action: "7 AM \u2192 Sovereignty Stack \u2192 log below" },
-      { icon: "\u2699\uFE0F", action: "9 AM \u2192 ENGINE: pipeline tasks", tab: "engine" },
-      { icon: "\uD83D\uDCF1", action: "9:30 AM \u2192 IG Community Sprint \u2014 20 min", tab: "kill" },
-      { icon: "\uD83D\uDE97", action: "12 PM \u2192 DD Midday Sprint (2hrs)" },
-      { icon: "\uD83D\uDCE4", action: "3 PM \u2192 Push content to IG/TikTok/YouTube" },
-      { icon: "\uD83D\uDE97", action: "5:30 PM \u2192 DD Evening Sprint (2-3hrs)" },
-      { icon: "\uD83D\uDD2E", action: "Read today's Oracle decree", tab: "oracle" },
-    ]
+      { icon: "🚗", action: "6 AM → DD Morning Sprint (1hr)" },
+      { icon: "☀️", action: "7 AM → Sovereignty Stack → log below" },
+      { icon: "⚙️", action: "9 AM → ENGINE: pipeline tasks", tab: "engine" },
+      { icon: "📱", action: "9:30 AM → IG Community Sprint — 20 min", tab: "kill" },
+      { icon: "🚗", action: "12 PM → DD Midday Sprint (2hrs)" },
+      { icon: "📤", action: "3 PM → Push content to IG/TikTok/YouTube" },
+      { icon: "🚗", action: "5:30 PM → DD Evening Sprint (2-3hrs)" },
+    ],
   };
   return { tagline: "", steps: [] };
 }
 
-// Cycle tracks removed — all on ALL LOVE EP. Active track derived from releases.
-
-
-function HydrationSelector({ value, onChange }: { value: number | null, onChange: (v: number) => void }) {
+function HydrationSelector({ value, onChange }: { value: number | null; onChange: (v: number) => void }) {
   return (
     <div className="flex gap-1.5">
       {[1, 2, 3, 4, 5].map(n => (
         <button
           key={n}
           onClick={() => onChange(n)}
-          className={`w-9 h-9 rounded-lg text-sm font-black transition-all ${value === n ? 'bg-blue-500 text-white' : 'bg-[#111] text-[#555] border border-[#222]'}`}
+          className={`flex-1 h-10 rounded-lg text-sm font-black transition-all active:scale-95 ${
+            value === n ? "bg-blue-500 text-white" : "bg-[#111] text-[#555] border border-[#222]"
+          }`}
         >
           {n}
         </button>
@@ -81,46 +85,46 @@ function HydrationSelector({ value, onChange }: { value: number | null, onChange
   );
 }
 
-export default function MorningMode() {
+// Step completion indicator
+function StepCheck({ done }: { done: boolean }) {
+  return (
+    <div
+      className={`w-5 h-5 rounded-full flex items-center justify-center flex-shrink-0 transition-all duration-300 ${
+        done ? "bg-green-500 border-green-500" : "border-2 border-[#333]"
+      }`}
+    >
+      {done && <span className="text-black text-[10px] font-black">✓</span>}
+    </div>
+  );
+}
+
+export default function TodayPage() {
   const [log, setLog] = useState<DailyLog | null>(null);
   const [decree, setDecree] = useState<OracleDecree | null>(null);
-  const [streak, setStreak] = useState<number>(0);
   const [dayType, setDayType] = useState<string>("");
   const [dateStr, setDateStr] = useState<string>("");
   const [isEditingOneThing, setIsEditingOneThing] = useState(false);
   const [oneThingInput, setOneThingInput] = useState("");
-  const [activeTrack, setActiveTrack] = useState<string>("\u2013");
-  const [week, setWeek] = useState<number>(1);
   const [nextRelease, setNextRelease] = useState<Release | null>(null);
   const [daysUntilRelease, setDaysUntilRelease] = useState<number>(0);
-  const [lanes, setLanes] = useState<Lane[]>([]);
-  const [showProtocol, setShowProtocol] = useState(false);
   const [killRedCount, setKillRedCount] = useState(0);
+  const [killTotalRemaining, setKillTotalRemaining] = useState(0);
   const { syncStatus, sync: handleSync } = useCloudSync();
-  // Grief protocol — Sunday journaling (starts Apr 27, 2026)
+
+  // Grief protocol
   const [griefJournalDone, setGriefJournalDone] = useState(false);
   const [griefProtocolActive, setGriefProtocolActive] = useState(false);
-  // Audience Ledger — BIZ DAY widget (Phase 2, Apr 25+)
-  const [ledgerStats, setLedgerStats] = useState<LedgerStats | null>(null);
 
-  // Refresh lanes reactively after any state change
-  const refreshLanes = useCallback(async () => {
-    setLanes(await getLaneStatus());
-  }, []);
-
-  // DoorDash State
-  const [ddHours, setDdHours] = useState("");
-  const [ddRevenue, setDdRevenue] = useState("");
-  const [ddStatus, setDdStatus] = useState("");
+  // Morning step — 0=sovereign, 1=fuel, 2=numbers, 3=journal, 4=done
+  const [morningStep, setMorningStep] = useState<0 | 1 | 2 | 3 | 4>(0);
+  const [lockInStatus, setLockInStatus] = useState<"idle" | "syncing" | "done">("idle");
 
   useEffect(() => {
     const init = async () => {
       const todayLog = await getDailyLog();
       setLog(todayLog);
-      setOneThingInput(todayLog.oneThing);
-      setStreak(getSobrietyStreak());
+      setOneThingInput(todayLog.oneThing || "");
       setDayType(getDayType());
-      setWeek(getMakeModeWeek());
 
       const d = new Date();
       setDateStr(d.toLocaleDateString("en-US", { weekday: "short", month: "short", day: "numeric" }));
@@ -131,31 +135,40 @@ export default function MorningMode() {
       setNextRelease(next);
       setDaysUntilRelease(Math.max(Math.ceil((new Date(next.releaseDate).getTime() - now.getTime()) / 86400000), 0));
 
-      // Active track = next upcoming release title
-      setActiveTrack(next?.title || "–");
-
       setDecree(await getStoreValue<OracleDecree>(`oracle_decree:${getTodayISO()}`));
-      setLanes(await getLaneStatus());
+
       const stats = await getKillStats();
       setKillRedCount(stats.redRemaining);
-      // Grief protocol — load Sunday checklist state
+      setKillTotalRemaining(stats.total - stats.cleared);
+
+      // Grief protocol
       const griefNow = new Date();
       setGriefProtocolActive(isGriefProtocolActive(griefNow));
       if (isGriefProtocolActive(griefNow)) {
         const checklist = await getSundayChecklist(getWeekKey());
         setGriefJournalDone(checklist.griefJournalDone ?? false);
       }
-      // Audience Ledger stats — only load on BIZ DAYs (post-EP)
-      const currentDayType = getDayType();
-      if (isBizDay(currentDayType)) {
-        try {
-          const ls = await getLedgerStats();
-          setLedgerStats(ls);
-        } catch (_e) { /* silent */ }
+
+      // Restore morning step from existing log state
+      if (todayLog.journalLine) {
+        setMorningStep(4);
+      } else if (todayLog.sleep || todayLog.pushups) {
+        setMorningStep(3);
+      } else if (todayLog.fuelPreSession || todayLog.fuelMidSession || todayLog.fuelPostSession) {
+        setMorningStep(2);
+      } else if (todayLog.sovereigntyStack || todayLog.movement) {
+        setMorningStep(1);
       }
     };
     init();
   }, []);
+
+  const updateLog = useCallback(async (updates: Partial<DailyLog>) => {
+    if (!log) return;
+    const updated = { ...log, ...updates };
+    setLog(updated);
+    await saveDailyLog(updated);
+  }, [log]);
 
   const handleSaveOneThing = async () => {
     if (!log) return;
@@ -165,71 +178,79 @@ export default function MorningMode() {
     setIsEditingOneThing(false);
   };
 
-  const updateLog = async (updates: Partial<DailyLog>) => {
+  const handleLockIn = async () => {
     if (!log) return;
-    const updated = { ...log, ...updates };
-    setLog(updated);
-    await saveDailyLog(updated);
-    // Refresh lanes so they reflect the new log state immediately
-    refreshLanes();
-  };
-
-  const submitDoorDash = async () => {
-    if (!ddHours || !ddRevenue) return;
-    setDdStatus("Logging...");
+    setMorningStep(4);
+    setLockInStatus("syncing");
     try {
-      const res = await fetch("/api/doordash", {
-        method: "POST", headers: { "Content-Type": "application/json" },
-        body: JSON.stringify({ date: new Date().toISOString().split("T")[0], hours: parseFloat(ddHours), revenue: parseFloat(ddRevenue), gas: 0, tips: 0, miles: 0 })
-      });
-      if (res.ok) {
-        // Sync to DailyTelemetry so Kill List telemetry panel stays coherent
-        const { getDailyTelemetry, saveDailyTelemetry } = await import("@/lib/db");
-        const tel = await getDailyTelemetry();
-        tel.doordash_earned += parseFloat(ddRevenue) || 0;
-        await saveDailyTelemetry(tel);
-        refreshLanes(); // Update money lane immediately
-        setDdStatus("LOGGED ✓"); setTimeout(() => { setDdStatus(""); setDdHours(""); setDdRevenue(""); }, 2000);
-      }
-      else setDdStatus("FAILED");
-    } catch { setDdStatus("FAILED"); }
+      await handleSync(log, dayType);
+      setLockInStatus("done");
+    } catch {
+      setLockInStatus("done");
+    }
   };
 
   if (!log) return null;
+
   const isSacred = isSacredDay(dayType as any);
   const studioDay = isStudioDay(dayType as any);
-  const fuelScore = [log.fuelPreSession, log.fuelMidSession, log.fuelPostSession].filter(Boolean).length;
+  const hour = new Date().getHours();
+  const protocol = getProtocolSteps(dayType);
+  const showProtocolExpanded = hour < 11;
 
   const fuelLabels = decree?.dietary_alignment ? decree.dietary_alignment : {
     pre: { label: "Pre-Session Fuel", desc: "Breakfast protocol not set by Oracle." },
     mid: { label: "Mid-Session Fuel", desc: "Mid-day protocol not set by Oracle." },
     post: { label: "Post-Session Fuel", desc: "Evening protocol not set by Oracle." },
-    warning: null
+    warning: null,
+  };
+
+  // Step completion checks
+  const sovereigntyDone = !!(log.sovereigntyStack && log.movement);
+  const fuelDone = !!(log.fuelPreSession && log.fuelMidSession && log.fuelPostSession);
+  const numbersDone = !!(log.sleep && log.pushups);
+  const journalDone = !!(log.journalLine && log.journalLine.trim().length > 0);
+
+  // Auto-advance logic
+  const autoAdvance = (checkDone: boolean, nextStep: 0 | 1 | 2 | 3 | 4, currentStep: 0 | 1 | 2 | 3 | 4) => {
+    if (checkDone && morningStep === currentStep) {
+      setTimeout(() => setMorningStep(nextStep), 600);
+    }
+  };
+
+  const updateLogAndCheck = async (updates: Partial<DailyLog>, afterStep?: () => void) => {
+    await updateLog(updates);
+    if (afterStep) afterStep();
   };
 
   return (
     <main className="page animate-fade-in pb-20">
       <div className="page-inner">
 
-        {daysUntilRelease <= 3 && nextRelease && nextRelease.status !== 'live' && (
-          <div className="alert-banner alert-banner-red mb-8 !p-3">
-            <span className="animate-pulse-glow mr-2">{"\uD83D\uDD34"}</span>
+        {/* Release countdown banner */}
+        {daysUntilRelease <= 3 && nextRelease && nextRelease.status !== "live" && (
+          <div className="alert-banner alert-banner-red mb-6 !p-3">
+            <span className="animate-pulse-glow mr-2">🔴</span>
             <div className="flex-1">
-              <span className="font-black text-sm">{nextRelease.title}</span> {"\u2014"} {daysUntilRelease === 0 ? "OUT TODAY" : `${daysUntilRelease}d OUT`}
+              <span className="font-black text-sm">{nextRelease.title}</span>{" — "}
+              {daysUntilRelease === 0 ? "OUT TODAY" : `${daysUntilRelease}d OUT`}
             </div>
           </div>
         )}
 
-        <header className="mb-8 text-center">
-          <p className="text-[10px] font-black tracking-[0.2em] text-[#444] uppercase mb-1">MAKE MODE {"\u00B7"} Wk {week} of 5</p>
-          <p className="text-sm font-bold tracking-widest text-[#888] uppercase">{dateStr}</p>
+        {/* Day-type header */}
+        <header className="mb-6 text-center">
+          <p className="text-lg font-black tracking-tight text-white uppercase">{dayType || dateStr}</p>
+          <p className="text-[10px] font-bold tracking-[0.15em] text-[#555] uppercase mt-1">{dateStr}</p>
         </header>
 
         {isSacred ? (
+          /* ── SUNDAY — sacred gate ── */
           <div className="text-center mt-12">
-            <div className="text-6xl mb-6">{"\uD83D\uDED1"}</div>
+            <div className="text-6xl mb-6">🛑</div>
             <h2 className="text-xl font-black mb-2">Sunday is sacred.</h2>
-            <p className="text-[#666] text-sm">Zero building.<br />Nadi Shodhana. Rest.<br />The week depends on this.</p>
+            <p className="text-[#666] text-sm leading-relaxed">Zero building.<br />Nadi Shodhana. Rest.<br />The week depends on this.</p>
+
             {griefProtocolActive && (
               <div className="mt-8 mx-auto max-w-xs text-left">
                 <p className="text-[10px] font-black tracking-[0.2em] text-[#444] uppercase mb-3">Grief Protocol</p>
@@ -240,13 +261,15 @@ export default function MorningMode() {
                     const checklist = await getSundayChecklist(getWeekKey());
                     await saveSundayChecklist({ ...checklist, griefJournalDone: next });
                   }}
-                  className={`w-full flex items-center gap-3 p-4 rounded-xl border text-left transition-all ${griefJournalDone ? 'border-green-500/30 bg-green-500/5' : 'border-[#222] bg-[#0a0a0a]'}`}
+                  className={`w-full flex items-center gap-3 p-4 rounded-xl border text-left transition-all ${
+                    griefJournalDone ? "border-green-500/30 bg-green-500/5" : "border-[#222] bg-[#0a0a0a]"
+                  }`}
                 >
-                  <span className={`w-5 h-5 rounded-full border-2 flex items-center justify-center flex-shrink-0 transition-all ${griefJournalDone ? 'border-green-500 bg-green-500' : 'border-[#444]'}`}>
+                  <span className={`w-5 h-5 rounded-full border-2 flex items-center justify-center flex-shrink-0 transition-all ${griefJournalDone ? "border-green-500 bg-green-500" : "border-[#444]"}`}>
                     {griefJournalDone && <span className="text-black text-xs font-black">✓</span>}
                   </span>
                   <div>
-                    <p className={`text-sm font-bold ${griefJournalDone ? 'text-green-400' : 'text-white'}`}>Write to your father — 20 min</p>
+                    <p className={`text-sm font-bold ${griefJournalDone ? "text-green-400" : "text-white"}`}>Write to your father — 20 min</p>
                     <p className="text-[11px] text-[#555] mt-0.5">What you'd say. What you'd ask. What you grieve.</p>
                   </div>
                 </button>
@@ -255,13 +278,13 @@ export default function MorningMode() {
           </div>
         ) : (
           <>
-            {/* ONE THING */}
+            {/* ── ONE THING — ignition key ── */}
             <section
-              className={`mb-6 card !py-6 text-center transition-all active:scale-[0.98] cursor-pointer ${!log.oneThing ? 'border-dashed border-amber-500/30 bg-amber-500/[0.02]' : ''}`}
+              className={`mb-6 card !py-6 text-center transition-all active:scale-[0.98] cursor-pointer ${!log.oneThing ? "border-dashed border-amber-500/30 bg-amber-500/[0.02]" : ""}`}
               onClick={() => !isEditingOneThing && setIsEditingOneThing(true)}
               aria-label="Set today's one thing"
             >
-              <p className="text-[10px] font-black tracking-[0.2em] text-amber-500 uppercase mb-3">Today{"'"}s One Thing</p>
+              <p className="text-[10px] font-black tracking-[0.2em] text-amber-500 uppercase mb-3">Today's One Thing</p>
               {isEditingOneThing ? (
                 <input
                   autoFocus
@@ -274,242 +297,345 @@ export default function MorningMode() {
                   placeholder="The single move..."
                 />
               ) : (
-                <p className={`text-xl font-black leading-tight tracking-tight px-4 ${log.oneThing ? 'text-white' : 'text-[#555] opacity-60'}`}>
-                  {log.oneThing || "Tap to define the single move \u2192"}
+                <p className={`text-xl font-black leading-tight tracking-tight px-4 ${log.oneThing ? "text-white" : "text-[#555] opacity-60"}`}>
+                  {log.oneThing || "Tap to define the single move →"}
                 </p>
               )}
             </section>
 
-            {/* DASHBOARD KPS */}
-            <div className="flex gap-2 mb-6">
-              <div className="card flex-1 p-3 text-center">
-                <p className="text-[9px] font-black tracking-[0.1em] text-[#555] uppercase">Streak</p>
-                <p className="text-2xl font-black text-amber-400 my-1">{streak}</p>
-                <p className="text-[9px] text-[#555] font-bold">days {"\uD83D\uDC8E"}</p>
-              </div>
-              <div className="card flex-1 p-3 text-center">
-                <p className="text-[9px] font-black tracking-[0.1em] text-[#555] uppercase">Release</p>
-                <p className={`text-2xl font-black my-1 ${daysUntilRelease <= 3 ? 'text-red-400' : 'text-white'}`}>{daysUntilRelease}</p>
-                <p className="text-[9px] text-[#555] font-bold truncate px-1">{nextRelease?.title.toUpperCase() ?? "\u2013"}</p>
-              </div>
-              <div className="card flex-1 p-3 text-center">
-                <p className="text-[9px] font-black tracking-[0.1em] text-[#555] uppercase">Fuel</p>
-                <p className={`text-2xl font-black my-1 ${fuelScore === 3 ? 'text-green-400' : fuelScore >= 1 ? 'text-amber-400' : 'text-[#333]'}`}>{fuelScore}/3</p>
-                <p className="text-[9px] text-[#555] font-bold">meals</p>
-              </div>
-            </div>
-
-            {/* WEEKLY MIRROR */}
-            <WeeklyMirror />
-
-            {/* LANE DASHBOARD */}
-            {lanes.length > 0 && (
-              <div className="mb-8">
-                <h3 className="text-[10px] font-black tracking-[0.2em] text-[#555] uppercase mb-3 px-1">Lanes Touched Today</h3>
-                <div className="grid grid-cols-6 gap-2">
-                  {lanes.map(lane => {
-                    // Life lane is tappable — toggles personalTime directly
-                    const isTappable = lane.id === 'life';
-                    const handleTapLane = async () => {
-                      if (!isTappable || !log) return;
-                      await updateLog({ personalTime: !log.personalTime });
-                    };
-
-                    // Explicit ring colors per lane (ring-current doesn't work with Tailwind text classes)
-                    const ringColors: Record<string, string> = {
-                      money: 'ring-green-400', body: 'ring-orange-400', music: 'ring-blue-400',
-                      content: 'ring-pink-400', life: 'ring-yellow-400', inner: 'ring-purple-400',
-                    };
-
-                    return (
-                      <div
-                        key={lane.id}
-                        className={`flex flex-col items-center gap-1.5 ${isTappable ? 'cursor-pointer active:scale-95' : ''}`}
-                        onClick={isTappable ? handleTapLane : undefined}
-                      >
-                        <div className={`w-12 h-12 rounded-full flex items-center justify-center text-lg transition-all duration-500 ${
-                          lane.touched
-                            ? `${lane.bgColor} ring-2 ${ringColors[lane.id]} ${lane.color} scale-105`
-                            : 'bg-[#111] ring-1 ring-[#222] opacity-40'
-                        }`}>
-                          {lane.icon}
-                        </div>
-                        <span className={`text-[8px] font-black tracking-wider uppercase ${
-                          lane.touched ? lane.color : 'text-[#333]'
-                        }`}>{lane.label}</span>
-                        {lane.touched && lane.touchCount > 1 && (
-                          <span className={`text-[7px] font-bold ${lane.color} opacity-60`}>{lane.touchCount}x</span>
-                        )}
-                        {isTappable && !lane.touched && (
-                          <span className="text-[7px] text-[#333] font-bold">tap</span>
+            {/* ── PROTOCOL — auto-expanded before 11 AM ── */}
+            {protocol.steps.length > 0 && (
+              <div className="mb-6">
+                <div className="flex justify-between items-center mb-3 px-1">
+                  <h3 className="text-[10px] font-black tracking-[0.2em] text-[#555] uppercase">{dayType}</h3>
+                  <span className="text-[10px] text-[#444] font-bold">{protocol.tagline}</span>
+                </div>
+                {showProtocolExpanded && (
+                  <div className="card !p-0 overflow-hidden divide-y divide-[#1a1a1a] animate-fade-in">
+                    {protocol.steps.map((step, i) => (
+                      <div key={i} className="flex items-center gap-3 px-4 py-3.5">
+                        <span className="text-lg">{step.icon}</span>
+                        <span className="text-[12px] font-bold text-[#ccc] leading-snug flex-1">{step.action}</span>
+                        {step.tab && (
+                          <span className="text-[8px] font-black tracking-widest text-amber-500/70 uppercase bg-amber-500/10 px-1.5 py-0.5 rounded">
+                            {step.tab}
+                          </span>
                         )}
                       </div>
-                    );
-                  })}
-                </div>
-                <div className="mt-3 text-center">
-                  <span className="text-[10px] text-[#444] font-bold">
-                    {lanes.filter(l => l.touched).length}/6 lanes active
-                  </span>
-                </div>
-              </div>
-            )}
-
-            {/* AUDIENCE LEDGER WIDGET — BIZ DAY only (Phase 2, Apr 25+) */}
-            {isBizDay(dayType as any) && ledgerStats && (
-              <div className="mb-8">
-                <h3 className="text-[10px] font-black tracking-[0.2em] text-[#555] uppercase mb-3 px-1">Audience Ledger</h3>
-                <Link href="/geo/sprint">
-                  <div className="card !p-4 flex justify-between items-center active:scale-[0.98] transition-all border-purple-500/10 hover:border-purple-500/20">
-                    <div className="flex gap-4">
-                      <div className="text-center">
-                        <p className="text-xl font-black text-white">{ledgerStats.verifiedArtists}</p>
-                        <p className="text-[7px] text-[#555] font-black uppercase tracking-wider">Artists</p>
-                      </div>
-                      <div className="text-center">
-                        <p className="text-xl font-black text-white">{ledgerStats.totalFans}</p>
-                        <p className="text-[7px] text-[#555] font-black uppercase tracking-wider">Fans</p>
-                      </div>
-                      <div className="text-center">
-                        <p className="text-xl font-black text-white">{ledgerStats.citiesReached}</p>
-                        <p className="text-[7px] text-[#555] font-black uppercase tracking-wider">Cities</p>
-                      </div>
-                      <div className="text-center">
-                        <p className="text-xl font-black text-purple-400">{ledgerStats.totalCommunities}</p>
-                        <p className="text-[7px] text-[#555] font-black uppercase tracking-wider">Nodes</p>
-                      </div>
-                    </div>
-                    <span className="text-[10px] text-amber-500 font-black tracking-widest">SPRINT →</span>
+                    ))}
                   </div>
-                </Link>
+                )}
               </div>
             )}
 
-            {/* NEED DIRECTION? — Kill List safety net */}
-            <Link href="/kill" className="block mb-8">
-              <div className={`card !p-4 text-center border-dashed transition-all active:scale-[0.98] ${
+            {/* ── EXECUTE CTA — auto-computed from kill stats ── */}
+            <Link href="/kill" className="block mb-6">
+              <div className={`card !p-4 text-center transition-all active:scale-[0.98] ${
                 killRedCount > 0
-                  ? 'border-red-500/30 hover:border-red-500/50'
-                  : 'border-[#222] hover:border-amber-500/30'
+                  ? "border-red-500/40 bg-red-500/[0.03] hover:border-red-500/60"
+                  : killTotalRemaining > 0
+                  ? "border-amber-500/30 hover:border-amber-500/50"
+                  : "border-green-500/20 hover:border-green-500/30"
               }`}>
-                <p className="text-sm font-black text-[#666]">
-                  Need direction?
-                  {killRedCount > 0 && (
-                    <span className="ml-2 text-[10px] text-red-400 font-black">
-                      {killRedCount} RED
-                    </span>
-                  )}
-                </p>
-                <p className="text-[10px] text-[#444] mt-0.5">
-                  {killRedCount > 0
-                    ? `${killRedCount} urgent task${killRedCount > 1 ? 's' : ''} waiting on the Kill List`
-                    : 'Open the Kill List for data-backed next moves'
-                  }
-                </p>
+                {killRedCount > 0 ? (
+                  <>
+                    <p className="text-sm font-black text-red-400">{killRedCount} RED TASK{killRedCount > 1 ? "S" : ""} → EXECUTE</p>
+                    <p className="text-[10px] text-[#555] mt-0.5">Urgent items on the kill list</p>
+                  </>
+                ) : killTotalRemaining > 0 ? (
+                  <>
+                    <p className="text-sm font-black text-amber-400">{killTotalRemaining} TASK{killTotalRemaining > 1 ? "S" : ""} → EXECUTE</p>
+                    <p className="text-[10px] text-[#555] mt-0.5">Open the kill list</p>
+                  </>
+                ) : (
+                  <>
+                    <p className="text-sm font-black text-green-400">KILL LIST CLEAR ✓</p>
+                    <p className="text-[10px] text-[#555] mt-0.5">Execute freely</p>
+                  </>
+                )}
               </div>
             </Link>
 
-            {/* PROTOCOL (collapsible) */}
-            {(() => {
-              const protocol = getProtocolSteps(dayType);
-              return protocol.steps.length > 0 && (
-                <div className="mb-8">
-                  <button
-                    onClick={() => setShowProtocol(!showProtocol)}
-                    className="flex justify-between items-center w-full mb-3 px-1"
-                  >
-                    <h3 className="text-[10px] font-black tracking-[0.2em] text-[#555] uppercase">{dayType}</h3>
-                    <span className="text-[10px] text-[#444] font-bold">{showProtocol ? 'hide' : 'show schedule'}</span>
-                  </button>
-                  {showProtocol && (
-                    <div className="card !p-0 overflow-hidden divide-y divide-[#1a1a1a] animate-fade-in">
-                      {protocol.steps.map((step, i) => (
-                        <div key={i} className="flex items-center gap-3 px-4 py-3.5">
-                          <span className="text-lg">{step.icon}</span>
-                          <span className="text-[12px] font-bold text-[#ccc] leading-snug flex-1">{step.action}</span>
-                          {step.tab && <span className="text-[8px] font-black tracking-widest text-amber-500/70 uppercase bg-amber-500/10 px-1.5 py-0.5 rounded">{step.tab}</span>}
-                        </div>
-                      ))}
-                    </div>
-                  )}
-                </div>
-              );
-            })()}
-
-            {/* MORNING & GRIND LOGGING */}
+            {/* ── MORNING STACK — 4-step progressive flow ── */}
             <div className="mb-8">
-              <h3 className="text-[10px] font-black tracking-[0.2em] text-[#555] uppercase mb-3 px-1">Morning & Grind Logging</h3>
-              <div className="card !p-1.5 mb-2">
-                <CheckItem label="Sovereignty Stack" description="Trataka, breathwork, mullein tea, cold shower." checked={log.sovereigntyStack} onChange={v => updateLog({ sovereigntyStack: v })} />
-                <CheckItem label="Movement (Pre-DAW)" description="Lift, run, or deep stretch \u2014 sweat required." checked={log.movement} onChange={v => updateLog({ movement: v })} />
-                <CheckItem label="Eucalyptus Steam" description="Clear the lungs for vocal performance." dimmed={!studioDay} checked={log.eucalyptusStream} onChange={v => updateLog({ eucalyptusStream: v })} />
-                <CheckItem label="Sauna" dimmed={dayType !== "STUDIO + SAUNA DAY"} checked={log.sauna} onChange={v => updateLog({ sauna: v })} />
+              <h3 className="text-[10px] font-black tracking-[0.2em] text-[#555] uppercase mb-4 px-1">Morning Stack</h3>
+
+              {/* Step progress row */}
+              <div className="flex items-center gap-2 mb-5 px-1">
+                {[
+                  { label: "Sovereign", done: sovereigntyDone },
+                  { label: "Fuel", done: fuelDone },
+                  { label: "Numbers", done: numbersDone },
+                  { label: "Journal", done: journalDone },
+                ].map((s, i) => (
+                  <div
+                    key={i}
+                    className={`flex-1 flex flex-col items-center gap-1 cursor-pointer transition-all active:scale-95`}
+                    onClick={() => setMorningStep(i as 0 | 1 | 2 | 3)}
+                  >
+                    <StepCheck done={s.done} />
+                    <span
+                      className="text-[8px] font-black tracking-wider uppercase"
+                      style={{ color: s.done ? "#22c55e" : morningStep === i ? "rgba(255,255,255,0.6)" : "rgba(255,255,255,0.2)" }}
+                    >
+                      {s.label}
+                    </span>
+                  </div>
+                ))}
               </div>
 
-              <div className="flex gap-2 mb-2">
-                <div className="card flex-1 flex items-center justify-between p-3">
-                  <span className="text-[10px] font-black tracking-widest text-[#555] uppercase">Sleep (h)</span>
-                  <input type="number" className="w-12 bg-transparent text-right font-black text-lg outline-none" value={log.sleep || ""} onChange={e => updateLog({ sleep: parseFloat(e.target.value) || null })} placeholder="0" />
-                </div>
-                <div className="card flex-1 flex items-center justify-between p-3">
-                  <span className="text-[10px] font-black tracking-widest text-[#555] uppercase">Pushups</span>
-                  <input type="number" className="w-12 bg-transparent text-right font-black text-lg outline-none" value={log.pushups || ""} onChange={e => updateLog({ pushups: parseInt(e.target.value) || null })} placeholder="0" />
-                </div>
-              </div>
-
-              <div className="card p-3 mb-2">
-                <textarea className="w-full bg-transparent outline-none text-sm font-semibold placeholder-[#333] resize-none h-16" placeholder="GRATITUDE / WINS / NOTES..." value={log.journalLine || ""} onChange={e => updateLog({ journalLine: e.target.value })} />
-              </div>
-
-              {/* FUEL TRACKING */}
-              <h3 className="text-[10px] font-black tracking-[0.2em] text-[#555] uppercase mb-3 mt-6 px-1">Fuel</h3>
-              {fuelLabels.warning && (
-                <div className="mb-2 p-2 bg-red-500/10 border border-red-500/20 rounded-lg text-xs font-bold text-red-500 flex items-center gap-2">
-                  <span className="text-sm">{"\u26A0\uFE0F"}</span> {fuelLabels.warning}
+              {/* ── STEP 0: Sovereignty Stack ── */}
+              {morningStep === 0 && (
+                <div className="animate-fade-in">
+                  <div className="card !p-1.5 mb-3">
+                    <CheckItem
+                      label="Sovereignty Stack"
+                      description="Trataka, breathwork, mullein tea, cold shower."
+                      checked={log.sovereigntyStack}
+                      onChange={async v => {
+                        await updateLog({ sovereigntyStack: v });
+                        if (v && log.movement) autoAdvance(true, 1, 0);
+                      }}
+                    />
+                    <CheckItem
+                      label="Movement (Pre-DAW)"
+                      description="Lift, run, or deep stretch — sweat required."
+                      checked={log.movement}
+                      onChange={async v => {
+                        await updateLog({ movement: v });
+                        if (v && log.sovereigntyStack) autoAdvance(true, 1, 0);
+                      }}
+                    />
+                    <CheckItem
+                      label="Eucalyptus Steam"
+                      description="Clear the lungs for vocal performance."
+                      dimmed={!studioDay}
+                      checked={log.eucalyptusStream}
+                      onChange={v => updateLog({ eucalyptusStream: v })}
+                    />
+                    <CheckItem
+                      label="Sauna"
+                      dimmed={dayType !== "STUDIO + SAUNA DAY"}
+                      checked={log.sauna}
+                      onChange={v => updateLog({ sauna: v })}
+                    />
+                  </div>
+                  <button
+                    onClick={() => setMorningStep(1)}
+                    className="w-full py-3 rounded-xl text-[11px] font-black tracking-widest uppercase transition-all active:scale-95"
+                    style={{ background: "rgba(255,255,255,0.04)", color: "rgba(255,255,255,0.4)", border: "1px solid rgba(255,255,255,0.08)" }}
+                  >
+                    NEXT — FUEL →
+                  </button>
                 </div>
               )}
-              <div className="card !p-1.5 mb-2">
-                <CheckItem label={fuelLabels.pre.label} description={fuelLabels.pre.desc} checked={log.fuelPreSession} onChange={v => updateLog({ fuelPreSession: v })} />
-                <CheckItem label={fuelLabels.mid.label} description={fuelLabels.mid.desc} checked={log.fuelMidSession} onChange={v => updateLog({ fuelMidSession: v })} />
-                <CheckItem label={fuelLabels.post.label} description={fuelLabels.post.desc} checked={log.fuelPostSession} onChange={v => updateLog({ fuelPostSession: v })} />
-                <CheckItem label="Dairy Before Vocals" description="Thickens mucus on cords. Flag if yes." checked={log.fuelDairyFlag} onChange={v => updateLog({ fuelDairyFlag: v })} warn={true} dimmed={!studioDay} />
-              </div>
 
-              <div className="card flex items-center justify-between p-3 mb-2">
-                <span className="text-[10px] font-black tracking-widest text-[#555] uppercase">Hydration</span>
-                <HydrationSelector value={log.fuelHydration} onChange={v => updateLog({ fuelHydration: v })} />
-              </div>
+              {/* Completed step 0 summary */}
+              {morningStep > 0 && (
+                <button
+                  onClick={() => setMorningStep(0)}
+                  className={`w-full flex items-center gap-3 p-3 rounded-xl border mb-2 transition-all ${
+                    sovereigntyDone ? "border-green-500/20 bg-green-500/[0.03]" : "border-[#1a1a1a]"
+                  }`}
+                >
+                  <StepCheck done={sovereigntyDone} />
+                  <span className="text-[11px] font-bold" style={{ color: sovereigntyDone ? "#22c55e" : "rgba(255,255,255,0.4)" }}>
+                    Sovereignty Stack {sovereigntyDone ? "✓" : "— tap to complete"}
+                  </span>
+                </button>
+              )}
 
-              <button
-                onClick={() => handleSync(log!, dayType)}
-                disabled={!!syncStatus && syncStatus !== 'FAILED'}
-                className="w-full mt-4 py-3 rounded-xl bg-[#1a1a1a] border border-[#333] text-sm font-black tracking-widest text-white hover:bg-[#222] active:scale-95 transition-all outline-none"
-                style={{ color: syncStatus === 'SYNCED' ? '#22c55e' : syncStatus === 'FAILED' ? '#ef4444' : 'white' }}
-              >
-                {syncStatus || "SYNC TO CLOUD"}
-              </button>
-            </div>
+              {/* ── STEP 1: Fuel ── */}
+              {morningStep === 1 && (
+                <div className="animate-fade-in">
+                  {fuelLabels.warning && (
+                    <div className="mb-3 p-2 bg-red-500/10 border border-red-500/20 rounded-lg text-xs font-bold text-red-500 flex items-center gap-2">
+                      <span>⚠️</span> {fuelLabels.warning}
+                    </div>
+                  )}
+                  <div className="card !p-1.5 mb-3">
+                    <CheckItem
+                      label={fuelLabels.pre.label}
+                      description={fuelLabels.pre.desc}
+                      checked={log.fuelPreSession}
+                      onChange={async v => {
+                        await updateLog({ fuelPreSession: v });
+                        if (v && log.fuelMidSession && log.fuelPostSession) autoAdvance(true, 2, 1);
+                      }}
+                    />
+                    <CheckItem
+                      label={fuelLabels.mid.label}
+                      description={fuelLabels.mid.desc}
+                      checked={log.fuelMidSession}
+                      onChange={async v => {
+                        await updateLog({ fuelMidSession: v });
+                        if (v && log.fuelPreSession && log.fuelPostSession) autoAdvance(true, 2, 1);
+                      }}
+                    />
+                    <CheckItem
+                      label={fuelLabels.post.label}
+                      description={fuelLabels.post.desc}
+                      checked={log.fuelPostSession}
+                      onChange={async v => {
+                        await updateLog({ fuelPostSession: v });
+                        if (v && log.fuelPreSession && log.fuelMidSession) autoAdvance(true, 2, 1);
+                      }}
+                    />
+                    <CheckItem
+                      label="Dairy Before Vocals"
+                      description="Thickens mucus on cords. Flag if yes."
+                      checked={log.fuelDairyFlag}
+                      onChange={v => updateLog({ fuelDairyFlag: v })}
+                      warn={true}
+                      dimmed={!studioDay}
+                    />
+                  </div>
+                  <div className="card flex items-center justify-between p-3 mb-3">
+                    <span className="text-[10px] font-black tracking-widest text-[#555] uppercase">Hydration</span>
+                    <HydrationSelector value={log.fuelHydration} onChange={v => updateLog({ fuelHydration: v })} />
+                  </div>
+                  <button
+                    onClick={() => setMorningStep(2)}
+                    className="w-full py-3 rounded-xl text-[11px] font-black tracking-widest uppercase transition-all active:scale-95"
+                    style={{ background: "rgba(255,255,255,0.04)", color: "rgba(255,255,255,0.4)", border: "1px solid rgba(255,255,255,0.08)" }}
+                  >
+                    NEXT — NUMBERS →
+                  </button>
+                </div>
+              )}
 
-            {/* DOORDASH QUICK-ADD */}
-            <div className="mb-8">
-              <div className="flex justify-between items-center mb-3 px-1">
-                <h3 className="text-[10px] font-black tracking-[0.2em] text-[#555] uppercase">DOORDASH LOG</h3>
-                {ddStatus && <span className={`text-[10px] font-black tracking-widest ${ddStatus.includes("✓") ? "text-green-500" : ddStatus === "FAILED" ? "text-red-500" : "text-amber-500"}`}>{ddStatus}</span>}
-              </div>
-              <div className="card flex gap-2 p-2 relative overflow-hidden">
-                <input type="number" placeholder="Hrs" className="flex-1 bg-[#111] rounded-lg p-3 text-center text-sm font-black outline-none border border-transparent focus:border-[#333]" value={ddHours} onChange={e => setDdHours(e.target.value)} />
-                <input type="number" placeholder="$ Rev" className="flex-1 bg-[#111] rounded-lg p-3 text-center text-sm font-black outline-none border border-transparent focus:border-[#333]" value={ddRevenue} onChange={e => setDdRevenue(e.target.value)} />
-                <button onClick={submitDoorDash} disabled={!!ddStatus} className="w-12 flex items-center justify-center rounded-lg bg-amber-500 text-black font-black active:scale-95 transition-all text-xl disabled:opacity-50">+</button>
-              </div>
+              {morningStep > 1 && (
+                <button
+                  onClick={() => setMorningStep(1)}
+                  className={`w-full flex items-center gap-3 p-3 rounded-xl border mb-2 transition-all ${
+                    fuelDone ? "border-green-500/20 bg-green-500/[0.03]" : "border-[#1a1a1a]"
+                  }`}
+                >
+                  <StepCheck done={fuelDone} />
+                  <span className="text-[11px] font-bold" style={{ color: fuelDone ? "#22c55e" : "rgba(255,255,255,0.4)" }}>
+                    Fuel {fuelDone ? "✓" : "— tap to complete"}
+                  </span>
+                </button>
+              )}
+
+              {/* ── STEP 2: Numbers ── */}
+              {morningStep === 2 && (
+                <div className="animate-fade-in">
+                  <div className="flex gap-2 mb-3">
+                    <div className="card flex-1 flex items-center justify-between p-3">
+                      <span className="text-[10px] font-black tracking-widest text-[#555] uppercase">Sleep (h)</span>
+                      <input
+                        type="number"
+                        className="w-14 bg-transparent text-right font-black text-lg outline-none"
+                        value={log.sleep || ""}
+                        onChange={async e => {
+                          await updateLog({ sleep: parseFloat(e.target.value) || null });
+                          if (e.target.value && log.pushups) autoAdvance(true, 3, 2);
+                        }}
+                        placeholder="0"
+                      />
+                    </div>
+                    <div className="card flex-1 flex items-center justify-between p-3">
+                      <span className="text-[10px] font-black tracking-widest text-[#555] uppercase">Pushups</span>
+                      <input
+                        type="number"
+                        className="w-14 bg-transparent text-right font-black text-lg outline-none"
+                        value={log.pushups || ""}
+                        onChange={async e => {
+                          await updateLog({ pushups: parseInt(e.target.value) || null });
+                          if (e.target.value && log.sleep) autoAdvance(true, 3, 2);
+                        }}
+                        placeholder="0"
+                      />
+                    </div>
+                  </div>
+                  <button
+                    onClick={() => setMorningStep(3)}
+                    className="w-full py-3 rounded-xl text-[11px] font-black tracking-widest uppercase transition-all active:scale-95"
+                    style={{ background: "rgba(255,255,255,0.04)", color: "rgba(255,255,255,0.4)", border: "1px solid rgba(255,255,255,0.08)" }}
+                  >
+                    NEXT — JOURNAL →
+                  </button>
+                </div>
+              )}
+
+              {morningStep > 2 && (
+                <button
+                  onClick={() => setMorningStep(2)}
+                  className={`w-full flex items-center gap-3 p-3 rounded-xl border mb-2 transition-all ${
+                    numbersDone ? "border-green-500/20 bg-green-500/[0.03]" : "border-[#1a1a1a]"
+                  }`}
+                >
+                  <StepCheck done={numbersDone} />
+                  <span className="text-[11px] font-bold" style={{ color: numbersDone ? "#22c55e" : "rgba(255,255,255,0.4)" }}>
+                    Numbers {numbersDone ? `— ${log.sleep}h sleep · ${log.pushups} pushups ✓` : "— tap to complete"}
+                  </span>
+                </button>
+              )}
+
+              {/* ── STEP 3: Journal ── */}
+              {morningStep === 3 && (
+                <div className="animate-fade-in">
+                  <div className="card p-3 mb-3">
+                    <textarea
+                      autoFocus
+                      className="w-full bg-transparent outline-none text-sm font-semibold placeholder-[#333] resize-none h-20"
+                      placeholder="WINS / GRATITUDE / TOMORROW'S ONE THING..."
+                      value={log.journalLine || ""}
+                      onChange={e => updateLog({ journalLine: e.target.value })}
+                    />
+                  </div>
+                  <button
+                    onClick={handleLockIn}
+                    disabled={lockInStatus === "syncing"}
+                    className="w-full py-4 rounded-xl font-black tracking-widest uppercase transition-all active:scale-95 disabled:opacity-50"
+                    style={{
+                      background: lockInStatus === "done" ? "rgba(34,197,94,0.1)" : "rgba(212,168,83,0.1)",
+                      color: lockInStatus === "done" ? "#22c55e" : "#d4a853",
+                      border: `1px solid ${lockInStatus === "done" ? "rgba(34,197,94,0.3)" : "rgba(212,168,83,0.3)"}`,
+                    }}
+                  >
+                    {lockInStatus === "syncing" ? "SYNCING..." : lockInStatus === "done" ? "LOCKED IN ✓" : "LOCK IN"}
+                  </button>
+                </div>
+              )}
+
+              {morningStep > 3 && (
+                <button
+                  onClick={() => setMorningStep(3)}
+                  className={`w-full flex items-center gap-3 p-3 rounded-xl border mb-2 transition-all ${
+                    journalDone ? "border-green-500/20 bg-green-500/[0.03]" : "border-[#1a1a1a]"
+                  }`}
+                >
+                  <StepCheck done={journalDone} />
+                  <span className="text-[11px] font-bold" style={{ color: journalDone ? "#22c55e" : "rgba(255,255,255,0.4)" }}>
+                    Journal {journalDone ? "✓" : "— tap to complete"}
+                  </span>
+                </button>
+              )}
+
+              {/* ── Stack complete ── */}
+              {morningStep === 4 && (
+                <div
+                  className="text-center py-6 rounded-xl mt-2"
+                  style={{ background: "rgba(34,197,94,0.04)", border: "1px solid rgba(34,197,94,0.12)" }}
+                >
+                  <p className="text-sm font-black text-green-400 mb-1">Morning stack complete ✓</p>
+                  <p className="text-[10px] text-[#555]">
+                    {[sovereigntyDone, fuelDone, numbersDone, journalDone].filter(Boolean).length}/4 steps logged
+                  </p>
+                  <Link href="/kill">
+                    <div className="mt-4 inline-flex items-center gap-2 px-5 py-2.5 rounded-xl font-black text-[11px] tracking-widest uppercase transition-all active:scale-95" style={{ background: "rgba(212,168,83,0.1)", color: "#d4a853", border: "1px solid rgba(212,168,83,0.25)" }}>
+                      EXECUTE →
+                    </div>
+                  </Link>
+                </div>
+              )}
             </div>
 
           </>
         )}
 
-        {/* Build stamp — always know which deploy you're looking at */}
-        <div className="text-center text-[10px] text-zinc-600 py-4 select-all">
-          build {process.env.NEXT_PUBLIC_VERCEL_GIT_COMMIT_SHA?.slice(0, 7) || "local"} · {process.env.NEXT_PUBLIC_VERCEL_GIT_COMMIT_MESSAGE?.slice(0, 40) || "dev"}
-        </div>
       </div>
     </main>
   );

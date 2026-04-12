@@ -315,23 +315,6 @@ export default function StudioPage() {
                     ))}
                 </div>
 
-                {/* Creator Code — from R&B Money / Kevin Hart transcripts */}
-                <p className="text-[10px] font-black tracking-[0.2em] text-[#555] uppercase mb-3">Creator Code</p>
-                <div className="card mb-6 space-y-0">
-                    {[
-                        { rule: "Boss got to write a check.", sub: "Sovereign creator. You eat last, team gets paid first." },
-                        { rule: "3 things = post it.", sub: "If you have 3 angles, it ships. Reps compound." },
-                        { rule: "Associate with greatness.", sub: "Proximity earns the halo. Be in the room when it lands." },
-                        { rule: "You're on a promo run.", sub: "Build quality before you scale. Low seats → earn the stage." },
-                        { rule: "Oakland test: prove it in the hardest room.", sub: "Pitch editorial. Hit the gatekeepers first." },
-                    ].map((item, i) => (
-                        <div key={i} className="py-3 border-b border-[#1a1a1a] last:border-0">
-                            <div className="text-xs font-black text-white leading-snug">{item.rule}</div>
-                            <div className="text-[10px] text-[#444] mt-0.5">{item.sub}</div>
-                        </div>
-                    ))}
-                </div>
-
                 {/* Sonic Identity — link to dedicated page */}
                 <a href="/sonic" className="card mb-6 flex items-center justify-between p-4 border border-[#252525] hover:border-amber-500/30 transition-colors active:scale-[0.98]">
                     <div>
@@ -345,7 +328,7 @@ export default function StudioPage() {
                 <div className="card text-center py-5">
                     <div className="text-[10px] font-black tracking-widest text-[#666] uppercase mb-1.5">This Week&apos;s Sessions</div>
                     <div className="text-2xl font-black mb-2">{sessions} / {new Date() <= new Date('2026-04-03') ? 6 : 4}</div>
-                    <div className="text-[10px] text-[#555] font-bold">(Auto-counted from Log tab)</div>
+                    <div className="text-[10px] text-[#555] font-bold">(Auto-counted from session logs)</div>
                 </div>
 
             </div>

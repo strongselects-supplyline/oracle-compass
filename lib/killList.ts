@@ -16,6 +16,15 @@ import { getLedgerStats, getUntouched } from "@/lib/audienceLedger";
 
 // ── Types ────────────────────────────────────────────────────────────
 
+export type CompletionInputType = "rating" | "number" | "doordash" | "text" | "studio_session";
+
+export type CompletionInput = {
+  type: CompletionInputType;
+  storeTarget: string;   // Which lib function or store key to write to
+  label: string;         // Modal title shown to the user
+  placeholder?: string;
+};
+
 export type KillTask = {
   id: string;
   title: string;
@@ -26,6 +35,7 @@ export type KillTask = {
   timeBlock: "any" | "studio" | "biz" | "content" | "evening";
   action: () => Promise<void>;
   needle?: boolean; // true = high-impact task (surfaces first). false/undefined = infrastructure (collapsed).
+  completionInput?: CompletionInput; // If set, tapping ✓ opens a modal instead of immediately completing.
 };
 
 // ── Derivation Engine ────────────────────────────────────────────────

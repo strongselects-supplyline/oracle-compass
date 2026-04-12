@@ -3,6 +3,8 @@
 import { useState, useEffect, useCallback } from 'react';
 import { getStoreValue, setStoreValue } from '@/lib/db';
 import { getWeeklyLaneHeatmap, WeeklyHeatmap } from '@/lib/completionAnalytics';
+import { getLaneStatus, Lane } from '@/lib/lanes';
+import WeeklyMirror from '@/components/WeeklyMirror';
 import {
   ALL_TRACKS,
   SPRINT_WEEKS,
@@ -68,10 +70,12 @@ export default function PlannerPage() {
   const [showMatrix, setShowMatrix]     = useState(false);
   const [showRules, setShowRules]       = useState(false);
   const [heatmap, setHeatmap]           = useState<WeeklyHeatmap | null>(null);
+  const [lanes, setLanes]               = useState<Lane[]>([]);
 
   useEffect(() => {
     loadStatuses().then(s => { setStatuses(s); setLoaded(true); });
     getWeeklyLaneHeatmap().then(setHeatmap);
+    getLaneStatus().then(setLanes);
   }, []);
 
   const cycleStatus = useCallback((trackId: string) => {
@@ -221,6 +225,46 @@ export default function PlannerPage() {
             <p className="text-[10px] text-[#444] text-center">No active sprint week — check sprint dates</p>
           </div>
         )}
+
+        {/* ── LANES TODAY — moved from Home ── */}
+        {lanes.length > 0 && (
+          <div className="px-4 mt-6">
+            <p className="text-[9px] font-black tracking-widest text-[#444] mb-3">LANES TOUCHED TODAY</p>
+            <div className="card !p-4">
+              <div className="grid grid-cols-6 gap-3">
+                {lanes.map(lane => {
+                  const ringColors: Record<string, string> = {
+                    money: 'ring-green-400', body: 'ring-orange-400', music: 'ring-blue-400',
+                    content: 'ring-pink-400', life: 'ring-yellow-400', inner: 'ring-purple-400',
+                  };
+                  return (
+                    <div key={lane.id} className="flex flex-col items-center gap-1.5">
+                      <div className={`w-11 h-11 rounded-full flex items-center justify-center text-base transition-all duration-500 ${
+                        lane.touched
+                          ? `${lane.bgColor} ring-2 ${ringColors[lane.id]} ${lane.color} scale-105`
+                          : 'bg-[#111] ring-1 ring-[#222] opacity-40'
+                      }`}>
+                        {lane.icon}
+                      </div>
+                      <span className={`text-[7px] font-black tracking-wider uppercase ${lane.touched ? lane.color : 'text-[#333]'}`}>
+                        {lane.label}
+                      </span>
+                    </div>
+                  );
+                })}
+              </div>
+              <p className="text-center text-[9px] text-[#444] font-bold mt-3">
+                {lanes.filter(l => l.touched).length}/6 lanes active today
+              </p>
+            </div>
+          </div>
+        )}
+
+        {/* ── WEEKLY MIRROR — moved from Home ── */}
+        <div className="px-4 mt-6">
+          <p className="text-[9px] font-black tracking-widest text-[#444] mb-3">WEEKLY MIRROR</p>
+          <WeeklyMirror />
+        </div>
 
         {/* ── TRACK INVENTORY ── */}
         <div className="px-4 mt-7">
