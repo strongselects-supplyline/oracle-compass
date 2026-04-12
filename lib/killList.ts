@@ -1175,7 +1175,7 @@ export async function deriveKillList(): Promise<KillTask[]> {
     // Skip if already rendered
     if (release.contentDeliverables.instrumentalRendered) continue;
     // Skip if this is a parked track (not on EP)
-    const EP_TRACKS = ['SEE ME', 'Sweet Frustration', 'East Side Love', 'WANT U 2', 'Like I Did', 'GREEN LIGHTS', 'ALL LOVE (EP)'];
+    const EP_TRACKS = ['SEE ME', 'Sweet Frustration', 'East Side Love', 'Like I Did'];
     if (!EP_TRACKS.includes(release.title)) continue;
     const t = release.title;
     tasks.push({
