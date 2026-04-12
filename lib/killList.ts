@@ -1180,8 +1180,8 @@ export async function deriveKillList(): Promise<KillTask[]> {
     const t = release.title;
     tasks.push({
       id: `instrumental-${t}`,
-      title: `Render instrumental — ${t}`,
-      subtitle: "Without this, sync placements (TV/film/ads) are impossible",
+      title: `${t} — Render instrumental`,
+      subtitle: "Render instrumental version for sync licensing (TV/film/ads)",
       howTo: [
         "Open FL Studio and load the project file for this song",
         "Mute all vocal tracks (lead + harmonies + ad-libs)",
