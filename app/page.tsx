@@ -22,6 +22,7 @@ import { getKillStats } from "@/lib/killList";
 import { getSundayChecklist, saveSundayChecklist, isGriefProtocolActive } from "@/lib/planner";
 import { getWeekKey } from "@/lib/oracle";
 import CheckItem from "@/components/CheckItem";
+import TodayPlan from "@/components/TodayPlan";
 import Link from "next/link";
 
 type ProtocolStep = { icon: string; action: string; tab?: string };
@@ -243,6 +244,9 @@ export default function TodayPage() {
           <p className="text-lg font-black tracking-tight text-white uppercase">{dayType || dateStr}</p>
           <p className="text-[10px] font-bold tracking-[0.15em] text-[#555] uppercase mt-1">{dateStr}</p>
         </header>
+
+        {/* Sovereign Scroll — TodayPlan */}
+        <TodayPlan />
 
         {isSacred ? (
           /* ── SUNDAY — sacred gate ── */

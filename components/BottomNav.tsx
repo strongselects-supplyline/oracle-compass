@@ -18,6 +18,7 @@ const WAR_ROOM_ITEMS = [
   { name: "Brain",     path: "/brain",     icon: "🧠", desc: "Scrolls · Sovereignty" },
   { name: "Geo",       path: "/geo",       icon: "🗺️", desc: "Gorilla Geo map" },
   { name: "Analytics", path: "/analytics", icon: "📊", desc: "S4A monthly intake" },
+  { name: "Doctrine",  path: "/doctrine",  icon: "📚", desc: "Sovereign Scroll" },
 ];
 
 export default function BottomNav() {
