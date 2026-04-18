@@ -1,6 +1,8 @@
 "use client";
 
 import { useEffect, useState } from "react";
+import Link from "next/link";
+import { deriveKillList, getKillStats, type KillTask } from "@/lib/killList";
 import {
   PHASE_MAP,
   VOCAL_PRINCIPLES,
@@ -13,6 +15,8 @@ import {
 export default function TodayPlan() {
   const [mounted, setMounted] = useState(false);
   const [nnState, setNnState] = useState<boolean[]>([false, false, false]);
+  const [redTasks, setRedTasks] = useState<KillTask[]>([]);
+  const [killStats, setKillStats] = useState<{ total: number; cleared: number; redRemaining: number } | null>(null);
 
   useEffect(() => {
     setMounted(true);
@@ -24,6 +28,16 @@ export default function TodayPlan() {
     } catch {
       /* no-op */
     }
+    // Fetch Kill List data
+    (async () => {
+      try {
+        const [list, stats] = await Promise.all([deriveKillList(), getKillStats()]);
+        setRedTasks(list.filter((t) => t.urgency === "RED").slice(0, 5));
+        setKillStats(stats);
+      } catch {
+        /* Kill List unavailable — graceful degradation */
+      }
+    })();
   }, []);
 
   if (!mounted) return null;
@@ -141,6 +155,33 @@ export default function TodayPlan() {
           </button>
         ))}
       </div>
+
+      {/* Kill List — RED summary */}
+      {killStats && (
+        <>
+          <h3 className="stp-section-title" style={{ color: "#e05545" }}>🔥 Kill List — RED</h3>
+          <div className="stp-deliverable" style={{ borderLeft: "3px solid #e05545", borderColor: "rgba(224,85,69,0.3)" }}>
+            <div className="stp-del-sub" style={{ marginBottom: 8 }}>
+              {killStats.cleared} cleared / {killStats.total} total · <strong style={{ color: "#e05545" }}>{killStats.redRemaining} RED</strong> remaining
+            </div>
+            {redTasks.length === 0 ? (
+              <p className="scroll-p" style={{ color: "rgba(62,207,113,0.7)", marginBottom: 0 }}>No RED tasks. You&apos;re ahead.</p>
+            ) : (
+              <div style={{ display: "flex", flexDirection: "column", gap: 4 }}>
+                {redTasks.map((t) => (
+                  <div key={t.id} style={{ fontSize: 13, color: "rgba(255,255,255,0.6)" }}>
+                    <strong style={{ color: "rgba(255,255,255,0.9)" }}>{t.title}</strong>
+                    {t.subtitle && <span style={{ marginLeft: 8, color: "rgba(255,255,255,0.35)" }}>— {t.subtitle.substring(0, 60)}</span>}
+                  </div>
+                ))}
+              </div>
+            )}
+            <Link href="/kill" style={{ display: "block", marginTop: 12, fontSize: 12, color: "#e05545", textDecoration: "none", textAlign: "right" }}>
+              Open full Kill List →
+            </Link>
+          </div>
+        </>
+      )}
 
       {/* Vocal principle */}
       <h3 className="stp-section-title">Vocal Codex — Principle of the Day</h3>
