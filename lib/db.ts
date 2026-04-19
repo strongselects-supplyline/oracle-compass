@@ -1,5 +1,17 @@
 // lib/db.ts
-// IndexedDB wrapper for Oracle Compass data persistence
+// IndexedDB wrapper for Oracle Compass data persistence.
+//
+// STORAGE SPLIT (intentional):
+//   IndexedDB (this file) — all structured app data:
+//     daily logs, kill list cleared state, oracle flags, telemetry,
+//     streak data, store values (KV), completion logs, audit trails.
+//   localStorage — ephemeral UI state only:
+//     today-nn-{date}  → non-negotiable checkboxes (TodayPlan.tsx)
+//     theme-mode       → user-selected theme mode (ThemeProvider.tsx)
+//     theme-resolved   → resolved light/dark for standalone HTML pages
+//
+//   Rationale: non-negotiable state is deliberately lightweight and
+//   acceptable to lose on browser clear. Everything else is IndexedDB.
 
 const DB_NAME = 'OracleCompassDB';
 const DB_VERSION = 1;

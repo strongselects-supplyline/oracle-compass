@@ -2,7 +2,6 @@
 
 import { useEffect, useState } from "react";
 import Link from "next/link";
-import { deriveKillList, getKillStats, type KillTask } from "@/lib/killList";
 import {
   PHASE_MAP,
   VOCAL_PRINCIPLES,
@@ -11,12 +10,15 @@ import {
   daysTo,
   type PhaseDay,
 } from "@/lib/phaseMap";
+import { useKillList } from "@/components/KillListProvider";
+import type { KillTask } from "@/lib/killList";
 
 export default function TodayPlan() {
   const [mounted, setMounted] = useState(false);
   const [nnState, setNnState] = useState<boolean[]>([false, false, false]);
-  const [redTasks, setRedTasks] = useState<KillTask[]>([]);
-  const [killStats, setKillStats] = useState<{ total: number; cleared: number; redRemaining: number } | null>(null);
+  const { killList, killStats, error: killError, refresh } = useKillList();
+
+  const redTasks = killList.filter((t) => t.urgency === "RED").slice(0, 5);
 
   useEffect(() => {
     setMounted(true);
@@ -28,16 +30,6 @@ export default function TodayPlan() {
     } catch {
       /* no-op */
     }
-    // Fetch Kill List data
-    (async () => {
-      try {
-        const [list, stats] = await Promise.all([deriveKillList(), getKillStats()]);
-        setRedTasks(list.filter((t) => t.urgency === "RED").slice(0, 5));
-        setKillStats(stats);
-      } catch {
-        /* Kill List unavailable — graceful degradation */
-      }
-    })();
   }, []);
 
   if (!mounted) return null;
@@ -149,6 +141,8 @@ export default function TodayPlan() {
             key={i}
             className={`stp-nn-item ${nnState[i] ? "stp-nn-done" : ""}`}
             onClick={() => toggleNn(i)}
+            aria-label={`Toggle non-negotiable: ${item}`}
+            aria-pressed={nnState[i]}
           >
             <span className="stp-nn-check">{nnState[i] ? "✓" : "○"}</span>
             <span className="stp-nn-text">{item}</span>
@@ -189,6 +183,48 @@ export default function TodayPlan() {
         <span className="stp-vocal-icon">🎤</span>
         <div className="stp-vocal-body" dangerouslySetInnerHTML={{ __html: vocalPrinciple }} />
       </div>
+
+      {/* Kill List cross-link — RED urgency only */}
+      <h3 className="stp-section-title">🔥 Live Kill List — RED</h3>
+      <div className="stp-kill-summary">
+        {killError ? (
+          <div className="stp-kill-empty">
+            Kill List unavailable.{" "}
+            <button
+              onClick={() => refresh()}
+              className="stp-kill-retry"
+              style={{ color: "var(--accent)", textDecoration: "underline", background: "none", border: "none", cursor: "pointer", font: "inherit" }}
+            >
+              Retry
+            </button>
+            {" · "}
+            <Link href="/kill" style={{ color: "var(--accent)" }}>open /kill directly</Link>
+          </div>
+        ) : killStats ? (
+          <p className="stp-kill-meta">
+            {killStats.cleared} cleared / {killStats.total} total · {killStats.redRemaining} RED remaining
+          </p>
+        ) : (
+          <p className="stp-kill-meta">Loading kill list…</p>
+        )}
+        {!killError && redTasks.length === 0 && killStats && (
+          <p className="stp-kill-empty">No RED tasks. You&apos;re ahead.</p>
+        )}
+        {redTasks.length > 0 && (
+          <ul className="stp-kill-list">
+            {redTasks.map((t) => (
+              <li key={t.id} className="stp-kill-item">
+                <strong className="stp-kill-title">{t.title}</strong>
+                <span className="stp-kill-sub">{t.subtitle}</span>
+              </li>
+            ))}
+          </ul>
+        )}
+        <Link href="/kill" className="stp-kill-link">
+          Open full Kill List →
+        </Link>
+      </div>
     </section>
   );
 }
+

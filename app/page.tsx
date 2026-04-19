@@ -18,7 +18,7 @@ import { getDynamicReleases, Release } from "@/lib/releases";
 import { useCloudSync } from "@/lib/useCloudSync";
 import type { OracleDecree } from "@/lib/oracle";
 import { getStoreValue, getTodayISO } from "@/lib/db";
-import { getKillStats } from "@/lib/killList";
+import { useKillList } from "@/components/KillListProvider";
 import { getSundayChecklist, saveSundayChecklist, isGriefProtocolActive } from "@/lib/planner";
 import { getWeekKey } from "@/lib/oracle";
 import CheckItem from "@/components/CheckItem";
@@ -108,9 +108,10 @@ export default function TodayPage() {
   const [oneThingInput, setOneThingInput] = useState("");
   const [nextRelease, setNextRelease] = useState<Release | null>(null);
   const [daysUntilRelease, setDaysUntilRelease] = useState<number>(0);
-  const [killRedCount, setKillRedCount] = useState(0);
-  const [killTotalRemaining, setKillTotalRemaining] = useState(0);
   const { syncStatus, sync: handleSync } = useCloudSync();
+  const { killStats } = useKillList();
+  const killRedCount = killStats?.redRemaining ?? 0;
+  const killTotalRemaining = (killStats?.total ?? 0) - (killStats?.cleared ?? 0);
 
   // Grief protocol
   const [griefJournalDone, setGriefJournalDone] = useState(false);
@@ -137,10 +138,6 @@ export default function TodayPage() {
       setDaysUntilRelease(Math.max(Math.ceil((new Date(next.releaseDate).getTime() - now.getTime()) / 86400000), 0));
 
       setDecree(await getStoreValue<OracleDecree>(`oracle_decree:${getTodayISO()}`));
-
-      const stats = await getKillStats();
-      setKillRedCount(stats.redRemaining);
-      setKillTotalRemaining(stats.total - stats.cleared);
 
       // Grief protocol
       const griefNow = new Date();
@@ -364,8 +361,8 @@ export default function TodayPage() {
             <div className="mb-8">
               <h3 className="text-[10px] font-black tracking-[0.2em] text-[#555] uppercase mb-4 px-1">Morning Stack</h3>
 
-              {/* Step progress row */}
-              <div className="flex items-center gap-2 mb-5 px-1">
+              {/* Step progress row — aria-live so screen readers announce completion */}
+              <div className="flex items-center gap-2 mb-5 px-1" aria-live="polite" aria-label="Morning stack progress">
                 {[
                   { label: "Sovereign", done: sovereigntyDone },
                   { label: "Fuel", done: fuelDone },
@@ -376,6 +373,10 @@ export default function TodayPage() {
                     key={i}
                     className={`flex-1 flex flex-col items-center gap-1 cursor-pointer transition-all active:scale-95`}
                     onClick={() => setMorningStep(i as 0 | 1 | 2 | 3)}
+                    role="button"
+                    aria-label={`${s.label} step — ${s.done ? "complete" : "incomplete"}`}
+                    tabIndex={0}
+                    onKeyDown={e => e.key === "Enter" && setMorningStep(i as 0 | 1 | 2 | 3)}
                   >
                     <StepCheck done={s.done} />
                     <span
@@ -623,6 +624,8 @@ export default function TodayPage() {
                 <div
                   className="text-center py-6 rounded-xl mt-2"
                   style={{ background: "rgba(34,197,94,0.04)", border: "1px solid rgba(34,197,94,0.12)" }}
+                  role="status"
+                  aria-live="polite"
                 >
                   <p className="text-sm font-black text-green-400 mb-1">Morning stack complete ✓</p>
                   <p className="text-[10px] text-[#555]">

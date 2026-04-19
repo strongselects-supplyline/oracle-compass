@@ -197,6 +197,10 @@ export default function AnalyticsPage() {
           <div style={{ fontSize: 10, fontWeight: 900, letterSpacing: "0.2em", color: "var(--text-muted)", marginTop: 4 }}>
             Spotify for Artists · Monthly Pull
           </div>
+          <div style={{ fontSize: 12, color: "var(--text-muted)", marginTop: 8, lineHeight: 1.5, maxWidth: 320, margin: "8px auto 0" }}>
+            Catalog-level trend analysis — run once a month after your S4A pull.
+            Daily logs live on the <a href="/" style={{ color: "var(--accent)", textDecoration: "underline" }}>Today</a> page.
+          </div>
         </div>
 
         {/* Date + progress */}

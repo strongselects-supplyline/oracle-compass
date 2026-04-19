@@ -3,7 +3,7 @@
 import Link from "next/link";
 import { usePathname } from "next/navigation";
 import { useEffect, useState } from "react";
-import { getKillStats } from "@/lib/killList";
+import { useKillList } from "@/components/KillListProvider";
 import { useTheme } from "@/components/ThemeProvider";
 
 // War Room grid items — reference only, no notification dots
@@ -19,21 +19,20 @@ const WAR_ROOM_ITEMS = [
   { name: "Geo",       path: "/geo",       icon: "🗺️", desc: "Gorilla Geo map" },
   { name: "Analytics", path: "/analytics", icon: "📊", desc: "S4A monthly intake" },
   { name: "Doctrine",  path: "/doctrine",  icon: "📚", desc: "Sovereign Scroll" },
+  { name: "Settings",  path: "/settings",  icon: "⚙️", desc: "Theme · Data · Export" },
 ];
 
 export default function BottomNav() {
   const pathname = usePathname();
   const [showWarRoom, setShowWarRoom] = useState(false);
-  const [killRed, setKillRed] = useState(false);
-  const [killCount, setKillCount] = useState(0);
+  const { killStats } = useKillList();
   const { mode, resolved, cycle: cycleTheme } = useTheme();
 
-  useEffect(() => {
-    getKillStats().then(s => {
-      setKillRed(s.redRemaining > 0);
-      setKillCount(s.total - s.cleared);
-    });
+  // Derived from shared context — no direct IndexedDB call
+  const killRed = (killStats?.redRemaining ?? 0) > 0;
+  const killCount = (killStats?.total ?? 0) - (killStats?.cleared ?? 0);
 
+  useEffect(() => {
     const handleEsc = (e: KeyboardEvent) => {
       if (e.key === "Escape") setShowWarRoom(false);
     };

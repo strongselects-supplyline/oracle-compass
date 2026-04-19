@@ -1,14 +1,21 @@
 import type { Metadata } from "next";
-import { Geist } from "next/font/google";
+import { Geist, Geist_Mono } from "next/font/google";
 import "./globals.css";
 import BottomNav from "@/components/BottomNav";
 import OracleTrigger from "@/components/OracleTrigger";
 import BrainDumpInput from "@/components/BrainDumpInput";
 import ErrorBoundary from "@/components/ErrorBoundary";
 import ThemeProvider from "@/components/ThemeProvider";
+import KillListProvider from "@/components/KillListProvider";
+import OfflineBanner from "@/components/OfflineBanner";
 
 const geist = Geist({
   variable: "--font-geist-sans",
+  subsets: ["latin"],
+});
+
+const geistMono = Geist_Mono({
+  variable: "--font-geist-mono",
   subsets: ["latin"],
 });
 
@@ -49,16 +56,19 @@ export default function RootLayout({
           }}
         />
       </head>
-      <body className={`${geist.variable}`}>
+      <body className={`${geist.variable} ${geistMono.variable}`}>
         <a href="#main-content" className="skip-link">Skip to main content</a>
         <ErrorBoundary>
           <ThemeProvider>
-            <OracleTrigger />
-            <BrainDumpInput />
-            <main id="main-content">
-              {children}
-            </main>
-            <BottomNav />
+            <KillListProvider>
+              <OfflineBanner />
+              <OracleTrigger />
+              <BrainDumpInput />
+              <main id="main-content">
+                {children}
+              </main>
+              <BottomNav />
+            </KillListProvider>
           </ThemeProvider>
         </ErrorBoundary>
       </body>
