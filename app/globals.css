@@ -66,6 +66,54 @@
   --check-done-text: #fff;
 }
 
+/* ── Semantic utility classes (token-mapped, theme-aware) ─── */
+/* Use these instead of hard-coded Tailwind colors like text-white, bg-[#111] */
+
+.text-primary   { color: var(--text-primary); }
+.text-secondary { color: var(--text-secondary); }
+.text-muted     { color: var(--text-muted); }
+.text-accent    { color: var(--accent); }
+
+.bg-surface   { background-color: var(--surface); }
+.bg-surface-2 { background-color: var(--surface-2); }
+.bg-surface-3 { background-color: var(--surface-3); }
+
+.border-default { border-color: var(--border); }
+.border-subtle  { border-color: var(--border-2); }
+
+/* Semantic input base — replaces bg-[#111] border border-[#222] text-white in inputs */
+.input-base {
+  background: var(--surface-2);
+  border: 1px solid var(--border);
+  border-radius: 10px;
+  color: var(--text-primary);
+  outline: none;
+  font-family: inherit;
+  transition: border-color 0.15s;
+}
+.input-base:focus { border-color: var(--accent); }
+.input-base::placeholder { color: var(--text-muted); }
+
+/* Semantic ghost button — replaces bg-[#1a1a1a] border border-[#333] text-[#888] patterns */
+.btn-ghost {
+  background: var(--surface-2);
+  border: 1px solid var(--border);
+  color: var(--text-secondary);
+  border-radius: 10px;
+  cursor: pointer;
+  transition: background 0.15s, border-color 0.15s;
+  font-family: inherit;
+}
+.btn-ghost:hover { background: var(--surface-3); border-color: var(--border-2); }
+.btn-ghost:active { transform: scale(0.96); }
+
+/* Semantic progress bar track */
+.progress-track {
+  background: var(--surface-2);
+  border-radius: 4px;
+  overflow: hidden;
+}
+
 /* ── Base ──────────────────────────────────────────────── */
 * { box-sizing: border-box; }
 
@@ -529,7 +577,11 @@ html, body {
 }
 
 /* ── Light Mode: Override hardcoded dark-mode inline colors ── */
-/* These catch Tailwind classes like text-white, border-[#1a1a1a], etc. */
+/* MIGRATION NOTE: These !important overrides exist because some components
+   still use hard-coded Tailwind classes like text-white, bg-[#111], etc.
+   As components are migrated to semantic classes (above), these overrides
+   become redundant. Do not add new hard-coded Tailwind colors to JSX.
+   Target: eliminate this entire block by Summer CREAM phase. */
 
 [data-theme="light"] .text-white { color: var(--text-primary) !important; }
 [data-theme="light"] .text-\[\#ccc\] { color: var(--text-secondary) !important; }
@@ -965,3 +1017,80 @@ html, body {
 @media (max-width: 480px) {
   .scroll-metrics-grid { grid-template-columns: 1fr 1fr; }
 }
+
+/* ── Light Mode: Sovereign Scroll × Oracle component overrides ── */
+/* The .stp-*, .scroll-*, .doc-* families were ported from a dark-only
+   HTML doctrine and use fixed rgba(255,255,255,X). Below remaps them
+   to semantic tokens for light theme. */
+
+[data-theme="light"] .stp-header,
+[data-theme="light"] .scroll-page-header { border-bottom-color: var(--border); }
+
+[data-theme="light"] .stp-tag,
+[data-theme="light"] .stp-stat-lbl,
+[data-theme="light"] .scroll-page-tag,
+[data-theme="light"] .doc-nav-cat { color: var(--text-muted); }
+
+[data-theme="light"] .stp-sub,
+[data-theme="light"] .stp-callout-body,
+[data-theme="light"] .stp-vocal-body,
+[data-theme="light"] .stp-del-sub,
+[data-theme="light"] .scroll-page-sub,
+[data-theme="light"] .scroll-p,
+[data-theme="light"] .scroll-callout-body,
+[data-theme="light"] .scroll-table td,
+[data-theme="light"] .scroll-steps li,
+[data-theme="light"] .scroll-stack-desc,
+[data-theme="light"] .scroll-pstep-desc,
+[data-theme="light"] .scroll-bench-text,
+[data-theme="light"] .scroll-state-desc,
+[data-theme="light"] .scroll-gc-desc,
+[data-theme="light"] .scroll-seq-box { color: var(--text-secondary); }
+
+[data-theme="light"] .stp-del-title,
+[data-theme="light"] .stp-nn-text,
+[data-theme="light"] .stp-callout-body strong,
+[data-theme="light"] .stp-vocal-body strong,
+[data-theme="light"] .scroll-page-title,
+[data-theme="light"] .scroll-h4,
+[data-theme="light"] .scroll-card-title,
+[data-theme="light"] .scroll-callout-body strong,
+[data-theme="light"] .scroll-p strong,
+[data-theme="light"] .scroll-table th,
+[data-theme="light"] .scroll-table td:first-child,
+[data-theme="light"] .scroll-pstep-title,
+[data-theme="light"] .scroll-bench-text strong,
+[data-theme="light"] .scroll-stack-title,
+[data-theme="light"] .scroll-mudra-name,
+[data-theme="light"] .scroll-gc-title { color: var(--text-primary); }
+
+[data-theme="light"] .stp-nn-check { color: var(--text-muted); }
+
+[data-theme="light"] .stp-stat,
+[data-theme="light"] .stp-deliverable,
+[data-theme="light"] .stp-callout,
+[data-theme="light"] .stp-nn-item,
+[data-theme="light"] .scroll-card,
+[data-theme="light"] .scroll-callout,
+[data-theme="light"] .scroll-pstep,
+[data-theme="light"] .scroll-stack-level,
+[data-theme="light"] .scroll-grid-card,
+[data-theme="light"] .scroll-state-card,
+[data-theme="light"] .scroll-mudra-block,
+[data-theme="light"] .scroll-metric-card,
+[data-theme="light"] .scroll-seq-box {
+  background: var(--surface-2);
+  border-color: var(--border);
+}
+
+[data-theme="light"] .stp-nn-item:hover { background: var(--surface-3); }
+
+[data-theme="light"] .scroll-table-wrap,
+[data-theme="light"] .scroll-table th,
+[data-theme="light"] .scroll-table td,
+[data-theme="light"] .scroll-bench { border-color: var(--border); }
+
+[data-theme="light"] .doc-nav-item { color: var(--text-secondary); }
+[data-theme="light"] .doc-nav-item:hover { color: var(--text-primary); background: var(--surface-2); }
+[data-theme="light"] .doctrine-sidebar { background: var(--surface); border-right-color: var(--border); }
+[data-theme="light"] .doc-nav-divider { background: var(--border); }
