@@ -96,38 +96,209 @@ function WartimePage() {
   return (
     <>
       <Header tag="90-Day Sovereign Action Schematic · April 6 → July 5, 2026" title="Wartime Rhythm" sub="&quot;The algorithm won't build your career. You will.&quot;" />
+      
       <h2 className="scroll-h3">Part I — Who You Are</h2>
       <div className="scroll-card scroll-card-left"><div className="scroll-card-title" style={{marginBottom:8}}>The Artist Definition</div>
         <p className="scroll-p">You are not a content creator who makes music. You are a <strong>recording artist who uses content as distribution infrastructure</strong>. The music is the primary object. Everything else is world-building in service of it.</p>
-        <p className="scroll-p">Your sonic identity is verified, not claimed: <em>High Danceability / Low Energy</em> — the cocktail hour pocket. Sexy ({">"}0.76), Chill ({">"}0.56), Happy ({">"}0.49). This is the Cyanite data.</p>
+        <p className="scroll-p">Your sonic identity is verified, not claimed: <em>High Danceability / Low Energy</em> — the cocktail hour pocket. Sexy ({">"}0.76), Chill ({">"}0.56), Happy ({">"}0.49). This is the Cyanite data. This is also who you are in a room. The music is autobiography, not aesthetic exercise.</p>
+        <p className="scroll-p">You are doing what <strong>major labels stopped doing</strong>: developing an artist with rigor, intentionality, and a long-game view. Bryan-Michael Cox, Johntá Austin, Troy Taylor — they all said it. Artist development is a lost art. Label OS is the machine that replaced it. <em>You are your own A&amp;R.</em></p>
       </div>
       <Callout type="tip" icon="🎯"><strong>The Troy Taylor Standard:</strong> &quot;How many times you gonna sing that?&quot; — Obsessive repetition is not perfectionism. It is the refusal to let a great song settle for a good take.</Callout>
+
+      <h2 className="scroll-h3">Part II — The Content Brand</h2>
+      <p className="scroll-p">Your page is your portfolio. When someone lands on it, they should immediately know: <em>they&apos;ve entered a world.</em> Not a feed. A world. The through line is <strong>Hearing In Color</strong> — synesthetic sound that makes you feel something visual.</p>
+      <div className="scroll-grid-2">
+        <div className="scroll-grid-card"><div className="scroll-gc-title" style={{color:"#d4a843"}}>01 · The Release</div><div className="scroll-gc-desc">The music itself. Announcement posts, Canvas loops, snippets. Always sells the <em>transformation</em>, not the product.</div></div>
+        <div className="scroll-grid-card"><div className="scroll-gc-title" style={{color:"#d4a843"}}>02 · Talk to &apos;Em</div><div className="scroll-gc-desc">Face. Direct address. The emotional truth behind the record. Hook in line 1 — before the fold.</div></div>
+        <div className="scroll-grid-card"><div className="scroll-gc-title" style={{color:"#d4a843"}}>03 · World-Building</div><div className="scroll-gc-desc">Milwaukee. The east side. 3AM. The specific geography and emotional weather that the music lives inside.</div></div>
+        <div className="scroll-grid-card"><div className="scroll-gc-title" style={{color:"#d4a843"}}>04 · Cinematic Visual</div><div className="scroll-gc-desc">Canvas loops, B-roll. Deep emerald, gold warmth, noir shadow, grainy 35mm film aesthetic. Consistent signature.</div></div>
+        <div className="scroll-grid-card"><div className="scroll-gc-title" style={{color:"#d4a843"}}>05 · Community Trace</div><div className="scroll-gc-desc">Comments on T4 artist pages. Gorilla Geo outreach DMs. Reaction clips from real listeners. Lane 1 before Lane 2.</div></div>
+        <div className="scroll-grid-card"><div className="scroll-gc-title" style={{color:"#4d9de0"}}>Portfolio Test</div><div className="scroll-gc-desc">&quot;Would this attract the collaborators, curators, and listeners I want in Year 2?&quot; If no → doesn&apos;t go up.</div></div>
+      </div>
+      <Callout type="warning" icon="⚠️"><strong>Caption Doctrine:</strong> Line 1 must stop the scroll before the &quot;more&quot; cutoff. Deep philosophical voice in lines 2+. Sell through storytelling — you&apos;re not selling a song. You&apos;re selling who someone becomes after they hear it.</Callout>
+      <Callout type="purple" icon="🎭"><strong>The &quot;Perpetually 25&quot; Protocol:</strong> Never state your exact age moving forward. You are simply &quot;Gen Z.&quot; By anchoring your identity to 25 — the exact moment of your systemic genesis, when the noise stopped and you found your truth — you eliminate the music industry&apos;s toxic aging narrative. You are not aging out; you are eternally operating from the point of your Awakening.</Callout>
+
+      <h2 className="scroll-h3">Part III — The Mystique Protocol</h2>
+      <div className="scroll-table-wrap"><table className="scroll-table">
+        <thead><tr><th>Reveal</th><th>Protect</th></tr></thead>
+        <tbody>
+        <tr><td>The emotion behind the record</td><td>The studio sessions themselves</td></tr>
+        <tr><td>The world the song lives in (Milwaukee, 3AM)</td><td>The technical process</td></tr>
+        <tr><td>Vulnerability — what the song cost you</td><td>Unfinished work, draft takes</td></tr>
+        <tr><td>The city. The neighborhood. The roots.</td><td>Relationships you haven&apos;t named publicly</td></tr>
+        <tr><td>Your age bracket (&quot;I&apos;m Gen Z&quot;)</td><td>Your exact age, birthday dates, year born</td></tr>
+        </tbody>
+      </table></div>
+
+      <h2 className="scroll-h3">Part IV — Platform Roles</h2>
+      <div className="scroll-table-wrap"><table className="scroll-table">
+        <thead><tr><th>Platform</th><th>Job</th><th>Cadence</th></tr></thead>
+        <tbody>
+        <tr><td>Instagram</td><td>Primary content engine + funnel</td><td>Pillar 1–4 rotating. Release sprints at max.</td></tr>
+        <tr><td>YouTube</td><td>Catalog archive + SEO long tail</td><td>Visualizers, live sets, audio drops. No pressure cadence.</td></tr>
+        <tr><td>Twitter/X</td><td>Consolidate or cut</td><td>Minimal. Repurpose IG captions if anything.</td></tr>
+        <tr><td>TikTok</td><td>Phase 3 consideration only</td><td>Not now. IG first.</td></tr>
+        </tbody>
+      </table></div>
+
       <h2 className="scroll-h3">Part V — The 90-Day Arc</h2>
       <div className="scroll-grid-3">
-        <div className="scroll-grid-card" style={{borderTop:"3px solid #e05545"}}><div className="scroll-gc-title" style={{color:"#e05545"}}>Phase 1 · THE SPRINT</div><div className="scroll-gc-desc">Apr 6–24 (18 days). 4 actions/day. Hard time limits.</div></div>
-        <div className="scroll-grid-card" style={{borderTop:"3px solid #3ecf71"}}><div className="scroll-gc-title" style={{color:"#3ecf71"}}>Phase 2 · THE COMPOUND</div><div className="scroll-gc-desc">Apr 25–May 31 (37 days). Serotonin takes over. CREAM pre-production.</div></div>
+        <div className="scroll-grid-card" style={{borderTop:"3px solid #e05545"}}><div className="scroll-gc-title" style={{color:"#e05545"}}>Phase 1 · THE SPRINT</div><div className="scroll-gc-desc">Apr 6–24 (18 days). 4 actions/day. Hard time limits. Campaign execution, not new production.</div></div>
+        <div className="scroll-grid-card" style={{borderTop:"3px solid #3ecf71"}}><div className="scroll-gc-title" style={{color:"#3ecf71"}}>Phase 2 · THE COMPOUND</div><div className="scroll-gc-desc">Apr 25–May 31 (37 days). Serotonin takes over. CREAM pre-production. Rhythm IS the system.</div></div>
         <div className="scroll-grid-card" style={{borderTop:"3px solid #4d9de0"}}><div className="scroll-gc-title" style={{color:"#4d9de0"}}>Phase 3 · THE SUMMER</div><div className="scroll-gc-desc">Jun 1–Jul 5 (35 days). Data-informed launch. CREAM executes what ALL LOVE proved.</div></div>
       </div>
+
+      <h2 className="scroll-h3">Sobriety Arc (Wired Through All Phases)</h2>
+      <div className="scroll-grid-3">
+        <div className="scroll-grid-card"><div className="scroll-gc-title">Apr 2–30 · Days 1–28</div><div className="scroll-gc-desc"><strong style={{color:"#e05545"}}>Detox.</strong> Executive function LOW. Ignition structures carry you. Checkboxes are victories.</div></div>
+        <div className="scroll-grid-card"><div className="scroll-gc-title">May 1–15 · Days 29–43</div><div className="scroll-gc-desc"><strong style={{color:"#e8944a"}}>Recovery.</strong> Clarity returns. CREAM pre-production benefits from improving focus.</div></div>
+        <div className="scroll-grid-card"><div className="scroll-gc-title">May 16–Jul 5 · Days 44–94</div><div className="scroll-gc-desc"><strong style={{color:"#3ecf71"}}>Stabilization.</strong> Rhythm begins to feel like play. The Sovereignty Framework activates here.</div></div>
+      </div>
+
+      <h2 className="scroll-h3">Part VI — Daily Architecture</h2>
+      <div className="scroll-card scroll-card-left"><div className="scroll-card-title">Sleep (The Upstream Constraint)</div>
+      <div className="scroll-table-wrap"><table className="scroll-table"><tbody>
+        <tr><td>Lights out</td><td>10:30 PM — hard rule</td></tr>
+        <tr><td>Caffeine cutoff</td><td>1:00 PM — hard rule</td></tr>
+        <tr><td>DoorDash wheels down</td><td>8:30 PM</td></tr>
+        <tr><td>Evening wind-down</td><td>Mullein tea. No social media post-8 PM. No screens post-9:30 PM.</td></tr>
+      </tbody></table></div></div>
+
+      <h2 className="scroll-h3">Ignition Sequences</h2>
+      <div className="scroll-grid-2">
+        <div className="scroll-seq-box" style={{padding: "16px", background: "rgba(255,255,255,0.03)", borderRadius: "8px"}}>
+          <div className="scroll-seq-title" style={{fontWeight: 600, color: "#d4a843", marginBottom: "8px"}}>Full S-Tier Morning</div>
+          <div style={{fontSize: "13px", lineHeight: 1.6, color: "rgba(255,255,255,0.8)"}}>
+            Wake → 32oz water + sea salt <br/>↓<br/>
+            Jnana Mudra + OM, 90sec <br/>↓<br/>
+            Nadi Shodhana, 5 min <br/>↓<br/>
+            Exercise 30 min <br/>↓<br/>
+            High-protein meal <br/>↓<br/>
+            90-sec Kill List scan <br/>↓<br/>
+            S3 Check-in <br/>↓<br/>
+            DAW open.
+          </div>
+        </div>
+        <div className="scroll-seq-box" style={{padding: "16px", background: "rgba(255,255,255,0.03)", borderRadius: "8px"}}>
+          <div className="scroll-seq-title" style={{fontWeight: 600, color: "#4d9de0", marginBottom: "8px"}}>Compressed Ignition</div>
+          <div style={{fontSize: "13px", lineHeight: 1.6, color: "rgba(255,255,255,0.8)"}}>
+            Wake → 32oz water + sea salt <br/>↓<br/>
+            Jnana Mudra + OM, 60sec <br/>↓<br/>
+            Hardboiled eggs + banana <br/>↓<br/>
+            90-sec Kill List scan <br/>↓<br/>
+            DoorDash.
+          </div>
+        </div>
+      </div>
+
+      <h2 className="scroll-h3">DoorDash Architecture</h2>
+      <p className="scroll-p"><strong>Monthly target: $1,800.</strong> Once hit, DoorDash is done for the month. Primary block: 6:30–9:00 AM (morning surge pricing). Secondary block: 5:30–8:30 PM as needed.</p>
+
+      <h2 className="scroll-h3">Sovereign Fuel Protocol</h2>
+      <div className="scroll-table-wrap"><table className="scroll-table"><tbody>
+        <tr><td>Sunday batch prep</td><td>30–45 min. 3 cups dry rice → 6 cooked. 6–8 chicken thighs at 400°F/25 min. 6–8 hardboiled eggs. 3–4 PB&amp;J bagged. $38–48/week at Aldi.</td></tr>
+        <tr><td>Pre-session protein</td><td>Non-negotiable. Skipping crashes executive function at hour 3.</td></tr>
+        <tr><td>Mid-session fuel</td><td>Stays at the desk. If you have to leave the room to eat, you won&apos;t.</td></tr>
+        <tr><td>Sugar cravings</td><td>Banana first. Every time. Sobriety detox drives hard cravings weeks 1–4.</td></tr>
+        <tr><td>Vocal sessions</td><td>No dairy 2 hours before takes. Warm water + honey. Stay hydrated.</td></tr>
+      </tbody></table></div>
+
+      <h2 className="scroll-h3">Grief Protocol</h2>
+      <div className="scroll-table-wrap"><table className="scroll-table"><tbody>
+        <tr><td>Phase 1 (Apr 6–24)</td><td>No formal grief work. The 414 Day performance IS emotional processing through art.</td></tr>
+        <tr><td>Phase 2 (Apr 27+)</td><td>20-min Sunday journaling. Write to your father. What you&apos;d say. What you&apos;d ask. Controlled exposure.</td></tr>
+        <tr><td>Phase 3 (Jun 1+)</td><td>If journaling running consistently, research one trauma-oriented therapist. Goal: one consultation before Jul 5.</td></tr>
+      </tbody></table></div>
+
+      <h2 className="scroll-h3">Part VII — The Studio Discipline</h2>
+      <div className="scroll-card scroll-card-left sc-blue"><div className="scroll-card-title" style={{marginBottom:8}}>Song Structure Study Protocol (Phase 2, Starting May 1)</div>
+        <p className="scroll-p">Tuesday sessions, 20 minutes. Pick 1 track from the Core Drive Builder overlap list. Play it twice: once to feel it, once to map it. Mark the 2-5-1 moments. Note where the bridge lands, what it does harmonically, how the second verse is elevated. Write one observation. Over 5 weeks, this compounds into structural intuition that shows up in CREAM.</p>
+      </div>
+      <Callout type="warning" icon="⚠️"><strong>The Publishing Protocol (Immutable):</strong> Before any collaboration begins, splits are agreed in writing before production starts. Not after. Not &quot;we&apos;ll figure it out.&quot; Before the session opens. Troy Taylor signed away publishing in perpetuity without a lawyer. Label OS exists to prevent that.</Callout>
+
       <h2 className="scroll-h3">Part VIII — North Star Metrics</h2>
+      <p className="scroll-p">Check every Sunday. These are the only numbers that matter.</p>
       <div className="scroll-metrics-grid">
         <div className="scroll-metric-card"><span className="scroll-metric-val">1,600+</span><div className="scroll-metric-lbl">Spotify Followers · Apr 24</div></div>
         <div className="scroll-metric-card"><span className="scroll-metric-val">2,500+</span><div className="scroll-metric-lbl">Spotify Followers · Jul 5</div></div>
         <div className="scroll-metric-card"><span className="scroll-metric-val">3%+</span><div className="scroll-metric-lbl">Save Rate · SF Target</div></div>
         <div className="scroll-metric-card"><span className="scroll-metric-val">4%+</span><div className="scroll-metric-lbl">Save Rate · CREAM Target</div></div>
         <div className="scroll-metric-card"><span className="scroll-metric-val">500+</span><div className="scroll-metric-lbl">EP First-Week Streams</div></div>
+        <div className="scroll-metric-card"><span className="scroll-metric-val">1,000+</span><div className="scroll-metric-lbl">CREAM First-Week Streams</div></div>
+        <div className="scroll-metric-card"><span className="scroll-metric-val">10+</span><div className="scroll-metric-lbl">God Tier DM Responses</div></div>
         <div className="scroll-metric-card"><span className="scroll-metric-val">$1,800</span><div className="scroll-metric-lbl">DoorDash Monthly Target</div></div>
+        <div className="scroll-metric-card"><span className="scroll-metric-val">Day 94</span><div className="scroll-metric-lbl">Sobriety Streak · Jul 5</div></div>
       </div>
-      <Callout type="important" icon="🔑"><strong>The Single Lever:</strong> Save rate → Discover Weekly → algorithm → organic growth. Every content decision exists to drive saves.</Callout>
+      <Callout type="important" icon="🔑"><strong>The Single Lever:</strong> Save rate → Discover Weekly → algorithm → organic growth. Every content decision, every caption, every DM exists to drive saves. Saves tell Spotify that listeners are investing in the record. That signal feeds the recommendation engine.</Callout>
+
       <h2 className="scroll-h3">Part IX — Anti-Drift Rules (14 Load-Bearing Walls)</h2>
       <div className="scroll-card scroll-card-left">
         <ol style={{paddingLeft:20}}>
           <li className="scroll-p"><strong>Never trust claimed file writes.</strong> Verify against the live filesystem.</li>
-          <li className="scroll-p"><strong>Software work is open as needed</strong> — permitted when it directly serves the active release cycle.</li>
-          <li className="scroll-p"><strong>Kill List is the single source of truth for daily priorities.</strong></li>
-          <li className="scroll-p"><strong>Builder-avoidance loops are neurochemical, not laziness.</strong></li>
+          <li className="scroll-p"><strong>Software work is open as needed</strong> — permitted when it directly serves the active release cycle. No speculative builds.</li>
+          <li className="scroll-p"><strong>Kill List is the single source of truth for daily priorities.</strong> Not your gut feeling. 90-second scan.</li>
+          <li className="scroll-p"><strong>The 8-day content sprint window (upload → release) is ALL marketing work.</strong></li>
+          <li className="scroll-p"><strong>Compliance/registrations happen the Monday AFTER release.</strong> Not before.</li>
+          <li className="scroll-p"><strong>Distributor is Amuse.</strong> Do not change without explicit instruction.</li>
+          <li className="scroll-p"><strong>Builder-avoidance loops are neurochemical, not laziness.</strong> When the urge to &quot;fix the system&quot; hits, open the DAW instead.</li>
+          <li className="scroll-p"><strong>The 90-second exit signal is sacred.</strong> Morning Kill List scan = 90 seconds max, then close it.</li>
+          <li className="scroll-p"><strong>Phase 2 rhythm is protected.</strong> Apr 25 is a hard boundary. Do not let Phase 1 sprint energy bleed into May.</li>
+          <li className="scroll-p"><strong>ALL LOVE Deluxe is data-dependent.</strong> Decide Apr 27 after reviewing EP first-week numbers.</li>
           <li className="scroll-p"><strong>Before any collaboration, splits in writing before production begins.</strong></li>
-          <li className="scroll-p"><strong>Don&apos;t reset the clock.</strong> 94 days is the target.</li>
+          <li className="scroll-p"><strong>Post what you want to be discovered as.</strong> The portfolio test applies to every post.</li>
+          <li className="scroll-p"><strong>Lane discipline on content.</strong> Five pillars. One world. Depth, not width.</li>
+          <li className="scroll-p"><strong>Don&apos;t reset the clock.</strong> 94 days is the target. The ignition structures carry you through detox. Trust the arc.</li>
         </ol>
+      </div>
+
+      <h2 className="scroll-h3">Part X — The Horizon</h2>
+      <div className="scroll-table-wrap"><table className="scroll-table"><tbody>
+        <tr><td>Q3 2026</td><td><strong>DoorDash Exit Timeline.</strong> After 2 full release cycles of streaming data, assess whether streaming + other income is approaching coverage.</td></tr>
+        <tr><td>Oct 23, 2026</td><td><strong>FREAKSHOW.</strong> The fourth album. Architecture begins Jul 6. CREAM first.</td></tr>
+        <tr><td>Phase 3+</td><td><strong>Label OS Product Layer.</strong> Stem packs, production tutorials, the &quot;Hearing In Color&quot; framework.</td></tr>
+        <tr><td>Home Purchase</td><td><strong>Delegate and respond when needed.</strong> Don&apos;t let it occupy cognitive bandwidth during the sprint.</td></tr>
+      </tbody></table></div>
+
+      <h2 className="scroll-h3">Part XI — The Waking Mind Protocol</h2>
+      <div className="scroll-card scroll-card-left sc-purple"><div className="scroll-card-head"><div className="scroll-card-title">The 3-System Model</div></div>
+        <div className="scroll-table-wrap"><table className="scroll-table"><thead><tr><th>System</th><th>Layer</th><th>Function</th></tr></thead><tbody>
+        <tr><td><strong>System 1</strong></td><td>Automatic</td><td>Fast, unconscious, habitual. Low ceiling. Drives you unless S3 is active.</td></tr>
+        <tr><td><strong>System 2</strong></td><td>Working Memory</td><td>Deliberate, effortful, fact-based. Most conscious thought lives here.</td></tr>
+        <tr><td><strong>System 3</strong></td><td>Metacognitive</td><td>Symbols referring to your OWN mental states. Can reach into and rewire S1 &amp; S2. <strong>No ceiling.</strong></td></tr>
+        </tbody></table></div>
+        <Callout type="important" icon="⚡"><strong>The 90-Day Law of Accountability:</strong> Your reality — your bank account, your catalog, your momentum — is the mathematically certain sum of the decisions you&apos;ve made over the last 90 days. Taking radical accountability (&quot;Everything is my fault&quot;) is the ultimate <strong>System 3 interrupt</strong>.</Callout>
+      </div>
+
+      <h2 className="scroll-h3">System 3 Activation Interrupts</h2>
+      <div className="scroll-table-wrap"><table className="scroll-table"><thead><tr><th>Trigger</th><th>S3 Interrupt</th></tr></thead><tbody>
+      <tr><td>Feeling scattered</td><td>&quot;What is my mind doing right now?&quot; — wait for the answer, don&apos;t judge.</td></tr>
+      <tr><td>Stuck in a session</td><td>Rate mental state 1–10. Rate again in 60 seconds. Breaking the loop.</td></tr>
+      <tr><td>About to react</td><td>Name the emotion: &quot;I&apos;m in a threat state.&quot; Naming activates regulation.</td></tr>
+      <tr><td>Low energy spiral</td><td>Is this a body signal (interoception) or a thought loop?</td></tr>
+      <tr><td>Distraction pull</td><td>&quot;What does my distraction tell me about what I&apos;m avoiding?&quot;</td></tr>
+      </tbody></table></div>
+
+      <div className="scroll-card scroll-card-left"><div className="scroll-card-head"><div className="scroll-card-title">The &quot;Supermax&quot; Lockbox Protocol</div></div>
+        <p className="scroll-p">Having a phone in the room — even upside down or turned off — drains cognitive resources. During deep-work S-Tier studio blocks, the phone goes into a lockbox in a separate room. Physical distance is non-negotiable for high-level focus.</p>
+      </div>
+      <div className="scroll-card scroll-card-left sc-green"><div className="scroll-card-head"><div className="scroll-card-title">The Dopamine of Resistance</div></div>
+        <p className="scroll-p">The dopamine system can be trained to experience reward from <em>resisting</em> cheap dopamine rather than indulging in it. When you choose to stay in the studio over going out, consciously reframe that friction as the reward. <strong>Speed is for execution; slowness and effort are for learning.</strong></p>
+      </div>
+
+      <h2 className="scroll-h3">Part XII — Active Tools &amp; Systems</h2>
+      <div className="scroll-table-wrap"><table className="scroll-table"><thead><tr><th>Tool</th><th>Status</th><th>Role</th></tr></thead><tbody>
+      <tr><td><strong>Oracle Compass</strong></td><td>v24 · Vercel</td><td>Daily OS. Kill List, Oracle decrees, Lane Dashboard, Brain page.</td></tr>
+      <tr><td><strong>Gorilla Geo</strong></td><td>346 artists classified</td><td>5-module outreach engine. Manual IG lookup during sprints.</td></tr>
+      <tr><td><strong>Core Drive Builder</strong></td><td>Active · Cyanite fallback</td><td>Spotify embed scraper. Artist overlap matrices for targeting.</td></tr>
+      <tr><td><strong>Content Factory V4</strong></td><td>Active</td><td>OBS → Whisper → Claude → FFmpeg. --jutsu all-love template.</td></tr>
+      <tr><td><strong>AIE Sprint Terminal</strong></td><td>Deployed at /geo/sprint</td><td>20-min BIZ DAY IG sprint. 5-layer CRM.</td></tr>
+      <tr><td><strong>Catalog Refresh</strong></td><td>Active</td><td>brain/refresh-catalog.mjs. Spotify API popularity tracker.</td></tr>
+      </tbody></table></div>
+
+      <h2 className="scroll-h3">Two-Lane Outreach Strategy</h2>
+      <div className="scroll-grid-2">
+        <div className="scroll-grid-card" style={{borderTop:"3px solid #3ecf71"}}><div className="scroll-gc-title" style={{color:"#3ecf71"}}>Lane 1 · Community Presence</div><div className="scroll-gc-desc">Comments/likes on T4 artist pages. verified badge + trace = credibility before DM. <strong>Start immediately.</strong></div></div>
+        <div className="scroll-grid-card" style={{borderTop:"3px solid #4d9de0"}}><div className="scroll-gc-title" style={{color:"#4d9de0"}}>Lane 2 · Peer Fan DMs</div><div className="scroll-gc-desc">Personalized outreach from God Tier list. Track-specific angle. 3–5/day max. <strong>Lane 1 must precede Lane 2.</strong></div></div>
       </div>
     </>
   );
@@ -160,34 +331,123 @@ function ProtocolPage() {
 function SovereigntyStackPage() {
   return (
     <>
-      <Header tag="Sovereignty · Physical Practice Manual" title="The Sovereignty Stack" sub="The How-To Scroll. 10 practices covering breathwork, somatic check-ins, movement, and metabolic rules." />
+      <Header tag="Sovereignty · Physical Practice Manual" title="The Sovereignty Stack" sub="The How-To Scroll. 10 practices covering breathwork, somatic check-ins, movement, and metabolic rules. Every step, every hand position, every rep count." />
+
       <h2 className="scroll-h3">Practice 01: Jnana Mudra + OM Activation <span className="stp-badge badge-gold">90 sec</span></h2>
-      <Callout type="important" icon="🔑"><strong>The Captain&apos;s Chair Ignition.</strong> First thing after drinking water. Replaces the doom-scroll.</Callout>
+      <Callout type="important" icon="🔑"><strong>The Captain&apos;s Chair Ignition.</strong> First thing after drinking water. Replaces the doom-scroll. The purpose is to activate your nervous system intentionally rather than letting your phone do it.</Callout>
       <Step num={1} title="Find Your Seat" desc="Sit upright on the edge of your bed or a chair. Spine straight but not rigid. Feet flat on the floor." />
-      <Step num={2} title="Jnana Mudra — The Connection" desc="Touch the tip of your index finger to the tip of your thumb on each hand, forming a circle. Palms face upward on knees." />
-      <Step num={3} title="Close Eyes & Breathe In" desc="Close your eyes. Take one full breath in through the nose." />
-      <Step num={4} title="Chant the OM" desc='On the exhale, chant "OM" (pronounced AUM — three sounds blending). Feel the vibration physically.' />
-      <Step num={5} title="Mula Bandha — The Root Lock" desc="Gently engage the pelvic floor muscles. Hold this light contraction through the entire OM. This is not a clench — it's a lift." />
-      <Step num={6} title="Repeat" desc="3–5 OMs total. After the final OM, sit in silence for 10 seconds. Open your eyes." />
+      <Step num={2} title="Jnana Mudra — The Connection" desc="Touch the tip of your index finger to the tip of your thumb on each hand, forming a circle. Other three fingers extend naturally, relaxed. Palms face upward, resting on knees. The thumb = universal consciousness (Brahman). Index = individual consciousness (Atman). Connecting them creates a closed electrical circuit that calms the nervous system." />
+      <Step num={3} title="Close Eyes &amp; Breathe In" desc="Close your eyes. Take one full breath in through the nose." />
+      <Step num={4} title="Chant the OM" desc="On the exhale, chant &quot;OM&quot; (pronounced AUM — three sounds blending). &quot;Ahhh&quot; starts in the belly, &quot;Ohhh&quot; rises to the chest, &quot;Mmmm&quot; resonates in the skull. Feel the vibration physically in each zone." />
+      <Step num={5} title="Mula Bandha — The Root Lock" desc="Gently engage the pelvic floor muscles — same muscles to stop urination mid-stream. Hold this light contraction through the entire OM. This is not a clench — it's a lift. Like pulling energy upward from the base of your spine." />
+      <Step num={6} title="Repeat" desc="3–5 OMs total. Each 8–15 seconds (one full exhale). After the final OM, sit in silence for 10 seconds. Open your eyes. You are now in the Captain's Chair." />
+      <Callout type="tip" icon="✅"><strong>What It Should Feel Like:</strong> A gentle buzzing in your chest and skull. A sense of being &quot;landed&quot; in your body. If dizzy, ease back on exhale pressure.<br/><br/><strong>Compressed (DoorDash by 6:30 AM):</strong> 3 OMs only, 60 seconds total. Same mudra, same Mula Bandha. Skip the 10-second silence.</Callout>
       <hr className="scroll-hr" />
+
       <h2 className="scroll-h3">Practice 02: Nadi Shodhana <span className="stp-badge badge-blue">5 min</span></h2>
-      <Callout type="note" icon="ℹ️"><strong>Alternate Nostril Breathing.</strong> Balances the autonomic nervous system. The single most effective breathwork for ADHD executive function.</Callout>
-      <Step num={1} title="Right Hand: Vishnu Mudra" desc="Fold index + middle finger into your palm. Use thumb to close right nostril, ring finger for left." />
-      <Step num={2} title="The Breathing Cycle" desc="Close right → Inhale left 4 counts → Hold both 4 → Exhale right 4 → Inhale right 4 → Hold both 4 → Exhale left 4. That is ONE round." />
-      <Step num={3} title="Duration" desc="Repeat for 5 minutes (~8–10 rounds). After final round, take 3 natural breaths." />
+      <Callout type="note" icon="ℹ️"><strong>Alternate Nostril Breathing.</strong> Balances the autonomic nervous system. Left nostril = parasympathetic (calm). Right = sympathetic (alert). Alternating brings equilibrium. The single most effective breathwork for ADHD executive function.</Callout>
+      <Step num={1} title="Right Hand: Vishnu Mudra" desc="Fold index + middle finger into your palm. You'll use your right thumb to close your right nostril, and right ring finger to close left nostril. Left hand stays in Jnana Mudra on knee." />
+      <Step num={2} title="The Breathing Cycle (One Round)" desc="• Close right nostril with thumb. Inhale through left for 4 counts. • Close both nostrils. Hold for 4 counts. • Release right nostril (keep left closed). Exhale through right for 4 counts. • Keep left closed. Inhale through right for 4 counts. • Close both. Hold 4 counts. • Release left (keep right closed). Exhale through left for 4 counts. That is ONE complete round." />
+      <Step num={3} title="Duration" desc="Repeat for 5 minutes (~8–10 rounds). After final round, release both nostrils. Take 3 natural breaths with eyes closed. Open eyes. If congested: skip holds. Just alternate inhale/exhale." />
       <hr className="scroll-hr" />
+
+      <h2 className="scroll-h3">Practice 03: The S3 Check-In <span className="stp-badge badge-purple">90 sec · Studio Days</span></h2>
+      <Callout type="purple" icon="🧠"><strong>Metacognitive Awakening.</strong> Fires before opening the DAW. Prevents autopilot sessions. Hold <strong>Dhyana Mudra</strong>: right hand in left palm, both facing up, thumbs lightly touching to form an oval. Rest in your lap.</Callout>
+      <Step num={1} title="System 1: Sensation" desc="&quot;What is my BODY doing right now?&quot; Don't think the answer. FEEL it. Notice chest, gut, jaw, shoulders. Is there tension? Ease? Heaviness?" />
+      <Step num={2} title="System 2: Cognition" desc="&quot;What am I trying to hold in working memory right now?&quot; DoorDash income? A lyric idea? Anxiety about the release? Just name it." />
+      <Step num={3} title="System 3: Metacognition" desc="&quot;Am I monitoring or controlling right now?&quot; Watching your mind (healthy) vs. forcing it (counterproductive). The question itself activates S3." />
+      <Step num={4} title="The Sentence" desc="&quot;I am [state]. I will [intention today].&quot; Examples: &quot;I am scattered. I will focus on one vocal take at a time.&quot; / &quot;I am numb. I will start with warmups and let the session wake me up.&quot;" />
+      <Callout type="tip" icon="✅"><strong>Barrett's Interoception Model:</strong> Your brain makes predictions. When they're wrong, you feel discomfort. Naming the state (&quot;I am anxious&quot;) updates the prediction. The body settles because the brain is no longer surprised by the sensation.</Callout>
+      <hr className="scroll-hr" />
+
+      <h2 className="scroll-h3">Practice 04: The 90-Second Kill List Scan <span className="stp-badge badge-gold">90 sec</span></h2>
+      <Step num={1} title="Open → Read → Close" desc="Open Oracle Compass → Kill List. Read ONLY the RED (urgent) items. Don't open them. Don't start solving them. Just read the titles. Ask: &quot;Which one is the single most important today?&quot; Close the app. That one thing is your Action 1." />
+      <Callout type="warning" icon="⚠️"><strong>The 90-Second Exit Rule:</strong> If still scrolling at 90 seconds, close the app regardless. ADHD hyperfocus turns &quot;quick check&quot; into an hour. The hard exit prevents this.</Callout>
+      <hr className="scroll-hr" />
+
+      <h2 className="scroll-h3">Practice 05: Pre-Flight Somatic Matrix <span className="stp-badge badge-orange">90 sec · Before Recording</span></h2>
+      <p className="scroll-p">A 6-point biometric scan, 5 seconds before the red light.</p>
+      <Step num={1} title="Feet &amp; Knees" desc="Feet rooted? Knees slightly bent? Locked knees paralyze the pelvic floor and cut off breath support." />
+      <Step num={2} title="Intercostal Anchor" desc="Hands on lower ribs. Breathe in. Ribs expanding OUTWARD (laterally)? If shoulders rise or chest puffs, you're breathing wrong." />
+      <Step num={3} title="C-Spine Posture" desc="String pulling crown toward ceiling. Chin drops slightly — parallel to floor. Back of neck feels LONG. This opens the larynx." />
+      <Step num={4} title="Jaw Check" desc="Let jaw hang open. Thumb under chin in soft triangle. Say &quot;Ah.&quot; That muscle must stay SOFT and spongy. If it hardens, root tongue is choking your airway." />
+      <Step num={5} title="Soft Palate" desc="Create the beginning of a yawn — that slight lift at the back of your mouth. Hold it there. Don't full-yawn. Just the first 20% of lift. That's your soft palate opening the resonance chamber." />
+      <Step num={6} title="Mental Override" desc="&quot;Acknowledge the block. Channel the frequency.&quot; Then hit record." />
+      <hr className="scroll-hr" />
+
+      <h2 className="scroll-h3">Practice 06: Post-Session Cool-Down <span className="stp-badge badge-green">3 min · After Recording</span></h2>
+      <Step num={1} title="Lip Trills" desc="Close lips loosely, exhale to buzz. Start at comfortable high pitch, slide slowly DOWN to lowest note. Repeat 5–6 times, each starting slightly lower." />
+      <Step num={2} title="Humming" desc="30 seconds of gentle humming on a comfortable pitch. Feel vibration in chest." />
+      <Step num={3} title="Hydrate" desc="Room-temperature water. After recording, laryngeal muscles are engorged with blood. If you just stop, they stiffen overnight." />
+      <hr className="scroll-hr" />
+
       <h2 className="scroll-h3">Practice 07: Barrett Body Budget Rules <span className="stp-badge badge-red">Standing Protocol</span></h2>
+      <p className="scroll-p">These aren&apos;t practices — they&apos;re rules. Violate these and everything falls apart.</p>
       <div className="scroll-card scroll-card-left">
         <ol style={{paddingLeft:20}}>
-          <li className="scroll-p"><strong>Sleep:</strong> Lights out 10:30 PM. Dopamine receptors upregulate, neuroplasticity happens.</li>
-          <li className="scroll-p"><strong>Caffeine Cutoff:</strong> 1:00 PM. After 1 PM you&apos;re stealing from tomorrow.</li>
-          <li className="scroll-p"><strong>Protein Pre-Session:</strong> Eggs, oats, banana. Skipping crashes executive function at hour 3.</li>
-          <li className="scroll-p"><strong>Hydration for Vocals:</strong> Room-temp water 2–4 HOURS before tracking.</li>
-          <li className="scroll-p"><strong>No Dairy 2 Hours Before Vocals.</strong></li>
-          <li className="scroll-p"><strong>Fruit Over Sugar:</strong> Banana first. Every time.</li>
-          <li className="scroll-p"><strong>Mid-Session Fuel at the Desk.</strong></li>
-          <li className="scroll-p"><strong>Sunday Meal Prep:</strong> 30–45 min. Rice, chicken thighs, boiled eggs, PB&amp;J. $38–48 at Aldi.</li>
+          <li className="scroll-p"><strong>Sleep:</strong> Lights out 10:30 PM. Dopamine receptors upregulate, neuroplasticity happens, vocal cords recover.</li>
+          <li className="scroll-p"><strong>Caffeine Cutoff:</strong> 1:00 PM. 6-hour half-life. After 1 PM you&apos;re stealing from tomorrow.</li>
+          <li className="scroll-p"><strong>Protein Pre-Session:</strong> Eggs, oats, banana. Tyrosine = dopamine precursor. Skipping crashes executive function at hour 3.</li>
+          <li className="scroll-p"><strong>Hydration for Vocals:</strong> Room-temp water 2–4 HOURS before tracking. Water right before does nothing for your cords.</li>
+          <li className="scroll-p"><strong>No Dairy 2 Hours Before Vocals:</strong> Coats the folds, creates mucus drag. Warm water + honey instead.</li>
+          <li className="scroll-p"><strong>Fruit Over Sugar:</strong> Banana first. Every time. Sobriety detox drives hard cravings weeks 1–4.</li>
+          <li className="scroll-p"><strong>Mid-Session Fuel at the Desk:</strong> If you have to leave the room to eat, you won&apos;t do it. PB&amp;J stays at the workstation.</li>
+          <li className="scroll-p"><strong>Sunday Meal Prep:</strong> 30–45 min. Rice, chicken thighs, boiled eggs, PB&amp;J sandwiches bagged. $38–48 at Aldi.</li>
         </ol>
+      </div>
+      <hr className="scroll-hr" />
+
+      <h2 className="scroll-h3">Practice 08: Lower Chain Activation Protocol <span className="stp-badge badge-orange">8–10 min · Daily</span></h2>
+      <Callout type="note" icon="🧘"><strong>Mudra Pairing: Prithvi Mudra</strong> — ring fingertip to thumb tip, other fingers extended, palms face upward on knees. Earth element. Grounding. Release the mudra during Wall Sit and Standing Protocol when hands are free.</Callout>
+      <Step num={1} title="Somatic Check First (10 sec)" desc="Stand with eyes closed. Feel both knees. Dull background tension (normal) = proceed. Sharp or bright = stop, don't train today. Stress wave with breath = continue gently." />
+      <Step num={2} title="Calf + Achilles Release (2 min)" desc="Sit, legs extended. Foam roller/lacrosse ball on calf from Achilles up to back of knee in slow passes. Pause 5 full breaths on any spot that &quot;catches.&quot; The calf is the first domino in pelvic floor tension." />
+      <Step num={3} title="Hamstring Fascial Breath (2 min)" desc="Seated, one leg extended, foot flexed. Deep inhale — feel hamstring lengthen AWAY from sitting bone. Exhale, let it soften. 6 times per leg. This is NOT a stretch. You're breathing space into the tissue." />
+      <Step num={4} title="Hip Flexor Floor Release (2 min)" desc="Low lunge — back knee on floor, front foot flat. Torso upright. Do NOT push forward. Breathe and let gravity open the hip. 90-second hold per side. The psoas + iliacus attach to the lumbar spine and pull the pelvic floor into lock when tight — releasing them is the master key." />
+      <Step num={5} title="Pelvic Floor Unlock Breath (2 min)" desc="Lie on back, knees bent, feet flat. Inhale into belly — lower back presses floor, pelvic floor drops and OPENS like an umbrella opening downward. On exhale, it rises naturally. Repeat 10x. This is the passive unlock — no Mula Bandha here." />
+      <Step num={6} title="Wall Sit Activation (1 min)" desc="Back flat against wall. Slide down until thighs parallel or slightly above — never below parallel (meniscal protocol). Hold 30–60 sec. If sensation behind kneecap, come up 15 degrees." />
+      <Step num={7} title="Unlocked Knees Standing Protocol" desc="Stand up. Consciously unlock knees — soft bend. Weight across all four corners of each foot. This is now your default standing position — in the vocal booth, waiting for DoorDash, at the stove." />
+      <Callout type="warning" icon="⚠️"><strong>Knee Flare Protocol:</strong> If knee spikes: stop, lie on back, elevate on pillow. Do 10 pelvic floor unlock breaths. Ask: am I in pain or in stress? Wait 5 min. Decreased = somatized. Holds/increases = rest today.<br/><br/><strong>Compressed (5 min):</strong> Skip calf release. Steps 3+4+5+7 only.</Callout>
+
+      <hr className="scroll-hr" />
+
+      <h2 className="scroll-h3">Practice 09: Upper Chain Posture Reset <span className="stp-badge badge-blue">5 min · Post-DoorDash/Pre-Studio</span></h2>
+      <Callout type="note" icon="🧘"><strong>Mudra: Prana Mudra at Step 6 only.</strong> Ring + pinky to thumb, other two extended. Palms forward at sides during Wall Stand Reset. Hands are occupied during Steps 1–5.</Callout>
+      <Step num={1} title="Cervical Spine Decompress (1 min)" desc="Drop chin toward chest gently. Slowly roll right ear to right shoulder (30 sec), return, left side (30 sec). No full neck rolls. You're creating traction, not rotation." />
+      <Step num={2} title="Door Frame Row (1 min)" desc="Grip both sides of doorway at chest height. Lean back. Pull chest toward frame, squeezing shoulder blades together. Hold 2 sec at top. 10–12 reps. Directly counteracts rolled-shoulder collapse." />
+      <Step num={3} title="Floor Prone Angel (1 min)" desc="Lie face down. Arms out in &quot;T,&quot; palms down. Raise both arms 2–3 inches off floor. Hold 5 sec, lower. 8 reps. Forehead stays down. Mid-back muscles that were switched off will fire up." />
+      <Step num={4} title="Pike Push-Up (1 min)" desc="Push-up position, walk feet toward hands until hips high (inverted V). Bend elbows, lower head toward floor, push back up. 6–8 reps. Builds posterior delts and upper trap for effortless &quot;string-from-crown&quot; posture." />
+      <Step num={5} title="Jaw-Neck Decoupling (1 min)" desc="Thumb in soft triangle under chin. Rotate head left and right while keeping jaw COMPLETELY relaxed. Tissue under thumb must stay soft and spongy throughout. If it hardens, you're carrying neck tension in your jaw — that kills Appoggio support." />
+      <Step num={6} title="Wall Stand Reset (30 sec)" desc="Back flat against wall: heels, calves, glutes, upper back, and back of skull all touching. Hold 30 sec. Walk away carrying this position. Form Prana Mudra here." />
+      <Callout type="tip" icon="✅"><strong>Post-DoorDash minimum:</strong> Steps 1 → 2 → 6 (3 min). The steering wheel locks C-spine, rounds shoulders, collapses lower back. Entering the booth without reset = compromised instrument.<br/><br/><strong>Compressed (2 min):</strong> Door Frame Row + Wall Stand Reset only.</Callout>
+
+      <hr className="scroll-hr" />
+
+      <h2 className="scroll-h3">Practice 10: The 30-Minute Movement Block <span className="stp-badge badge-green">30 min · Post-Breakfast</span></h2>
+      <Callout type="note" icon="🧘"><strong>Mudra Arc:</strong> Pre-movement: Prithvi (ring to thumb, 3 breaths). During: None — hands active. Post (final 60 sec): Dhyana Mudra (right hand in left, palms up, thumbs touching). Eyes closed. 3 breaths. This is the neuroplastic window.</Callout>
+      <Step num={1} title="Pre-Movement Check (3 Breaths)" desc="Scan: right knee, left knee front, lower back, pelvic floor. Traffic light: Green = full session. Yellow = reduced ROM, no single-leg. Red = Practice 08 only, no movement block today." />
+      <Step num={2} title="Phase 1 — Jonin → Anbu: Bodyweight Foundation" desc="Circuit (3 rounds, 45 sec work / 15 sec rest): Wall Sit (parallel+) · Floor Prone Angels (8 reps, 5-sec holds) · Pike Push-Ups (6–8 reps) · Door Frame Rows (12 reps) · Dead Bug (6 reps/side) · Supported Split Squat (2-inch depth only, right knee: stop if tracking issues)" />
+      <Step num={3} title="Phase 2 — Anbu → Kage: Tai Chi Enters" desc="Add 10-min Yang-style short form (24 movements). Most therapeutic movement for post-surgical knees. Increase wall sit depth +5 degrees only if right knee green for 3 consecutive weeks." />
+      <Step num={4} title="Phase 3 — Kage → S-Rank: Capoeira Ginga Returns" desc="Ginga footwork only, no kicks/acrobatics. Right knee must be consistently green 6+ weeks before ginga begins. The body REMEMBERS this pattern from childhood in Milwaukee." />
+      <Step num={5} title="Phase 4 — S-Rank → God of Shinobi: Muay Thai Clinch" desc="Standing clinch and pad work — not full sparring. Most structurally sound entry for post-surgical knees. Instructor required." />
+
+      <Callout type="important" icon="⚡"><strong>Non-Negotiable:</strong> Every rep starts with breath. Inhale to prepare, exhale to exert. If you can't breathe, you're going too hard. This is CNS-protective training, not performance training.<br/><br/><strong>Left Knee Rule (permanent):</strong> Never lock out under load. Stop 10–15° before full extension. Kneeling is fine.<br/><br/><strong>Minimum Viable Session (10 min):</strong> 3-breath check + Dead Bug (3 min) + Door Frame Row (2 min) + Wall Sit (2 min) + Floor Prone Angel (2 min) + Wall Stand Reset (1 min).</Callout>
+
+      <h2 className="scroll-h3">Quick Reference Cards</h2>
+      <div className="scroll-seq-box" style={{padding: "16px", background: "rgba(255,255,255,0.03)", borderRadius: "8px", marginBottom: "16px"}}>
+        <div className="scroll-seq-title" style={{fontWeight: 600, color: "var(--text)", marginBottom: "8px"}}>Full S-Tier Morning</div>
+        <div style={{fontSize: "14px", lineHeight: 1.6, color: "var(--text)"}}>Wake → 32oz water + sea salt → Practice 01 (Jnana + OM, 90sec) → Practice 02 (Nadi Shodhana, 5min) → Practice 08 compressed (Lower Chain, 5min) → Practice 09 compressed (Upper Chain, 2min) → Protein meal → Practice 10 (Movement, 30min) → Practice 04 (Kill List, 90sec) → Practice 03 (S3 Check-in, studio days) → DAW open</div>
+      </div>
+      <div className="scroll-seq-box" style={{padding: "16px", background: "rgba(255,255,255,0.03)", borderRadius: "8px", marginBottom: "16px"}}>
+        <div className="scroll-seq-title" style={{fontWeight: 600, color: "var(--text)", marginBottom: "8px"}}>Compressed Ignition (DoorDash by 6:30 AM)</div>
+        <div style={{fontSize: "14px", lineHeight: 1.6, color: "var(--text)"}}>Wake → 32oz water + sea salt → Practice 01 compressed (3 OMs, 60sec) → Protein meal (hardboiled eggs + banana) → Practice 04 (Kill List, 90sec) → DoorDash</div>
+      </div>
+      <div className="scroll-seq-box" style={{padding: "16px", background: "rgba(255,255,255,0.03)", borderRadius: "8px", marginBottom: "16px"}}>
+        <div className="scroll-seq-title" style={{fontWeight: 600, color: "var(--text)", marginBottom: "8px"}}>Post-DoorDash Reset (Before Studio)</div>
+        <div style={{fontSize: "14px", lineHeight: 1.6, color: "var(--text)"}}>Practice 09 compressed (C-Spine + Door Frame Row + Wall Stand, 3min) → Practice 03 (S3 Check-in, 90sec) → Practice 05 (Pre-Flight Somatic Matrix) → Record</div>
+      </div>
+      <div className="scroll-seq-box" style={{padding: "16px", background: "rgba(255,255,255,0.03)", borderRadius: "8px", marginBottom: "16px"}}>
+        <div className="scroll-seq-title" style={{fontWeight: 600, color: "var(--text)", marginBottom: "8px"}}>Minimum Viable Day (Everything Hurts)</div>
+        <div style={{fontSize: "14px", lineHeight: 1.6, color: "var(--text)"}}>Practice 01 compressed (3 OMs) → Practice 10 MVS (10min) → Practice 07 (Barrett Body Budget Rules)</div>
       </div>
     </>
   );
@@ -416,25 +676,82 @@ function SpotifyAdsPage() {
   return (
     <>
       <Header tag="Business · Sage-Level Paid Growth Playbook" title="Spotify Ads Mastery" sub="Comprehensive ad strategy verified against live adsmanager.spotify.com interface. Real CPMs, real targeting fields, real scripts." />
-      <Callout type="important" icon="✓"><strong>Verified against live Ethan Payton LLC Spotify Ads Manager account · March 31, 2026.</strong></Callout>
+      <Callout type="important" icon="✓"><strong>Verified against live Ethan Payton LLC Spotify Ads Manager account · March 31, 2026.</strong> All CPM ranges, budget minimums, and UI structure sourced from live account screenshots.</Callout>
+
       <h2 className="scroll-h3">Part 1 — Auction vs. Reserved</h2>
       <div className="scroll-grid-2">
-        <div className="scroll-grid-card" style={{border:"2px solid #3ecf71"}}><div className="scroll-gc-title" style={{color:"#3ecf71"}}>✓ AUCTION — Use This</div><div className="scroll-gc-desc"><strong>~$18/day minimum · Dynamic CPM</strong><br/>Audio CPM: $8.43–$9.38. Display CPM: $4.35–$4.88. Budget is flexible — pause, adjust, reallocate anytime.</div></div>
-        <div className="scroll-grid-card"><div className="scroll-gc-title" style={{color:"rgba(255,255,255,0.3)"}}>RESERVED — Come Back at $5K+</div><div className="scroll-gc-desc"><strong>$5,000 lifetime minimum.</strong> Not the right tool for stream growth at any budget level.</div></div>
+        <div className="scroll-grid-card" style={{border:"2px solid #3ecf71"}}><div className="scroll-gc-title" style={{color:"#3ecf71"}}>✓ AUCTION — Use This</div><div className="scroll-gc-desc"><strong>~$18/day minimum · Dynamic CPM</strong><br/>Audio CPM: $8.43–$9.38. Display CPM: $4.35–$4.88. Spotify&apos;s algorithm finds the right audience within your targeting. Budget is flexible — pause, adjust, reallocate anytime. This is the tool for all independent campaigns at your current scale.</div></div>
+        <div className="scroll-grid-card"><div className="scroll-gc-title" style={{color:"rgba(255,255,255,0.4)"}}>RESERVED — Come Back at $5K+</div><div className="scroll-gc-desc"><strong>$5,000 lifetime minimum · Fixed $10.00 CPM</strong><br/>Pre-book guaranteed impressions. Delivery goal = impressions only. No performance optimization. This is a major label brand awareness tool. Not the right tool for stream growth at any budget level.</div></div>
       </div>
-      <h2 className="scroll-h3">Part 3 — Unlocking &quot;Streams&quot; Delivery Goal</h2>
-      <Callout type="warning" icon="⚠️"><strong>Clicks ≠ Streams.</strong> Streams optimization finds people who listen 30+ sec → the full engagement signal the algorithm needs. <strong>Streams is ALWAYS superior.</strong></Callout>
-      <Step num={1} title='Find "Your content on Spotify"' desc="In Ad Set setup, click Music." />
-      <Step num={2} title='Search "Ethan Payton"' desc="Select your artist profile. This declares you own the content." />
-      <Step num={3} title='Select "Streams" delivery goal' desc="Switches the algorithm to optimize for listening behavior." />
-      <Step num={4} title="Set Bid at $9.50 (midpoint)" desc="Your account range: $8.27–$9.92. Lower after 48 hrs if spend moves too fast." />
+      <Callout type="tip" icon="✅"><strong>You will never use Reserved.</strong> Even at $5K budget, Auction is superior for music growth — the algorithm optimizes toward streams and engagement, while Reserved just passively delivers impressions at a flat rate.</Callout>
+
+      <h2 className="scroll-h3">Part 2 — Ad Formats (Real CPMs)</h2>
+      <div className="scroll-grid-3">
+        <div className="scroll-grid-card" style={{borderTop:"3px solid #3ecf71"}}><div className="scroll-gc-title">🎵 Audio Ad</div><div className="scroll-gc-desc"><strong style={{color:"#4d9de0"}}>CPM: $8.43–$9.38</strong><br/>Plays during music sessions. Ears open, mentally receptive. Highest attention context. <strong>Use this for ALL LOVE.</strong></div></div>
+        <div className="scroll-grid-card"><div className="scroll-gc-title">📱 Display Ad</div><div className="scroll-gc-desc"><strong style={{color:"#9b72cf"}}>CPM: $4.35–$4.88</strong><br/>Visual banner. Half the CPM of audio but lower intent. Use as secondary format only for profile visits.</div></div>
+        <div className="scroll-grid-card"><div className="scroll-gc-title">🎬 Video Ad</div><div className="scroll-gc-desc"><strong style={{color:"rgba(255,255,255,0.4)"}}>CPM: Varies</strong><br/>Plays when Spotify open on screen. Worth testing in campaign 2 if you have a Canvas loop or lyric video clip.</div></div>
+      </div>
+
+      <h2 className="scroll-h3">Part 3 — Unlocking &quot;Streams&quot; Delivery Goal (CRITICAL)</h2>
+      <Callout type="warning" icon="⚠️"><strong>Clicks ≠ Streams.</strong> Clicks optimization finds people who click → many bounce after 5 sec. Streams optimization finds people who listen 30+ sec → the full engagement signal the algorithm needs. <strong>Streams is ALWAYS superior for music promotion.</strong></Callout>
+      <Step num={1} title="Find &quot;Your content on Spotify&quot;" desc="In the Ad Set setup, find the toggle: Podcast · Music. Click Music." />
+      <Step num={2} title="Search &quot;Ethan Payton&quot;" desc="In &quot;Search for artists&quot; field, type Ethan Payton and select your artist profile. This declares you own the content you're promoting." />
+      <Step num={3} title="Select &quot;Streams&quot; delivery goal" desc="Once your artist content is linked, &quot;Streams&quot; unlocks in the Delivery section. Select it. This switches the algorithm to optimize for listening behavior." />
+      <Step num={4} title="Set Bid at $9.50 (midpoint)" desc="Your account range: $8.27–$9.92. Start upper-middle. Lower after 48 hrs if spend moves too fast. Bump to $9.92 if delivery is slow." />
+      <Callout type="tip" icon="🌱"><strong>What this does to your algorithm:</strong> Every paid stream adds a listener to the model of &quot;who listens to Ethan Payton.&quot; That model influences organic Discover Weekly recommendations — the paid campaign seeds the organic algorithm. <strong>Every stream you buy via ads has compounding organic value.</strong></Callout>
+
       <h2 className="scroll-h3">Part 4 — Targeting (Field-by-Field)</h2>
       <div className="scroll-table-wrap"><table className="scroll-table"><thead><tr><th>Field</th><th>Setting</th><th>Why</th></tr></thead><tbody>
-        <tr><td>Country</td><td><strong>United States</strong></td><td>Entire data set is US-based.</td></tr>
-        <tr><td>City Targeting</td><td><strong>Denver, Minneapolis, Dallas</strong></td><td>Tier 1 organic markets.</td></tr>
-        <tr><td>Age</td><td><strong>18–34</strong></td><td>Primary streaming demo.</td></tr>
-        <tr><td>Fan Bases</td><td><strong>6LACK, Bryson Tiller, PND, Daniel Caesar, Smino</strong></td><td>Core Drive S-tier matches.</td></tr>
+        <tr><td>Country</td><td><strong>United States</strong></td><td>Entire data set is US-based. No international until MAL {">"} 10K.</td></tr>
+        <tr><td>City Targeting</td><td><strong>Denver, Minneapolis, Dallas</strong></td><td>Tier 1 organic markets. Leave one ad set WITHOUT city targeting to discover new cities.</td></tr>
+        <tr><td>Age</td><td><strong>18–34</strong></td><td>Primary streaming demo. Default 13–65+ is too wide to optimize.</td></tr>
+        <tr><td>Gender</td><td><strong>All</strong></td><td>Don&apos;t filter. Let the algorithm find who engages. Check S4A after campaign for movement.</td></tr>
+        <tr><td>Interests</td><td><strong>R&amp;B, Soul, Alternative R&amp;B</strong></td><td>Genre receptiveness signal. Stacks with Fan bases.</td></tr>
+        <tr><td>Fan Bases</td><td><strong>6LACK, Bryson Tiller, PND, Daniel Caesar, Smino</strong></td><td>Core Drive S-tier matches. Algorithm identifies active streamers of these artists.</td></tr>
+        <tr><td>Language</td><td><strong>English</strong></td><td>Ensure ad is heard by listeners who understand lyrics.</td></tr>
+        <tr><td>Device</td><td><strong>All (iOS, Android, Desktop)</strong></td><td>No reason to exclude at this budget.</td></tr>
       </tbody></table></div>
+      <Callout type="note" icon="ℹ️"><strong>Stacking Strategy:</strong> Interests + Fan bases are both in &quot;Detailed targeting&quot; — NOT mutually exclusive. Layer <strong>R&amp;B interest + 6LACK/Tiller fan base</strong> in one ad set. This creates an AND condition — tighter, higher-intent audience. Reach shrinks but stream rate climbs.</Callout>
+
+      <h2 className="scroll-h3">Part 5 — Budget Ladder</h2>
+      <h3 className="scroll-h3" style={{fontSize: 16, marginTop: 16}}>EP Launch ($50 total)</h3>
+      <div className="scroll-table-wrap"><table className="scroll-table"><thead><tr><th>City</th><th>Budget</th><th>Rationale</th></tr></thead><tbody>
+        <tr><td>Denver</td><td>$20</td><td>#1 organic city (372 listeners)</td></tr>
+        <tr><td>Minneapolis</td><td>$15</td><td>#2 organic (323 listeners)</td></tr>
+        <tr><td>Dallas</td><td>$15</td><td>#3 organic (241 listeners)</td></tr>
+      </tbody></table></div>
+      <h3 className="scroll-h3" style={{fontSize: 16, marginTop: 16}}>Album Launch ($250 total · Expand to 10 cities)</h3>
+      <div className="scroll-table-wrap"><table className="scroll-table"><thead><tr><th>City</th><th>Budget</th></tr></thead><tbody>
+        <tr><td>Denver</td><td>$40</td></tr><tr><td>Minneapolis</td><td>$30</td></tr><tr><td>Dallas</td><td>$25</td></tr><tr><td>Chicago</td><td>$25</td></tr><tr><td>Calgary</td><td>$20</td></tr><tr><td>Toronto</td><td>$20</td></tr><tr><td>Charlotte</td><td>$20</td></tr><tr><td>Phoenix</td><td>$20</td></tr><tr><td>NYC</td><td>$25</td></tr><tr><td>LA</td><td>$25</td></tr>
+      </tbody></table></div>
+      <p className="scroll-p"><strong>Marquee ($100–150):</strong> Full-screen notification to entire listener base. Album release day. One shot.<br/><strong>Meta Ads ($50–100):</strong> Video ad (15–30 sec) → Spotify link. Brent Faiyaz / SZA / 6LACK / Daniel Caesar fans. Instagram only.</p>
+
+      <h2 className="scroll-h3">Part 6 — Audio Creative Specs + The Script</h2>
+      <div className="scroll-table-wrap"><table className="scroll-table"><thead><tr><th>Spec</th><th>Requirement</th></tr></thead><tbody>
+        <tr><td>Audio Length</td><td>30 seconds max</td></tr>
+        <tr><td>File Format</td><td>MP3, OGG, or WAV</td></tr>
+        <tr><td>File Size</td><td>1MB maximum</td></tr>
+        <tr><td>Loudness</td><td>-16 LUFS · -2.0 dBTP true peak</td></tr>
+        <tr><td>Word Count</td><td>65 words max (for natural pace)</td></tr>
+        <tr><td>Companion Image</td><td>640×640px · JPEG or PNG · 200KB max</td></tr>
+        <tr><td>CTA Button</td><td>&quot;Listen Now&quot; (recommended)</td></tr>
+        <tr><td>Destination</td><td>Direct Spotify track link (NOT artist profile — reduce friction)</td></tr>
+      </tbody></table></div>
+
+      <h3 className="scroll-h3" style={{fontSize: 16, marginTop: 16}}>The 30-Second Ad Script</h3>
+      <div className="scroll-seq-box" style={{padding: "16px", background: "rgba(255,255,255,0.03)", borderRadius: "8px"}}>
+        <div className="scroll-seq-title" style={{fontWeight: 600, color: "var(--text)", marginBottom: "8px"}}>ALL LOVE EP · 30-Second Audio Ad · ~55 words · Record in one take</div>
+        <div style={{fontSize: "14px", lineHeight: 1.6, color: "var(--text)"}}>
+        <strong style={{color:"rgba(255,255,255,0.4)"}}>0:00</strong> — [Instrumental opens at ~15% volume — 2 full seconds before voice]<br/>
+        <strong style={{color:"rgba(255,255,255,0.4)"}}>0:02</strong> — &quot;I made this one about a feeling most people don&apos;t say out loud.&quot;<br/>
+        <strong style={{color:"rgba(255,255,255,0.4)"}}>0:08</strong> — &quot;That feeling of being right there — and still not being seen.&quot;<br/>
+        <strong style={{color:"rgba(255,255,255,0.4)"}}>0:13</strong> — [Music comes up — let the hook play for 12 seconds. Trust the song.]<br/>
+        <strong style={{color:"rgba(255,255,255,0.4)"}}>0:25</strong> — &quot;ALL LOVE EP. I&apos;m Ethan Payton. Save it if it stays with you.&quot;<br/>
+        <strong style={{color:"rgba(255,255,255,0.4)"}}>0:29</strong> — [Music fades to silence over 1 second]
+        </div>
+      </div>
+      <Callout type="note" icon="🎯"><strong>Why &quot;Save&quot; is the CTA:</strong> Save is the highest-intent algorithmic signal. It tells Spotify the listener is investing in the record. That signal feeds Discover Weekly directly. It&apos;s not &quot;stream it again&quot; — it&apos;s &quot;I&apos;m keeping this.&quot;</Callout>
+
       <h2 className="scroll-h3">Part 7 — KPIs After Launch</h2>
       <div className="scroll-metrics-grid">
         <div className="scroll-metric-card"><span className="scroll-metric-val">&lt;$0.30</span><div className="scroll-metric-lbl">Cost Per Stream</div></div>
@@ -444,6 +761,14 @@ function SpotifyAdsPage() {
         <div className="scroll-metric-card"><span className="scroll-metric-val">$8–10</span><div className="scroll-metric-lbl">Actual CPM</div></div>
         <div className="scroll-metric-card"><span className="scroll-metric-val">+20%</span><div className="scroll-metric-lbl">MAL Delta (7-day)</div></div>
       </div>
+      <Callout type="important" icon="📊"><strong>Day 7 Check:</strong> Ads Manager → Reports → compare ad sets by cost-per-stream. Pause worst performer, shift budget to winner. Open S4A → Audience → if % female moved up 1–2 points, contextual targeting is working.</Callout>
+
+      <h2 className="scroll-h3">Part 8 — Ad ↔ Release Waterfall</h2>
+      <Step num={1} title="EP drops + campaign launches same day" desc="Organic release discovery + paid reach hit simultaneously. Algorithm reads multi-source traffic as stronger demand signal." />
+      <Step num={2} title="Days 1–7 — Algorithm learns from paid streams" desc="Fan base targeting (6LACK, Tiller) trains the algorithm. Bleeds into organic Discover Weekly 2–4 weeks later." />
+      <Step num={3} title="Day 7 — Restructure" desc="Pause weakest ad set. Shift budget to winner. Audience data from campaign 1 informs campaign 2 targeting — you're not guessing anymore." />
+      <Step num={4} title="Post-campaign — Write the data brief" desc="Best ad set, actual CPM, cost per stream, save rate, gender movement, new cities discovered. This doc is the foundation for every future campaign. By campaign 3, you have a precision system." />
+      <Callout type="important" icon="⚡"><strong>The Single Lever:</strong> Ads drive listeners → listeners who save become Discover Weekly seeds → DW drives organic growth. Ads are the primer, not the engine. Music quality + save rate is the engine. Each cycle compounds — the sage move is running these consistently and reading the data each time.</Callout>
     </>
   );
 }
