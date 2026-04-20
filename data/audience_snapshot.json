@@ -1,0 +1,27 @@
+{
+  "_meta": {
+    "description": "Audience snapshot — fill in real numbers. Delta fields compare to previous snapshot.",
+    "updated": "2026-04-19",
+    "note": "Scaffold only — Ethan to verify and fill real numbers after EP drop."
+  },
+  "current": {
+    "snapshot_date": "2026-04-19",
+    "spotify_monthly_listeners": 16844,
+    "spotify_followers": 1401,
+    "instagram_followers": 2200,
+    "instagram_following": 2001,
+    "youtube_subscribers": null,
+    "email_subscribers": null,
+    "tiktok_followers": null
+  },
+  "previous": {
+    "snapshot_date": "2026-03-19",
+    "spotify_monthly_listeners": 14200,
+    "spotify_followers": 1320,
+    "instagram_followers": 2100,
+    "instagram_following": 1980,
+    "youtube_subscribers": null,
+    "email_subscribers": null,
+    "tiktok_followers": null
+  }
+}

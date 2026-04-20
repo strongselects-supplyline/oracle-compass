@@ -1,0 +1,21 @@
+{
+  "_meta": {
+    "description": "Rights registration status per track × organization. Edit via KAMI dashboard — client edits persist to IndexedDB. This file is the seed/fallback only.",
+    "updated": "2026-04-19",
+    "columns": ["distance_over_time", "ascap", "songtrust", "soundexchange"],
+    "states": ["unknown", "confirmed", "pending", "missing"]
+  },
+  "tracks": [
+    { "id": "i-like-girls",         "title": "I Like Girls",         "distance_over_time": "unknown", "ascap": "unknown", "songtrust": "unknown", "soundexchange": "unknown" },
+    { "id": "see-me",               "title": "SEE ME",               "distance_over_time": "unknown", "ascap": "pending", "songtrust": "pending", "soundexchange": "confirmed" },
+    { "id": "east-side-love",       "title": "East Side Love",       "distance_over_time": "unknown", "ascap": "unknown", "songtrust": "unknown", "soundexchange": "confirmed" },
+    { "id": "want-u-bad",           "title": "Want U Bad",           "distance_over_time": "unknown", "ascap": "unknown", "songtrust": "unknown", "soundexchange": "unknown" },
+    { "id": "green-light-patient",  "title": "Green Light Patient",  "distance_over_time": "unknown", "ascap": "unknown", "songtrust": "unknown", "soundexchange": "unknown" },
+    { "id": "luxury",               "title": "Luxury",               "distance_over_time": "unknown", "ascap": "unknown", "songtrust": "unknown", "soundexchange": "unknown" },
+    { "id": "worth-it",             "title": "Worth It",             "distance_over_time": "unknown", "ascap": "unknown", "songtrust": "unknown", "soundexchange": "unknown" },
+    { "id": "sweet-frustration",    "title": "Sweet Frustration",    "distance_over_time": "unknown", "ascap": "unknown", "songtrust": "unknown", "soundexchange": "confirmed" },
+    { "id": "like-i-did",           "title": "Like I Did",           "distance_over_time": "unknown", "ascap": "unknown", "songtrust": "unknown", "soundexchange": "confirmed" },
+    { "id": "just-say-so",          "title": "Just Say So",          "distance_over_time": "unknown", "ascap": "unknown", "songtrust": "unknown", "soundexchange": "unknown" },
+    { "id": "reconnect",            "title": "Reconnect",            "distance_over_time": "unknown", "ascap": "unknown", "songtrust": "unknown", "soundexchange": "unknown" }
+  ]
+}

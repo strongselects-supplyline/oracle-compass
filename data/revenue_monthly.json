@@ -1,0 +1,15 @@
+{
+  "_meta": {
+    "description": "Monthly revenue log. DoorDash bridge target: $1,800/month. Streaming revenue via Amuse wallet.",
+    "updated": "2026-04-19"
+  },
+  "bridge_target_monthly": 1800,
+  "months": [
+    { "month": "2025-11", "doordash": null, "streaming": null, "total": null },
+    { "month": "2025-12", "doordash": null, "streaming": null, "total": null },
+    { "month": "2026-01", "doordash": null, "streaming": null, "total": null },
+    { "month": "2026-02", "doordash": null, "streaming": null, "total": null },
+    { "month": "2026-03", "doordash": null, "streaming": null, "total": null },
+    { "month": "2026-04", "doordash": null, "streaming": null, "total": null }
+  ]
+}

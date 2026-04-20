@@ -1,0 +1,1300 @@
+{
+  "_meta": {
+    "version": 1,
+    "created": "2026-04-04",
+    "updated": "2026-04-18",
+    "description": "Single source of truth for catalog-level analytics. Update streaming fields monthly from Amuse Insights + Spotify for Artists. All unknown fields are null — do not guess.",
+    "update_cadence": "Monthly for streaming data. Immediately for ISRCs, release dates, and status changes.",
+    "instructions": "Claude reads this file at the top of any catalog analysis session. Eliminates context reconstruction from fragmented brain/ docs. One read = complete picture.",
+    "last_api_refresh": "2026-04-18"
+  },
+  "artist": {
+    "name": "Ethan Payton",
+    "aliases": [
+      "EP",
+      "past.El"
+    ],
+    "label": "past.El noir Records (Ethan Payton LLC)",
+    "distributor": "Amuse Pro",
+    "base": "Milwaukee / Lake Geneva, WI",
+    "spotify_profile": "28K5R8RuejXij5lB3MZxaQ",
+    "apple_music_profile": null,
+    "all_time_spotify_streams": 3460000,
+    "all_time_streams_source": "Hollywood Fever alone is 3.46M. Total catalog is higher.",
+    "amuse_wallet_lifetime": 9379.09,
+    "amuse_wallet_source": "Amuse wallet history as of Mar 11, 2026",
+    "spotify_snapshot_date": "2026-04-18",
+    "spotify_popularity": 21,
+    "spotify_followers": 1401,
+    "spotify_monthly_listeners": 16844,
+    "spotify_listener_follower_ratio": 0.083,
+    "spotify_top_organic_city": "Denver",
+    "spotify_snapshot_source": "musicstax.com (verified by Ethan screenshot 2026-04-18 AM)",
+    "spotify_genres": []
+  },
+  "catalog": [
+    {
+      "track_id": "hollywood_fever",
+      "title": "Hollywood Fever",
+      "status": "live",
+      "release_date": "2019-07-17",
+      "label": "Ethan Payton LLC",
+      "project": "back_catalog",
+      "metadata": {
+        "isrc": "QM2451835715",
+        "upc": "0707772130385",
+        "amuse_id": null,
+        "spotify_uri": "5bmTIhZaEPwsHtJh1I2W8L",
+        "apple_music_uri": null
+      },
+      "audio": {
+        "bpm": null,
+        "key": null,
+        "mode": null,
+        "cyanite_run": false,
+        "moods": {},
+        "genres": {
+          "pop": null
+        }
+      },
+      "streaming": {
+        "snapshot_date": "2026-03-11",
+        "spotify_12mo": 618695,
+        "apple_12mo": 5676,
+        "youtube_12mo": 4016,
+        "total_12mo": 628145,
+        "spotify_alltime": 3460000,
+        "saves": null,
+        "playlist_count": null,
+        "shazams": null,
+        "spotify_popularity_date": "2026-04-04"
+      },
+      "geographic": {
+        "top_cities": [
+          {
+            "city": "Denver",
+            "note": "2 Shazams / 15 plays — organic discovery"
+          },
+          {
+            "city": "Portland",
+            "note": "2 Shazams / 23 plays"
+          },
+          {
+            "city": "Pittsburgh",
+            "note": "2 Shazams / 35 plays"
+          },
+          {
+            "city": "Milwaukee",
+            "note": "Home market"
+          }
+        ],
+        "international_pct": 0.087,
+        "international_note": "Tokyo, Adelaide, Brisbane, London, Munich, Cape Town, Lagos, Seoul"
+      },
+      "audience": {
+        "snapshot_date": null,
+        "age_demo": null,
+        "gender_split": null,
+        "new_listener_rate": null
+      },
+      "playlist": {
+        "editorial_placements": null,
+        "independent_placements": null
+      },
+      "performance": {
+        "first_week_streams": null,
+        "30_day_streams": null,
+        "90_day_streams": null
+      },
+      "content": {
+        "reels_posted": null,
+        "tiktoks_posted": null,
+        "top_url": null
+      },
+      "compliance": {
+        "ascap": null,
+        "mlc": null,
+        "songtrust": null,
+        "musixmatch": null
+      }
+    },
+    {
+      "track_id": "on_the_move",
+      "title": "On The Move",
+      "status": "live",
+      "release_date": "2019-07-17",
+      "label": "Ethan Payton LLC",
+      "project": "back_catalog",
+      "metadata": {
+        "isrc": "QM2451821579",
+        "upc": "0707772130286",
+        "amuse_id": null,
+        "spotify_uri": "4ws56iTfiCsdYHBBwiWYfh",
+        "apple_music_uri": null
+      },
+      "audio": {
+        "bpm": null,
+        "key": null,
+        "mode": null,
+        "cyanite_run": false,
+        "moods": {},
+        "genres": {
+          "pop": null
+        }
+      },
+      "streaming": {
+        "snapshot_date": "2026-03-11",
+        "spotify_12mo": 152771,
+        "apple_12mo": 1704,
+        "youtube_12mo": 228,
+        "total_12mo": 154803,
+        "spotify_alltime": null,
+        "saves": null,
+        "playlist_count": null,
+        "shazams": null,
+        "spotify_popularity_date": "2026-04-04"
+      },
+      "geographic": {
+        "top_cities": [],
+        "international_pct": null
+      },
+      "audience": {
+        "snapshot_date": null,
+        "age_demo": null,
+        "gender_split": null,
+        "new_listener_rate": null
+      },
+      "playlist": {
+        "editorial_placements": null,
+        "independent_placements": null
+      },
+      "performance": {
+        "first_week_streams": null,
+        "30_day_streams": null,
+        "90_day_streams": null
+      },
+      "content": {
+        "reels_posted": null,
+        "tiktoks_posted": null,
+        "top_url": null
+      },
+      "compliance": {
+        "ascap": null,
+        "mlc": null,
+        "songtrust": null,
+        "musixmatch": null
+      }
+    },
+    {
+      "track_id": "turn_me_down",
+      "title": "Turn Me Down",
+      "status": "live",
+      "release_date": "2019-07-17",
+      "label": "Ethan Payton LLC",
+      "project": "back_catalog",
+      "metadata": {
+        "isrc": "QM2451805202",
+        "upc": "0707772130224",
+        "amuse_id": null,
+        "spotify_uri": "7Dz5TYwvmMc9kuH7b3cPMo",
+        "apple_music_uri": null
+      },
+      "audio": {
+        "bpm": null,
+        "key": null,
+        "mode": null,
+        "cyanite_run": false,
+        "moods": {},
+        "genres": {
+          "pop": null
+        }
+      },
+      "streaming": {
+        "snapshot_date": "2026-03-11",
+        "spotify_12mo": 1796,
+        "apple_12mo": 197,
+        "youtube_12mo": 19,
+        "total_12mo": 1372,
+        "spotify_alltime": null,
+        "saves": null,
+        "playlist_count": null,
+        "shazams": null,
+        "spotify_popularity_date": "2026-04-04"
+      },
+      "geographic": {
+        "top_cities": [],
+        "international_pct": null
+      },
+      "audience": {
+        "snapshot_date": null,
+        "age_demo": null,
+        "gender_split": null,
+        "new_listener_rate": null
+      },
+      "playlist": {
+        "editorial_placements": null,
+        "independent_placements": null
+      },
+      "performance": {
+        "first_week_streams": null,
+        "30_day_streams": null,
+        "90_day_streams": null
+      },
+      "content": {
+        "reels_posted": null,
+        "tiktoks_posted": null,
+        "top_url": null
+      },
+      "compliance": {
+        "ascap": null,
+        "mlc": null,
+        "songtrust": null,
+        "musixmatch": null
+      }
+    },
+    {
+      "track_id": "distance",
+      "title": "Distance",
+      "status": "live",
+      "release_date": "2019-07-17",
+      "label": "Ethan Payton LLC",
+      "project": "back_catalog",
+      "metadata": {
+        "isrc": "QM2451844110",
+        "upc": "0707772130507",
+        "amuse_id": null,
+        "spotify_uri": "5Ct4x20H7Fii0x6NWylZtN",
+        "apple_music_uri": null
+      },
+      "audio": {
+        "bpm": null,
+        "key": null,
+        "mode": null,
+        "cyanite_run": false,
+        "moods": {},
+        "genres": {
+          "rb": null
+        }
+      },
+      "streaming": {
+        "snapshot_date": "2026-03-11",
+        "spotify_12mo": 321,
+        "apple_12mo": 210,
+        "youtube_12mo": 18,
+        "total_12mo": 549,
+        "spotify_alltime": null,
+        "saves": null,
+        "playlist_count": null,
+        "shazams": null,
+        "spotify_popularity_date": "2026-04-04"
+      },
+      "geographic": {
+        "top_cities": [],
+        "international_pct": null
+      },
+      "audience": {
+        "snapshot_date": null,
+        "age_demo": null,
+        "gender_split": null,
+        "new_listener_rate": null
+      },
+      "playlist": {
+        "editorial_placements": null,
+        "independent_placements": null
+      },
+      "performance": {
+        "first_week_streams": null,
+        "30_day_streams": null,
+        "90_day_streams": null
+      },
+      "content": {
+        "reels_posted": null,
+        "tiktoks_posted": null,
+        "top_url": null
+      },
+      "compliance": {
+        "ascap": null,
+        "mlc": null,
+        "songtrust": null,
+        "musixmatch": null
+      }
+    },
+    {
+      "track_id": "difficult",
+      "title": "Difficult",
+      "status": "live",
+      "release_date": null,
+      "label": "Ethan Payton LLC",
+      "project": "back_catalog",
+      "metadata": {
+        "isrc": "SE6A91962610",
+        "upc": null,
+        "amuse_id": null,
+        "spotify_uri": "48cmKRWRsk6iMp4uQsvFnL",
+        "apple_music_uri": null
+      },
+      "audio": {
+        "bpm": null,
+        "key": null,
+        "mode": null,
+        "cyanite_run": false,
+        "moods": {},
+        "genres": {}
+      },
+      "streaming": {
+        "snapshot_date": "2026-03-11",
+        "spotify_12mo": 1447,
+        "apple_12mo": 200,
+        "youtube_12mo": 0,
+        "total_12mo": 1647,
+        "spotify_alltime": null,
+        "saves": null,
+        "playlist_count": null,
+        "shazams": null,
+        "spotify_popularity_date": "2026-04-04"
+      },
+      "geographic": {
+        "top_cities": [],
+        "international_pct": null
+      },
+      "audience": {
+        "snapshot_date": null,
+        "age_demo": null,
+        "gender_split": null,
+        "new_listener_rate": null
+      },
+      "playlist": {
+        "editorial_placements": null,
+        "independent_placements": null
+      },
+      "performance": {
+        "first_week_streams": null,
+        "30_day_streams": null,
+        "90_day_streams": null
+      },
+      "content": {
+        "reels_posted": null,
+        "tiktoks_posted": null,
+        "top_url": null
+      },
+      "compliance": {
+        "ascap": null,
+        "mlc": null,
+        "songtrust": null,
+        "musixmatch": null
+      }
+    },
+    {
+      "track_id": "2_on",
+      "title": "2 On",
+      "status": "live",
+      "release_date": "2019-07-29",
+      "label": "Ethan Payton LLC",
+      "project": "back_catalog",
+      "metadata": {
+        "isrc": "SE6HN1934299",
+        "upc": "0631060031624",
+        "amuse_id": null,
+        "spotify_uri": "4MDz8fxsijS5AA8tfIGb1n",
+        "apple_music_uri": null
+      },
+      "audio": {
+        "bpm": null,
+        "key": null,
+        "mode": null,
+        "cyanite_run": false,
+        "moods": {},
+        "genres": {
+          "pop": null
+        }
+      },
+      "streaming": {
+        "snapshot_date": "2026-03-11",
+        "spotify_12mo": 717,
+        "apple_12mo": 234,
+        "youtube_12mo": 27,
+        "total_12mo": 578,
+        "spotify_alltime": null,
+        "saves": null,
+        "playlist_count": null,
+        "shazams": null,
+        "spotify_popularity_date": "2026-04-04"
+      },
+      "geographic": {
+        "top_cities": [],
+        "international_pct": null
+      },
+      "audience": {
+        "snapshot_date": null,
+        "age_demo": null,
+        "gender_split": null,
+        "new_listener_rate": null
+      },
+      "playlist": {
+        "editorial_placements": null,
+        "independent_placements": null
+      },
+      "performance": {
+        "first_week_streams": null,
+        "30_day_streams": null,
+        "90_day_streams": null
+      },
+      "content": {
+        "reels_posted": null,
+        "tiktoks_posted": null,
+        "top_url": null
+      },
+      "compliance": {
+        "ascap": null,
+        "mlc": null,
+        "songtrust": null,
+        "musixmatch": null
+      }
+    },
+    {
+      "track_id": "advance",
+      "title": "Advance",
+      "status": "live",
+      "release_date": "2020-09-17",
+      "label": "Ethan Payton LLC",
+      "project": "back_catalog",
+      "metadata": {
+        "isrc": "SE5BU2040842",
+        "upc": "0616293249110",
+        "amuse_id": null,
+        "spotify_uri": "4IOgCwlXBBVVSHQOEeOX8p",
+        "apple_music_uri": null
+      },
+      "audio": {
+        "bpm": null,
+        "key": null,
+        "mode": null,
+        "cyanite_run": false,
+        "moods": {},
+        "genres": {
+          "pop": null
+        }
+      },
+      "streaming": {
+        "snapshot_date": "2026-03-11",
+        "spotify_12mo": 804,
+        "apple_12mo": 50,
+        "youtube_12mo": 12,
+        "total_12mo": 915,
+        "spotify_alltime": null,
+        "saves": null,
+        "playlist_count": null,
+        "shazams": null,
+        "spotify_popularity_date": "2026-04-04"
+      },
+      "geographic": {
+        "top_cities": [],
+        "international_pct": null
+      },
+      "audience": {
+        "snapshot_date": null,
+        "age_demo": null,
+        "gender_split": null,
+        "new_listener_rate": null
+      },
+      "playlist": {
+        "editorial_placements": null,
+        "independent_placements": null
+      },
+      "performance": {
+        "first_week_streams": null,
+        "30_day_streams": null,
+        "90_day_streams": null
+      },
+      "content": {
+        "reels_posted": null,
+        "tiktoks_posted": null,
+        "top_url": null
+      },
+      "compliance": {
+        "ascap": null,
+        "mlc": null,
+        "songtrust": null,
+        "musixmatch": null
+      }
+    },
+    {
+      "track_id": "supposed_to_know",
+      "title": "Supposed to Know",
+      "status": "live",
+      "release_date": "2022-06-16",
+      "label": "Ethan Payton LLC",
+      "project": "back_catalog",
+      "metadata": {
+        "isrc": "SE6QE2291726",
+        "upc": "7316215484591",
+        "amuse_id": null,
+        "spotify_uri": "2vYqpyXZWO8U45OIWyLAH7",
+        "apple_music_uri": null
+      },
+      "audio": {
+        "bpm": null,
+        "key": null,
+        "mode": null,
+        "cyanite_run": false,
+        "moods": {},
+        "genres": {
+          "pop": null
+        }
+      },
+      "streaming": {
+        "snapshot_date": "2026-03-11",
+        "spotify_12mo": 264,
+        "apple_12mo": 77,
+        "youtube_12mo": 22,
+        "total_12mo": 463,
+        "spotify_alltime": null,
+        "saves": null,
+        "playlist_count": null,
+        "shazams": null,
+        "spotify_popularity_date": "2026-04-04"
+      },
+      "geographic": {
+        "top_cities": [],
+        "international_pct": null
+      },
+      "audience": {
+        "snapshot_date": null,
+        "age_demo": null,
+        "gender_split": null,
+        "new_listener_rate": null
+      },
+      "playlist": {
+        "editorial_placements": null,
+        "independent_placements": null
+      },
+      "performance": {
+        "first_week_streams": null,
+        "30_day_streams": null,
+        "90_day_streams": null
+      },
+      "content": {
+        "reels_posted": null,
+        "tiktoks_posted": null,
+        "top_url": null
+      },
+      "compliance": {
+        "ascap": null,
+        "mlc": null,
+        "songtrust": null,
+        "musixmatch": null
+      }
+    },
+    {
+      "track_id": "dance_with_him",
+      "title": "Dance With Him",
+      "status": "live",
+      "release_date": "2022-10-13",
+      "label": "Ethan Payton LLC",
+      "project": "back_catalog",
+      "metadata": {
+        "isrc": "SE6XY2274257",
+        "upc": "7316216684143",
+        "amuse_id": null,
+        "spotify_uri": "6AIfKdGZOnJ1k7FCCAnpE3",
+        "apple_music_uri": null
+      },
+      "audio": {
+        "bpm": null,
+        "key": null,
+        "mode": null,
+        "cyanite_run": false,
+        "moods": {},
+        "genres": {
+          "pop": null
+        }
+      },
+      "streaming": {
+        "snapshot_date": "2026-03-11",
+        "spotify_12mo": 761,
+        "apple_12mo": 64,
+        "youtube_12mo": 84,
+        "total_12mo": 909,
+        "spotify_alltime": null,
+        "saves": null,
+        "playlist_count": null,
+        "shazams": null,
+        "spotify_popularity_date": "2026-04-04"
+      },
+      "geographic": {
+        "top_cities": [],
+        "international_pct": null
+      },
+      "audience": {
+        "snapshot_date": null,
+        "age_demo": null,
+        "gender_split": null,
+        "new_listener_rate": null
+      },
+      "playlist": {
+        "editorial_placements": null,
+        "independent_placements": null
+      },
+      "performance": {
+        "first_week_streams": null,
+        "30_day_streams": null,
+        "90_day_streams": null
+      },
+      "content": {
+        "reels_posted": null,
+        "tiktoks_posted": null,
+        "top_url": null
+      },
+      "compliance": {
+        "ascap": null,
+        "mlc": null,
+        "songtrust": null,
+        "musixmatch": null
+      }
+    },
+    {
+      "track_id": "ride_with_me",
+      "title": "Ride With Me",
+      "status": "live",
+      "release_date": "2023-03-13",
+      "label": "Ethan Payton LLC",
+      "project": "back_catalog",
+      "metadata": {
+        "isrc": "SE5752387739",
+        "upc": "7396218130647",
+        "amuse_id": null,
+        "spotify_uri": "4Bqo4sJULzD7CPuZOaW9gm",
+        "apple_music_uri": null
+      },
+      "audio": {
+        "bpm": null,
+        "key": null,
+        "mode": null,
+        "cyanite_run": false,
+        "moods": {},
+        "genres": {}
+      },
+      "streaming": {
+        "snapshot_date": "2026-03-11",
+        "spotify_12mo": 2341,
+        "apple_12mo": 115,
+        "youtube_12mo": 108,
+        "total_12mo": 2552,
+        "spotify_alltime": null,
+        "saves": null,
+        "playlist_count": null,
+        "shazams": null,
+        "spotify_popularity_date": "2026-04-04"
+      },
+      "geographic": {
+        "top_cities": [],
+        "international_pct": null
+      },
+      "audience": {
+        "snapshot_date": null,
+        "age_demo": null,
+        "gender_split": null,
+        "new_listener_rate": null
+      },
+      "playlist": {
+        "editorial_placements": null,
+        "independent_placements": null
+      },
+      "performance": {
+        "first_week_streams": null,
+        "30_day_streams": null,
+        "90_day_streams": null
+      },
+      "content": {
+        "reels_posted": null,
+        "tiktoks_posted": null,
+        "top_url": null
+      },
+      "compliance": {
+        "ascap": null,
+        "mlc": null,
+        "songtrust": null,
+        "musixmatch": null
+      }
+    },
+    {
+      "track_id": "origami",
+      "title": "Origami",
+      "status": "live",
+      "release_date": "2024-01-11",
+      "label": "Ethan Payton LLC",
+      "project": "back_catalog",
+      "metadata": {
+        "isrc": "SE66N2338500",
+        "upc": "7513475102748",
+        "amuse_id": null,
+        "spotify_uri": "2rQGU5HnnQO0YXl0rfA5BD",
+        "apple_music_uri": null
+      },
+      "audio": {
+        "bpm": null,
+        "key": null,
+        "mode": null,
+        "cyanite_run": false,
+        "moods": {},
+        "genres": {}
+      },
+      "streaming": {
+        "snapshot_date": "2026-03-11",
+        "spotify_12mo": 687,
+        "apple_12mo": 206,
+        "youtube_12mo": 53,
+        "total_12mo": 815,
+        "spotify_alltime": null,
+        "saves": null,
+        "playlist_count": null,
+        "shazams": null,
+        "spotify_popularity_date": "2026-04-04"
+      },
+      "geographic": {
+        "top_cities": [],
+        "international_pct": null
+      },
+      "audience": {
+        "snapshot_date": null,
+        "age_demo": null,
+        "gender_split": null,
+        "new_listener_rate": null
+      },
+      "playlist": {
+        "editorial_placements": null,
+        "independent_placements": null
+      },
+      "performance": {
+        "first_week_streams": null,
+        "30_day_streams": null,
+        "90_day_streams": null
+      },
+      "content": {
+        "reels_posted": null,
+        "tiktoks_posted": null,
+        "top_url": null
+      },
+      "compliance": {
+        "ascap": null,
+        "mlc": null,
+        "songtrust": null,
+        "musixmatch": "needs_submission"
+      }
+    },
+    {
+      "track_id": "see_me",
+      "title": "SEE ME",
+      "status": "live",
+      "release_date": "2026-03-13",
+      "upload_date": "2026-03-09",
+      "label": "past.El noir Records (Ethan Payton LLC)",
+      "project": "ALL_LOVE_EP",
+      "metadata": {
+        "isrc": null,
+        "isrc_note": "Pull from Amuse — was live Mar 13",
+        "upc": null,
+        "amuse_id": null,
+        "spotify_uri": "7tMPPZnCBE1bcBi2iEC43X",
+        "apple_music_uri": null
+      },
+      "audio": {
+        "bpm": 120,
+        "key": "B",
+        "mode": "minor",
+        "cyanite_run": true,
+        "cyanite_note": "Source: Cyanite AI analysis Mar 2026",
+        "moods": {
+          "sexy": 0.89,
+          "chill": 0.57,
+          "romantic": 0.55,
+          "happy": null,
+          "uplifting": null,
+          "energetic": null,
+          "sad": null
+        },
+        "genres": {
+          "rb": 0.6,
+          "hip_hop": null
+        },
+        "comparable_artists": [
+          "Drake",
+          "6LACK",
+          "Bryson Tiller"
+        ],
+        "lane": "Dark TrapSoul / Drake-6LACK axis",
+        "lead_identifier": "Highest Sexy score on EP (89%)"
+      },
+      "streaming": {
+        "snapshot_date": null,
+        "spotify_12mo": null,
+        "apple_12mo": null,
+        "youtube_12mo": null,
+        "total_12mo": null,
+        "spotify_alltime": null,
+        "saves": null,
+        "playlist_count": null,
+        "shazams": null,
+        "note": "Released Mar 13. Pull from Amuse Insights + Spotify for Artists for first monthly fill.",
+        "spotify_popularity_date": "2026-04-04"
+      },
+      "geographic": {
+        "top_cities": [],
+        "international_pct": null
+      },
+      "audience": {
+        "snapshot_date": null,
+        "age_demo": null,
+        "gender_split": null,
+        "new_listener_rate": null
+      },
+      "playlist": {
+        "editorial_placements": null,
+        "independent_placements": null,
+        "editorial_targets": [
+          "TrapSoul",
+          "Late Night R&B",
+          "Are & Be",
+          "R&B Vault",
+          "Night Vibes",
+          "Bedroom Jams",
+          "Fresh Finds: R&B"
+        ],
+        "groover_submitted": null
+      },
+      "performance": {
+        "first_week_streams": null,
+        "30_day_streams": null,
+        "90_day_streams": null
+      },
+      "content": {
+        "reels_posted": null,
+        "tiktoks_posted": null,
+        "top_url": null,
+        "core_drive_complete": true,
+        "core_drive_file": "core-drive-see-me.json",
+        "gorilla_geo_complete": false
+      },
+      "compliance": {
+        "isrc_pulled": false,
+        "ascap": "pending",
+        "mlc": "pending",
+        "songtrust": "pending",
+        "sound_exchange": "complete",
+        "musixmatch": null,
+        "registration_note": "Registrations open post-ISRC pull"
+      }
+    },
+    {
+      "track_id": "east_side_love",
+      "title": "East Side Love",
+      "status": "unreleased",
+      "release_date": "2026-04-14",
+      "upload_date": "2026-04-07",
+      "label": "past.El noir Records (Ethan Payton LLC)",
+      "project": "ALL_LOVE_EP",
+      "metadata": {
+        "isrc": null,
+        "isrc_note": "Pull from Amuse confirmation email after Apr 7 upload",
+        "upc": null,
+        "amuse_id": null,
+        "spotify_uri": null,
+        "apple_music_uri": null
+      },
+      "audio": {
+        "bpm": 105,
+        "key": "C#",
+        "mode": "minor",
+        "cyanite_run": true,
+        "moods": {
+          "sexy": 0.87,
+          "chill": 0.63,
+          "romantic": 0.62,
+          "happy": 0.38,
+          "uplifting": null,
+          "energetic": null,
+          "sad": null
+        },
+        "genres": {
+          "rb": 0.59,
+          "hip_hop": null
+        },
+        "comparable_artists": [
+          "PARTYNEXTDOOR",
+          "Bryson Tiller"
+        ],
+        "lane": "Late-night TrapSoul / PARTYNEXTDOOR-Bryson Tiller axis",
+        "lead_identifier": "Highest Romantic score alongside Like I Did (62%) · Second-highest Chill"
+      },
+      "streaming": {
+        "snapshot_date": null,
+        "spotify_12mo": null,
+        "apple_12mo": null,
+        "youtube_12mo": null,
+        "total_12mo": null,
+        "spotify_alltime": null,
+        "saves": null,
+        "playlist_count": null,
+        "shazams": null
+      },
+      "geographic": {
+        "top_cities": [],
+        "international_pct": null
+      },
+      "audience": {
+        "snapshot_date": null,
+        "age_demo": null,
+        "gender_split": null,
+        "new_listener_rate": null
+      },
+      "playlist": {
+        "editorial_placements": null,
+        "independent_placements": null,
+        "editorial_targets": [
+          "TrapSoul",
+          "Late Night R&B",
+          "Are & Be",
+          "Slow Jamz",
+          "Sensual Beats",
+          "Bedroom Jams"
+        ],
+        "groover_submitted": null,
+        "groover_note": "French R&B market — TrapSoul is huge in France"
+      },
+      "performance": {
+        "first_week_streams": null,
+        "30_day_streams": null,
+        "90_day_streams": null
+      },
+      "content": {
+        "reels_posted": null,
+        "tiktoks_posted": null,
+        "top_url": null,
+        "core_drive_complete": true,
+        "core_drive_file": "core-drive-esl.json",
+        "gorilla_geo_complete": false,
+        "campaign_kit": "docs/handoff_mar24/esl_campaign_kit.md",
+        "event_note": "414 Day drop — Milwaukee anthem"
+      },
+      "compliance": {
+        "isrc_pulled": false,
+        "ascap": "not_started",
+        "mlc": "not_started",
+        "songtrust": "not_started",
+        "sound_exchange": "complete",
+        "musixmatch": null
+      }
+    },
+    {
+      "track_id": "sweet_frustration",
+      "title": "Sweet Frustration",
+      "status": "unreleased",
+      "release_date": "2026-04-10",
+      "upload_date": "2026-04-02",
+      "label": "past.El noir Records (Ethan Payton LLC)",
+      "project": "ALL_LOVE_EP",
+      "metadata": {
+        "isrc": null,
+        "upc": null,
+        "amuse_id": null,
+        "spotify_uri": null,
+        "apple_music_uri": null
+      },
+      "audio": {
+        "bpm": 124,
+        "key": "Bb",
+        "mode": "minor",
+        "cyanite_run": true,
+        "moods": {
+          "sexy": 0.85,
+          "happy": 0.69,
+          "uplifting": 0.58,
+          "energetic": 0.48,
+          "chill": null,
+          "romantic": null,
+          "sad": null
+        },
+        "genres": {
+          "rb": 0.25,
+          "hip_hop": 0.27,
+          "electronic": null
+        },
+        "comparable_artists": [
+          "KAYTRANADA",
+          "GoldLink",
+          "Syd"
+        ],
+        "lane": "House-R&B / Electronic Soul / KAYTRANADA pocket — GENRE OUTLIER",
+        "lead_identifier": "Only Energetic track (48%). Highest Uplifting (58%). Lowest R&B confidence (25%).",
+        "warning": "DIFFERENT CURATOR SET — do NOT resubmit to ESL/SEE ME curators"
+      },
+      "streaming": {
+        "snapshot_date": null,
+        "spotify_12mo": null,
+        "apple_12mo": null,
+        "youtube_12mo": null,
+        "total_12mo": null,
+        "spotify_alltime": null,
+        "saves": null,
+        "playlist_count": null,
+        "shazams": null
+      },
+      "geographic": {
+        "top_cities": [],
+        "international_pct": null
+      },
+      "audience": {
+        "snapshot_date": null,
+        "age_demo": null,
+        "gender_split": null,
+        "new_listener_rate": null
+      },
+      "playlist": {
+        "editorial_placements": null,
+        "independent_placements": null,
+        "editorial_targets": [
+          "Dance & R&B",
+          "Feel Good R&B",
+          "Electronic Rising",
+          "Mood Booster",
+          "New Music Friday",
+          "Hot Rhythmic"
+        ],
+        "groover_submitted": null,
+        "groover_note": "French electronic market is strong"
+      },
+      "performance": {
+        "first_week_streams": null,
+        "30_day_streams": null,
+        "90_day_streams": null
+      },
+      "content": {
+        "reels_posted": null,
+        "tiktoks_posted": null,
+        "top_url": null,
+        "core_drive_complete": true,
+        "core_drive_file": "core-drive-sf.json",
+        "gorilla_geo_complete": false,
+        "campaign_kit": "docs/handoff_mar24/sf_campaign_kit.md"
+      },
+      "compliance": {
+        "isrc_pulled": false,
+        "ascap": "not_started",
+        "mlc": "not_started",
+        "songtrust": "not_started",
+        "sound_exchange": "complete",
+        "musixmatch": null
+      }
+    },
+    {
+      "track_id": "like_i_did",
+      "title": "Like I Did",
+      "status": "unreleased",
+      "release_date": "2026-04-17",
+      "upload_date": "2026-04-09",
+      "label": "past.El noir Records (Ethan Payton LLC)",
+      "project": "ALL_LOVE_EP",
+      "metadata": {
+        "isrc": null,
+        "upc": null,
+        "amuse_id": null,
+        "spotify_uri": null,
+        "apple_music_uri": null
+      },
+      "audio": {
+        "bpm": 110,
+        "key": "D",
+        "mode": "minor",
+        "cyanite_run": true,
+        "moods": {
+          "chill": 0.73,
+          "happy": 0.69,
+          "romantic": 0.63,
+          "sexy": 0.6,
+          "uplifting": null,
+          "energetic": null,
+          "sad": null
+        },
+        "genres": {
+          "rb": 0.57,
+          "hip_hop": null
+        },
+        "comparable_artists": [
+          "Summer Walker",
+          "Eric Bellinger",
+          "Jacquees"
+        ],
+        "lane": "Modern TrapSoul Bounce / Summer Walker-Eric Bellinger pocket",
+        "lead_identifier": "Highest Chill (73%) on entire EP. Wistful closing energy."
+      },
+      "streaming": {
+        "snapshot_date": null,
+        "spotify_12mo": null,
+        "apple_12mo": null,
+        "youtube_12mo": null,
+        "total_12mo": null,
+        "spotify_alltime": null,
+        "saves": null,
+        "playlist_count": null,
+        "shazams": null
+      },
+      "geographic": {
+        "top_cities": [],
+        "international_pct": null
+      },
+      "audience": {
+        "snapshot_date": null,
+        "age_demo": null,
+        "gender_split": null,
+        "new_listener_rate": null
+      },
+      "playlist": {
+        "editorial_placements": null,
+        "independent_placements": null,
+        "editorial_targets": [
+          "TrapSoul",
+          "Chill R&B",
+          "Late Night R&B",
+          "Are & Be",
+          "Slow Jamz",
+          "Sad R&B"
+        ],
+        "groover_submitted": null
+      },
+      "performance": {
+        "first_week_streams": null,
+        "30_day_streams": null,
+        "90_day_streams": null
+      },
+      "content": {
+        "reels_posted": null,
+        "tiktoks_posted": null,
+        "top_url": null,
+        "core_drive_complete": true,
+        "core_drive_file": "core-drive-lid.json",
+        "gorilla_geo_complete": false,
+        "campaign_kit": "docs/handoff_mar24/worth_it_campaign_kit.md"
+      },
+      "compliance": {
+        "isrc_pulled": false,
+        "ascap": "not_started",
+        "mlc": "not_started",
+        "songtrust": "not_started",
+        "sound_exchange": "complete",
+        "musixmatch": null
+      }
+    },
+    {
+      "track_id": "all_love_ep",
+      "title": "ALL LOVE (EP)",
+      "status": "unreleased",
+      "release_date": "2026-04-24",
+      "upload_date": "2026-04-14",
+      "label": "past.El noir Records (Ethan Payton LLC)",
+      "project": "ALL_LOVE_EP",
+      "entity_type": "ep",
+      "tracklist": [
+        "see_me",
+        "east_side_love",
+        "sweet_frustration",
+        "like_i_did"
+      ],
+      "metadata": {
+        "isrc": null,
+        "upc": null,
+        "amuse_id": null,
+        "spotify_uri": null,
+        "apple_music_uri": null,
+        "ep_art_locked": false,
+        "spotify_pitch_submitted": false
+      },
+      "streaming": {
+        "snapshot_date": null,
+        "total_12mo": null
+      },
+      "content": {
+        "event_note": "Drops 10 days after 414 Day live performance. Performance footage = launch content.",
+        "presave_link": null
+      },
+      "compliance": {
+        "isrc_pulled": false,
+        "upc_assigned": false,
+        "note": "UPC assigned by Amuse at EP upload"
+      }
+    }
+  ],
+  "parked_album_tracks": {
+    "note": "7 tracks parked post-EP. Not in active sprint. Source: catalog_master_registry.md",
+    "tracks": [
+      {
+        "title": "I Like Girls",
+        "cyanite_bpm": 107,
+        "cyanite_key": "F# minor",
+        "rb_confidence": 0.74,
+        "project": "ALL_LOVE_ALBUM"
+      },
+      {
+        "title": "Want U Bad",
+        "cyanite_bpm": 114,
+        "cyanite_key": "G minor",
+        "rb_confidence": null,
+        "warning": "Possible instrumental — confirm vocal presence",
+        "project": "ALL_LOVE_ALBUM"
+      },
+      {
+        "title": "Green Light Patient",
+        "cyanite_bpm": null,
+        "warning": "NO CYANITE DATA — run before album upload",
+        "project": "ALL_LOVE_ALBUM"
+      },
+      {
+        "title": "Luxury",
+        "cyanite_bpm": null,
+        "warning": "NO CYANITE DATA — run before album upload",
+        "project": "ALL_LOVE_ALBUM"
+      },
+      {
+        "title": "Worth It",
+        "cyanite_bpm": 97,
+        "cyanite_key": "F minor",
+        "rb_confidence": 0.57,
+        "project": "ALL_LOVE_ALBUM"
+      },
+      {
+        "title": "Just Say So",
+        "cyanite_bpm": 122,
+        "cyanite_key": "Bb minor",
+        "rb_confidence": 0.6,
+        "project": "ALL_LOVE_ALBUM"
+      },
+      {
+        "title": "Reconnect",
+        "cyanite_bpm": 82,
+        "cyanite_key": "D major",
+        "rb_confidence": 0.56,
+        "note": "Only major key on album — warm/intimate outlier",
+        "project": "ALL_LOVE_ALBUM"
+      }
+    ]
+  },
+  "next_projects": [
+    {
+      "title": "ALL LOVE (Deluxe)",
+      "target_release": "2026-04-28",
+      "status": "parked",
+      "track_count": 12
+    },
+    {
+      "title": "CREAM",
+      "target_release": "2026-07-10",
+      "status": "parked",
+      "track_count": 10
+    },
+    {
+      "title": "FREAKSHOW",
+      "target_release": "2026-10-23",
+      "status": "parked",
+      "track_count": 10
+    }
+  ]
+}
