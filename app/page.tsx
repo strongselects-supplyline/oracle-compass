@@ -14,7 +14,7 @@
 import { useEffect, useState, useCallback } from "react";
 import { getDayType, isSacredDay, isStudioDay } from "@/lib/dayType";
 import { getDailyLog, saveDailyLog, DailyLog } from "@/lib/db";
-import { getDynamicReleases, Release } from "@/lib/releases";
+import { getDynamicReleases, Release, EP_RELEASE_DATE, EP_HONEYMOON_DAYS } from "@/lib/releases";
 import { useCloudSync } from "@/lib/useCloudSync";
 import type { OracleDecree } from "@/lib/oracle";
 import { getStoreValue, getTodayISO } from "@/lib/db";
@@ -108,6 +108,8 @@ export default function TodayPage() {
   const [oneThingInput, setOneThingInput] = useState("");
   const [nextRelease, setNextRelease] = useState<Release | null>(null);
   const [daysUntilRelease, setDaysUntilRelease] = useState<number>(0);
+  const [isPostRelease, setIsPostRelease] = useState(false);
+  const [honeymoonDaysIn, setHoneymoonDaysIn] = useState(0);
   const { syncStatus, sync: handleSync } = useCloudSync();
   const { killStats } = useKillList();
   const killRedCount = killStats?.redRemaining ?? 0;
@@ -133,9 +135,21 @@ export default function TodayPage() {
 
       const releases = await getDynamicReleases();
       const now = new Date();
-      const next = releases.find(s => new Date(s.releaseDate) >= now) || releases[releases.length - 1];
-      setNextRelease(next);
-      setDaysUntilRelease(Math.max(Math.ceil((new Date(next.releaseDate).getTime() - now.getTime()) / 86400000), 0));
+      const epDate = new Date(EP_RELEASE_DATE);
+      const daysSinceEP = Math.floor((now.getTime() - epDate.getTime()) / 86400000);
+
+      if (daysSinceEP >= 0) {
+        // EP has dropped — enter honeymoon state
+        setIsPostRelease(true);
+        setHoneymoonDaysIn(daysSinceEP);
+      } else {
+        // Pre-release — prefer ALL LOVE (EP) entity for the banner
+        const epRelease = releases.find(r => r.title === "ALL LOVE (EP)") || null;
+        const fallback = releases.find(r => new Date(r.releaseDate) >= now && r.status !== "live") || releases[releases.length - 1];
+        const next = epRelease?.status !== "live" ? epRelease : fallback;
+        setNextRelease(next ?? null);
+        if (next) setDaysUntilRelease(Math.max(Math.ceil((new Date(next.releaseDate).getTime() - now.getTime()) / 86400000), 0));
+      }
 
       setDecree(await getStoreValue<OracleDecree>(`oracle_decree:${getTodayISO()}`));
 
@@ -225,8 +239,17 @@ export default function TodayPage() {
     <main className="page animate-fade-in pb-20">
       <div className="page-inner">
 
-        {/* Release countdown banner */}
-        {daysUntilRelease <= 3 && nextRelease && nextRelease.status !== "live" && (
+        {/* Release banner — pre/post release states */}
+        {isPostRelease && honeymoonDaysIn <= EP_HONEYMOON_DAYS ? (
+          <div className="alert-banner mb-6 !p-3" style={{ borderColor: "rgba(212,168,83,0.4)", background: "rgba(212,168,83,0.04)" }}>
+            <span className="mr-2">✨</span>
+            <div className="flex-1">
+              <span className="font-black text-sm" style={{ color: "#d4a853" }}>ALL LOVE — LIVE</span>
+              {" — "}
+              <span className="text-[11px]" style={{ color: "rgba(212,168,83,0.7)" }}>Honeymoon Phase · Day {honeymoonDaysIn + 1} of {EP_HONEYMOON_DAYS}</span>
+            </div>
+          </div>
+        ) : !isPostRelease && daysUntilRelease <= 7 && nextRelease && nextRelease.status !== "live" ? (
           <div className="alert-banner alert-banner-red mb-6 !p-3">
             <span className="animate-pulse-glow mr-2">🔴</span>
             <div className="flex-1">
@@ -234,7 +257,7 @@ export default function TodayPage() {
               {daysUntilRelease === 0 ? "OUT TODAY" : `${daysUntilRelease}d OUT`}
             </div>
           </div>
-        )}
+        ) : null}
 
         {/* Day-type header */}
         <header className="mb-6 text-center">

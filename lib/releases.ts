@@ -161,7 +161,7 @@ const RELEASE_DEFAULTS: Release[] = [
 
 const RELEASES_KEY = "dynamic_releases";
 const RELEASES_VERSION_KEY = "releases_data_version";
-const RELEASE_DATA_VERSION = 25; // v25: Apr 11 audit — EP expanded to 6 tracks (added WANT U 2, GREEN LIGHTS). All dates gated on master completion. 414 Day cancelled. Upload deadline Apr 22 for 48hr Amuse Pro review.
+const RELEASE_DATA_VERSION = 26; // v26: Apr 21 audit — force re-seed with correct Apr 24 unified drop date for all EP singles. Banner now prioritizes ALL LOVE (EP) entity. Added post-release honeymoon state.
 
 // Read from IndexedDB, seeding defaults on first call or after version bump
 export async function getDynamicReleases(): Promise<Release[]> {
@@ -232,3 +232,6 @@ export async function shiftRelease(title: string, days: number): Promise<void> {
 export const EP_RELEASE_DATE = "2026-04-24";
 /** @deprecated Use EP_RELEASE_DATE. Kept for any stale import references. */
 export const ALBUM_RELEASE_DATE = EP_RELEASE_DATE;
+
+// How many days after EP drop we display "Honeymoon Phase" on the homepage instead of a countdown
+export const EP_HONEYMOON_DAYS = 30;
