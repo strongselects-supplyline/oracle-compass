@@ -13,6 +13,8 @@ import { getWeekKey, OracleFlag } from "@/lib/oracle";
 import { openApp, amusePartnerNote } from "@/lib/toolchain";
 import { getTrackHoursSummaries } from "@/lib/studioLog";
 import { getLedgerStats, getUntouched } from "@/lib/audienceLedger";
+import { getWarRoomItems, markWarRoomItemDone } from "@/lib/warRoom";
+import { getVisualQueue, markVisualShotDone } from "@/lib/visualQueue";
 
 // ── Types ────────────────────────────────────────────────────────────
 
@@ -375,6 +377,47 @@ export async function deriveKillList(): Promise<KillTask[]> {
       action: async () => { await setStoreValue(contentSprKey, true); },
     });
   }
+
+  // ── 2.8 WAR ROOM REBUILD — Procurement tasks from Blueprint ────────
+  // Derives from lib/warRoom.ts seed data. Items are RED (wk1) / AMBER (wk2) / GREEN (wk3).
+  // Source: past-el-war-room.html (Apr 20, 2026).
+  try {
+    const warRoomItems = await getWarRoomItems();
+    for (const item of warRoomItems) {
+      if (item.done) continue;
+      tasks.push({
+        id: `war-room-${item.id}`,
+        title: item.name,
+        subtitle: `War Room · ${item.tier.toUpperCase()} · $${item.cost} · ${item.purpose}`,
+        howTo: item.howTo,
+        urgency: item.urgency,
+        pillar: "ops",
+        timeBlock: "any",
+        action: async () => { await markWarRoomItemDone(item.id); },
+      });
+    }
+  } catch (_e) { /* silent if store unavailable */ }
+
+  // ── 2.9 VISUAL QUEUE — ALL LOVE Content Sprint Shots ───────────────
+  // Derives from lib/visualQueue.ts. Hero shots for the 8-day marketing window.
+  // Source: past-el-visual-bible.html (Apr 20, 2026).
+  try {
+    const shots = await getVisualQueue();
+    for (const shot of shots) {
+      if (shot.done) continue;
+      tasks.push({
+        id: `visual-${shot.id}`,
+        title: `${shot.track} — ${shot.shotType.replace("-", " ")}`,
+        subtitle: `Visual · ${shot.world} world · --jutsu ${shot.jutsu} · ${shot.description}`,
+        howTo: shot.howTo,
+        urgency: shot.urgency,
+        pillar: "creative",
+        timeBlock: "content",
+        action: async () => { await markVisualShotDone(shot.id); },
+        needle: shot.urgency === "RED",
+      });
+    }
+  } catch (_e) { /* silent if store unavailable */ }
 
   // ── 3. GRIND → Tasks ─────────────────────────────────────────────
   if (!dailyLog.sovereigntyStack) {

@@ -298,17 +298,33 @@ function DoorDashWidget({ telemetry, onUpdate }: { telemetry: DailyTelemetry; on
     } catch { setDdStatus("FAILED"); }
   };
 
+  const TARGET = 1800;
+  const earned = telemetry.doordash_earned;
+  const pct = Math.min(100, Math.round((earned / TARGET) * 100));
+  const remaining = Math.max(0, TARGET - earned);
+  const barColor = pct >= 100 ? "bg-green-500" : pct >= 60 ? "bg-amber-500" : "bg-amber-400";
+
   return (
     <div className="card mt-6">
-      <div className="flex justify-between items-center mb-3">
-        <p className="text-[10px] font-black tracking-[0.18em] text-[#555] uppercase">DoorDash Log</p>
-        <div className="flex items-center gap-3">
-          <span className="text-sm font-black text-amber-400">${telemetry.doordash_earned}</span>
-          {ddStatus && (
-            <span className={`text-[10px] font-black tracking-widest ${ddStatus.includes("✓") ? "text-green-500" : ddStatus === "FAILED" ? "text-red-500" : "text-amber-500"}`}>
-              {ddStatus}
-            </span>
-          )}
+      <div className="flex justify-between items-center mb-2">
+        <p className="text-[10px] font-black tracking-[0.18em] text-[#555] uppercase">DoorDash — Monthly Bridge</p>
+        {ddStatus && (
+          <span className={`text-[10px] font-black tracking-widest ${ddStatus.includes("✓") ? "text-green-500" : ddStatus === "FAILED" ? "text-red-500" : "text-amber-500"}`}>
+            {ddStatus}
+          </span>
+        )}
+      </div>
+      {/* Progress bar */}
+      <div className="mb-3">
+        <div className="flex justify-between items-baseline mb-1">
+          <span className="text-xl font-black text-amber-400">${earned.toFixed(0)}</span>
+          <span className="text-[10px] text-[#555] font-black tracking-widest">
+            {pct >= 100 ? "TARGET HIT — STOP DASHING" : `$${remaining.toFixed(0)} to go · ${pct}%`}
+          </span>
+          <span className="text-[10px] text-[#444] font-black">$1,800</span>
+        </div>
+        <div className="h-1.5 bg-[#1a1a1a] rounded-full overflow-hidden">
+          <div className={`h-full rounded-full transition-all duration-500 ${barColor}`} style={{ width: `${pct}%` }} />
         </div>
       </div>
       <div className="flex gap-2">

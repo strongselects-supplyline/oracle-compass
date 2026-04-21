@@ -13,6 +13,8 @@ export const VALID_SLUGS = [
   "mixing-codex",
   "vocal-codex",
   "spotify-ads",
+  "visual-bible",
+  "war-room",
 ];
 
 // ═══════════════════════════════════════════════════════════════
@@ -774,6 +776,135 @@ function SpotifyAdsPage() {
 }
 
 // ═══════════════════════════════════════════════════════════════
+// Visual Bible — Light Boy Doctrine · Anchor: SEE ME
+// Source: past-el-visual-bible.html (Apr 20, 2026)
+// ═══════════════════════════════════════════════════════════════
+
+function VisualBiblePage() {
+  return (
+    <>
+      <Header tag="Visual Brand Bible · v1" title="Light Boy" sub="Darkness as ground. A single warm luminous event. A silhouette that identifies." />
+
+      <Callout type="important" icon="⚡"><strong>Central thesis:</strong> Every past.El visual is a variation on the same sentence — <em>night around a lit thing</em>. The streetlamp halo on the SEE ME cover is not an album art choice; it&apos;s the brand&apos;s literal operating system made visible.</Callout>
+
+      <h2 className="scroll-h3">Anchor — SEE ME</h2>
+      <div className="scroll-table-wrap"><table className="scroll-table"><tbody>
+        <tr><td><strong>Key / BPM</strong></td><td>B minor · 120 BPM</td></tr>
+        <tr><td><strong>Duration</strong></td><td>2:40 · Dark TrapSoul</td></tr>
+        <tr><td><strong>Mood</strong></td><td>Sexy 0.89 (highest on EP) · Romantic 0.46 · Chill 0.45</td></tr>
+        <tr><td><strong>Lane</strong></td><td>Drake / 6LACK / Bryson Tiller axis · Alt-R&amp;B / Trap / Melodic Rap</td></tr>
+      </tbody></table></div>
+
+      <h2 className="scroll-h3">Four Worlds — Aesthetic System</h2>
+      <div className="scroll-grid-2">
+        <div className="scroll-grid-card"><div className="scroll-gc-title" style={{color:"#d4a843"}}>01 · Intimate / Ghibli</div><div className="scroll-gc-desc">2700K warm window key · low contrast · soft bloom · <strong>Sweet Frustration · Like I Did · Want U Bad</strong></div></div>
+        <div className="scroll-grid-card"><div className="scroll-gc-title" style={{color:"#d4a843"}}>02 · Cosmic / Starfield</div><div className="scroll-gc-desc">Single source on deep navy · halation · silhouette-forward · <strong>SEE ME · East Side Love · Luxury</strong></div></div>
+        <div className="scroll-grid-card"><div className="scroll-gc-title" style={{color:"#d4a843"}}>03 · Retro Anime / Painted</div><div className="scroll-gc-desc">90s VHS cel · rust+gold on navy · painted rim light · <strong>I Like Girls · Green Light Patient · Just Say So</strong></div></div>
+        <div className="scroll-grid-card"><div className="scroll-gc-title" style={{color:"#d4a843"}}>04 · Threshold / Truman</div><div className="scroll-gc-desc">Backlit figure at a boundary · cream halo edges · scale play · <strong>Reconnect · Worth It · album intro/outro</strong></div></div>
+      </div>
+
+      <h2 className="scroll-h3">Shot Vocabulary</h2>
+      <div className="scroll-table-wrap"><table className="scroll-table"><thead><tr><th>Term</th><th>Meaning</th></tr></thead><tbody>
+        <tr><td>Halation</td><td>Warm bloom around bright edges — film emulsion leak.</td></tr>
+        <tr><td>Halo Backlight</td><td>Single source behind the figure. The <em>SEE ME</em> streetlamp.</td></tr>
+        <tr><td>Warm Overexpose</td><td>Let the key source clip. The highlight is sacred.</td></tr>
+        <tr><td>Silhouette Rule</td><td>If the outline doesn&apos;t read at 10% size, the shot doesn&apos;t ship.</td></tr>
+        <tr><td>Scale Play</td><td>Figure small against sky · or huge against a tiny lit object. Never medium-always.</td></tr>
+        <tr><td>Color State</td><td>Each track shifts navy toward emerald, rust, or gold. Palette stays fixed.</td></tr>
+      </tbody></table></div>
+
+      <h2 className="scroll-h3">Bedroom ILM — 7-Stage Pipeline</h2>
+      <Step num={1} title="Capture" desc="Permanent Capture corner. ZV-E1 or iPhone 16 Pro · Godox SL-60W · navy backdrop · 5600K fixed. Zero setup friction." />
+      <Step num={2} title="Mask" desc="DaVinci Resolve Magic Mask (free). Clean matte off the navy cloth. Output: ProRes 4444 alpha + clean plate." />
+      <Step num={3} title="Generate Background" desc="Higgsfield Cinema Studio 2.5 (aggregates Kling / Veo / Runway / Sora). One prompt library per World." />
+      <Step num={4} title="Composite" desc="DaVinci Fusion (free). Match perspective + ground plane. Edge-lock or it floats." />
+      <Step num={5} title="Relight" desc="SwitchLight Pro. Add the single warm source — the Light Boy stage. One source per shot, always." />
+      <Step num={6} title="Grade + Grain" desc="Dehancer Pro ($179 one-time). Kodak 2383 or Fuji 8553. Navy-shifted midtones, gold-shifted highlights. The anti-slop stage." />
+      <Step num={7} title="Multiply" desc="One master → 9 exports (reel/square/horizontal/GIF/quote/thumb/behind-scene/cover variant/sync preview). Haiku handles captions." />
+
+      <h2 className="scroll-h3">Tool Stack — Authoritative</h2>
+      <div className="scroll-table-wrap"><table className="scroll-table"><thead><tr><th>Tool</th><th>Role</th><th>Cost</th></tr></thead><tbody>
+        <tr><td>DaVinci Resolve (Free)</td><td>Edit · color · Fusion · Magic Mask</td><td>$0</td></tr>
+        <tr><td>Higgsfield Cinema Studio 2.5</td><td>AI video generation · all 4 models</td><td>$19/mo</td></tr>
+        <tr><td>Dehancer Pro (plugin)</td><td>35mm emulation · grain · halation</td><td>$179 once</td></tr>
+        <tr><td>SwitchLight Pro</td><td>AI relighting · stage 05</td><td>$9/mo</td></tr>
+        <tr><td>Claude Haiku API</td><td>Caption / prompt / export loop batch</td><td>~$5/mo</td></tr>
+      </tbody></table></div>
+      <Callout type="tip" icon="🎯"><strong>Content Factory integration:</strong> Four new <code>--jutsu</code> flags are live in <code>content-factory-v4/scripts/process.mjs</code> — <code>cosmic</code>, <code>ghibli</code>, <code>retro</code>, <code>threshold</code>. Each matches the World&apos;s color grade + font + caption palette.</Callout>
+
+      <h2 className="scroll-h3">Sync Lanes — ALL LOVE</h2>
+      <div className="scroll-table-wrap"><table className="scroll-table"><thead><tr><th>Target</th><th>Fit</th><th>Tracks</th></tr></thead><tbody>
+        <tr><td>A24 / Neon trailers</td><td>★★★★★</td><td>SEE ME · East Side Love</td></tr>
+        <tr><td>HBO prestige drama (Euphoria-adj)</td><td>★★★★★</td><td>SEE ME</td></tr>
+        <tr><td>Nike / Jordan Brand</td><td>★★★★</td><td>East Side Love</td></tr>
+        <tr><td>Netflix YA romance</td><td>★★★★</td><td>Sweet Frustration · Like I Did</td></tr>
+        <tr><td>Apple device launches</td><td>★★★</td><td>Luxury · Worth It</td></tr>
+        <tr><td>FIFA / NBA 2K</td><td>★★★</td><td>I Like Girls · Green Light Patient</td></tr>
+      </tbody></table></div>
+
+      <h2 className="scroll-h3">Anti-Patterns — Never Ship</h2>
+      <Bench text={<><strong>More than one dominant source</strong> — that&apos;s Marvel, not past.El.</>} />
+      <Bench text={<><strong>Raw AI video without Dehancer grade</strong> — that&apos;s slop, not aesthetic.</>} />
+      <Bench text={<><strong>Bright / high-saturation palettes</strong> — brand is navy-ground, not pop-candy.</>} />
+      <Bench text={<><strong>Figure centered at medium-scale with medium light</strong> — no <em>middle</em> anywhere.</>} />
+      <Bench text={<><strong>Silhouettes that don&apos;t read at 10% thumb size</strong> — the thumbnail test is sacred.</>} />
+
+      <Callout type="note" icon="📄"><strong>Full deck:</strong> <code>/Users/ethanpayton/past-el-visual-bible.html</code> — open locally for the printable/framable version with palette swatches + shot mood boards.</Callout>
+    </>
+  );
+}
+
+// ═══════════════════════════════════════════════════════════════
+// War Room — Spatial Blueprint for the Bedroom Command Center
+// Source: past-el-war-room.html (Apr 20, 2026)
+// ═══════════════════════════════════════════════════════════════
+
+function WarRoomPage() {
+  return (
+    <>
+      <Header tag="War Room · Spatial Blueprint" title="The Rebuild" sub="One room trying to do five jobs → four zones that each own one mode." />
+
+      <Callout type="warning" icon="⚠️"><strong>Diagnosis:</strong> This isn&apos;t a willpower problem. It&apos;s an <em>environment-as-interface</em> problem. The room is the UI the body is running against — and right now the UI has overlapping click targets.</Callout>
+
+      <h2 className="scroll-h3">Six Structural Failures</h2>
+      <div className="scroll-grid-2">
+        <div className="scroll-grid-card"><div className="scroll-gc-title" style={{color:"#e05545"}}>01 · Sleep + Production co-mingle</div><div className="scroll-gc-desc">Bed and desk share the same air with no boundary. Insomnia when work is unfinished; procrastination when rest is due.</div></div>
+        <div className="scroll-grid-card"><div className="scroll-gc-title" style={{color:"#e05545"}}>02 · No dedicated Capture zone</div><div className="scroll-gc-desc">Camera floats. Friction to hit record = 10× fewer captures. For a &quot;light boy&quot; brand, Capture must be standing &amp; permanent.</div></div>
+        <div className="scroll-grid-card"><div className="scroll-gc-title" style={{color:"#e05545"}}>03 · Red LED fights the palette</div><div className="scroll-gc-desc">Ceiling red contradicts navy/emerald/gold. Fix: warm amber 2700K for production, cool 5600K for capture fill only.</div></div>
+        <div className="scroll-grid-card"><div className="scroll-gc-title" style={{color:"#e05545"}}>04 · Bed axis perpendicular to window</div><div className="scroll-gc-desc">Breaks flow line. Rotate so headboard is on the interior wall — command position.</div></div>
+        <div className="scroll-grid-card"><div className="scroll-gc-title" style={{color:"#e05545"}}>05 · Whiteboard visible from bed</div><div className="scroll-gc-desc">Cortisol-on-waking. First sight = undone list. Move or cover until 2nd coffee.</div></div>
+        <div className="scroll-grid-card"><div className="scroll-gc-title" style={{color:"#e05545"}}>06 · Zero bodywork floor space</div><div className="scroll-gc-desc">Pelvic floor / pigeon / qigong / knee rehab need ~40 sqft clear rug. Current: zero. Practice is homeless.</div></div>
+      </div>
+
+      <h2 className="scroll-h3">Four Zones — Mode Ownership</h2>
+      <div className="scroll-table-wrap"><table className="scroll-table"><thead><tr><th>Zone</th><th>Owner</th><th>Size</th></tr></thead><tbody>
+        <tr><td><span className="stp-badge badge-blue">Sleep</span></td><td>Recovery · bed in command position · amber bedside only · blackout curtain</td><td>~35 ft²</td></tr>
+        <tr><td><span className="stp-badge badge-gold">Capture</span></td><td>Standing corner · permanent ring + key + fill · navy backdrop · tripod doesn&apos;t move</td><td>~30 ft²</td></tr>
+        <tr><td><span className="stp-badge badge-green">Produce</span></td><td>Desk on window wall · 2 monitors · chair faces room · single cable trough</td><td>~40 ft²</td></tr>
+        <tr><td><span className="stp-badge badge-purple">Ops / Floor</span></td><td>Rug + pegboard · bodywork + gear staging · no furniture in center</td><td>~55 ft²</td></tr>
+      </tbody></table></div>
+
+      <h2 className="scroll-h3">Lighting System — Three Fixtures, Three Modes</h2>
+      <div className="scroll-grid-2">
+        <div className="scroll-grid-card"><div className="scroll-gc-title" style={{color:"#d4a843"}}>Key — Capture</div><div className="scroll-gc-desc">5600K · 95+ CRI · Godox SL-60W + softbox. Only on when rolling.</div></div>
+        <div className="scroll-grid-card"><div className="scroll-gc-title" style={{color:"#d4a843"}}>Fill — Produce</div><div className="scroll-gc-desc">2700K bias strip behind monitors + warm floor lamp. Ceiling light off during work hours.</div></div>
+        <div className="scroll-grid-card"><div className="scroll-gc-title" style={{color:"#d4a843"}}>Ambient — Sleep</div><div className="scroll-gc-desc">2200K amber bedside on dimmer. Red LED removed. Off hard by 10pm.</div></div>
+      </div>
+
+      <h2 className="scroll-h3">Three Weekends to S-Tier</h2>
+      <Step num={1} title="Weekend 1 — Subtract + Rotate" desc="Remove red LED · rotate bed to command · pull whiteboard off sight-line · move desk to window wall · everything off floor." />
+      <Step num={2} title="Weekend 2 — Ground + Light" desc="Lay rug · hang blackout curtain · install bias strip · swap ceiling bulb for warm amber · tape mark Capture floor spot." />
+      <Step num={3} title="Weekend 3 — Capture + Living" desc="Mount navy backdrop · set Godox permanent · hang pegboard with bodywork kit · place floor plant · route cables." />
+
+      <Callout type="important" icon="💰"><strong>Rebuild budget:</strong> ~$560 total, tiered RED/AMBER/GREEN across 3 weeks. The 4 RED items alone ({'{'}rug, blackout curtain, bias strip, amber bulb{'}'}) = $210 and carry 70% of the psychological shift.</Callout>
+
+      <Callout type="note" icon="📄"><strong>Full deck:</strong> <code>/Users/ethanpayton/past-el-war-room.html</code> — open locally for the before/after floorplan diagrams + complete shopping list with links.</Callout>
+      <Callout type="tip" icon="🎯"><strong>Kill List integration:</strong> All 11 procurement items are seeded in <code>lib/warRoom.ts</code>. They surface in Kill List by urgency tier (wk1 RED → wk3 GREEN) and clear to <code>done</code> as you complete them.</Callout>
+    </>
+  );
+}
+
+// ═══════════════════════════════════════════════════════════════
 // SLUG → CONTENT MAP
 // ═══════════════════════════════════════════════════════════════
 
@@ -790,6 +921,8 @@ const CONTENT_MAP: Record<string, () => ReactNode> = {
   "mixing-codex": MixingPage,
   "vocal-codex": VocalPage,
   "spotify-ads": SpotifyAdsPage,
+  "visual-bible": VisualBiblePage,
+  "war-room": WarRoomPage,
 };
 
 export function getDoctrineContent(slug: string): ReactNode | null {
