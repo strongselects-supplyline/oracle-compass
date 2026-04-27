@@ -1218,7 +1218,7 @@ export async function deriveKillList(): Promise<KillTask[]> {
     // Skip if already rendered
     if (release.contentDeliverables.instrumentalRendered) continue;
     // Skip if this is a parked track (not on EP)
-    const EP_TRACKS = ['SEE ME', 'Sweet Frustration', 'East Side Love', 'Like I Did'];
+    const EP_TRACKS = ['SEE ME', 'Sweet Frustration', 'East Side Love', 'Green Light', 'WANT U 2'];
     if (!EP_TRACKS.includes(release.title)) continue;
     const t = release.title;
     tasks.push({
@@ -1265,9 +1265,9 @@ export async function deriveKillList(): Promise<KillTask[]> {
   }
 
   // ── 12. ANTI-DRIFT TELEMETRY ESCALATIONS ─────────────────────────
-  // Hard deadlines — EP upload by Apr 22 (Amuse Pro 48hr review), EP release Apr 24
-  const epUploadDeadline = new Date("2026-04-22T00:00:00");
-  const epReleaseDeadline = new Date("2026-04-24T00:00:00");
+  // Hard deadlines — EP upload by Apr 30 (Amuse Pro 48hr review), EP release May 8
+  const epUploadDeadline = new Date("2026-04-30T00:00:00");
+  const epReleaseDeadline = new Date("2026-05-08T00:00:00");
   const daysToUpload = Math.max(1, Math.ceil((epUploadDeadline.getTime() - now.getTime()) / 86400000));
   const daysToRelease = Math.max(1, Math.ceil((epReleaseDeadline.getTime() - now.getTime()) / 86400000));
 
@@ -1376,14 +1376,14 @@ export async function deriveKillList(): Promise<KillTask[]> {
     }
   }
 
-  // SF Mixdown (10 hr target by EP upload Apr 22)
+  // SF Mixdown — master must lock by Apr 30
   if (sfHours < 10 && now < epUploadDeadline) {
     const dailyTargetSF = ((10 - sfHours) / daysToUpload).toFixed(1);
     const sfUrgency = parseFloat(dailyTargetSF) > 3 ? "RED" : parseFloat(dailyTargetSF) > 1.5 ? "AMBER" : "GREEN";
     tasks.push({
       id: "telemetry-sf",
       title: `Mix/Master SF: ${dailyTargetSF} hr pace`,
-      subtitle: `Sweet Frustration: ${sfHours} / 10 hrs logged. ${daysToUpload} days to EP upload.`,
+      subtitle: `Sweet Frustration: ${sfHours} / 10 hrs logged. ${daysToUpload} days to EP upload (Apr 30).`,
       howTo: [
         "9:30 AM: S3 Check-in + DAW open. SF is closest to done — start here.",
         "Work until it locks or you've hit a wall (3 bounce max rule).",
@@ -1396,25 +1396,8 @@ export async function deriveKillList(): Promise<KillTask[]> {
     });
   }
 
-  // LID Mixdown (10 hr target by EP upload Apr 22)
-  if (lidHours < 10 && now < epUploadDeadline) {
-    const dailyTargetLID = ((10 - lidHours) / daysToUpload).toFixed(1);
-    const lidUrgency = parseFloat(dailyTargetLID) > 3 ? "RED" : parseFloat(dailyTargetLID) > 1.5 ? "AMBER" : "GREEN";
-    tasks.push({
-      id: "telemetry-lid",
-      title: `Mix/Master LID: ${dailyTargetLID} hr pace`,
-      subtitle: `Like I Did: ${lidHours} / 10 hrs logged. ${daysToUpload} days to EP upload.`,
-      howTo: [
-        "If SF is done, all your time goes here.",
-        "One track per session. Closest to done first.",
-        "Sessions logged on the Log tab automatically update this pace."
-      ],
-      urgency: lidUrgency,
-      pillar: "creative",
-      timeBlock: "studio",
-      action: async () => {}, // Display only task
-    });
-  }
+  // LID Mixdown — REMOVED. Like I Did is vault-only, NOT on the May 8 EP.
+  // (LID task removed Apr 27 — vault track, may surface post-EP)
 
   // ── 13. EDITORIAL PITCH — fires when any single is uploaded (post-upload state) ──
   // Pitch is submitted the same hour as Amuse upload. No pre-upload prep tasks.

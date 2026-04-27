@@ -157,7 +157,7 @@ const RELEASE_DEFAULTS: Release[] = [
 
 const RELEASES_KEY = "dynamic_releases";
 const RELEASES_VERSION_KEY = "releases_data_version";
-const RELEASE_DATA_VERSION = 30; // v30: Apr 24 — ESL is lead single (uploaded, May 1). SF is EP-only (May 8). ISRC waterfall on ESL.
+const RELEASE_DATA_VERSION = 31; // v31: Apr 27 — Lifecycle-aware kill list, LID removed from EP, phase map Apr 27–May 8 updated.
 
 // Read from IndexedDB, seeding defaults on first call or after version bump
 export async function getDynamicReleases(): Promise<Release[]> {
