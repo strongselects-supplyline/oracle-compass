@@ -1265,9 +1265,9 @@ export async function deriveKillList(): Promise<KillTask[]> {
   }
 
   // ── 12. ANTI-DRIFT TELEMETRY ESCALATIONS ─────────────────────────
-  // Hard deadlines — EP upload by Apr 30 (Amuse Pro 48hr review), EP release May 8
-  const epUploadDeadline = new Date("2026-04-30T00:00:00");
-  const epReleaseDeadline = new Date("2026-05-08T00:00:00");
+  // Hard deadlines — EP upload by Jun 13 (Amuse Pro 48hr review), EP release Jun 20
+  const epUploadDeadline = new Date("2026-06-13T00:00:00");
+  const epReleaseDeadline = new Date("2026-06-20T00:00:00");
   const daysToUpload = Math.max(1, Math.ceil((epUploadDeadline.getTime() - now.getTime()) / 86400000));
   const daysToRelease = Math.max(1, Math.ceil((epReleaseDeadline.getTime() - now.getTime()) / 86400000));
 
@@ -1383,7 +1383,7 @@ export async function deriveKillList(): Promise<KillTask[]> {
     tasks.push({
       id: "telemetry-sf",
       title: `Mix/Master SF: ${dailyTargetSF} hr pace`,
-      subtitle: `Sweet Frustration: ${sfHours} / 10 hrs logged. ${daysToUpload} days to EP upload (Apr 30).`,
+      subtitle: `Sweet Frustration: ${sfHours} / 10 hrs logged. ${daysToUpload} days to EP upload (Jun 13).`,
       howTo: [
         "9:30 AM: S3 Check-in + DAW open. SF is closest to done — start here.",
         "Work until it locks or you've hit a wall (3 bounce max rule).",

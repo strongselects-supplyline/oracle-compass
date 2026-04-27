@@ -125,39 +125,38 @@ export type Release = {
 };
 
 // Canonical defaults — source of truth for first seed only
-// Apr 24 update: ESL is the lead single (uploaded Apr 24, drops May 1). SF is EP-only, not a single.
-// EP is 5 tracks — SEE ME, East Side Love, Green Light, Sweet Frustration, Want U 2.
-// Like I Did and RV are NOT on the May 8 EP (may surface post-EP).
+// Apr 27 WATERFALL PIVOT: Singles drip 2 weeks apart → EP compilation at end.
+// ESL May 9 → GL May 23 → SF Jun 6 → EP Jun 20. WU2 is EP-exclusive.
 const RELEASE_DEFAULTS: Release[] = [
   {
     title: "SEE ME", uploadDate: "2026-03-09", releaseDate: "2026-03-13", status: "live",
     contentDeliverables: { ...DEFAULT_DELIVERABLES, coreDriveComplete: true, campaignKitGenerated: true, ascap: "pending", mlc: "pending", soundExchange: "complete", songtrust: "pending", notes: "Live Mar 13. Core Drive: 2,713 tracks / 38 playlists. Campaign kit in docs/handoff_mar24/." }
   },
   {
-    title: "East Side Love", uploadDate: "2026-04-24", releaseDate: "2026-05-01", status: "unreleased",
-    contentDeliverables: { ...DEFAULT_DELIVERABLES, coreDriveComplete: true, campaignKitGenerated: true, soundExchange: "complete", amuseUploaded: true, notes: "LEAD SINGLE — uploaded Apr 24, drops May 1. Then becomes EP track on May 8 via Amuse ISRC waterfall. ISRC pending Amuse assignment. Core Drive: 1,221 tracks / 20 playlists." }
+    title: "East Side Love", uploadDate: "2026-05-02", releaseDate: "2026-05-09", status: "unreleased",
+    contentDeliverables: { ...DEFAULT_DELIVERABLES, coreDriveComplete: true, campaignKitGenerated: true, soundExchange: "complete", notes: "SINGLE #1 (lead). Waterfall → EP track Jun 20. Fix audio file, re-upload to Amuse. Core Drive: 1,221 tracks / 20 playlists." }
   },
   {
-    title: "Sweet Frustration", uploadDate: "2026-04-30", releaseDate: "2026-05-08", status: "unreleased",
-    contentDeliverables: { ...DEFAULT_DELIVERABLES, coreDriveComplete: true, campaignKitGenerated: true, soundExchange: "complete", notes: "EP track (not a single). KAYTRANADA lane. Master must lock by Apr 30 for EP upload." }
+    title: "Green Light", uploadDate: "2026-05-16", releaseDate: "2026-05-23", status: "unreleased",
+    contentDeliverables: { ...DEFAULT_DELIVERABLES, notes: "SINGLE #2. Master must lock by May 14. Upload May 16. Waterfall → EP track Jun 20." }
   },
   {
-    title: "WANT U 2", uploadDate: "2026-04-30", releaseDate: "2026-05-08", status: "unreleased",
-    contentDeliverables: { ...DEFAULT_DELIVERABLES, notes: "EP track. Recording + mixing + mastering remaining. Master must lock by Apr 30." }
+    title: "Sweet Frustration", uploadDate: "2026-05-30", releaseDate: "2026-06-06", status: "unreleased",
+    contentDeliverables: { ...DEFAULT_DELIVERABLES, coreDriveComplete: true, campaignKitGenerated: true, soundExchange: "complete", notes: "SINGLE #3. KAYTRANADA lane. Master must lock by May 28. Upload May 30. Waterfall → EP track Jun 20." }
   },
   {
-    title: "Green Light", uploadDate: "2026-04-30", releaseDate: "2026-05-08", status: "unreleased",
-    contentDeliverables: { ...DEFAULT_DELIVERABLES, notes: "EP track. Recording + mixing + mastering remaining. Master must lock by Apr 30." }
+    title: "WANT U 2", uploadDate: "2026-06-13", releaseDate: "2026-06-20", status: "unreleased",
+    contentDeliverables: { ...DEFAULT_DELIVERABLES, notes: "EP-EXCLUSIVE. Not released as single. Gives listeners incentive to play the full EP. Master must lock by Jun 11." }
   },
   {
-    title: "ALL LOVE (EP)", uploadDate: "2026-04-30", releaseDate: "2026-05-08", status: "unreleased",
-    contentDeliverables: { ...DEFAULT_DELIVERABLES, notes: "5-track EP: SEE ME → East Side Love → Green Light → Sweet Frustration → WANT U 2. ESL is lead single May 1 → EP track May 8 via ISRC waterfall (enter ESL ISRC from Apr 24 upload when building EP). Upload full EP to Amuse by Apr 30. Needs: EP cover art, UPC, EP-level Spotify pitch." }
+    title: "ALL LOVE (EP)", uploadDate: "2026-06-13", releaseDate: "2026-06-20", status: "unreleased",
+    contentDeliverables: { ...DEFAULT_DELIVERABLES, notes: "5-track EP compilation: SEE ME → East Side Love → Green Light → Sweet Frustration → WANT U 2. Waterfall all 3 single ISRCs + SEE ME ISRC onto EP tracks. WU2 is EP-exclusive new content. Needs: EP cover art, UPC, EP-level Spotify pitch." }
   },
 ];
 
 const RELEASES_KEY = "dynamic_releases";
 const RELEASES_VERSION_KEY = "releases_data_version";
-const RELEASE_DATA_VERSION = 31; // v31: Apr 27 — Lifecycle-aware kill list, LID removed from EP, phase map Apr 27–May 8 updated.
+const RELEASE_DATA_VERSION = 32; // v32: Apr 27 — WATERFALL PIVOT. Singles drip: ESL May 9, GL May 23, SF Jun 6, EP Jun 20. WU2 EP-exclusive.
 
 // Read from IndexedDB, seeding defaults on first call or after version bump
 export async function getDynamicReleases(): Promise<Release[]> {
@@ -224,9 +223,9 @@ export async function shiftRelease(title: string, days: number): Promise<void> {
 }
 
 // Static EP date — this is the fixed north star, doesn't shift
-// Apr 24: ESL is lead single May 1. SF is EP-only (May 8). EP = May 8.
-export const EP_RELEASE_DATE = "2026-05-08";
-export const ESL_SINGLE_RELEASE_DATE = "2026-05-01";
+// Apr 27 WATERFALL PIVOT: Singles drip → EP Jun 20. ESL May 9, GL May 23, SF Jun 6.
+export const EP_RELEASE_DATE = "2026-06-20";
+export const ESL_SINGLE_RELEASE_DATE = "2026-05-09";
 /** @deprecated Use EP_RELEASE_DATE. Kept for any stale import references. */
 export const ALBUM_RELEASE_DATE = EP_RELEASE_DATE;
 
