@@ -18,6 +18,7 @@ import { deriveKillList, completeTask, getKillStats, KillTask, CompletionInput }
 import { recalibrateOracle } from "@/lib/recalibrate";
 import { getTrackHoursSummaries, TrackHoursSummary } from "@/lib/studioLog";
 import type { OracleDecree } from "@/lib/oracle";
+import TrackCards from "@/components/TrackCards";
 import Link from "next/link";
 
 const URGENCY_STYLES: Record<string, { color: string; bg: string; border: string }> = {
@@ -777,6 +778,9 @@ export default function KillPage() {
 
         {/* ── Oracle Decree Banner ── */}
         {decree && <OracleDecreeBanner decree={decree} />}
+
+        {/* ── Track Status Cards ── */}
+        <TrackCards />
 
         {/* ── ONE THING — reads from DailyLog (shared with Today page) ── */}
         <div
