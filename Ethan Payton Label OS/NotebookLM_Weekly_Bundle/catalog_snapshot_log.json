@@ -1,0 +1,60 @@
+{
+  "_meta": {
+    "version": 1,
+    "created": "2026-04-26",
+    "description": "Permanent log of Spotify for Artists dashboard snapshots. CSV exports give totals; this captures the WHY — source segmentation, active vs programmed split, saved-playlist replay rate. That segmentation window closes. This file keeps it forever.",
+    "schema_version": "1.0",
+    "capture_workflow": "Spotify for Artists → Streams tab screenshot → Listeners/Sources tab screenshot → hand to Claude for extraction → node brain/snapshot_intake.mjs --track <id> --type <day_N>",
+    "snapshot_types": [
+      "day_7",
+      "day_14",
+      "day_28",
+      "day_56",
+      "day_84",
+      "monthly"
+    ],
+    "source_types": [
+      "spotify_for_artists_dashboard",
+      "csv_import",
+      "manual_entry"
+    ],
+    "field_notes": {
+      "active_listeners": "Direct fans — found track themselves, own playlist saves, artist page. High = real fanbase growth.",
+      "programmed_listeners": "Algorithm/editorial — Radio, Release Radar, Discover Weekly. High = algo working. Should convert to active over time.",
+      "saved_playlist_spl": "Streams-per-listener on saved playlists only. 3.0+ = strong loyalty, 5.0+ = superfan signal.",
+      "streams_per_listener": "Total streams / total listeners. 1.5+ is healthy. 2.0+ indicates replay culture.",
+      "active_pct": "active_listeners / total_listeners. >50% = healthy fan-to-algo ratio."
+    }
+  },
+  "snapshots": [
+    {
+      "id": "see_me__day_28",
+      "track_id": "see_me",
+      "title": "SEE ME",
+      "snapshot_type": "day_28",
+      "snapshot_date": "2026-04-10",
+      "days_since_release": 28,
+      "captured_date": "2026-04-26",
+      "source": "spotify_for_artists_dashboard",
+      "capture_method": "screenshot_extraction",
+      "streams": {
+        "total": 148,
+        "active_listeners": 61,
+        "programmed_listeners": 37,
+        "total_listeners": 86,
+        "saved_playlist_spl": 4.9
+      },
+      "computed": {
+        "streams_per_listener": 1.72,
+        "active_pct": 0.709,
+        "programmed_pct": 0.43,
+        "active_to_programmed_ratio": 1.65
+      },
+      "flags": [
+        "STRONG_ACTIVE_SPLIT",
+        "STRONG_LOYALTY"
+      ],
+      "notes": "Day 28 baseline capture. 4.9x replay on saved playlists = superfan signal. Active/programmed split healthy at 61/37 — algo is working, real fans leading. Low absolute streams expected at Day 28 pre-push. Capture confirmed from Spotify for Artists screenshots Apr 26."
+    }
+  ]
+}

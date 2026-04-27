@@ -1,0 +1,778 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+<meta charset="UTF-8">
+<meta name="viewport" content="width=device-width, initial-scale=1.0">
+<title>Sovereign Schematic — Ethan Payton | Full Domain Blueprint</title>
+<link href="https://fonts.googleapis.com/css2?family=Inter:wght@400;500;600;700;800&display=swap" rel="stylesheet">
+<style>
+:root{--bg:#0f0f0f;--card:#1a1a1a;--card2:#222;--text:#e5e5e5;--text-mid:#a3a3a3;--text-dim:#666;--accent:#22d3ee;--accent2:#a78bfa;--green:#34d399;--yellow:#fbbf24;--red:#f87171;--orange:#fb923c;--emerald:#047857;--gold:#d4a843;--border:#2a2a2a;--radius:14px}
+*{margin:0;padding:0;box-sizing:border-box}
+body{font-family:'Inter',sans-serif;background:var(--bg);color:var(--text);line-height:1.7;padding:20px;max-width:780px;margin:0 auto;-webkit-font-smoothing:antialiased}
+header{text-align:center;padding:40px 0 30px;border-bottom:1px solid var(--border);margin-bottom:32px}
+header h1{font-size:2rem;font-weight:800;background:linear-gradient(135deg,var(--emerald),var(--gold));-webkit-background-clip:text;-webkit-text-fill-color:transparent;background-clip:text}
+header .sub{color:var(--text-mid);font-size:.88rem;margin-top:6px}
+header .badge{display:inline-block;margin-top:10px;padding:4px 14px;border-radius:20px;font-size:.7rem;font-weight:700;background:#1a2e05;color:var(--green);border:1px solid #2d4a0a}
+nav.toc{background:var(--card);border:1px solid var(--border);border-radius:var(--radius);padding:20px 24px;margin-bottom:32px}
+nav.toc h3{font-size:.9rem;font-weight:700;margin-bottom:12px;color:var(--accent)}
+nav.toc ol{padding-left:18px;columns:2;column-gap:24px}
+nav.toc li{font-size:.8rem;color:var(--text-mid);margin-bottom:4px;break-inside:avoid}
+nav.toc a{color:var(--text-mid);text-decoration:none}
+nav.toc a:hover{color:var(--accent)}
+.section{margin-bottom:40px}
+.section h2{font-size:1.3rem;font-weight:700;margin-bottom:16px;padding-bottom:8px;border-bottom:1px solid var(--border);display:flex;align-items:center;gap:10px}
+.card{background:var(--card);border:1px solid var(--border);border-radius:var(--radius);padding:24px;margin-bottom:14px}
+.card h3{font-size:1.05rem;font-weight:700;margin-bottom:10px}
+.card h4{font-size:.92rem;font-weight:700;margin:14px 0 8px;color:var(--accent)}
+.card p,.card li{font-size:.86rem;color:var(--text-mid);line-height:1.7}
+.card ul,.card ol{padding-left:18px;margin:8px 0}
+.card li{margin-bottom:5px}
+.highlight{background:#1e293b;border-left:3px solid var(--accent);padding:14px 16px;border-radius:0 8px 8px 0;margin:12px 0;font-size:.86rem}
+.warn{background:#2d1b00;border-left:3px solid var(--orange);padding:14px 16px;border-radius:0 8px 8px 0;margin:12px 0;font-size:.86rem;color:var(--orange)}
+.strength{background:#1a2e05;border-left:3px solid var(--green);padding:14px 16px;border-radius:0 8px 8px 0;margin:12px 0;font-size:.86rem;color:var(--green)}
+.weakness{background:#2d0b0b;border-left:3px solid var(--red);padding:14px 16px;border-radius:0 8px 8px 0;margin:12px 0;font-size:.86rem;color:var(--red)}
+.opportunity{background:#1e293b;border-left:3px solid var(--accent2);padding:14px 16px;border-radius:0 8px 8px 0;margin:12px 0;font-size:.86rem;color:var(--accent2)}
+.threat{background:#2d1b00;border-left:3px solid var(--yellow);padding:14px 16px;border-radius:0 8px 8px 0;margin:12px 0;font-size:.86rem;color:var(--yellow)}
+table{width:100%;border-collapse:collapse;margin:12px 0;font-size:.82rem}
+th,td{padding:10px 12px;text-align:left;border-bottom:1px solid var(--border)}
+th{color:var(--text-dim);font-size:.75rem;text-transform:uppercase;letter-spacing:.04em}
+.protocol-step{display:flex;gap:12px;align-items:flex-start;margin-bottom:10px;padding:10px 14px;background:var(--card2);border-radius:8px}
+.protocol-step .time{min-width:70px;font-size:.78rem;font-weight:700;color:var(--accent);padding-top:2px;flex-shrink:0}
+.protocol-step .action{flex:1;font-size:.84rem;color:var(--text-mid)}
+.protocol-step .action strong{color:var(--text)}
+.protocol-step .why{font-size:.76rem;color:var(--text-dim);margin-top:4px;font-style:italic}
+.phase-badge{display:inline-block;padding:3px 10px;border-radius:20px;font-size:.7rem;font-weight:700;margin-right:6px}
+.p1{background:#2d1b00;color:var(--orange)}
+.p2{background:#1e293b;color:var(--accent)}
+.p3{background:#3b0764;color:var(--accent2)}
+.pillar{display:grid;grid-template-columns:repeat(4,1fr);gap:10px;margin:14px 0}
+.pillar-box{background:var(--card2);border-radius:10px;padding:14px;text-align:center}
+.pillar-box h4{font-size:.82rem;font-weight:700;margin-bottom:6px}
+.pillar-box p{font-size:.74rem;color:var(--text-dim)}
+.fuel-check{display:flex;gap:8px;margin:10px 0;flex-wrap:wrap}
+.fuel-tag{padding:6px 12px;border-radius:8px;font-size:.78rem;font-weight:600}
+.fuel-flow{background:#1a2e05;color:var(--green)}
+.fuel-discipline{background:#2d1b00;color:var(--yellow)}
+.fuel-toxic{background:#2d0b0b;color:var(--red)}
+@media(max-width:600px){body{padding:14px}header h1{font-size:1.5rem}.pillar{grid-template-columns:repeat(2,1fr)}nav.toc ol{columns:1}}
+@media print{body{background:#fff;color:#111;padding:0}.card{border:1px solid #ddd}}
+</style>
+</head>
+<body>
+
+<header>
+<h1>SOVEREIGN SCHEMATIC 2026</h1>
+<p class="sub">Full-domain blueprint: Body, Mind, Craft, Purpose — everything the Playbook doesn't cover.</p>
+<p class="sub" style="font-size:.78rem;margin-top:4px">Companion to 2026_PLAYBOOK_FINAL.html (money, music, EP timeline, debt, macro context)</p>
+<div class="badge">BUILT BY CLAUDE OPUS — APR 26, 2026</div>
+</header>
+
+<nav class="toc">
+<h3>Contents</h3>
+<ol>
+<li><a href="#swot">SWOT Analysis (all domains)</a></li>
+<li><a href="#stier">S-Tier Operating System</a></li>
+<li><a href="#body">Body Protocol (biomechanics)</a></li>
+<li><a href="#breathwork">Breathwork & Mudras</a></li>
+<li><a href="#vocal">Vocal Arts Training</a></li>
+<li><a href="#nutrition">Nutrition Protocol (detailed)</a></li>
+<li><a href="#martial">Martial Arts Progression</a></li>
+<li><a href="#mind">Mind Architecture</a></li>
+<li><a href="#grief">Grief & Trauma Processing</a></li>
+<li><a href="#schedule">Phase-Specific Daily Flows</a></li>
+<li><a href="#tools">Sovereignty Stack (tools map)</a></li>
+<li><a href="#risks">Schedule Breakdown Risks</a></li>
+</ol>
+</nav>
+
+<!-- ===================== SECTION 1: SWOT ===================== -->
+<div class="section" id="swot">
+<h2>1. SWOT Analysis — All Domains</h2>
+
+<div class="card">
+<h3>MONEY</h3>
+<div class="strength"><strong>S:</strong> $264/month passive streaming revenue already flowing. $9,379 lifetime wallet. $18/hr DoorDash net rate proven. Break-even at 17 hrs/week, not 22. Frugal operating cost ($1,224/month) is a competitive advantage — most artists need $3–5K/month.</div>
+<div class="weakness"><strong>W:</strong> $18,150 debt with $431/month interest bleed. No emergency fund. Single income stream beyond streaming (DoorDash). No merchandise, no email list, no direct-to-fan revenue. Tax situation unclear — unfiled WI/IL returns on Desktop. Debt numbers from Antigravity handoff, unverified against statements.</div>
+<div class="opportunity"><strong>O:</strong> Affirm auto-dies Sep '26 → +$350/month freed. Snowball cascade effect halves minimums by Dec. EP + vault releases project streaming to $350–450/month by Dec. User-centric payout model (if global) = 14% earnings boost. Holiday surge Q4 = peak DoorDash earnings.</div>
+<div class="threat"><strong>T:</strong> DoorDash autonomous delivery (5–8% job erosion by end 2026, accelerating). Tariff-driven food costs rising 1–2%. Q2 estimated tax due Jun 15 — could be a surprise if reserves aren't built. Recession probability ~30%. Streaming payout rates may compress as DSP competition shifts.</div>
+</div>
+
+<div class="card">
+<h3>MUSIC</h3>
+<div class="strength"><strong>S:</strong> 3.46M+ all-time streams. Hollywood Fever alone = 628K/year. 40-track vault = deep catalog to ship. Cyanite-verified sonic identity: Sexy 0.76, Chill 0.56 = "cocktail hour pocket" that algorithms reward. BPM sweet spot 105–122. 5 content pillars defined. Core Drive Builder + Gorilla Geo + Content Factory infrastructure already built.</div>
+<div class="weakness"><strong>W:</strong> 3 of 5 EP tracks still unmastered with 4 days to deadline. Green Light and Want U 2 have ZERO Cyanite data. Content Factory V5.1 built but never run on real OBS footage. IG follow ratio 1:1 (2,200/2,001) suppresses reach. No link-in-bio funnel, no email list, no website, no merch. Like I Did has bad data in catalog matrix — needs correction.</div>
+<div class="opportunity"><strong>O:</strong> Independent artists now 50% of Spotify royalties (up from 30% in 2020). Your popularity 21 crosses the algorithm threshold. User-centric payout model benefits dedicated listener bases. Release Radar double-hit strategy (May 1 single + May 8 EP). AI flood makes human artists with face/story/geography MORE valuable. 65% of new releases are from self-managed artists — the infrastructure advantage labels held is gone.</div>
+<div class="threat"><strong>T:</strong> AI-generated music flooding DSPs dilutes attention pool. Save rate bar rising as competition increases. Instagram algorithm shift to shares-first deprioritizes static/audio content. Platform dependency is existential risk without owned channels. Missing the Apr 30 upload deadline means May 8 release date shifts and Release Radar double-hit collapses.</div>
+</div>
+
+<div class="card">
+<h3>BODY & HEALTH</h3>
+<div class="strength"><strong>S:</strong> Both knees fully recovered. Actively unlocking fascial tension. Feels "more aligned than ever" as of Apr 2026. Full S-Tier Protocol documented with specific timing. Capoeira + Qigong background = body awareness already developed. Sauna protocol defined (3x/week Mon/Wed/Fri). Interoceptive-first philosophy correctly identified.</div>
+<div class="weakness"><strong>W:</strong> Pelvic floor lock persists. Caveman hunch from studio + DoorDash hours (forward-head/rolled-shoulder). Vocal tension via neck/jaw clamp affects Appoggio support. Sobriety restart Apr 2 — currently in detox window (Day 24) but user mentioned smoking weed, possible clock reset. Somatized emotional load (body holds unprocessed grief). No structured fitness routine active in Phase 1.</div>
+<div class="opportunity"><strong>O:</strong> Tai Chi directly serves both sovereignty breathwork AND posture correction. Capoeira reintroduction unlocks deep body memory (childhood foundation). Muay Thai "God of Shinobi" aesthetic aligns with stage presence development. Alexander Technique addresses the exact neck/jaw/vocal chain. Pelvic floor unlock via "unlocked knees" protocol already identified — needs consistency not discovery.</div>
+<div class="threat"><strong>T:</strong> DoorDash driving deepens caveman hunch (hours in car). Chronic somatized knee pain spikes with stress/cravings — can derail confidence. Sobriety relapse resets interoception dampener, masking biological signals. If vocal tension isn't addressed before CREAM, the production quality ceiling is lower than the sonic identity demands. Phase 1 "movement = DoorDash" defers all structured body work — risk of deconditioning.</div>
+</div>
+
+<div class="card">
+<h3>MIND & SPIRIT</h3>
+<div class="strength"><strong>S:</strong> Three-system cognitive model understood (Automatic, Working Memory, Metacognitive). S3 Check-in protocol built. Sovereignty Framework from Dr. K integrated (serotonin vs dopamine, DMN management). Fuel Check concept operationalized (Flow / Discipline / Toxic). Waking Mind Protocol documented. Sunday sacred day. 90-second exit signal for ADHD rabbit holes.</div>
+<div class="weakness"><strong>W:</strong> Grief processing hasn't started (journaling begins Apr 27). EMDR/IFS therapist not yet researched. Executive function in detox window (lowest weeks 1–4). Builder-avoidance loop is the primary failure mode — building systems to avoid executing. Toxic fuel patterns (fear/insecurity-driven productivity) are still the dominant engine. DMN hyperactivity risk with sobriety gap removing the cannabis dampener.</div>
+<div class="opportunity"><strong>O:</strong> Trataka (candle gazing) directly quiets DMN — 5–10 min daily is high-leverage. Nadi Shodhana 2x/day balances ANS and builds serotonin baseline. Grief processing through music is the FREAKSHOW thesis — transmuted grief = artistic depth. Sunday journaling is low-friction entry point. One EMDR consult before Jul 5 can unlock somatic release that months of self-directed work might not.</div>
+<div class="threat"><strong>T:</strong> Sobriety detox weeks 1–4 are highest risk for relapse into avoidance loops. Psychedelic use (shrooms mentioned) during sprint week could cost 6–8 hours of executive function. Without grief processing, somatization continues to leak into body symptoms. If the fuel stays toxic (ego/fear-driven), the output is unsustainable even if metrics look good. DMN hyperactivity can present as depression/anxiety when meditation isn't consistent.</div>
+</div>
+
+<div class="card">
+<h3>SCHEDULE & SYSTEMS</h3>
+<div class="strength"><strong>S:</strong> Two weekly modes defined (Sovereign Rhythm + Weekend Warrior). Oracle Compass live at Vercel. Kill List integration. 10-head agent graph at .claude/agents/. Content Factory pipeline exists. JARVIS architecture schematic written. Clear phase boundaries with exit criteria.</div>
+<div class="weakness"><strong>W:</strong> JARVIS not built yet (P0 per Apr 24 but competing with EP sprint). Tool-switching between Claude Code / Antigravity / Cowork IS the friction that causes avoidance. Phase 1 schedule doesn't include body work, breathwork, or vocal training blocks. Morning protocols are documented but not habituated. No evening protocol is enforced beyond lights-out time.</div>
+<div class="opportunity"><strong>O:</strong> Compressing breathwork + mudras into 12-min morning blocks adds sovereignty without adding friction. Phase 2 schedule can properly integrate all domains once EP sprint pressure is off. JARVIS build (if executed) eliminates the tool-switching tax that blocks mastering. Content Factory V5.1 is ready — needs one real OBS session to validate.</div>
+<div class="threat"><strong>T:</strong> Apr 30 deadline creates a 4-day crunch where every non-mastering activity is noise — risk of dropping morning protocol entirely. Post-May 8 "flatline" risk (Day 0) if no structure carries through the drop. Too margin protocols documented = analysis paralysis for ADHD brain. If JARVIS build and EP sprint compete for attention in the same week, both stall.</div>
+</div>
+</div>
+
+<!-- ===================== SECTION 2: S-TIER OS ===================== -->
+<div class="section" id="stier">
+<h2>2. S-Tier Operating System</h2>
+
+<div class="card">
+<p style="font-size:.86rem;color:var(--text-mid);margin-bottom:14px">The four pillars aren't parallel tracks — they're a single system. Body enables Mind. Mind enables Craft. Craft serves Purpose. Purpose sustains Body. Break one and the others degrade within 72 hours.</p>
+
+<div class="pillar">
+<div class="pillar-box" style="border:1px solid var(--green)">
+<h4 style="color:var(--green)">BODY</h4>
+<p>Sleep, sauna, nutrition, exercise, biomechanics, cold exposure</p>
+</div>
+<div class="pillar-box" style="border:1px solid var(--accent)">
+<h4 style="color:var(--accent)">MIND</h4>
+<p>Breathwork, trataka, sobriety, grief processing, S3 metacognition</p>
+</div>
+<div class="pillar-box" style="border:1px solid var(--accent2)">
+<h4 style="color:var(--accent2)">CRAFT</h4>
+<p>Music production, vocal technique, content, release infrastructure</p>
+</div>
+<div class="pillar-box" style="border:1px solid var(--gold)">
+<h4 style="color:var(--gold)">PURPOSE</h4>
+<p>Identity, legacy, grief integration, dharmic fuel, artist development</p>
+</div>
+</div>
+
+<h4>The Fuel Check (before every work session)</h4>
+<div class="fuel-check">
+<div class="fuel-tag fuel-flow">🟢 FLOW — work feels like play, you're doing it because the pull is genuine</div>
+<div class="fuel-tag fuel-discipline">🟡 DISCIPLINE — you don't feel it but you're doing it because the system says to</div>
+<div class="fuel-tag fuel-toxic">🔴 TOXIC — fear, insecurity, or ego is driving the action. Stop. Name it. Reset.</div>
+</div>
+<p style="font-size:.82rem;color:var(--text-dim);margin-top:8px">Green and Yellow are both acceptable. Red is never acceptable — the output is unsustainable even if it looks productive. Toxic fuel built your systems. Dharmic fuel sustains them. The transition from Red → Yellow → Green IS the sovereignty arc.</p>
+</div>
+
+<div class="highlight">
+<strong>The Fractal Principle:</strong> The system works the same at every zoom level. Each session mirrors the sprint logic. Each sprint mirrors the 90-day arc. If a pattern doesn't repeat at every scale, it isn't sovereign — it's a to-do list.
+</div>
+</div>
+
+<!-- ===================== SECTION 3: BODY PROTOCOL ===================== -->
+<div class="section" id="body">
+<h2>3. Body Protocol (biomechanics)</h2>
+
+<div class="card">
+<h3>Current body map — what needs work</h3>
+<table>
+<tr><th>Area</th><th>Status</th><th>Protocol</th><th>Phase</th></tr>
+<tr><td><strong>Right knee</strong></td><td style="color:var(--green)">Fully recovered</td><td>No restrictions. Full training.</td><td>All</td></tr>
+<tr><td><strong>Left knee (Hoffa's)</strong></td><td style="color:var(--yellow)">Recovered, one caution</td><td>No locked-out full extension under load (top of squat). Deep flexion fine. Kneeling fine. Animal flow fine.</td><td>All</td></tr>
+<tr><td><strong>Pelvic floor</strong></td><td style="color:var(--red)">Locked</td><td>Mula Bandha awareness during Jnana Mudra + OM. "Unlocked knees" protocol in vocal booth. Diaphragmatic breathing. Tai Chi hip circles.</td><td>Phase 1+</td></tr>
+<tr><td><strong>Upper chain (hunch)</strong></td><td style="color:var(--red)">Chronic postural collapse</td><td>Floor Prone Angels (3x10). Door Frame Rows (3x12). Pike Push-ups (3x8). Wall slides. Between DoorDash blocks.</td><td>Phase 2+</td></tr>
+<tr><td><strong>Neck/jaw clamp</strong></td><td style="color:var(--red)">Active tension</td><td>"Thumb under chin" diagnostic. Alexander Technique: release jaw before tracking. Neck circles pre-session. Tongue-on-roof-of-mouth awareness.</td><td>Phase 1+ (critical for vocals)</td></tr>
+<tr><td><strong>Somatized stress</strong></td><td style="color:var(--yellow)">Ongoing, managed</td><td>Chronic knee pain spikes = stress alarm. Don't treat as injury — treat as signal. Nadi Shodhana + labeling ("this is stress, not damage").</td><td>All</td></tr>
+</table>
+</div>
+
+<div class="card">
+<h3>Phase 1 body work (now – May 8): minimum viable</h3>
+<p>Phase 1 is EP sprint. Don't add friction. These are the <strong>only</strong> body interventions that earn their time slot:</p>
+<ul>
+<li><strong>Jnana Mudra + OM (90 sec, morning):</strong> Already in Captain's Chair ignition. Mula Bandha engaged = pelvic floor activation baked into the morning ritual. Zero additional time cost.</li>
+<li><strong>"Unlocked knees" in vocal booth:</strong> Before every vocal take, unlock knees (micro-bend), drop shoulders, release jaw. 10 seconds. Releases pelvic floor tension that kills Appoggio support.</li>
+<li><strong>Thumb-under-chin diagnostic (pre-tracking):</strong> Place thumb gently under chin. If tension, the jaw is clamping. Release before singing. 5 seconds.</li>
+<li><strong>DoorDash posture breaks:</strong> Every 3rd delivery, 30-second stretch: clasp hands behind back, squeeze shoulder blades, look up. Counteracts driving hunch. No time cost (do it walking to/from car).</li>
+</ul>
+<div class="warn"><strong>Phase 1 "Don't" list:</strong> No gym. No new exercise routine. No cold showers (nice-to-have, not now). No sauna unless it's already habitual. Movement = DoorDash + studio standing. The sprint is the priority.</div>
+</div>
+
+<div class="card">
+<h3>Phase 2 body work (May 9 – Jun 18): rebuild</h3>
+<p>EP is out. Now you build the body that sustains Phase 3 and CREAM.</p>
+<table>
+<tr><th>Day</th><th>Focus</th><th>Duration</th><th>Specific movements</th></tr>
+<tr><td>Tue</td><td>Upper chain correction</td><td>30 min</td><td>Floor Prone Angels 3x10, Door Frame Rows 3x12, Pike Push-ups 3x8, Wall Slides 2x12</td></tr>
+<tr><td>Thu</td><td>Lower chain + pelvic floor</td><td>30 min</td><td>Bodyweight squats 3x15 (no lockout), Hip circles 2x10 each direction, Cossack squats 2x8, Diaphragmatic breathing floor work 5 min</td></tr>
+<tr><td>Sat</td><td>Movement integration</td><td>30 min</td><td>20 min walk (pairs with Sunday grief prep), 10 min floor flow (animal flow or capoeira ginga basics)</td></tr>
+</table>
+<p style="font-size:.82rem;color:var(--text-dim);margin-top:10px">All movements interoceptive-first: feel the muscle, don't count reps. If you're grinding through it, you've lost the point. Energy-protecting movements (Tai Chi / Qigong / Box Breathing) always take priority over intensity.</p>
+</div>
+
+<div class="card">
+<h3>Phase 3 body work (Jun 19+): performance preparation</h3>
+<p>Maintain Tue/Thu/Sat from Phase 2. Add:</p>
+<ul>
+<li><strong>Sunday:</strong> Longer walk (30–45 min) paired with grief journaling reflection. Walking processes emotion somatically — the bilateral movement activates both hemispheres.</li>
+<li><strong>Tai Chi introduction:</strong> One YouTube follow-along session per week (20 min). Yang-style 24-form is the standard beginner entry. Directly serves posture, breath, and pelvic floor.</li>
+<li><strong>V-Taper rebuild begins:</strong> Pike push-ups progress to elevated pike push-ups. Door Frame Rows add weight (backpack with books). This is aesthetic AND postural — the "monochrome fits" visual identity needs the frame to hang on.</li>
+</ul>
+</div>
+</div>
+
+<!-- ===================== SECTION 4: BREATHWORK & MUDRAS ===================== -->
+<div class="section" id="breathwork">
+<h2>4. Breathwork & Mudras</h2>
+
+<div class="highlight" style="border-left-color:var(--gold)">
+<strong>DEEP ARTIFACT:</strong> The full 49KB Mudra System scroll lives at <code>MUDRA_SYSTEM.html</code> — all 5 states (Lethargy, Lust, Fear, Rage, Flow) with exact hand positions, breathwork pairings, science layers, and Naruto crossover. What follows below is the <strong>daily operations extract</strong> — the minimum you need for the morning protocol and studio sessions. For the full system, open <a href="MUDRA_SYSTEM.html" style="color:var(--gold)">MUDRA_SYSTEM.html</a>.
+</div>
+
+<div class="card">
+<h3>Captain's Chair Ignition — Jnana Mudra + OM (90 seconds)</h3>
+<p><strong>When:</strong> First thing after water. Before anything else touches your mind. This IS the replacement for the doom-scroll.</p>
+<div class="protocol-step">
+<div class="time">0:00</div>
+<div class="action"><strong>Sit. Spine tall. Feet flat.</strong> Hands on knees, palms up. Index finger touches thumb tip (Jnana Mudra). Close eyes.
+<div class="why">Jnana Mudra activates the vagus nerve circuit. The posture signals "intentional state" to the nervous system.</div></div>
+</div>
+<div class="protocol-step">
+<div class="time">0:10</div>
+<div class="action"><strong>Engage Mula Bandha.</strong> Gentle lift of pelvic floor — not a clench, a lift. Like stopping urine mid-stream at 30% effort. Hold through all 3 OMs.
+<div class="why">Activates the root energy center. For you specifically: this is the daily micro-dose of pelvic floor retraining. Consistency beats intensity.</div></div>
+</div>
+<div class="protocol-step">
+<div class="time">0:15</div>
+<div class="action"><strong>Three OMs.</strong> Inhale through nose. Exhale the sound "AHHH-OHHH-MMMM" — let it resonate in the chest, then throat, then skull. ~20 seconds each. Feel where the vibration sits.
+<div class="why">The three syllables sequentially activate chest (heart), throat (voice), and head (cognition). This is a 90-second nervous system boot sequence.</div></div>
+</div>
+<div class="protocol-step">
+<div class="time">1:15</div>
+<div class="action"><strong>Release Mula Bandha. Open eyes. Done.</strong> 90 seconds. Non-negotiable. Proceed to Nadi Shodhana (full mornings) or protein (DoorDash mornings).
+<div class="why">The hard exit prevents this from becoming a meditation rabbit hole. You're igniting, not meditating.</div></div>
+</div>
+</div>
+
+<div class="card">
+<h3>Nadi Shodhana (Alternate Nostril Breathing) — 5 min, 2x/day</h3>
+<p><strong>When:</strong> Morning (after Jnana Mudra, before exercise/work) + Evening (before bed, part of wind-down).</p>
+<div class="protocol-step">
+<div class="time">Setup</div>
+<div class="action"><strong>Right hand: Vishnu Mudra.</strong> Fold index + middle finger to palm. Thumb controls right nostril, ring finger controls left. Left hand rests on knee in Jnana Mudra.
+<div class="why">Standard pranayama hand position. Don't overthink it.</div></div>
+</div>
+<div class="protocol-step">
+<div class="time">Cycle</div>
+<div class="action"><strong>Close right nostril (thumb). Inhale left (4 counts). Close left (ring). Exhale right (4 counts). Inhale right (4 counts). Close right (thumb). Exhale left (4 counts).</strong> That's one round. Do 10–12 rounds = ~5 min.
+<div class="why">Balances the autonomic nervous system (sympathetic/parasympathetic). Direct serotonin baseline builder. Dr. K identifies this as a safe, universally recommended practice.</div></div>
+</div>
+<div class="protocol-step">
+<div class="time">Progression</div>
+<div class="action"><strong>Phase 1:</strong> 4-count inhale/exhale. <strong>Phase 2+:</strong> Progress to 4-count inhale, 8-count exhale (extending the exhale deepens parasympathetic activation). <strong>Advanced:</strong> Add 4-count retention (Kumbhaka) between inhale and exhale — only when 4:8 ratio is effortless.
+<div class="why">The extended exhale is where the magic is. Don't rush the progression. Weeks, not days.</div></div>
+</div>
+</div>
+
+<div class="card">
+<h3>Trataka (Candle Gazing) — 5–10 min, morning only</h3>
+<p><strong>When:</strong> Full S-Tier mornings only (non-DoorDash days). After Nadi Shodhana, before exercise.</p>
+<div class="warn"><strong>Phase sequencing:</strong> Not Phase 1. Add in Phase 2 when morning schedule has space. During Phase 1, the compressed ignition (Jnana Mudra + protein + Kill List + go) is correct.</div>
+<div class="protocol-step">
+<div class="time">Setup</div>
+<div class="action"><strong>Dark or dim room. Candle at arm's length, flame at eye level.</strong> Sit comfortably. Spine tall.
+<div class="why">Candle at eye level prevents neck strain. Dim room maximizes the afterimage effect.</div></div>
+</div>
+<div class="protocol-step">
+<div class="time">Phase 1</div>
+<div class="action"><strong>External gazing:</strong> Fix eyes on the flame tip without blinking. 30–90 seconds. Eyes will water — that's normal. When you can't hold it, close eyes gently.
+<div class="why">Builds single-pointed concentration (dharana). The inability to blink IS the training — you're teaching the attention system to hold one point.</div></div>
+</div>
+<div class="protocol-step">
+<div class="time">Phase 2</div>
+<div class="action"><strong>Internal gazing:</strong> Close eyes. Hold the afterimage of the flame in your mind's eye. It will drift and fade — bring it back to center. 2–5 min. When the afterimage fully dissolves, open eyes and repeat from Phase 1.
+<div class="why">This is the DMN quieter. Dr. K's framework: Trataka directly addresses the hyperactive Default Mode Network that drives depression/anxiety/rumination. The afterimage gives the mind a single anchor — it cannot wander AND hold the image simultaneously.</div></div>
+</div>
+<div class="protocol-step">
+<div class="time">Total</div>
+<div class="action"><strong>2–3 cycles of External → Internal = 5–10 min.</strong> Hard exit at 10 min. This is not meditation — it's a concentration drill with a definite endpoint.
+<div class="why">Hard exit prevents the ADHD "I'll just do one more cycle" trap.</div></div>
+</div>
+<div class="highlight"><strong>Do NOT progress to Yantra Trataka (Phase 3 in Dr. K's framework).</strong> That requires a guru. External and Internal Trataka are self-safe and self-sufficient for your needs.</div>
+</div>
+
+<div class="card">
+<h3>Kapalabhati (Skull-Shining Breath) — 2 min, optional</h3>
+<p><strong>When:</strong> Pre-studio on heavy production days. Energy boost without caffeine.</p>
+<p><strong>How:</strong> Sharp, forceful exhale through the nose (pump the belly in). Inhale is passive (belly relaxes out). Start at 30 pumps, rest 30 seconds. Repeat 2–3 rounds.</p>
+<p><strong>Caution:</strong> Not before vocal takes (it dries the throat). Not after 1 PM (energizing, can affect sleep). Not during acute stress or anxiety (it's activating, not calming — use Nadi Shodhana instead).</p>
+<div class="highlight"><strong>Dr. K safe-list confirmed:</strong> Surya Namaskar, Nadi Shodhana, Kapalabhati, Trataka — all safe for self-practice without a guru. Everything beyond these four (kundalini activation, advanced kumbhaka, bandha sequences) requires guided instruction.</div>
+</div>
+</div>
+
+<!-- ===================== SECTION 5: VOCAL ARTS ===================== -->
+<div class="section" id="vocal">
+<h2>5. Vocal Arts Training</h2>
+
+<div class="highlight" style="border-left-color:var(--gold)">
+<strong>DEEP ARTIFACTS — open these, not this section, for technique:</strong>
+<ul style="margin:8px 0 0;padding-left:16px">
+<li><a href="S_RANK_VOCAL_CODEX.html" style="color:var(--gold)"><strong>S_RANK_VOCAL_CODEX.html</strong></a> — Ron Anderson zero-tension + Seth Riggs SLS Passaggio + CVT Overdrive safe grit + the 6-point Pre-Flight Somatic Matrix. Your entire vocal technique bible.</li>
+<li><strong>FL_Studio_Vocal_Chain_Guide.md</strong> (brain/_archive/) — Full signal chain: TLM 103 → Apollo → FL Studio, with saturation and compression audits.</li>
+<li><strong>claude_health_priors_handoff.md</strong> (brain/) — Alexander Technique jaw diagnostic, Mula Bandha protocol, pelvic floor notes, all tied to vocal delivery.</li>
+</ul>
+<p style="margin-top:8px;font-size:.82rem">What follows below is the <strong>architectural framing</strong> — what's broken in your body chain and the daily session protocols. For the deep biomechanics, open the Codex.</p>
+</div>
+
+<div class="card">
+<h3>The vocal chain (what's broken and how to fix it)</h3>
+<p>Your vocal tension isn't a voice problem — it's a <strong>body chain problem</strong>. The chain runs: pelvic floor → diaphragm → ribcage → throat → jaw → tone. When the pelvic floor locks, the diaphragm compensates. When the diaphragm compensates, the throat over-engages. When the throat over-engages, the jaw clamps. When the jaw clamps, Appoggio support collapses.</p>
+<p style="margin-top:10px">The Vocal Codex covers the mechanics: Anderson's resonant space principle, Riggs's SLS vowel modification through the Passaggio (E4/G4), CVT Overdrive for safe grit via the aryepiglottic sphincter, and the 6-point Pre-Flight Somatic Matrix (Feet/Knees → Intercostal Anchor → C-Spine → Jaw → Soft Palate → Mental Override). <strong>Your superpower per the Codex:</strong> as a low tenor with falsetto access, your weapon is dynamic range — the contrast between low intimate whispered fry spiking into haunting falsetto. Don't smooth it out. Weaponize the extremes.</p>
+
+<table>
+<tr><th>Link</th><th>Problem</th><th>Fix</th><th>When</th></tr>
+<tr><td><strong>Pelvic floor</strong></td><td>Locked tension</td><td>Mula Bandha awareness (morning OM). Unlocked knees in booth. Diaphragmatic breathing floor work (Phase 2 Thu).</td><td>Daily (morning) + every vocal session</td></tr>
+<tr><td><strong>Diaphragm</strong></td><td>Compensating for pelvic lock</td><td>Appoggio: breathe INTO the lower back/sides, not the chest. Place hands on floating ribs — they should expand laterally on inhale.</td><td>Pre-tracking warm-up (3 min)</td></tr>
+<tr><td><strong>Ribcage</strong></td><td>Collapsed (hunch)</td><td>Upper chain exercises (Floor Prone Angels, Door Frame Rows). These open the ribcage mechanically.</td><td>Phase 2+ Tue sessions</td></tr>
+<tr><td><strong>Throat</strong></td><td>Over-engagement</td><td>Straw phonation: hum through a narrow straw (cocktail straw, not wide) on a descending scale. 2 min pre-tracking. Creates semi-occluded vocal tract, reduces effort.</td><td>Every vocal session warm-up</td></tr>
+<tr><td><strong>Jaw</strong></td><td>Clamping (stress + habit)</td><td>"Thumb under chin" diagnostic. Jaw massage: press thumbs into masseter muscles (hinge of jaw), circular motion, 30 sec each side. Tongue-on-roof awareness.</td><td>Pre-tracking + between takes</td></tr>
+</table>
+</div>
+
+<div class="card">
+<h3>Pre-tracking vocal protocol (15 min)</h3>
+<div class="protocol-step">
+<div class="time">-2 hrs</div>
+<div class="action"><strong>No dairy.</strong> Milk, cheese, yogurt coat the vocal folds with mucus. Switch to warm water + honey. If you ate dairy, wait the full 2 hours.
+<div class="why">Non-negotiable from S-Tier Protocol. The mucus thickening from dairy is measurable — it forces harder phonation to cut through, which fatigues faster.</div></div>
+</div>
+<div class="protocol-step">
+<div class="time">-15 min</div>
+<div class="action"><strong>Warm water + honey.</strong> One cup. Not hot, not cold. Room temp to warm. Sip throughout session.
+<div class="why">Hydrates the vocal folds. Honey has mild anti-inflammatory properties. Cold water constricts. Hot water can irritate.</div></div>
+</div>
+<div class="protocol-step">
+<div class="time">-12 min</div>
+<div class="action"><strong>Neck circles + jaw release.</strong> 5 slow neck circles each direction. Then: open mouth wide, let jaw hang, close gently. Repeat 5x. Thumb-under-chin check.
+<div class="why">Releases the neck/jaw clamp chain. Alexander Technique principle: the head leads, the body follows. Free the neck first.</div></div>
+</div>
+<div class="protocol-step">
+<div class="time">-8 min</div>
+<div class="action"><strong>Straw phonation.</strong> Narrow straw (cocktail size). Hum a comfortable pitch through the straw. Glide up and down your range. 2 min. Then lip trills (motorboat sound) on a 5-note descending scale. 1 min.
+<div class="why">Semi-occluded vocal tract exercises are the single most efficient warm-up. They reduce subglottic pressure and create optimal fold vibration with minimal effort.</div></div>
+</div>
+<div class="protocol-step">
+<div class="time">-5 min</div>
+<div class="action"><strong>Unlocked knees. Drop shoulders. Release jaw.</strong> Stand in booth position. Micro-bend knees. Let shoulders fall. Tongue rests on roof of mouth behind front teeth. Breathe into lower back.
+<div class="why">This is the "unlocked knees" protocol that releases Mula Bandha tension in the vocal booth. The body position IS the vocal technique.</div></div>
+</div>
+<div class="protocol-step">
+<div class="time">-2 min</div>
+<div class="action"><strong>S3 Check-in.</strong> "Name your mental state before opening the DAW." Rate 1–10. No judgment. The act of labeling IS the intervention.
+<div class="why">Waking Mind Protocol System 3. Activates metacognitive monitoring. If you're below 4, consider whether this is the right session to track vocals or whether mixing/arrangement work is better use of the time.</div></div>
+</div>
+<div class="protocol-step">
+<div class="time">0:00</div>
+<div class="action"><strong>Track.</strong> First take is always a throwaway (warm-up take, don't judge it). Real work starts take 2.
+<div class="why">Removes pressure from the first moment. Permission to suck on take 1 = freedom on take 2.</div></div>
+</div>
+</div>
+
+<div class="card">
+<h3>Between-take recovery (30 seconds)</h3>
+<ul>
+<li>Sip warm water</li>
+<li>3 slow breaths (inhale nose, exhale mouth with "shhh" sound — this resets the folds)</li>
+<li>Re-check jaw (thumb under chin)</li>
+<li>Re-unlock knees if you've locked them</li>
+</ul>
+<p style="font-size:.82rem;color:var(--text-dim);margin-top:8px">After 60–90 min of tracking, take a full 15-min break. Walk, don't scroll. The folds need hydration and rest, not just water.</p>
+</div>
+
+<div class="card">
+<h3>Post-session vocal care</h3>
+<ul>
+<li><strong>30-min vocal rest</strong> after heavy tracking. No talking, no humming.</li>
+<li><strong>Steam inhalation</strong> if available (bowl of hot water, towel over head, breathe 5 min). Rehydrates the folds.</li>
+<li><strong>No whispering.</strong> Whispering is harder on the folds than normal speech. If you need vocal rest, go silent.</li>
+<li><strong>Evening Nadi Shodhana</strong> with focus on relaxing the throat on each exhale.</li>
+</ul>
+</div>
+
+<div class="card">
+<h3>Long-term vocal development (Phase 2+)</h3>
+<ul>
+<li><strong>Full Vocal Codex:</strong> Your complete multi-master vocal system (Ron Anderson zero-tension philosophy + Seth Riggs SLS Passaggio + CVT Overdrive grit technique + 6-point Pre-Flight Somatic Matrix) lives in <a href="S_RANK_VOCAL_CODEX.html" style="color:var(--accent)">S_RANK_VOCAL_CODEX.html</a> in this same folder. This section is the daily protocol layer. The Codex is the deep reference.</li>
+<li><strong>Song structure study:</strong> From WARTIME RHYTHM plan — "Study one reference track per session. Map the energy arc. Where does the chorus breathe? Where does the bridge pull back? This is the vocabulary you're internalizing." Study Bryson Tiller, 6LACK, PND vocal approaches specifically. Your BPM pocket (105–122) means their phrasing patterns directly transfer.</li>
+<li><strong>Mixed voice development:</strong> Your sonic identity is Sexy 0.76 / Chill 0.56 — this lives in the mixed voice register (chest-head blend). Straw phonation glides through the passaggio (break point) are the #1 exercise. Do them daily in Phase 2+.</li>
+<li><strong>Alexander Technique session:</strong> One in-person session (Phase 3 or when budget allows) to address the specific neck/jaw pattern. One session with a trained AT practitioner gives you body awareness that months of self-correction might not. Budget: $60–120 for a single session.</li>
+</ul>
+<div class="warn"><strong>Performance archetype reminder:</strong> You're in the Don Toliver / Brent Faiyaz / Weeknd / Drake / Russ lane — atmospheric presence, NOT choreography. "Bieber Coachella, not Beyoncé Coachella." Vocal development priorities: texture, vibe, mixed voice, intimate delivery. NOT vocal runs, melisma drills, or technical agility competitions. The Codex's agility section (Diagnostic 03) is reference material — your bread and butter is dynamic range contrast, not speed.</div>
+</div>
+</div>
+
+<!-- ===================== SECTION 6: NUTRITION ===================== -->
+<div class="section" id="nutrition">
+<h2>6. Nutrition Protocol (Sovereign Fuel)</h2>
+
+<div class="card">
+<h3>Sunday batch prep — 30–45 min, sacred</h3>
+<p>This single ritual protects the entire week. Without it, you default to fast food on DoorDash runs ($8–12/meal × 5 days = $40–60/week wasted). With it, you spend $38–48/week at Aldi and eat better.</p>
+
+<table>
+<tr><th>Item</th><th>Prep</th><th>Yields</th><th>Approx cost</th></tr>
+<tr><td>Rice</td><td>3 cups dry → rice cooker or pot</td><td>6 cups cooked (Mon–Sat, ~1 cup/day)</td><td>$2</td></tr>
+<tr><td>Chicken thighs</td><td>6–8 thighs, seasoned, baked 400°F / 25 min</td><td>Mon–Sat protein (2/day)</td><td>$6–8</td></tr>
+<tr><td>Hard-boiled eggs</td><td>6–8 eggs, boiled, peeled, stored</td><td>Quick protein (Option B mornings + snacks)</td><td>$2</td></tr>
+<tr><td>PB&J sandwiches</td><td>3–4 assembled, bagged</td><td>Mid-session fuel (grab and eat at desk)</td><td>$3</td></tr>
+<tr><td>Bananas</td><td>Buy 6</td><td>Morning + craving replacement (banana first, every time)</td><td>$2</td></tr>
+<tr><td>Frozen vegetables</td><td>Buy 2 bags</td><td>Microwave alongside chicken+rice</td><td>$4</td></tr>
+<tr><td>Oats</td><td>Quick oats, store</td><td>Morning Option A base (with eggs)</td><td>$3</td></tr>
+</table>
+<p style="font-size:.85rem;color:var(--text-mid);margin-top:12px"><strong>Total: ~$22–25/week core.</strong> Add milk/cheese ($5), snacks ($5), coffee ($4), cooking oil/seasonings ($3 amortized) = <strong>$38–48/week.</strong> At Aldi. This is verified.</p>
+</div>
+
+<div class="card">
+<h3>Daily meal timing</h3>
+<table>
+<tr><th>Meal</th><th>Time</th><th>What</th><th>Why</th></tr>
+<tr><td><strong>Option A</strong> (S-Tier morning)</td><td>~7:20 AM</td><td>Eggs (2–3) + oats + banana</td><td>Tyrosine (dopamine precursor) + complex carbs + potassium. Non-negotiable during sobriety gap — dopamine synthesis needs raw material.</td></tr>
+<tr><td><strong>Option B</strong> (DoorDash morning)</td><td>~5:45 AM</td><td>Hard-boiled eggs (2) + banana</td><td>Prepped night before. Grab and go. Protein before Dash prevents crash at hour 2.</td></tr>
+<tr><td><strong>Mid-session</strong></td><td>~12–1 PM</td><td>PB&J at desk + water</td><td>Stays at the desk. If you have to leave the room to eat, you won't do it. PB = protein + fat. J = quick glucose.</td></tr>
+<tr><td><strong>Dinner</strong></td><td>~6–7 PM</td><td>Chicken thigh + rice + vegetables</td><td>Sattvik-leaning. The batch prep meal. Feeds gut serotonin production.</td></tr>
+<tr><td><strong>Pre-bed</strong></td><td>~8:30 PM</td><td>Mullein tea (if available)</td><td>Wind-down signal. No food after dinner.</td></tr>
+</table>
+</div>
+
+<div class="card">
+<h3>Vocal-specific nutrition rules</h3>
+<ul>
+<li><strong>No dairy 2 hours before vocal takes.</strong> This is the one hard rule. Mucus thickening measurably affects fold vibration. If you eat cheese at noon, don't track until 2 PM.</li>
+<li><strong>Warm water + honey before tracking.</strong> Not hot (irritates), not cold (constricts). Room temp to warm.</li>
+<li><strong>Stay hydrated throughout sessions.</strong> Water bottle in the booth. Sip between every 2–3 takes.</li>
+<li><strong>No coffee within 1 hour of tracking.</strong> Caffeine is a diuretic — it dries the folds. If you need the boost, drink it 90+ min before.</li>
+<li><strong>Fruit, not sugar, for cravings.</strong> Sobriety detox drives hard sugar cravings weeks 1–4. Banana first. Every time. Glucose from fruit metabolizes differently than processed sugar.</li>
+</ul>
+</div>
+
+<div class="card">
+<h3>Supplementation (optional, budget-permitting)</h3>
+<p>Not required. The meal plan above covers macros. These are leverage multipliers if you have the budget ($15–25/month total):</p>
+<ul>
+<li><strong>Electrolytes</strong> (morning water): Sea salt in water works. Or a cheap electrolyte mix ($8/month). Prevents dehydration-driven foggy morning starts.</li>
+<li><strong>Magnesium glycinate</strong> (before bed): $10/month. Supports sleep quality + muscle relaxation. The glycinate form specifically avoids the digestive issues of oxide/citrate.</li>
+<li><strong>Vitamin D3</strong> (morning): $5/month. You're in Denver. Even with sun, most people are deficient. D3 supports serotonin production — relevant during sobriety recovery.</li>
+</ul>
+<div class="warn"><strong>Phase 1 rule:</strong> Don't add supplements now. The batch prep + meal timing is the system. Supplements are Phase 2+ optimization. Adding 5 new habits during a sprint = dropping all 5.</div>
+</div>
+</div>
+
+<!-- ===================== SECTION 7: MARTIAL ARTS ===================== -->
+<div class="section" id="martial">
+<h2>7. Martial Arts Progression</h2>
+
+<div class="card">
+<h3>Three arts, three purposes, phased introduction</h3>
+<p>You're not building a martial arts practice for combat. You're building it for three things: <strong>posture correction</strong> (Tai Chi), <strong>body memory reactivation</strong> (Capoeira), and <strong>precision-under-pressure stage presence</strong> (Muay Thai). Each art serves a different domain in the S-Tier stack.</p>
+
+<table>
+<tr><th>Art</th><th>Purpose</th><th>Phase</th><th>Entry point</th></tr>
+<tr><td style="color:var(--accent);font-weight:700">Tai Chi</td><td>Posture, breath, pelvic floor, sovereignty stack alignment</td><td><span class="phase-badge p2">Phase 2</span> May 9+</td><td>Yang-style 24-form (YouTube). One 20-min follow-along session/week. Saturday or Sunday.</td></tr>
+<tr><td style="color:var(--accent2);font-weight:700">Capoeira</td><td>Body memory reactivation, floor flow, childhood reconnection</td><td><span class="phase-badge p3">Phase 3</span> Jun 19+</td><td>Ginga (basic step) at home. Look for Denver Capoeira groups — there are 2–3 active rodas.</td></tr>
+<tr><td style="color:var(--orange);font-weight:700">Muay Thai</td><td>Precision under pressure, stage presence, "God of Shinobi" aesthetic</td><td><span class="phase-badge p3">Phase 3+</span> Jul+</td><td>One intro class at a Denver gym. $15–25 drop-in. Feel it out. Don't commit to a membership until Phase 3 budget is confirmed.</td></tr>
+</table>
+</div>
+
+<div class="card">
+<h3>Tai Chi — the sovereignty art</h3>
+<p>This is the most important of the three for your current state. Here's why:</p>
+<ul>
+<li>Tai Chi hip circles directly address the pelvic floor lock.</li>
+<li>The weight-shifting practice (70/30 front/back) retrains the caveman hunch posture.</li>
+<li>The breathing integration (inhale on open, exhale on close) IS Nadi Shodhana in motion.</li>
+<li>It's interoceptive-first by design. You can't force Tai Chi — it only works slow.</li>
+<li>It pairs with Qigong (which you already explored in CA). The vocabulary will feel familiar.</li>
+</ul>
+<p style="margin-top:10px"><strong>Phase 2 prescription:</strong> Yang-style 24-form. One session/week, 20 minutes. YouTube instructor: search "Yang 24 form beginner follow along." Don't buy anything. Don't join a class yet. Just move.</p>
+<div class="highlight"><strong>Progression signal:</strong> When you can do the full 24-form from memory without the video (typically 6–8 weeks of 1x/week practice), you're ready for a class environment. Not before.</div>
+</div>
+
+<div class="card">
+<h3>Capoeira — the childhood bridge</h3>
+<p>You learned Capoeira as a kid in Milwaukee. This isn't a new art — it's a <strong>dormant pathway being reactivated</strong>. The ginga is in your body. The rhythm (berimbau) is in your ear. Reintroduction doesn't start from zero — it starts from deep memory.</p>
+<ul>
+<li><strong>Phase 2 prep:</strong> Start incorporating the ginga step into Saturday movement sessions (just 5 min of the basic back-and-forth). See if the body remembers.</li>
+<li><strong>Phase 3:</strong> Find a Denver roda. Capoeira is community-first — you don't practice it alone long-term. Two verified active groups in Denver 2026:
+    <ul style="margin-top:6px">
+      <li><strong>UCA Colorado (United Capoeira Association)</strong> — 910 Santa Fe Dr, Studio 8, Denver CO 80204. Full adult classes + beginner series. 2026 Batizado Jun 4–7. → <a href="https://ucacolorado.com" target="_blank" style="color:var(--accent)">ucacolorado.com</a></li>
+      <li><strong>Capoeira Luanda Denver</strong> — 2250 Kearney St. Contact: <a href="mailto:capoeiraluandadenver@gmail.com" style="color:var(--accent)">capoeiraluandadenver@gmail.com</a> → <a href="http://www.capoeiradenver.com" target="_blank" style="color:var(--accent)">capoeiradenver.com</a></li>
+    </ul>
+  </li>
+<li><strong>Cross-benefit:</strong> Capoeira's low-stance, floor-based movement directly trains the leg activation you're rebuilding. The esquiva (dodge) is a controlled deep lunge that builds exactly the muscle chain your knees need — without impact.</li>
+</ul>
+<div class="warn"><strong>Knee caution:</strong> Left knee (Hoffa's) — no locked-out full extension under load. Capoeira doesn't typically require this (movements are bent-knee), but watch for it in au (cartwheel) and macacó (back handspring) entries. Ginga, role, negativa — all safe.</div>
+</div>
+
+<div class="card">
+<h3>Muay Thai — the God of Shinobi era</h3>
+<p>This is the last to introduce and the most intensity-forward. It's here because of the stage presence thesis: the precision-under-pressure discipline of Muay Thai translates directly to performing. The "beautiful violence" aesthetic aligns with the God of Shinobi vision.</p>
+<ul>
+<li><strong>Not before Phase 3</strong> (Jun 19+ at earliest). Body needs to be rebuilt first — upper chain corrected, pelvic floor mobile, knees confirmed strong. Adding striking to a compromised posture just reinforces bad patterns.</li>
+<li><strong>Denver entry point — Easton Training Center:</strong> <a href="https://eastonbjj.com" target="_blank" style="color:var(--accent)">eastonbjj.com</a>. Book a free 30-min intro orientation (their process — no drop-ins for beginners). After orientation: Kickboxing Fundamentals class. Progression: Kickboxing Fundamentals → Muay Thai Fundamentals. No sparring until advanced. Bring hand wraps + 16oz gloves (rentals available). Arrive 15 min early first visit.</li>
+<li><strong>Budget:</strong> Intro orientation: Free. Monthly if committed: $100–150. This is Phase 3/Q3 budget territory — by then the snowball has freed money and the math works.</li>
+</ul>
+<div class="highlight" style="border-color:var(--orange)"><strong>🎭 Your Performance Archetype:</strong> Atmosphere-first, movement-minimal. Don Toliver Love Sick tour. Brent Faiyaz at Day N Vegas. Drake walking from one end of the OVO stage to the other. Bieber Coachella (lighting + energy + presence), not Beyoncé Coachella (choreography). Russ literally just stands there and commands the room. <strong>Muay Thai serves the STILLNESS</strong> — the controlled energy that radiates from a still center, not the movement itself. The audience can feel you could move. That knowledge IS the power. The art trains the precision; the stage expresses the restraint.</div>
+<div class="highlight"><strong>Cross-benefit with music:</strong> Thai boxing footwork trains the same weight-distribution awareness as stage movement. Kru (instructors) obsess over balance, hip rotation, and timing — the exact same things that make a performer magnetic on stage. The training IS the stage prep.</div>
+</div>
+</div>
+
+<!-- ===================== SECTION 8: MIND ARCHITECTURE ===================== -->
+<div class="section" id="mind">
+<h2>8. Mind Architecture</h2>
+
+<div class="card">
+<h3>The Three-System Model (Waking Mind Protocol)</h3>
+<table>
+<tr><th>System</th><th>Name</th><th>Function</th><th>Your relationship with it</th></tr>
+<tr><td style="color:var(--green);font-weight:700">S1</td><td>Automatic</td><td>Habits, reflexes, instincts. Runs 80% of your day without conscious input.</td><td>Your morning protocol builds S1 patterns. Captain's Chair, protein, Kill List — these become automatic through repetition, not willpower.</td></tr>
+<tr><td style="color:var(--yellow);font-weight:700">S2</td><td>Working Memory</td><td>Active problem-solving, creative work, focus. Limited bandwidth (~4 items).</td><td>This is the DAW state. Studio time. Mixing. ADHD means S2 is expensive to activate and easy to derail. Protect it with single-mode days.</td></tr>
+<tr><td style="color:var(--accent);font-weight:700">S3</td><td>Metacognitive</td><td>Awareness of your own mental state. "The one watching the watcher."</td><td>The S3 Check-in ("name your state, rate 1–10") activates this system. When S3 is online, you can catch the builder-avoidance loop BEFORE you're 45 min into code. S3 is the skill Trataka builds.</td></tr>
+</table>
+</div>
+
+<div class="card">
+<h3>Sovereignty Framework integration</h3>
+<p><strong>Serotonin vs Dopamine:</strong> These are the two operating modes. Serotonin = contentment, steady rhythm, sustained focus. Dopamine = pleasure, novelty, bursts. ADHD = dopamine-deficit brain that needs EXTERNAL dopamine structures (checkboxes, streaks, confirmations) while building the INTERNAL serotonin baseline (breathwork, sleep, consistency).</p>
+
+<p style="margin-top:10px"><strong>The transition arc:</strong></p>
+<ul>
+<li><strong>Phase 1:</strong> Mostly dopamine-driven. That's fine. The ignition structures (Oracle, Kill List, upload confirmations) are designed for this. You're sprinting on dopamine because the EP deadline demands it.</li>
+<li><strong>Phase 2:</strong> Serotonin starts to take over. Sobriety Day 29–43. The breathwork, consistent sleep, and Sunday rhythm begin to feel natural. This is where "rhythm feels like play" (Sovereignty Framework) becomes real.</li>
+<li><strong>Phase 3:</strong> If the serotonin baseline holds, work output sustains 7 days/week without burning out. Recovery happens overnight. The fractal principle activates — each day mirrors the sprint, the sprint mirrors the arc.</li>
+</ul>
+
+<p style="margin-top:10px"><strong>DMN management:</strong> The Default Mode Network is the "mind wandering" system. When hyperactive, it drives rumination, anxiety, and depression. Your tools against it: Trataka (direct DMN quieter), Nadi Shodhana (calms the ANS that feeds the DMN), exercise (BDNF redirects neural energy), and single-task focus (S2 activation suppresses DMN by definition).</p>
+</div>
+
+<div class="card">
+<h3>The Toxic Fuel → Dharmic Fuel transition</h3>
+<p>From the Sovereignty Framework: <strong>"Fear and insecurity can build empires. But they never produce contentment. The empire just gets bigger and the emptiness stays the same."</strong></p>
+<p style="margin-top:10px">You've built Label OS, Oracle Compass, Content Factory, Gorilla Geo, Core Drive Builder — all of it — on a mix of toxic and discipline fuel. That's not a moral failing. It's how you survived. But the transition to dharmic fuel is what makes the system sustainable past 30.</p>
+<ul>
+<li><strong>Toxic fuel signs:</strong> Building at 2 AM. Checking Spotify numbers hourly. Comparing to other artists. Feeling like "if this EP fails, I fail." Working to prove something to someone who isn't watching.</li>
+<li><strong>Dharmic fuel signs:</strong> Building because the craft is genuinely interesting. Releasing music because the song is ready, not because the timeline says so. Measuring against your own trajectory, not others'. Working because the pull is real, not because the fear is.</li>
+<li><strong>The Fuel Check (🟢/🟡/🔴) before every session</strong> is the practical mechanism. It takes 5 seconds. Name the fuel. If it's red, step away for 10 min and come back. If it's yellow, proceed — discipline is fine. If it's green, you're in flow. Protect that state.</li>
+</ul>
+</div>
+</div>
+
+<!-- ===================== SECTION 9: GRIEF ===================== -->
+<div class="section" id="grief">
+<h2>9. Grief & Trauma Processing</h2>
+
+<div class="card">
+<h3>The timeline (not negotiable, not release-dependent)</h3>
+<p><strong>Sunday Apr 27 = grief journaling starts.</strong> This was committed independent of the EP release date. Do not slip it when the EP schedule shifts. Grief processing is sobriety-aligned, not music-aligned.</p>
+
+<table>
+<tr><th>Phase</th><th>Window</th><th>Action</th></tr>
+<tr><td style="color:var(--yellow);font-weight:700">Containment</td><td>Apr 27 – May 25 (4 Sundays)</td><td>20-min Sunday journaling. Write to your father. What you'd say. What you'd ask. What you're angry about. Controlled exposure — NOT floodgates. Set a timer. Stop when it rings.</td></tr>
+<tr><td style="color:var(--accent);font-weight:700">Processing</td><td>Jun 1 – Jun 30</td><td>If 4+ journal entries completed: research one EMDR or IFS therapist. Goal: schedule one consultation. Budget: many offer sliding scale ($60–100/session). Some do intro consults free.</td></tr>
+<tr><td style="color:var(--green);font-weight:700">Integration</td><td>Jul 1+</td><td>One consultation before Jul 5. The consultation itself is the milestone — not starting a 12-session therapy arc. One session gives you a framework and tells you whether to continue.</td></tr>
+</table>
+</div>
+
+<div class="card">
+<h3>The body-grief connection</h3>
+<p>Your trauma isn't just psychological. Your biological father was located via DNA and murdered before first contact. That's an identity-level disruption that your body is holding physically:</p>
+<ul>
+<li><strong>Knee pain spikes</strong> during stress/cravings = somatized alarm system. Not injury. Signal.</li>
+<li><strong>Pelvic floor lock</strong> = stored tension. The body's "brace for impact" response that never released.</li>
+<li><strong>Caveman hunch</strong> = protective posture. The body curling inward, shielding the front (heart, gut).</li>
+<li><strong>Neck/jaw clamp</strong> = suppressed vocalization. The body stopping words that haven't been spoken.</li>
+</ul>
+<p style="margin-top:10px">The Sunday journaling → EMDR/IFS path addresses the top (cognitive processing). The body protocols (pelvic floor work, Tai Chi, breathwork, walking) address the bottom (somatic release). Both channels need to be open. One without the other is incomplete.</p>
+</div>
+
+<div class="card">
+<h3>FREAKSHOW integration (Oct 23 target)</h3>
+<p>By the FREAKSHOW era, processed grief channels into the music. Your sonic identity is built for it — Sexy 0.76, Chill 0.56, relentlessly positive. Depth comes from what you've <strong>transmuted</strong>, not what you're still running from.</p>
+<p style="margin-top:10px">The ALL LOVE EP title isn't ironic. It's the container for the work that comes next. ALL LOVE → FREAKSHOW is the sonic equivalent of the containment → integration grief arc. You've got to be in love with the process first before you can make art from the pain.</p>
+</div>
+
+<div class="card">
+<h3>May 9 — FLATLINE DAY 0</h3>
+<p>The day after the EP drops. The adrenaline crashes. The numbers start coming in and they're either good (dopamine spike → crash) or slow (ego spiral → crash). Either way, the system carries you.</p>
+<ul>
+<li><strong>Morning protocol runs as normal.</strong> Jnana Mudra, Nadi Shodhana, protein, Kill List scan.</li>
+<li><strong>No Spotify number-checking on Day 0.</strong> The data means nothing for 7 days. First meaningful pull: May 15 (one week).</li>
+<li><strong>Grief journaling on May 11 (Sunday)</strong> — second entry. The EP is out. Let the emotion flow into the page, not the refresh button.</li>
+<li><strong>If psychedelics are on the table:</strong> May 9 or May 10 is the right window. Nothing is on the line. No masters to lock. No deadlines. Set and setting: safe, intentional, with GF if comfortable. Not a party — a processing session.</li>
+</ul>
+</div>
+</div>
+
+<!-- ===================== SECTION 10: DAILY FLOWS ===================== -->
+<div class="section" id="schedule">
+<h2>10. Phase-Specific Daily Flows</h2>
+
+<div class="card">
+<h3><span class="phase-badge p1">Phase 1</span> Sprint morning (now – May 8)</h3>
+<p style="font-size:.82rem;color:var(--text-dim);margin-bottom:12px">Minimum viable sovereignty. Every minute that isn't mastering/tracking/uploading is noise.</p>
+
+<div class="protocol-step">
+<div class="time">Wake</div>
+<div class="action"><strong>32oz water + sea salt.</strong> Rehydration. Cortisol response.</div>
+</div>
+<div class="protocol-step">
+<div class="time">+3 min</div>
+<div class="action"><strong>Jnana Mudra + OM (90 sec).</strong> Mula Bandha engaged. Captain's Chair ignition.</div>
+</div>
+<div class="protocol-step">
+<div class="time">+5 min</div>
+<div class="action"><strong>Protein.</strong> Option A (eggs+oats+banana) or Option B (hard-boiled eggs+banana if DoorDash morning).</div>
+</div>
+<div class="protocol-step">
+<div class="time">+15 min</div>
+<div class="action"><strong>90-second Kill List scan.</strong> Open Oracle. Read RED items. Close. Hard exit.</div>
+</div>
+<div class="protocol-step">
+<div class="time">+17 min</div>
+<div class="action"><strong>DoorDash (if Dash day)</strong> or <strong>S3 Check-in → DAW open (if Studio day).</strong></div>
+</div>
+<div class="protocol-step">
+<div class="time">Evening</div>
+<div class="action"><strong>Dinner by 7 PM. No screens after 9:30. Lights out 10:30 PM.</strong> Nadi Shodhana 5 min optional but encouraged (builds the habit for Phase 2).</div>
+</div>
+<div class="warn"><strong>Phase 1 does NOT include:</strong> Trataka, exercise, sauna, cold shower, Tai Chi, Kapalabhati, or any new habit. These are Phase 2+. The sprint is the priority. Jnana Mudra + Nadi Shodhana are the only breathwork that earns a slot.</div>
+</div>
+
+<div class="card">
+<h3><span class="phase-badge p2">Phase 2</span> Full sovereign morning (May 9 – Jun 18)</h3>
+<p style="font-size:.82rem;color:var(--text-dim);margin-bottom:12px">EP is out. Build the body and mind that sustain Phase 3 and CREAM.</p>
+
+<div class="protocol-step">
+<div class="time">Wake</div>
+<div class="action"><strong>32oz water + sea salt.</strong></div>
+</div>
+<div class="protocol-step">
+<div class="time">+5 min</div>
+<div class="action"><strong>Jnana Mudra + OM (90 sec).</strong> Mula Bandha engaged.</div>
+</div>
+<div class="protocol-step">
+<div class="time">+7 min</div>
+<div class="action"><strong>Nadi Shodhana (5 min).</strong> Progress to 4:8 ratio (extended exhale) when ready.</div>
+</div>
+<div class="protocol-step">
+<div class="time">+12 min</div>
+<div class="action"><strong>Trataka (5–10 min).</strong> Candle gazing. 2–3 cycles External → Internal. Hard exit at 10 min.</div>
+</div>
+<div class="protocol-step">
+<div class="time">+22 min</div>
+<div class="action"><strong>Exercise (30 min).</strong> Tue: upper chain. Thu: lower chain + pelvic floor. Sat: walk + flow. Other days: 20-min walk or bodyweight basics.</div>
+</div>
+<div class="protocol-step">
+<div class="time">+52 min</div>
+<div class="action"><strong>Cold shower (2–3 min).</strong> Phase 2 introduction. Norepinephrine spike. Start with 30 seconds of cold at the end of a warm shower, extend weekly.</div>
+</div>
+<div class="protocol-step">
+<div class="time">+55 min</div>
+<div class="action"><strong>High-protein breakfast (Option A).</strong></div>
+</div>
+<div class="protocol-step">
+<div class="time">+65 min</div>
+<div class="action"><strong>90-second Kill List scan.</strong></div>
+</div>
+<div class="protocol-step">
+<div class="time">+67 min</div>
+<div class="action"><strong>S3 Check-in → Work begins.</strong></div>
+</div>
+
+<p style="font-size:.82rem;color:var(--text-dim);margin-top:14px"><strong>Phase 2 evening additions:</strong> Sauna 3x/week (Mon/Wed/Fri, 20 min + cold finish). Nadi Shodhana 5 min before bed (now non-negotiable, not optional). Lights out 10:30 PM. Total morning protocol: ~67 min. Adjust wake time accordingly.</p>
+</div>
+
+<div class="card">
+<h3><span class="phase-badge p3">Phase 3</span> Performance preparation (Jun 19+)</h3>
+<p style="font-size:.82rem;color:var(--text-dim);margin-bottom:12px">Same as Phase 2 morning with additions:</p>
+<ul>
+<li><strong>Saturday:</strong> Add 20-min Tai Chi (Yang 24-form) after exercise block.</li>
+<li><strong>Saturday or Sunday:</strong> Capoeira ginga practice 10 min (if body memory has reactivated).</li>
+<li><strong>1x in Phase 3:</strong> One Muay Thai drop-in class to feel it out.</li>
+<li><strong>Sunday:</strong> Extended walk (30–45 min) paired with grief journaling reflection.</li>
+<li><strong>Vocal warm-up protocol</strong> standardized before every tracking session (see Section 5).</li>
+</ul>
+</div>
+</div>
+
+<!-- ===================== SECTION 11: TOOLS MAP ===================== -->
+<div class="section" id="tools">
+<h2>11. Sovereignty Stack (tools map)</h2>
+
+<div class="card">
+<h3>What exists and what it does</h3>
+<table>
+<tr><th>Tool</th><th>Domain</th><th>Status</th><th>Role</th></tr>
+<tr><td><strong>Oracle Compass</strong></td><td>Craft / Purpose</td><td style="color:var(--green)">Live (Vercel)</td><td>PWA for releases, Kill List, doctrine, daily plan. The command center.</td></tr>
+<tr><td><strong>Kill List</strong></td><td>Mind / Craft</td><td style="color:var(--green)">Live (/kill route)</td><td>RED/AMBER/GREEN urgency. TodayPlan pulls top 5 RED tasks. 90-second morning scan target.</td></tr>
+<tr><td><strong>Content Factory V4</strong></td><td>Craft</td><td style="color:var(--green)">✓ Validated</td><td>OBS → Whisper → Claude → FFmpeg. All deps confirmed. Use <code>--jutsu warm-punch</code> for ALL LOVE aesthetic. See <em>content_factory_validation.md</em>.</td></tr>
+<tr><td><strong>Gorilla Geo</strong></td><td>Craft</td><td style="color:var(--yellow)">Module 1 runs</td><td>5-module push engine. 2b-ig-autofill.js for IG derivation. Gap: triggering architecture.</td></tr>
+<tr><td><strong>Core Drive Builder</strong></td><td>Craft</td><td style="color:var(--green)">Functional</td><td>Spotify embed scraper + Cyanite fallback. identity-sync.mjs with slug___project composite key.</td></tr>
+<tr><td><strong>Catalog Refresh</strong></td><td>Craft</td><td style="color:var(--green)">Scheduled</td><td>refresh-catalog.mjs. Spotify API + Music Stax fallback. Biweekly Mon + Wed 10 AM.</td></tr>
+<tr><td><strong>Agent Graph</strong></td><td>All</td><td style="color:var(--yellow)">Deployed, untested</td><td>10-head virtual label team at .claude/agents/. CoS orchestrates. /mirror and /standup entry points.</td></tr>
+<tr><td><strong>JARVIS</strong></td><td>All</td><td style="color:var(--red)">Architecture only</td><td>Priority 0 per Apr 24. Full schematic at brain/JARVIS_ARCHITECTURE.md. MVP: ~5h Sonnet time for Phases 1–4.</td></tr>
+<tr><td><strong>Competitive Deck v2</strong></td><td>Purpose</td><td style="color:var(--green)">Complete</td><td>competitive_analysis_apr4_2026.html. 10 sections, full Spotify integration.</td></tr>
+<tr><td><strong>Sovereign Action Plan</strong></td><td>All</td><td style="color:var(--green)">Live (brain/)</td><td>90-day WARTIME RHYTHM. Apr 6 – Jul 5. Needs +2 week amendment per Apr 23 pivot.</td></tr>
+</table>
+</div>
+
+<div class="card">
+<h3>What's missing (Phase 2+ build list)</h3>
+<table>
+<tr><th>Need</th><th>What</th><th>Priority</th><th>When</th></tr>
+<tr><td><strong>Link-in-bio funnel</strong></td><td>Custom HTML page → pre-save + email capture</td><td style="color:var(--green)">✓ Built</td><td>LINK_IN_BIO.html — review links + deploy to Vercel</td></tr>
+<tr><td><strong>Email/SMS list</strong></td><td>Kit (ConvertKit) free tier — "Inner Circle" fan list</td><td style="color:var(--yellow)">Staged</td><td>EMAIL_CAPTURE_SETUP_GUIDE.html ready — Ethan signs up + gets landing page URL</td></tr>
+<tr><td><strong>Website</strong></td><td>Wix rebuild or new platform (Carrd, Squarespace)</td><td style="color:var(--yellow)">Medium</td><td>Phase 2 (Jun)</td></tr>
+<tr><td><strong>Merch (minimum)</strong></td><td>Print-on-demand (Printful/Printify) → 2–3 designs</td><td style="color:var(--text-dim)">Low</td><td>Phase 3 (Jul)</td></tr>
+<tr><td><strong>JARVIS MVP</strong></td><td>Voice interface eliminating tool-switching tax</td><td style="color:var(--red)">P0 (Ethan decree)</td><td>Post-EP sprint or parallel</td></tr>
+<tr><td><strong>IG unfollow audit</strong></td><td>Reduce 2,001 following to <500 (Sunday batches)</td><td style="color:var(--yellow)">Medium</td><td>Post-May 1 (Sunday batches)</td></tr>
+</table>
+</div>
+</div>
+
+<!-- ===================== SECTION 12: RISK BREAKDOWN ===================== -->
+<div class="section" id="risks">
+<h2>12. Schedule Breakdown Risks</h2>
+
+<div class="card">
+<h3>Failure mode map — what breaks and what to do</h3>
+
+<table>
+<tr><th>Risk</th><th>Probability</th><th>Impact</th><th>Mitigation</th></tr>
+<tr><td><strong>Miss Apr 30 upload</strong></td><td style="color:var(--yellow)">Medium</td><td style="color:var(--red)">Critical</td><td>May 8 release shifts. Double Release Radar strategy collapses. Mitigation: 3 tracks in 4 days is tight but doable. One track per day Mon-Wed, upload Thu. If one track stalls, ship EP as 4-track (SEE ME, ESL, GL, SF) and release WU2 as standalone later.</td></tr>
+<tr><td><strong>Sobriety relapse</strong></td><td style="color:var(--yellow)">Medium</td><td style="color:var(--yellow)">High</td><td>Don't moralize. If it happens, the clock resets but the system doesn't. Next morning protocol runs as normal. The ignition structures carry you regardless of sobriety state. User mentioned weed — if this is a reset, acknowledge it internally and adjust the sobriety timeline in the north star metrics without shame.</td></tr>
+<tr><td><strong>Builder-avoidance during sprint</strong></td><td style="color:var(--red)">High</td><td style="color:var(--yellow)">High</td><td>JARVIS was escalated to P0 specifically because the tool-switching friction IS the avoidance loop. If you catch yourself building instead of mastering: that's the signal. Stop building. Open the DAW. BUT: if the building IS removing the friction that blocks mastering (JARVIS), that's valid. The test: "Does this build serve the next 4 days or the next 4 months?"</td></tr>
+<tr><td><strong>DoorDash income shortfall</strong></td><td style="color:var(--text-dim)">Low</td><td style="color:var(--yellow)">High</td><td>$1,800/month at $18/hr = 100 hrs/month = 25 hrs/week. Conservative target. If income dips, add evening blocks (5:30–8:30 PM) temporarily. Streaming income ($264/month) provides buffer. Real floor is 17 hrs/week with streaming offset.</td></tr>
+<tr><td><strong>Burnout post-EP</strong></td><td style="color:var(--yellow)">Medium</td><td style="color:var(--yellow)">High</td><td>Flatline Day protocol (May 9). No number-checking. Morning protocol runs. Grief journaling catches the emotional fallout on May 11. Phase 2's slower rhythm (Compound, not Sprint) is the structural answer.</td></tr>
+<tr><td><strong>Tax surprise</strong></td><td style="color:var(--yellow)">Medium</td><td style="color:var(--orange)">Medium</td><td>Q2 estimated due Jun 15. If 25% reserves have been running since Apr, you have ~$500 set aside. Unfiled WI/IL returns need attention — tax guides on Desktop. Block 2 hours in late May to address.</td></tr>
+<tr><td><strong>Content Factory untested</strong></td><td style="color:var(--text-dim)">Low</td><td style="color:var(--text-dim)">Low</td><td>V5.1 built but never run on real OBS. One 30-min test session in Phase 2 validates the pipeline. If it fails, manual Content Factory workflow still works — it's just slower.</td></tr>
+<tr><td><strong>Protocol overload (ADHD)</strong></td><td style="color:var(--red)">High</td><td style="color:var(--yellow)">High</td><td>THIS DOCUMENT is a risk. Too many protocols = analysis paralysis. The mitigation is phasing: Phase 1 has 4 items (Mudra, protein, Kill List, work). Phase 2 adds 4 more. Phase 3 adds 3 more. Never add everything at once. If in doubt, do less.</td></tr>
+</table>
+</div>
+
+<div class="highlight">
+<strong>The meta-risk:</strong> You're reading a 12-section sovereignty schematic during a week where you need to master 3 tracks. The correct use of this document is: <strong>read Section 10 (Phase 1 daily flow), bookmark the rest, and come back to it May 9.</strong> Everything else here is Phase 2+ infrastructure. Don't let the map become the trap.
+</div>
+</div>
+
+<!-- ===================== FOOTER ===================== -->
+<div style="text-align:center;padding:30px 0;color:var(--text-dim);font-size:.85rem;border-top:1px solid var(--border);margin-top:20px">
+<p><strong>This is the companion to the 2026 Playbook.</strong></p>
+<p>The Playbook covers: money, music, EP timeline, debt, macro context, weekly modes.</p>
+<p>This Schematic covers: body, breath, voice, food, martial arts, mind, grief, and the daily flows that hold it all together.</p>
+<p style="margin-top:12px;font-size:.78rem">Together they are the complete operating system. Use the Playbook for WHAT to do. Use this Schematic for HOW to be while doing it.</p>
+<p style="margin-top:16px;font-size:.75rem;color:var(--text-dim)">Built Apr 26, 2026 by Claude Opus. Sources: SOVEREIGN_ACTION_PLAN_FINAL.md (v2), appendix_s_tier_protocol.md, sovereignty_framework.md, appendix_artist_profile.md, 01_life_philosophy.md, CLAUDE.md (Ethan-verified Apr 23), catalog_intelligence_matrix.json, all Cowork memory files (user profile, health baseline, ADHD engine, martial arts, project state). Distributor: Amuse Pro. Always has been.</p>
+</div>
+
+</body>
+</html>

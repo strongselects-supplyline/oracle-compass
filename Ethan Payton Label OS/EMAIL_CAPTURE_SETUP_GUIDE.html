@@ -1,0 +1,338 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+<meta charset="UTF-8">
+<meta name="viewport" content="width=device-width, initial-scale=1.0">
+<title>Email Capture Setup — past.El noir Records</title>
+<link href="https://fonts.googleapis.com/css2?family=Inter:wght@400;500;600;700;800&display=swap" rel="stylesheet">
+<style>
+:root {
+  --bg: #060a06;
+  --card: #0e160e;
+  --border: rgba(4,120,87,0.2);
+  --emerald: #047857;
+  --gold: #d4a843;
+  --text: #e8e6e3;
+  --muted: #8a9e8a;
+  --red: #ef4444;
+  --yellow: #f59e0b;
+  --green: #10b981;
+}
+* { margin:0; padding:0; box-sizing:border-box; }
+body {
+  font-family: 'Inter', sans-serif;
+  background: var(--bg);
+  color: var(--text);
+  max-width: 780px;
+  margin: 0 auto;
+  padding: 40px 28px 60px;
+  -webkit-font-smoothing: antialiased;
+}
+h1 {
+  font-size: 28px;
+  font-weight: 800;
+  margin-bottom: 6px;
+  background: linear-gradient(135deg, var(--emerald), var(--gold));
+  -webkit-background-clip: text;
+  -webkit-text-fill-color: transparent;
+  background-clip: text;
+}
+.subtitle {
+  color: var(--muted);
+  font-size: 14px;
+  margin-bottom: 40px;
+  padding-bottom: 24px;
+  border-bottom: 1px solid rgba(255,255,255,0.06);
+}
+
+/* ALERT BOXES */
+.alert {
+  border-radius: 10px;
+  padding: 16px 20px;
+  margin: 20px 0;
+  font-size: 13px;
+  line-height: 1.6;
+  border-left: 4px solid;
+}
+.alert-green { background: rgba(16,185,129,0.08); border-color: var(--green); }
+.alert-yellow { background: rgba(245,158,11,0.08); border-color: var(--yellow); }
+.alert-red { background: rgba(239,68,68,0.08); border-color: var(--red); }
+.alert-blue { background: rgba(99,102,241,0.08); border-color: #6366f1; }
+.alert strong { display: block; margin-bottom: 4px; font-size: 12px; letter-spacing: 1px; text-transform: uppercase; }
+
+/* STEP CARDS */
+.step {
+  background: var(--card);
+  border: 1px solid rgba(255,255,255,0.05);
+  border-radius: 14px;
+  padding: 24px;
+  margin: 16px 0;
+  position: relative;
+}
+.step-num {
+  display: inline-flex;
+  align-items: center;
+  justify-content: center;
+  width: 32px;
+  height: 32px;
+  border-radius: 50%;
+  background: linear-gradient(135deg, var(--emerald), #059669);
+  color: #fff;
+  font-size: 13px;
+  font-weight: 800;
+  margin-bottom: 12px;
+}
+.step h3 {
+  font-size: 16px;
+  font-weight: 700;
+  margin-bottom: 10px;
+}
+.step p, .step li {
+  font-size: 13px;
+  color: #c8c6c0;
+  line-height: 1.7;
+  margin-bottom: 6px;
+}
+.step ul { padding-left: 18px; }
+.step code {
+  background: rgba(255,255,255,0.07);
+  padding: 2px 8px;
+  border-radius: 4px;
+  font-family: 'SF Mono', monospace;
+  font-size: 12px;
+  color: var(--gold);
+}
+
+/* COPY BLOCK */
+.copy-block {
+  background: rgba(0,0,0,0.3);
+  border: 1px solid rgba(255,255,255,0.06);
+  border-radius: 8px;
+  padding: 16px 18px;
+  margin: 12px 0;
+  font-family: 'SF Mono', 'Courier New', monospace;
+  font-size: 12px;
+  color: #a8d8a8;
+  line-height: 1.6;
+  white-space: pre-wrap;
+}
+
+/* SECTION HEADERS */
+h2 {
+  font-size: 13px;
+  font-weight: 700;
+  letter-spacing: 2.5px;
+  text-transform: uppercase;
+  color: var(--gold);
+  margin: 40px 0 16px;
+  padding-bottom: 8px;
+  border-bottom: 1px solid rgba(212,168,67,0.1);
+}
+
+/* TABLE */
+table {
+  width: 100%;
+  border-collapse: collapse;
+  margin: 16px 0;
+  font-size: 13px;
+}
+th {
+  text-align: left;
+  padding: 10px 14px;
+  background: rgba(255,255,255,0.03);
+  color: var(--muted);
+  font-size: 11px;
+  letter-spacing: 1px;
+  text-transform: uppercase;
+  font-weight: 600;
+}
+td {
+  padding: 12px 14px;
+  border-top: 1px solid rgba(255,255,255,0.04);
+  color: #c8c6c0;
+  vertical-align: top;
+}
+tr:hover td { background: rgba(255,255,255,0.02); }
+</style>
+</head>
+<body>
+
+<h1>Email Capture Setup</h1>
+<p class="subtitle">Kit (formerly ConvertKit) · Free Tier · "Inner Circle" Fan List<br>
+<strong style="color: var(--gold);">Estimated time to complete: 25 minutes</strong></p>
+
+<div class="alert alert-yellow">
+  <strong>⚡ Action Required by Ethan</strong>
+  This guide requires your real email address and identity to complete. The AI can build everything around it, but you need to sign up and get the Kit landing page URL. Estimated time: 25 min.
+</div>
+
+<div class="alert alert-green">
+  <strong>✓ Cost</strong>
+  $0. Kit free tier supports up to 10,000 subscribers, landing pages, and one automation — everything you need until Phase 3.
+</div>
+
+---
+
+<h2>Step-by-Step Setup</h2>
+
+<div class="step">
+  <div class="step-num">1</div>
+  <h3>Create Your Account</h3>
+  <ul>
+    <li>Go to <strong>kit.com</strong> → click "Start for free"</li>
+    <li>Use your primary artist email (the one you check)</li>
+    <li>Artist name: <code>Ethan Payton</code> or <code>past.El noir Records</code></li>
+    <li>Complete email verification</li>
+  </ul>
+</div>
+
+<div class="step">
+  <div class="step-num">2</div>
+  <h3>Verify Sender Settings</h3>
+  <ul>
+    <li>Go to <strong>Settings → Email</strong></li>
+    <li>Set your "From Name": <code>Ethan Payton</code></li>
+    <li>Set your "Reply-to": your real email</li>
+    <li>Add sender signature if prompted</li>
+    <li>This ensures your emails land in inboxes, not spam</li>
+  </ul>
+</div>
+
+<div class="step">
+  <div class="step-num">3</div>
+  <h3>Create the Landing Page</h3>
+  <ul>
+    <li>Navigate to: <strong>Grow → Landing Pages & Forms → Create New → Landing Page</strong></li>
+    <li>Pick the cleanest/simplest dark template available (or any template — you'll customize it)</li>
+    <li>Set these fields:</li>
+  </ul>
+  <p><strong>Headline:</strong></p>
+  <div class="copy-block">THE INNER CIRCLE</div>
+  <p><strong>Subheadline:</strong></p>
+  <div class="copy-block">First access to drops, unreleased tracks, and behind-the-scenes from past.El noir Records.</div>
+  <p><strong>Form fields:</strong> First Name + Email (both visible)</p>
+  <p><strong>Button text:</strong></p>
+  <div class="copy-block">I'm In</div>
+  <ul>
+    <li>Upload a photo (artist photo or EP cover art)</li>
+    <li>Click "Publish" when done</li>
+    <li><strong>Copy the landing page URL</strong> — you'll need it for the next step</li>
+  </ul>
+</div>
+
+<div class="step">
+  <div class="step-num">4</div>
+  <h3>Set Up the Welcome Email (Incentive)</h3>
+  <ul>
+    <li>In your landing page settings → click <strong>Incentive</strong></li>
+    <li>Enable "Send incentive email"</li>
+    <li>Subject line:</li>
+  </ul>
+  <div class="copy-block">Welcome to the Inner Circle 🖤</div>
+  <p>Email body (copy/paste and edit):</p>
+  <div class="copy-block">Hey [First Name],
+
+You're in.
+
+I'm Ethan — I make music under past.El noir Records out of Denver. This list is where I drop things first: unreleased tracks, session footage, honest updates, and early access to everything before it hits socials.
+
+The ALL LOVE EP is out now — start here if you haven't heard it:
+→ [Spotify link]
+
+Reply to this email and tell me your favorite track. I actually read these.
+
+— Ethan</div>
+</div>
+
+<div class="step">
+  <div class="step-num">5</div>
+  <h3>Wire Into the Link-in-Bio Page</h3>
+  <p>Once you have your Kit landing page URL:</p>
+  <ul>
+    <li>Open <code>LINK_IN_BIO.html</code> in your Label OS folder</li>
+    <li>Find the <code>handleEmailSubmit</code> function in the script tag</li>
+    <li>Replace the placeholder redirect with:</li>
+  </ul>
+  <div class="copy-block">// Option A: Redirect to Kit landing page
+window.location.href = 'YOUR_KIT_LANDING_PAGE_URL';
+
+// Option B: Get the Kit embed form JS snippet
+// Kit dashboard → Landing Page → "Share" → "Embed" → copy the &lt;script&gt; tag
+// Paste it into LINK_IN_BIO.html above the closing &lt;/body&gt; tag</div>
+  <div class="alert alert-blue">
+    <strong>💡 Recommendation</strong>
+    Option B (embed) is better UX — the form stays on your page. Option A (redirect) is faster to set up. Start with A, upgrade to B later.
+  </div>
+</div>
+
+<div class="step">
+  <div class="step-num">6</div>
+  <h3>Add Kit Landing Page to IG Bio</h3>
+  <ul>
+    <li>Copy your Kit landing page URL</li>
+    <li>Go to Instagram → Edit Profile → Link → Add external link</li>
+    <li>Paste the Kit URL <em>or</em> the LINK_IN_BIO.html Vercel URL (once deployed)</li>
+    <li>Bio text suggestion:</li>
+  </ul>
+  <div class="copy-block">Alt-R&B · Denver 🌑
+ALL LOVE EP out now ↓</div>
+</div>
+
+---
+
+<h2>Lead Magnet Options (Ethan picks one)</h2>
+
+<table>
+  <tr>
+    <th>Option</th>
+    <th>What it is</th>
+    <th>Friction</th>
+    <th>Conversion</th>
+  </tr>
+  <tr>
+    <td><strong>A — Unreleased track</strong></td>
+    <td>A vault track not on streaming, delivered via Kit</td>
+    <td>Moderate — need to pick a track and upload it</td>
+    <td>Highest — free music always converts</td>
+  </tr>
+  <tr>
+    <td><strong>B — Visualizer access</strong></td>
+    <td>Early/exclusive link to Synesthesia Visualizer</td>
+    <td>Low — just send the URL when it's live</td>
+    <td>High — novelty factor</td>
+  </tr>
+  <tr>
+    <td><strong>C — BTS video</strong></td>
+    <td>Mastering session / studio footage</td>
+    <td>Moderate — need a clip to upload</td>
+    <td>Medium-high — authenticity plays well</td>
+  </tr>
+  <tr>
+    <td><strong>D — Just the list</strong> ✓ Default</td>
+    <td>"First access to everything" — no extra asset</td>
+    <td>Zero — set it up now, upgrade later</td>
+    <td>Medium — works fine, upgrade to A when ready</td>
+  </tr>
+</table>
+
+<div class="alert alert-green">
+  <strong>Current default: Option D</strong>
+  Start with D now. The email list is the asset — you don't need a fancy lead magnet to start. Upgrade to Option A after the EP drops by uploading a pre-release or vault track to Kit's file delivery.
+</div>
+
+---
+
+<h2>Free Tier Limits</h2>
+
+<table>
+  <tr><th>Feature</th><th>Free Tier</th><th>Notes</th></tr>
+  <tr><td>Subscribers</td><td>Up to 10,000</td><td>More than enough for Phase 2</td></tr>
+  <tr><td>Landing pages</td><td>Unlimited</td><td>One is all you need</td></tr>
+  <tr><td>Automations</td><td>1 visual automation</td><td>Use it for the welcome email sequence</td></tr>
+  <tr><td>Broadcasts</td><td>Unlimited</td><td>Send one-off emails to your list anytime</td></tr>
+  <tr><td>Kit branding</td><td>On forms</td><td>Minor, doesn't affect conversion meaningfully</td></tr>
+  <tr><td>Cost</td><td>$0</td><td>Upgrade to Creator ($25/mo) at ~1,000 subs if needed</td></tr>
+</table>
+
+</body>
+</html>

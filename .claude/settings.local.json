@@ -1,0 +1,14 @@
+{
+  "permissions": {
+    "allow": [
+      "Bash(git add *)",
+      "Bash(git commit -m ' *)",
+      "Bash(rm /Users/ethanpayton/.gemini/antigravity/scratch/oracle-compass/.git/index.lock)",
+      "Bash(git -C /Users/ethanpayton/.gemini/antigravity/scratch/oracle-compass add app/globals.css)",
+      "Bash(git -C /Users/ethanpayton/.gemini/antigravity/scratch/oracle-compass commit -m ' *)",
+      "Bash(git *)",
+      "Bash(python3 *)",
+      "Bash(npm run *)"
+    ]
+  }
+}

@@ -125,43 +125,39 @@ export type Release = {
 };
 
 // Canonical defaults — source of truth for first seed only
-// EP tracks: SEE ME, Sweet Frustration, East Side Love, WANT U 2, Like I Did, GREEN LIGHTS, ALL LOVE (EP)
-// Upload/release dates for singles are TBD — gated on master completion, not calendar dates.
-// Amuse Pro = 48hr review. Upload the hour a master locks.
+// Apr 24 update: ESL is the lead single (uploaded Apr 24, drops May 1). SF is EP-only, not a single.
+// EP is 5 tracks — SEE ME, East Side Love, Green Light, Sweet Frustration, Want U 2.
+// Like I Did and RV are NOT on the May 8 EP (may surface post-EP).
 const RELEASE_DEFAULTS: Release[] = [
   {
     title: "SEE ME", uploadDate: "2026-03-09", releaseDate: "2026-03-13", status: "live",
     contentDeliverables: { ...DEFAULT_DELIVERABLES, coreDriveComplete: true, campaignKitGenerated: true, ascap: "pending", mlc: "pending", soundExchange: "complete", songtrust: "pending", notes: "Live Mar 13. Core Drive: 2,713 tracks / 38 playlists. Campaign kit in docs/handoff_mar24/." }
   },
   {
-    title: "Sweet Frustration", uploadDate: "2026-04-22", releaseDate: "2026-04-24", status: "unreleased",
-    contentDeliverables: { ...DEFAULT_DELIVERABLES, coreDriveComplete: true, campaignKitGenerated: true, soundExchange: "complete", notes: "Core Drive: 1,134 tracks / 20 playlists. KAYTRANADA lane. Mix26 bounced Apr 8 — closest to done. Upload when master locks." }
+    title: "East Side Love", uploadDate: "2026-04-24", releaseDate: "2026-05-01", status: "unreleased",
+    contentDeliverables: { ...DEFAULT_DELIVERABLES, coreDriveComplete: true, campaignKitGenerated: true, soundExchange: "complete", amuseUploaded: true, notes: "LEAD SINGLE — uploaded Apr 24, drops May 1. Then becomes EP track on May 8 via Amuse ISRC waterfall. ISRC pending Amuse assignment. Core Drive: 1,221 tracks / 20 playlists." }
   },
   {
-    title: "East Side Love", uploadDate: "2026-04-22", releaseDate: "2026-04-24", status: "unreleased",
-    contentDeliverables: { ...DEFAULT_DELIVERABLES, coreDriveComplete: true, campaignKitGenerated: true, soundExchange: "complete", notes: "Core Drive: 1,221 tracks / 20 playlists. Multiple bounces Apr 8 (25_5 series). Upload when master locks." }
+    title: "Sweet Frustration", uploadDate: "2026-04-30", releaseDate: "2026-05-08", status: "unreleased",
+    contentDeliverables: { ...DEFAULT_DELIVERABLES, coreDriveComplete: true, campaignKitGenerated: true, soundExchange: "complete", notes: "EP track (not a single). KAYTRANADA lane. Master must lock by Apr 30 for EP upload." }
   },
   {
-    title: "WANT U 2", uploadDate: "2026-04-22", releaseDate: "2026-04-24", status: "unreleased",
-    contentDeliverables: { ...DEFAULT_DELIVERABLES, notes: "New EP addition (Apr 11 audit). ~10 hrs remaining. Recording + mixing + mastering. Upload when master locks." }
+    title: "WANT U 2", uploadDate: "2026-04-30", releaseDate: "2026-05-08", status: "unreleased",
+    contentDeliverables: { ...DEFAULT_DELIVERABLES, notes: "EP track. Recording + mixing + mastering remaining. Master must lock by Apr 30." }
   },
   {
-    title: "Like I Did", uploadDate: "2026-04-22", releaseDate: "2026-04-24", status: "unreleased",
-    contentDeliverables: { ...DEFAULT_DELIVERABLES, coreDriveComplete: true, campaignKitGenerated: true, soundExchange: "complete", notes: "Core Drive: via Like I Did analysis (110 BPM D minor pocket). Campaign kit = worth_it_campaign_kit.md in docs/handoff_mar24/. Upload when master locks." }
+    title: "Green Light", uploadDate: "2026-04-30", releaseDate: "2026-05-08", status: "unreleased",
+    contentDeliverables: { ...DEFAULT_DELIVERABLES, notes: "EP track. Recording + mixing + mastering remaining. Master must lock by Apr 30." }
   },
   {
-    title: "GREEN LIGHTS", uploadDate: "2026-04-22", releaseDate: "2026-04-24", status: "unreleased",
-    contentDeliverables: { ...DEFAULT_DELIVERABLES, notes: "New EP addition (Apr 11 audit). ~10 hrs remaining. Recording + mixing + mastering. Upload when master locks." }
-  },
-  {
-    title: "ALL LOVE (EP)", uploadDate: "2026-04-22", releaseDate: "2026-04-24", status: "unreleased",
-    contentDeliverables: { ...DEFAULT_DELIVERABLES, notes: "6-track EP entity. Upload to Amuse by Apr 22 (48hr review). Drops Apr 24. Needs: EP cover art, track sequencing (Cyanite-informed), UPC, EP-level Spotify pitch." }
+    title: "ALL LOVE (EP)", uploadDate: "2026-04-30", releaseDate: "2026-05-08", status: "unreleased",
+    contentDeliverables: { ...DEFAULT_DELIVERABLES, notes: "5-track EP: SEE ME → East Side Love → Green Light → Sweet Frustration → WANT U 2. ESL is lead single May 1 → EP track May 8 via ISRC waterfall (enter ESL ISRC from Apr 24 upload when building EP). Upload full EP to Amuse by Apr 30. Needs: EP cover art, UPC, EP-level Spotify pitch." }
   },
 ];
 
 const RELEASES_KEY = "dynamic_releases";
 const RELEASES_VERSION_KEY = "releases_data_version";
-const RELEASE_DATA_VERSION = 26; // v26: Apr 21 audit — force re-seed with correct Apr 24 unified drop date for all EP singles. Banner now prioritizes ALL LOVE (EP) entity. Added post-release honeymoon state.
+const RELEASE_DATA_VERSION = 30; // v30: Apr 24 — ESL is lead single (uploaded, May 1). SF is EP-only (May 8). ISRC waterfall on ESL.
 
 // Read from IndexedDB, seeding defaults on first call or after version bump
 export async function getDynamicReleases(): Promise<Release[]> {
@@ -228,8 +224,9 @@ export async function shiftRelease(title: string, days: number): Promise<void> {
 }
 
 // Static EP date — this is the fixed north star, doesn't shift
-// (ALL LOVE converted from album to EP on Mar 21, 2026 — 7 tracks parked for post-EP release)
-export const EP_RELEASE_DATE = "2026-04-24";
+// Apr 24: ESL is lead single May 1. SF is EP-only (May 8). EP = May 8.
+export const EP_RELEASE_DATE = "2026-05-08";
+export const ESL_SINGLE_RELEASE_DATE = "2026-05-01";
 /** @deprecated Use EP_RELEASE_DATE. Kept for any stale import references. */
 export const ALBUM_RELEASE_DATE = EP_RELEASE_DATE;
 

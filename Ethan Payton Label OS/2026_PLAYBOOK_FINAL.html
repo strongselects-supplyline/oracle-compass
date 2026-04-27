@@ -1,0 +1,624 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+<meta charset="UTF-8">
+<meta name="viewport" content="width=device-width, initial-scale=1.0">
+<title>2026 Playbook — Ethan Payton | AUDITED FINAL</title>
+<link href="https://fonts.googleapis.com/css2?family=Inter:wght@400;500;600;700;800&display=swap" rel="stylesheet">
+<style>
+:root{--bg:#0f0f0f;--card:#1a1a1a;--card2:#222;--text:#e5e5e5;--text-mid:#a3a3a3;--text-dim:#666;--accent:#22d3ee;--accent2:#a78bfa;--green:#34d399;--yellow:#fbbf24;--red:#f87171;--orange:#fb923c;--border:#2a2a2a;--radius:14px}
+*{margin:0;padding:0;box-sizing:border-box}
+body{font-family:'Inter',sans-serif;background:var(--bg);color:var(--text);line-height:1.7;padding:20px;max-width:760px;margin:0 auto;-webkit-font-smoothing:antialiased}
+header{text-align:center;padding:40px 0 30px;border-bottom:1px solid var(--border);margin-bottom:32px}
+header h1{font-size:2.2rem;font-weight:800;background:linear-gradient(135deg,var(--accent),var(--accent2));-webkit-background-clip:text;-webkit-text-fill-color:transparent}
+header p{color:var(--text-mid);font-size:.9rem;margin-top:8px}
+header .audit-badge{display:inline-block;margin-top:12px;padding:4px 14px;border-radius:20px;font-size:.7rem;font-weight:700;background:#1a2e05;color:var(--green);border:1px solid #2d4a0a}
+.section{margin-bottom:36px}
+.section h2{font-size:1.3rem;font-weight:700;margin-bottom:16px;padding-bottom:8px;border-bottom:1px solid var(--border);display:flex;align-items:center;gap:10px}
+.card{background:var(--card);border:1px solid var(--border);border-radius:var(--radius);padding:24px;margin-bottom:14px}
+.card h3{font-size:1.05rem;font-weight:700;margin-bottom:10px}
+.card p,.card li{font-size:.88rem;color:var(--text-mid);line-height:1.7}
+.card ul{padding-left:18px;margin:8px 0}
+.card li{margin-bottom:5px}
+.tag{display:inline-block;padding:3px 10px;border-radius:20px;font-size:.7rem;font-weight:600;margin-right:6px}
+.highlight{background:#1e293b;border-left:3px solid var(--accent);padding:14px 16px;border-radius:0 8px 8px 0;margin:12px 0;font-size:.88rem}
+.warn{background:#2d1b00;border-left:3px solid var(--orange);padding:14px 16px;border-radius:0 8px 8px 0;margin:12px 0;font-size:.88rem;color:var(--orange)}
+.error{background:#2d0b0b;border-left:3px solid var(--red);padding:14px 16px;border-radius:0 8px 8px 0;margin:12px 0;font-size:.88rem;color:var(--red)}
+table{width:100%;border-collapse:collapse;margin:12px 0;font-size:.82rem}
+th,td{padding:10px 12px;text-align:left;border-bottom:1px solid var(--border)}
+th{color:var(--text-dim);font-size:.75rem;text-transform:uppercase;letter-spacing:.04em}
+.quarter{background:var(--card);border:1px solid var(--border);border-radius:var(--radius);padding:24px;margin-bottom:20px;position:relative;overflow:hidden}
+.quarter::before{content:'';position:absolute;top:0;left:0;right:0;height:3px}
+.q1::before{background:linear-gradient(90deg,var(--red),var(--orange))}
+.q2::before{background:linear-gradient(90deg,var(--accent),var(--accent2))}
+.q3::before{background:linear-gradient(90deg,var(--accent2),var(--orange))}
+.q4::before{background:linear-gradient(90deg,var(--orange),var(--green))}
+.quarter h3{font-size:1.1rem;font-weight:700;margin-bottom:6px}
+.quarter .subtitle{color:var(--text-dim);font-size:.82rem;margin-bottom:14px}
+.metric{display:inline-flex;align-items:center;gap:6px;background:var(--card2);padding:6px 12px;border-radius:8px;font-size:.78rem;font-weight:600;margin:3px 4px 3px 0}
+.mode-toggle{background:var(--card);border:1px solid var(--border);border-radius:var(--radius);padding:24px;margin-bottom:20px}
+.mode-toggle h3{font-size:1rem;font-weight:700;margin-bottom:14px;color:var(--accent)}
+.day-block{display:flex;gap:8px;align-items:stretch;margin-bottom:8px}
+.time-col{min-width:80px;font-size:.75rem;font-weight:600;color:var(--text-dim);padding-top:10px;flex-shrink:0}
+.block-col{flex:1;border-radius:8px;padding:10px 14px;font-size:.82rem;font-weight:500}
+.block-dash{background:#164e63;color:var(--accent)}
+.block-music{background:#3b0764;color:var(--accent2)}
+.block-content{background:#422006;color:var(--orange)}
+.block-rest{background:#1a2e05;color:var(--green)}
+.block-flex{background:#262626;color:var(--text-mid);border:1px dashed var(--border)}
+.rule{background:var(--card);border:1px solid var(--border);border-radius:10px;padding:16px 20px;margin-bottom:10px;display:flex;align-items:flex-start;gap:12px}
+.rule-num{background:var(--accent);color:var(--bg);width:28px;height:28px;border-radius:50%;display:flex;align-items:center;justify-content:center;font-weight:800;font-size:.8rem;flex-shrink:0}
+.rule p{font-size:.88rem}
+.rule strong{color:var(--text)}
+.debt-card{display:flex;justify-content:space-between;align-items:center;padding:12px 16px;border-radius:8px;margin-bottom:6px;font-size:.82rem;font-weight:600}
+.debt-alive{background:#2d1b00;color:var(--orange)}
+.debt-dead{background:#1a2e05;color:var(--green);text-decoration:line-through;opacity:.6}
+.trap{background:var(--card);border:1px solid var(--border);border-radius:10px;padding:16px 20px;margin-bottom:10px}
+.trap h4{font-size:.9rem;font-weight:700;color:var(--red);margin-bottom:6px}
+.trap p{font-size:.85rem;color:var(--text-mid)}
+.trap .counter{color:var(--green);font-weight:600;margin-top:6px;font-size:.85rem}
+.timeline-item{display:flex;gap:16px;margin-bottom:16px;align-items:flex-start}
+.timeline-date{min-width:90px;font-size:.78rem;font-weight:700;color:var(--accent);padding-top:2px}
+.timeline-content{flex:1;font-size:.85rem;color:var(--text-mid)}
+.timeline-content strong{color:var(--text)}
+@media print{body{background:#fff;color:#111;padding:0}.card,.quarter,.mode-toggle{border:1px solid #ddd;box-shadow:none}th{background:#f5f5f5}.highlight,.warn{border-left-width:3px}}
+@media(max-width:600px){body{padding:14px}header h1{font-size:1.6rem}.day-block{flex-direction:column}.time-col{min-width:auto}}
+</style>
+</head>
+<body>
+
+<header>
+<h1>2026 PLAYBOOK</h1>
+<p>Money, music, momentum. Built for your brain. Verified against real data.</p>
+<div class="audit-badge">AUDITED BY CLAUDE OPUS — APR 25, 2026</div>
+</header>
+
+<!-- ===================== SECTION 1: WHERE YOU ARE ===================== -->
+<div class="section">
+<h2>Where you are right now</h2>
+<div class="card">
+<table>
+<tr><th>Factor</th><th>Verified number</th><th>Source</th></tr>
+<tr><td>Total debt</td><td style="color:var(--red);font-weight:700">$18,150</td><td>Handoff (unverified — no debt file on disk)</td></tr>
+<tr><td>Monthly minimums + Affirm</td><td>$949/month</td><td>Handoff</td></tr>
+<tr><td>Interest bleeding</td><td style="color:var(--red)">$431/month</td><td>Handoff</td></tr>
+<tr><td>DoorDash rate</td><td>~$18/hr net (after gas)</td><td>CLAUDE.md</td></tr>
+<tr><td>Tracks in vault</td><td style="font-weight:700">40</td><td>Soundcloud vault screenshots (Ethan-provided)</td></tr>
+<tr><td>Tracks currently live</td><td style="color:var(--green);font-weight:700">13</td><td>12 back catalog + SEE ME (only EP track live)</td></tr>
+<tr><td>All-time Spotify streams</td><td style="font-weight:700">3.46M+</td><td>catalog_intelligence_matrix.json (HF alone)</td></tr>
+<tr><td>Monthly listeners</td><td>16,844</td><td>Spotify snapshot 2026-04-22</td></tr>
+<tr><td>Followers</td><td>1,401</td><td>Spotify snapshot 2026-04-22</td></tr>
+<tr><td>Popularity score</td><td>21 (artist) / 39 (HF)</td><td>musicstax.com verified</td></tr>
+<tr><td>Amuse lifetime wallet</td><td style="color:var(--green);font-weight:700">$9,379.09</td><td>catalog_intelligence_matrix.json</td></tr>
+<tr><td>Current passive streaming revenue</td><td style="color:var(--green);font-weight:700">~$264/month</td><td>Computed: 792K 12mo streams x $0.004/stream (12 back catalog tracks with data)</td></tr>
+<tr><td>Distributor</td><td>Amuse Pro</td><td>Standing rule — always has been</td></tr>
+</table>
+</div>
+
+<div class="highlight">
+<strong>The real math:</strong> You're not starting from zero. Your catalog earns <strong>~$264/month passively</strong> right now. Hollywood Fever alone does 628K streams/year. That changes the break-even: at $18/hr DoorDash, you need <strong>~$1,260/month from Dash</strong> (not $1,524) after streaming offsets expenses. That's <strong>~70 hrs/month = ~17 hrs/week minimum</strong>. At 22 hrs/week you generate ~$300/month surplus for the debt snowball.
+</div>
+
+<div class="card">
+<h3>Streaming revenue breakdown (verified 12mo data)</h3>
+<table>
+<tr><th>Track</th><th>12mo streams</th><th>~Annual revenue</th></tr>
+<tr><td>Hollywood Fever</td><td style="font-weight:700">628,145</td><td style="color:var(--green)">$2,513</td></tr>
+<tr><td>On The Move</td><td>154,803</td><td style="color:var(--green)">$619</td></tr>
+<tr><td>Ride With Me</td><td>2,552</td><td>$10</td></tr>
+<tr><td>Difficult</td><td>1,647</td><td>$7</td></tr>
+<tr><td>Turn Me Down</td><td>1,372</td><td>$5</td></tr>
+<tr><td>Advance</td><td>915</td><td>$4</td></tr>
+<tr><td>Dance With Him</td><td>909</td><td>$4</td></tr>
+<tr><td>Origami</td><td>815</td><td>$3</td></tr>
+<tr><td>2 On</td><td>578</td><td>$2</td></tr>
+<tr><td>Distance</td><td>549</td><td>$2</td></tr>
+<tr><td>Supposed to Know</td><td>463</td><td>$2</td></tr>
+<tr style="font-weight:700;border-top:2px solid var(--border)"><td>Total</td><td>792,748</td><td style="color:var(--green)">$3,171/yr (~$264/mo)</td></tr>
+</table>
+<p style="font-size:.78rem;color:var(--text-dim);margin-top:8px">Rate: $0.004/stream (Amuse Pro average). Roll With It (451K all-time) lacks 12mo breakdown — actual revenue is higher. SEE ME too new for 12mo data. Like I Did is NOT released (catalog matrix has bad data).</p>
+</div>
+</div>
+
+<!-- ===================== SECTION 2: WORLD CONTEXT ===================== -->
+<div class="section">
+<h2>The world you're operating in (Apr 2026)</h2>
+
+<div class="card">
+<h3>The macro picture — what changed since January</h3>
+<p>The US tariff regime escalated in April. Effective rates went from 2.1% to 11.7%+ with a minimum 10% on all trading partners. Consumer prices are expected to rise 1–2% in the near term. Yale Budget Lab estimates $600–800/year hit per household. Recession probability sits around 30% — not certain, but real enough to plan for.</p>
+<p style="margin-top:10px"><strong>What this means for you:</strong> Your food costs ($38–48/week at Aldi) will creep up. Gas may tick higher. Music gear prices are already jumping — Sweetwater reports 5–40% increases on imports. If you need any production equipment, buy it now or buy used. The $150/month food line in this playbook might need to become $170–180 by Q3.</p>
+</div>
+
+<div class="card">
+<h3>DoorDash — your income bridge has a shelf life</h3>
+<p>DoorDash is still #1 for delivery gig earnings ($20–25/hr average with tips, up to $35/hr peak). Your $18/hr net is conservative and achievable. <strong>But the autonomous delivery clock is ticking.</strong> DoorDash invested $200M into Also (Rivian spinoff) for autonomous delivery. Their in-house robot "Dot" is shipping. Autonomous fleets are expected to account for 5–8% of delivery jobs by end of 2026 — small now, accelerating fast.</p>
+<p style="margin-top:10px">DoorDash also launched "Tasks" — paying drivers to collect audio/video data for AI training. The gig economy is becoming the training layer for AI. This is the transition signal.</p>
+<div class="warn" style="margin-top:12px">
+<strong>Implication:</strong> DoorDash works for 2026. It probably still works for 2027. By 2028 the erosion will be visible. This reinforces the playbook's core thesis: the music catalog IS the exit strategy from gig work. Every track you ship compounds. DoorDash doesn't compound — it trades hours for dollars until the hours get automated away.
+</div>
+</div>
+
+<div class="card">
+<h3>Music industry — the independent golden window</h3>
+<p><strong>Independent artists and labels now account for half of all Spotify royalties.</strong> This is historic. In 2020 that number was ~30%. The distribution advantage that labels held is gone — aggregators (Amuse, DistroKid, TuneCore) eliminated it. 65% of new releases now come from self-managed acts using automated distribution and AI mastering.</p>
+<p style="margin-top:10px">Spotify paid $11B to the music industry in 2025 — largest payout from any retailer ever. 13,800 artists now earn $100K+/year from Spotify alone. The user-centric payout model (your subscription fee goes to artists YOU listen to, not the global pool) showed <strong>14% indie artist earnings growth</strong> in France/Germany rollouts. If this goes global, it directly benefits artists like you with dedicated listeners.</p>
+<p style="margin-top:10px">Streaming isn't growing at 20% anymore — the easy adoption markets are saturated. What's left is slower growth and increased competition for attention. Save rate → Discover Weekly → algorithm is still the lever, but the bar is rising.</p>
+<div class="highlight" style="margin-top:12px">
+<strong>Your position:</strong> 16,844 monthly listeners, popularity 21, 3.46M all-time streams. You're above the threshold where the algorithm starts to work FOR you. Every EP track that hits a 3%+ save rate compounds that flywheel. The window for independents to build durable catalog positions is open NOW — it may not stay this favorable.
+</div>
+</div>
+
+<div class="card">
+<h3>AI music — the flood and the moat</h3>
+<p>Suno and Udio settled with major labels in late 2025. Warner and UMG now license catalog for AI training with artist opt-in. New AI models trained on licensed works launch in 2026. A <strong>critical fair use ruling is expected summer 2026</strong> that could set the precedent for the decade.</p>
+<p style="margin-top:10px">The immediate threat: AI-generated tracks are flooding DSPs. "AI slop" is a real term now — low-effort generated music diluting the pool. Spotify and others are starting to crack down on bot-farmed AI tracks, but the volume is enormous.</p>
+<p style="margin-top:10px"><strong>The moat AI can't cross:</strong> Face. Story. Geography. Community trace. Your five content pillars (Release, Talk to 'Em, World-Building, Cinematic Visual, Community Trace) are specifically built for what AI can't replicate — a real human from Milwaukee's east side with a real voice and a real story. An AI can generate a TrapSoul track. It cannot generate past.El.</p>
+<div class="highlight" style="margin-top:12px">
+<strong>Strategic response:</strong> Double down on identity-forward content. The Portfolio Test ("Would this attract the collaborators, curators, and listeners I want in Year 2?") is more important now than ever. Every post that shows YOUR face, YOUR city, YOUR story widens the moat against the AI flood. The music is the product. The artist is the brand. The brand is the moat.
+</div>
+</div>
+
+<div class="card">
+<h3>Instagram + platforms — the algorithm tax</h3>
+<p>Instagram's 2026 algorithm is built around Reels and AI. The feed is almost entirely short-form video now. <strong>Shares are the new saves</strong> — the algorithm weights sharing as "highly distributable" more than saves or comments. Recycled/reposted content is aggressively deprioritized — original only.</p>
+<p style="margin-top:10px">Creators are starting to view single-platform dependency as existential risk. The smart ones are building newsletters, Discord communities, and owned channels. Creator marketing hit $37B in 2025, on track for $44B in 2026.</p>
+<p style="margin-top:10px"><strong>Your IG health:</strong> 2,200 followers / 2,001 following = 1:1 ratio. This suppresses engagement rate → suppresses reach. The gradual unfollow audit (Sunday batches, post-May 1) matters more now that the algorithm rewards engagement rate so heavily.</p>
+<div class="highlight" style="margin-top:12px">
+<strong>Implication for content pillars:</strong> "Talk to 'Em" (face-to-camera) and "World-Building" (Milwaukee, 3AM, east side) are your highest-value pillars in 2026's algorithm. They generate shares (the new signal). Canvas loops and snippets are still valid but the algorithm now explicitly favors original face content over repurposed audio clips. Adjust the mix accordingly.
+</div>
+</div>
+
+<div class="card">
+<h3>The decade view — what's forecastable</h3>
+<p>You're right that 2025 would have been hard to call from 2020. But structural trends ARE forecastable even if specific events aren't:</p>
+<ul>
+<li><strong>Gig economy erosion is certain.</strong> The timeline is debatable (3–5 years for meaningful driver displacement), but the direction isn't. Autonomous delivery investment is accelerating across every major platform.</li>
+<li><strong>Independent music share will keep growing.</strong> The tools keep getting better and cheaper. AI mastering, automated distribution, algorithmic marketing — all favor the solo operator with a system (Label OS).</li>
+<li><strong>AI will make music production cheaper but marketing harder.</strong> When everyone can make a track, the bottleneck shifts to attention, not production. Your investment in content infrastructure (Content Factory, Gorilla Geo, Core Drive Builder) is building the right muscle.</li>
+<li><strong>Platform dependency will get punished.</strong> Every creator who builds on rented land (IG, TikTok, Spotify alone) is one algorithm change from zero. The ones who survive build owned audiences. Your website rebuild (Phase 2) and email list are not optional — they're survival infrastructure.</li>
+<li><strong>Tariff-driven inflation is sticky.</strong> Budget for higher costs through 2027 minimum. Your frugal operating structure (Aldi batch prep, DoorDash bridge, zero-overhead home studio) is a competitive advantage. Major-label artists need $50K/month to operate. You need $1,524.</li>
+</ul>
+</div>
+</div>
+
+
+<div class="section">
+<h2>ALL LOVE EP — verified timeline</h2>
+<div class="card">
+<div class="timeline-item">
+<div class="timeline-date">Mar 13 ✓</div>
+<div class="timeline-content"><strong>SEE ME released.</strong> Live on Spotify (pop: 7). First ALL LOVE track in the wild.</div>
+</div>
+<div class="timeline-item">
+<div class="timeline-date" style="color:var(--text-dim)">Apr 17</div>
+<div class="timeline-content"><strong>Like I Did — NOT released.</strong> Dropped from EP. Status TBD post-EP. catalog_intelligence_matrix.json has bad data (shows "live" — incorrect, needs fix).</div>
+</div>
+<div class="timeline-item">
+<div class="timeline-date">Apr 24 ✓</div>
+<div class="timeline-content"><strong>East Side Love uploaded to Amuse</strong> as LEAD SINGLE. Screenshot ISRC page. Editorial pitch submitted.</div>
+</div>
+<div class="timeline-item">
+<div class="timeline-date">Apr 25</div>
+<div class="timeline-content"><strong>Green Light recording reportedly finished.</strong> Mix + master sprint begins.</div>
+</div>
+<div class="timeline-item">
+<div class="timeline-date">Apr 26–29</div>
+<div class="timeline-content"><strong>SPRINT:</strong> Record Sweet Frustration + Want U 2. Mix + master all 3 remaining tracks (GL, SF, WU2).</div>
+</div>
+<div class="timeline-item">
+<div class="timeline-date" style="color:var(--red)">Apr 30</div>
+<div class="timeline-content"><strong>HARD DEADLINE: Upload full EP to Amuse.</strong> 5 tracks: SEE ME, ESL, Green Light, Sweet Frustration, Want U 2. <strong>Enter ESL ISRC manually</strong> on ESL's EP track slot (waterfall).</div>
+</div>
+<div class="timeline-item">
+<div class="timeline-date" style="color:var(--accent2)">May 1</div>
+<div class="timeline-content"><strong>ESL SINGLE DROPS.</strong> Release Radar hit #1. 50 DMs. All 5 content pillars active.</div>
+</div>
+<div class="timeline-item">
+<div class="timeline-date">May 4</div>
+<div class="timeline-content"><strong>Compliance:</strong> ESL registration — ASCAP, MLC, Songtrust, Musixmatch. Pull ISRC from Amuse first.</div>
+</div>
+<div class="timeline-item">
+<div class="timeline-date" style="color:var(--accent2)">May 8</div>
+<div class="timeline-content"><strong>ALL LOVE EP DROPS.</strong> Release Radar hit #2. Verify ESL ISRC preserved as track 1. Maximum push 48 hrs.</div>
+</div>
+<div class="timeline-item">
+<div class="timeline-date">May 11</div>
+<div class="timeline-content"><strong>Compliance:</strong> EP batch registration (all 5 tracks).</div>
+</div>
+</div>
+
+<div class="card">
+<h3>EP tracklist (5 tracks — verified)</h3>
+<table>
+<tr><th>Track</th><th>Status</th><th>BPM / Key</th><th>Lane</th></tr>
+<tr><td>SEE ME</td><td style="color:var(--green)">LIVE (Mar 13)</td><td>120 / B minor</td><td>Dark TrapSoul (Drake-6LACK)</td></tr>
+<tr><td>East Side Love</td><td style="color:var(--yellow)">Uploaded Apr 24</td><td>105 / C# minor</td><td>Late-night TrapSoul (PND-Tiller)</td></tr>
+<tr><td>Green Light</td><td style="color:var(--red)">NOT YET MASTERED</td><td>TBD</td><td>TBD (no catalog entry)</td></tr>
+<tr><td>Sweet Frustration</td><td style="color:var(--red)">NOT YET MASTERED</td><td>124 / Bb minor</td><td>House-R&B (KAYTRANADA — GENRE OUTLIER)</td></tr>
+<tr><td>Want U 2</td><td style="color:var(--red)">NOT YET MASTERED</td><td>TBD</td><td>TBD (no catalog entry)</td></tr>
+</table>
+<p style="font-size:.78rem;color:var(--text-dim);margin-top:8px">Like I Did: dropped from EP, NOT released. Status TBD post-EP. Green Light and Want U 2 have no catalog_intelligence_matrix entries — add after mastering. catalog_intelligence_matrix.json incorrectly shows LID as "live" with release_date "2026-04-17" — this is bad Antigravity/Sonnet data, needs correction.</p>
+</div>
+
+<div class="warn">
+<strong>5 days to lock 3 masters.</strong> Green Light, Sweet Frustration, and Want U 2 must all be mastered by Apr 30. SF is a genre outlier (KAYTRANADA pocket, lowest R&B confidence at 25%) — needs different curator set than ESL/SEE ME. GL and WU2 have zero Cyanite data — run analysis post-master.
+</div>
+</div>
+
+<!-- ===================== SECTION 3: BRAIN RULES ===================== -->
+<div class="section">
+<h2>6 rules for your brain</h2>
+
+<div class="rule">
+<div class="rule-num">1</div>
+<p><strong>90-second Kill List scan, then close it.</strong> Open Oracle, read RED items, close. Hard exit at 90 seconds. No rabbit holes. This is the ignition — not the destination.</p>
+</div>
+<div class="rule">
+<div class="rule-num">2</div>
+<p><strong>Pick your mode the night before.</strong> Morning-you is not the decision maker. Night-you sets the GPS. Morning-you just drives.</p>
+</div>
+<div class="rule">
+<div class="rule-num">3</div>
+<p><strong>No block longer than 3 hours.</strong> After 3 hours, take 20 min. Walk, eat, stare at nothing. Your brain isn't lazy — it's overheating.</p>
+</div>
+<div class="rule">
+<div class="rule-num">4</div>
+<p><strong>Dash days are dash days. Music days are music days.</strong> Trying to do both = neither gets done well. Pick one primary.</p>
+</div>
+<div class="rule">
+<div class="rule-num">5</div>
+<p><strong>Pre-session protein is non-negotiable.</strong> Skipping this crashes executive function at hour 3. Eggs + banana. At the desk, not across the house.</p>
+</div>
+<div class="rule">
+<div class="rule-num">6</div>
+<p><strong>One bad day doesn't break the system.</strong> Miss a dash? Cool. Miss a session? Cool. Just do the next thing on the list. Momentum > consistency. Don't reset the clock.</p>
+</div>
+</div>
+
+<!-- ===================== SECTION 4: ADHD TRAPS ===================== -->
+<div class="section">
+<h2>5 ADHD traps (with countermoves)</h2>
+
+<div class="trap">
+<h4>TRAP 1: Builder-avoidance loop</h4>
+<p>The urge to "fix the system" instead of executing. Feels productive. Isn't. This is dopamine-seeking behavior masquerading as work.</p>
+<div class="counter">COUNTERMOVE: Open the DAW instead. If you're touching code during a music sprint, you're in the trap.</div>
+</div>
+<div class="trap">
+<h4>TRAP 2: Context-switching tax</h4>
+<p>Dash → studio → content → admin in one day. Every switch costs 20 min of ramp-up your ADHD brain can't afford.</p>
+<div class="counter">COUNTERMOVE: Single-mode days. One primary, one secondary. Never three.</div>
+</div>
+<div class="trap">
+<h4>TRAP 3: Perfection paralysis</h4>
+<p>A track at 85% that's OUT beats a track at 100% in your vault. You have 40 tracks. Ship them. The catalog compounds — perfection doesn't.</p>
+<div class="counter">COUNTERMOVE: Set a master-lock deadline per track. When it hits, it ships. Period.</div>
+</div>
+<div class="trap">
+<h4>TRAP 4: Morning scroll spiral</h4>
+<p>Checking Spotify numbers, IG engagement, email, Amuse wallet. Before you know it, 45 minutes gone. Executive function depleted before the DAW opens.</p>
+<div class="counter">COUNTERMOVE: Captain's Chair ignition first (Jnana Mudra + OM, 90 sec). Then 90-second Kill List scan. Then protein. Then work. Numbers are for Sunday data pulls only.</div>
+</div>
+<div class="trap">
+<h4>TRAP 5: Sobriety detox avoidance</h4>
+<p>Days 1–28 (Apr 2–Apr 30): executive function is LOW. Cravings hit hard. The temptation is to "take a break" from the system. The system IS the break.</p>
+<div class="counter">COUNTERMOVE: Checkboxes are dopamine hits. Upload confirmations are dopamine hits. Oracle streak counter is a dopamine hit. Stay inside the ignition structures — they carry you when willpower can't.</div>
+</div>
+</div>
+
+<!-- ===================== SECTION 5: WEEKLY MODES ===================== -->
+<div class="section">
+<h2>Two weekly modes (pick based on your week)</h2>
+
+<div class="mode-toggle">
+<h3>MODE A: Sovereign rhythm (from WARTIME RHYTHM plan)</h3>
+<p style="font-size:.85rem;color:var(--text-mid);margin-bottom:16px">Phase 1 template. DoorDash primary block 6:30–9 AM. Studio afternoons. Content Fridays.</p>
+
+<div class="day-block">
+<div class="time-col">MON</div>
+<div class="block-col block-dash" style="flex:1">6:30–9 AM Dash</div>
+<div class="block-col block-music" style="flex:1">Business admin + studio</div>
+</div>
+<div class="day-block">
+<div class="time-col">TUE</div>
+<div class="block-col block-music">Full S-Tier morning + Studio (heavy production)</div>
+</div>
+<div class="day-block">
+<div class="time-col">WED</div>
+<div class="block-col block-dash" style="flex:1">6:30–9 AM Dash</div>
+<div class="block-col block-music" style="flex:1">Studio + Gorilla Geo sprint (20 min)</div>
+</div>
+<div class="day-block">
+<div class="time-col">THU</div>
+<div class="block-col block-music">Studio — mixing/mastering day</div>
+</div>
+<div class="day-block">
+<div class="time-col">FRI</div>
+<div class="block-col block-content">Content creation + deployment (1 piece minimum)</div>
+</div>
+<div class="day-block">
+<div class="time-col">SAT</div>
+<div class="block-col block-dash" style="flex:1">Morning Dash (surge)</div>
+<div class="block-col block-flex" style="flex:1">System maintenance (1 task max, time-boxed)</div>
+</div>
+<div class="day-block">
+<div class="time-col">SUN</div>
+<div class="block-col block-rest">Grief journaling 20 min + weekly data pull 40–60 min + meal prep</div>
+</div>
+
+<div style="margin-top:14px">
+<span class="metric">~17–22 hrs Dash = $1,260–$1,600/month</span>
+<span class="metric">18+ hrs Studio</span>
+<span class="metric">6 hrs Content</span>
+</div>
+</div>
+
+<div class="mode-toggle">
+<h3>MODE B: Weekend warrior</h3>
+<p style="font-size:.85rem;color:var(--text-mid);margin-bottom:16px">Best when weekends are busy for delivery. Long unbroken music blocks during the week.</p>
+
+<div class="day-block">
+<div class="time-col">MON</div>
+<div class="block-col block-music">Music production (10am–1pm, 3pm–6pm)</div>
+</div>
+<div class="day-block">
+<div class="time-col">TUE</div>
+<div class="block-col block-music">Music production (10am–1pm, 3pm–6pm)</div>
+</div>
+<div class="day-block">
+<div class="time-col">WED</div>
+<div class="block-col block-content">Content day — batch shoots, edits, posts, admin</div>
+</div>
+<div class="day-block">
+<div class="time-col">THU</div>
+<div class="block-col block-music">Music production (10am–1pm, 3pm–6pm)</div>
+</div>
+<div class="day-block">
+<div class="time-col">FRI</div>
+<div class="block-col block-dash">DoorDash (7am–3pm = 8 hrs)</div>
+</div>
+<div class="day-block">
+<div class="time-col">SAT</div>
+<div class="block-col block-dash">DoorDash (7am–3pm = 8 hrs)</div>
+</div>
+<div class="day-block">
+<div class="time-col">SUN</div>
+<div class="block-col block-dash" style="flex:1">DoorDash (8am–2pm)</div>
+<div class="block-col block-rest" style="flex:1">Grief journal + data pull + meal prep</div>
+</div>
+
+<div style="margin-top:14px">
+<span class="metric">22 hrs Dash = ~$1,600/month</span>
+<span class="metric">18 hrs Music</span>
+<span class="metric">6 hrs Content</span>
+</div>
+</div>
+
+<div class="highlight">
+<strong>Either mode works.</strong> Pick whichever fits THIS week. The only hard rule: hit ~17 hrs/week minimum to cover your floor (with streaming income). Everything above that is snowball money. At 22 hrs/week you're generating ~$300/month surplus.
+</div>
+</div>
+
+<!-- ===================== SECTION 6: MONTHLY MONEY FLOW ===================== -->
+<div class="section">
+<h2>Monthly money flow (corrected)</h2>
+<div class="card">
+<table>
+<tr><th>Line item</th><th>Amount</th><th>Notes</th></tr>
+<tr><td>DoorDash income (22 hrs/wk)</td><td style="color:var(--green)">+$1,716</td><td>22 hrs x $18/hr x 4.33 weeks</td></tr>
+<tr><td>Streaming revenue (passive)</td><td style="color:var(--green)">+$264</td><td>Current catalog. Grows with new releases.</td></tr>
+<tr style="font-weight:600"><td>Total gross</td><td style="color:var(--green)">+$1,980</td><td></td></tr>
+<tr><td>Tax reserve (25%)</td><td style="color:var(--red)">-$495</td><td>Non-negotiable. Separate account. Both Dash + streaming.</td></tr>
+<tr><td>Debt minimums + Affirm</td><td style="color:var(--red)">-$949</td><td>Autopay everything</td></tr>
+<tr><td>Gas (personal)</td><td>-$50</td><td>Beyond what's in the $18/hr calc</td></tr>
+<tr><td>Food</td><td>-$150</td><td>Sunday batch prep: $38–48/week at Aldi</td></tr>
+<tr><td>Phone</td><td>-$75</td><td></td></tr>
+<tr style="font-weight:700;border-top:2px solid var(--border)"><td>Monthly surplus</td><td style="color:var(--green)">~$261</td><td>At 22 hrs/week. Every extra hour = +$18.</td></tr>
+</table>
+</div>
+
+<div class="card">
+<h3>Surplus scaling</h3>
+<table>
+<tr><th>Dash hrs/week</th><th>Dash income</th><th>+ Streaming</th><th>- Tax (25%)</th><th>- Expenses ($1,224)</th><th>Monthly surplus</th></tr>
+<tr><td>17 (floor)</td><td>$1,326</td><td>$264</td><td>-$398</td><td>-$1,224</td><td style="color:var(--yellow)">-$32 (break-even)</td></tr>
+<tr><td>22</td><td>$1,716</td><td>$264</td><td>-$495</td><td>-$1,224</td><td style="color:var(--green)">+$261</td></tr>
+<tr><td>25</td><td>$1,950</td><td>$264</td><td>-$554</td><td>-$1,224</td><td style="color:var(--green)">+$436</td></tr>
+<tr><td>30</td><td>$2,340</td><td>$264</td><td>-$651</td><td>-$1,224</td><td style="color:var(--green)">+$729</td></tr>
+</table>
+<p style="font-size:.78rem;color:var(--text-dim);margin-top:8px">Streaming projected to reach $350–450/month by Dec 2026 as EP + new singles compound. That lifts every row.</p>
+</div>
+
+<div class="highlight">
+<strong>Tax quarterly dates:</strong> Q1 (Jan–Mar) due Apr 15. Q2 (Apr–Jun) due <strong>Jun 15, 2026</strong>. Q3 (Jul–Sep) due Sep 15. Q4 (Oct–Dec) due Jan 15, 2027. You have unfiled WI/IL returns — see tax guides on Desktop.
+</div>
+</div>
+
+<!-- ===================== SECTION 7: DEBT KILL TIMELINE ===================== -->
+<div class="section">
+<h2>Debt kill timeline</h2>
+<div class="card">
+<p style="font-size:.82rem;color:var(--text-dim);margin-bottom:12px">Snowball method: kill smallest first, roll freed minimum into next target. Assumes ~$250–$400/month surplus.</p>
+
+<div class="debt-card debt-dead">Credit One ($600) — DEAD by June '26 | frees ~$25/month minimum</div>
+<div class="debt-card debt-dead">Macy's ($950) — DEAD by August '26 | frees ~$35/month → snowball now $60</div>
+<div class="debt-card debt-dead">Affirm ($1,500) — AUTO-DIES September '26 | frees $350/month → snowball now $410</div>
+<div class="debt-card debt-dead">Chase ($2,200) — DEAD by December '26 | frees ~$75/month → snowball now $485</div>
+<div class="debt-card debt-alive">Synchrony ($3,300) — Target: Q1–Q2 2027</div>
+<div class="debt-card debt-alive">Best Buy ($3,600) — Target: Q2–Q3 2027</div>
+<div class="debt-card debt-alive">Capital One ($6,000) — Target: Q4 2027</div>
+
+<div class="highlight" style="margin-top:16px">
+<strong>The cascade effect:</strong> After Affirm auto-dies in September, your snowball jumps from ~$60/month to $410/month. That's why you don't accelerate Affirm — let it die on schedule, use surplus to kill Macy's first. By December your monthly minimums drop from $949 to ~$464. That's $485/month freed permanently.
+</div>
+</div>
+</div>
+
+<!-- ===================== SECTION 8: QUARTERLY PLAN ===================== -->
+<div class="section">
+<h2>Quarter-by-quarter</h2>
+
+<div class="quarter q1">
+<h3>Now through Apr 30 — THE SPRINT</h3>
+<div class="subtitle">5 days to lock 3 masters. Everything else is noise.</div>
+<table>
+<tr><th>Goal</th><th>Target</th></tr>
+<tr><td>Master GL, SF, WU2</td><td style="color:var(--red);font-weight:700">Apr 29 (10 PM hard deadline)</td></tr>
+<tr><td>Upload EP to Amuse</td><td style="color:var(--red);font-weight:700">Apr 30</td></tr>
+<tr><td>ESL single release</td><td>May 1</td></tr>
+<tr><td>ALL LOVE EP release</td><td>May 8</td></tr>
+</table>
+</div>
+
+<div class="quarter q2">
+<h3>Q2: May–June — Foundation + compound</h3>
+<div class="subtitle">EP drops. Content sprint. Deluxe prep begins. Credit One dies.</div>
+<table>
+<tr><th>Goal</th><th>Target</th></tr>
+<tr><td>DoorDash weekly hours</td><td>17–22 hrs/week</td></tr>
+<tr><td>Monthly Dash income</td><td>$1,260–$1,600</td></tr>
+<tr><td>ALL LOVE EP release</td><td>May 8</td></tr>
+<tr><td>Grief journaling starts</td><td>Apr 27 (Sunday)</td></tr>
+<tr><td>ESL T+28 data pull</td><td>May 29 — save rate verdict</td></tr>
+<tr><td>Deluxe tracks master-locked</td><td>Jun 12</td></tr>
+<tr><td>ALL LOVE Deluxe upload</td><td>Jun 13</td></tr>
+<tr><td>Deluxe release</td><td>Jun 19 (SZA Play — 6 weeks after EP)</td></tr>
+<tr><td>Debt kill</td><td>Credit One ($600) — dead by end of June</td></tr>
+<tr><td>Tax reserve</td><td>25% of every deposit. Q2 estimated due Jun 15.</td></tr>
+<tr><td>Content cadence</td><td>3 posts/week minimum (5 pillars)</td></tr>
+</table>
+</div>
+
+<div class="quarter q3">
+<h3>Q3: July–September — Momentum</h3>
+<div class="subtitle">CREAM decision. Affirm dies. Macy's killed. Release velocity.</div>
+<table>
+<tr><th>Goal</th><th>Target</th></tr>
+<tr><td>DoorDash</td><td>17–25 hrs/week</td></tr>
+<tr><td>CREAM go/no-go decision</td><td>Jul 10 (data-driven)</td></tr>
+<tr><td>EMDR/IFS therapist consult</td><td>Before Jul 5 (1 session minimum)</td></tr>
+<tr><td>90-day protocol review</td><td>Jul 17</td></tr>
+<tr><td>Kill Macy's ($950)</td><td>Dead by August</td></tr>
+<tr><td>Affirm auto-dies</td><td>September — +$350/month freed</td></tr>
+<tr><td>Vault releases</td><td>6–8 singles from vault</td></tr>
+<tr><td>Content cadence</td><td>4–5 posts/week (CREAM campaign window)</td></tr>
+</table>
+</div>
+
+<div class="quarter q4">
+<h3>Q4: October–December — Acceleration</h3>
+<div class="subtitle">Holiday surge. Chase dies. FREAKSHOW territory. Catalog compounding.</div>
+<table>
+<tr><th>Goal</th><th>Target</th></tr>
+<tr><td>DoorDash</td><td>25–35 hrs/week (holiday surge = higher tips)</td></tr>
+<tr><td>Monthly income</td><td>$2,000–$2,500+ (holiday boost)</td></tr>
+<tr><td>Kill Chase ($2,200)</td><td>Dead by December with Affirm-freed money</td></tr>
+<tr><td>FREAKSHOW (if greenlit)</td><td>Oct 23 target</td></tr>
+<tr><td>Vault releases</td><td>6–8 more singles</td></tr>
+<tr><td>Catalog by Dec 31</td><td>EP + Deluxe + 14–20 singles = 22–34 tracks live</td></tr>
+<tr><td>Streaming revenue</td><td>$350–450/month (catalog compound effect)</td></tr>
+</table>
+</div>
+</div>
+
+<!-- ===================== SECTION 9: HUMAN STUFF ===================== -->
+<div class="section">
+<h2>The human stuff</h2>
+
+<div class="card">
+<h3>Sobriety timeline (restart Apr 2, 2026)</h3>
+<table>
+<tr><th>Window</th><th>Days</th><th>State</th><th>Protocol</th></tr>
+<tr><td>Detox</td><td>Apr 2–Apr 30</td><td style="color:var(--red)">Days 1–28</td><td>Executive function LOW. Ignition structures carry you. Checkboxes are victories.</td></tr>
+<tr><td>Recovery</td><td>May 1–May 15</td><td style="color:var(--yellow)">Days 29–43</td><td>Clarity returns. CREAM pre-production benefits.</td></tr>
+<tr><td>Stabilization</td><td>May 16–Jul 5</td><td style="color:var(--green)">Days 44–94</td><td>Rhythm begins to feel like play. Don't reset the clock.</td></tr>
+</table>
+</div>
+
+<div class="card">
+<h3>Grief protocol</h3>
+<ul>
+<li><strong>Apr 27 (this Sunday):</strong> Grief journaling officially starts. 20 min. Write to your father. What you'd say, what you'd ask, what you're angry about. Not floodgates — controlled exposure.</li>
+<li><strong>May 9:</strong> FLATLINE DAY 0. Protect daily rhythm. The core carries you through.</li>
+<li><strong>Jun 1+:</strong> If 4+ journal entries completed, research one EMDR or IFS therapist.</li>
+<li><strong>Goal:</strong> One consultation before Jul 5.</li>
+</ul>
+</div>
+
+<div class="card">
+<h3>Fitness</h3>
+<ul>
+<li><strong>Phase 1 (now–May 8):</strong> Movement = DoorDash. Don't add friction during the sprint.</li>
+<li><strong>Phase 2+ (May 9+):</strong> 30 min exercise Tue/Thu/Sat. Pushups, squats, walk. Nothing fancy. Interoceptive-first, not intensity-first.</li>
+<li><strong>Body cautions:</strong> Left knee Hoffa's pad (no locked-out full extension under load). Pelvic floor lock. Upper-chain hunch. Vocal tension via neck/jaw clamp.</li>
+</ul>
+</div>
+</div>
+
+<!-- ===================== SECTION 10: NORTH STAR METRICS ===================== -->
+<div class="section">
+<h2>North star metrics (check every Sunday)</h2>
+<div class="card">
+<table>
+<tr><th>Metric</th><th>Now (Apr 25)</th><th>May 8 target</th><th>Dec 31 target</th></tr>
+<tr><td>Spotify followers</td><td>1,401</td><td>1,600+</td><td>2,500+</td></tr>
+<tr><td>Spotify popularity</td><td>21</td><td>24+</td><td>35+</td></tr>
+<tr><td>Save rate (per track)</td><td>TBD</td><td>3%+ for ESL</td><td>4%+ average</td></tr>
+<tr><td>Playlist adds (editorial)</td><td>0</td><td>2+</td><td>5+</td></tr>
+<tr><td>ESL first-week streams</td><td>—</td><td>500+</td><td>—</td></tr>
+<tr><td>EP first-week streams</td><td>—</td><td>—</td><td>1,000+</td></tr>
+<tr><td>Tracks live</td><td style="font-weight:700">13</td><td>14 (ESL drops May 1)</td><td>22–34</td></tr>
+<tr><td>Monthly streaming revenue</td><td>~$264</td><td>~$264</td><td>$350–450</td></tr>
+<tr><td>Sobriety streak</td><td>Day 23</td><td>Day 36</td><td>Day 274</td></tr>
+<tr><td>Grief journal entries</td><td>0</td><td>0</td><td>30+</td></tr>
+<tr><td>Debt remaining</td><td>$18,150</td><td>$18,150</td><td>~$12,900</td></tr>
+<tr><td>Monthly minimums</td><td>$949</td><td>$949</td><td>~$464</td></tr>
+<tr><td>DoorDash monthly</td><td>$1,800 target</td><td>$1,800</td><td>$1,800</td></tr>
+</table>
+</div>
+</div>
+
+<!-- ===================== SECTION 11: RELEASE CADENCE ===================== -->
+<div class="section">
+<h2>Release cadence (post-EP)</h2>
+<div class="card">
+<h3>3 tiers — not all tracks need the full cycle</h3>
+<table>
+<tr><th>Tier</th><th>Description</th><th>Cycle time</th><th>Examples</th></tr>
+<tr><td style="color:var(--accent2);font-weight:700">Flagship</td><td>Full production, content campaign, editorial pitch</td><td>11 days</td><td>EP singles, CREAM lead singles</td></tr>
+<tr><td style="color:var(--yellow);font-weight:700">Quick-ship</td><td>Vault tracks near-ready. Master + upload + minimal content.</td><td>3–5 days</td><td>Tracks with existing mixes in vault</td></tr>
+<tr><td style="color:var(--text-dim);font-weight:700">Evaluate</td><td>Needs significant work or creative direction decision.</td><td>Park until bandwidth exists</td><td>Tracks with no Cyanite data, unclear lane</td></tr>
+</table>
+<p style="margin-top:12px;font-size:.85rem;color:var(--text-mid)">40 vault tracks sorted across these tiers = realistic shipping velocity. You don't need 11 days for every track. Batch the quick-ships. Save the full cycle for tracks that matter most.</p>
+</div>
+</div>
+
+<!-- ===================== SECTION 12: END OF YEAR ===================== -->
+<div class="section">
+<h2>End of 2026: what it looks like</h2>
+<div class="card" style="border:1px solid var(--accent)">
+<table>
+<tr><th>Metric</th><th>Now (Apr '26)</th><th>Target (Dec '26)</th></tr>
+<tr><td>Total debt</td><td style="color:var(--red)">$18,150</td><td style="color:var(--yellow)">~$12,900</td></tr>
+<tr><td>Monthly minimums</td><td>$949</td><td>~$464</td></tr>
+<tr><td>Cards killed</td><td>0</td><td style="color:var(--green)">3 + Affirm</td></tr>
+<tr><td>Tracks live</td><td style="font-weight:700">13</td><td style="color:var(--accent2)">22–34</td></tr>
+<tr><td>Monthly surplus</td><td>~$0</td><td style="color:var(--green)">$500+</td></tr>
+<tr><td>Monthly streaming</td><td style="color:var(--green)">$264</td><td style="color:var(--green)">$350–450</td></tr>
+<tr><td>Sobriety</td><td>Day 23</td><td style="color:var(--green)">Day 274</td></tr>
+<tr><td>Debt-free target</td><td colspan="2">Late 2027 — every card killed accelerates the next</td></tr>
+</table>
+<p style="margin-top:16px;text-align:center;font-size:.95rem;color:var(--accent)"><strong>3 debts dead. 22+ tracks live. Minimums halved. Streaming compounding. Sovereignty closer.</strong></p>
+</div>
+</div>
+
+<div style="text-align:center;padding:30px 0;color:var(--text-dim);font-size:.85rem;border-top:1px solid var(--border);margin-top:20px">
+<p><strong>The system works if you show up ~22 hours/week on Dash and ship tracks.</strong></p>
+<p>Your catalog is already working. 13 tracks live. $264/month passive. $9,379 lifetime earned.</p>
+<p>You're not starting from zero. You're compounding.</p>
+<p style="margin-top:12px;font-size:.75rem;color:var(--text-dim)">Audited Apr 25, 2026 by Claude Opus against catalog_intelligence_matrix.json (v2, updated Apr 24), SOVEREIGN_ACTION_PLAN_FINAL.md (v2, pivot Apr 24), CLAUDE.md (verified by Ethan Apr 23), and direct Ethan corrections (40 vault tracks from Soundcloud screenshots, LID not released, only SEE ME live from EP). Distributor: Amuse Pro. Always has been.</p>
+</div>
+
+</body>
+</html>

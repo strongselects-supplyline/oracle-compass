@@ -1,0 +1,479 @@
+{
+  "_meta": {
+    "version": 2,
+    "created": "2026-04-04",
+    "updated": "2026-04-26",
+    "description": "Single source of truth for catalog-level analytics. Update streaming fields monthly from Amuse Insights + Spotify for Artists. All unknown fields are null — do not guess.",
+    "update_cadence": "Monthly for streaming data. Immediately for ISRCs, release dates, and status changes.",
+    "instructions": "Claude reads this file at the top of any catalog analysis session. Eliminates context reconstruction from fragmented brain/ docs. One read = complete picture.",
+    "last_api_refresh": "2026-04-26"
+  },
+  "artist": {
+    "name": "Ethan Payton",
+    "aliases": [
+      "EP",
+      "past.El"
+    ],
+    "label": "past.El noir Records (Ethan Payton LLC)",
+    "distributor": "Amuse Pro",
+    "base": "Milwaukee / Lake Geneva, WI",
+    "spotify_profile": "28K5R8RuejXij5lB3MZxaQ",
+    "apple_music_profile": null,
+    "all_time_spotify_streams": 3460000,
+    "all_time_streams_source": "Hollywood Fever alone is 3.46M. Total catalog is higher.",
+    "amuse_wallet_lifetime": 9379.09,
+    "amuse_wallet_source": "Amuse wallet history as of Mar 11, 2026",
+    "spotify_snapshot_date": "2026-04-26",
+    "spotify_popularity": 21,
+    "spotify_followers": 1401,
+    "spotify_monthly_listeners": 20695,
+    "spotify_monthly_listeners_prev": 16844,
+    "spotify_monthly_listeners_delta": "+22.9% (30-day)",
+    "spotify_listener_follower_ratio": 0.068,
+    "spotify_top_organic_city": "Denver",
+    "spotify_save_rate": 0.0115,
+    "spotify_playlist_adds_30d": 765,
+    "spotify_playlist_adds_prev_30d": 574,
+    "spotify_snapshot_source": "Antigravity Python extraction of Spotify audience CSV (Mar 26 - Apr 26, 2026)",
+    "spotify_anomaly_note": "July 24-29, 2025: ~6,000 streams/day peak on Jul 28. Cause unknown — forensic audit needed to replicate for May 8.",
+    "spotify_genres": []
+  },
+  "active_ep_tracks": [
+    {
+      "track_id": "see_me",
+      "title": "SEE ME",
+      "status": "live",
+      "release_date": "2026-03-13",
+      "upload_date": "2026-03-09",
+      "label": "past.El noir Records (Ethan Payton LLC)",
+      "project": "ALL_LOVE_EP",
+      "metadata": {
+        "isrc": null,
+        "isrc_note": "Pull from Amuse — was live Mar 13",
+        "upc": null,
+        "amuse_id": null,
+        "spotify_uri": "7tMPPZnCBE1bcBi2iEC43X",
+        "apple_music_uri": null
+      },
+      "audio": {
+        "bpm": 120,
+        "key": "B",
+        "mode": "minor",
+        "cyanite_run": true,
+        "cyanite_note": "Source: Cyanite AI analysis Mar 2026",
+        "moods": {
+          "sexy": 0.89,
+          "chill": 0.57,
+          "romantic": 0.55,
+          "happy": null,
+          "uplifting": null,
+          "energetic": null,
+          "sad": null
+        },
+        "genres": {
+          "rb": 0.6,
+          "hip_hop": null
+        },
+        "comparable_artists": [
+          "Drake",
+          "6LACK",
+          "Bryson Tiller"
+        ],
+        "lane": "Dark TrapSoul / Drake-6LACK axis",
+        "lead_identifier": "Highest Sexy score on EP (89%)"
+      },
+      "streaming": {
+        "snapshot_date": "2026-04-20",
+        "spotify_12mo": null,
+        "apple_12mo": null,
+        "youtube_12mo": null,
+        "total_12mo": null,
+        "spotify_alltime": null,
+        "saves": null,
+        "playlist_count": null,
+        "shazams": null,
+        "note": "Released Mar 13. Pull from Amuse Insights + Spotify for Artists for first monthly fill.",
+        "spotify_popularity_date": "2026-04-20",
+        "spotify_popularity": 7
+      },
+      "geographic": {
+        "top_cities": [],
+        "international_pct": null
+      },
+      "audience": {
+        "snapshot_date": null,
+        "age_demo": null,
+        "gender_split": null,
+        "new_listener_rate": null
+      },
+      "playlist": {
+        "editorial_placements": null,
+        "independent_placements": null,
+        "editorial_targets": [
+          "TrapSoul",
+          "Late Night R&B",
+          "Are & Be",
+          "R&B Vault",
+          "Night Vibes",
+          "Bedroom Jams",
+          "Fresh Finds: R&B"
+        ],
+        "groover_submitted": null
+      },
+      "performance": {
+        "first_week_streams": null,
+        "30_day_streams": null,
+        "90_day_streams": null
+      },
+      "content": {
+        "reels_posted": null,
+        "tiktoks_posted": null,
+        "top_url": null,
+        "core_drive_complete": true,
+        "core_drive_file": "core-drive-see-me.json",
+        "gorilla_geo_complete": false
+      },
+      "compliance": {
+        "isrc_pulled": false,
+        "ascap": "pending",
+        "mlc": "pending",
+        "songtrust": "pending",
+        "sound_exchange": "complete",
+        "musixmatch": null,
+        "registration_note": "Registrations open post-ISRC pull"
+      },
+      "snapshot_schedule": {
+        "day_7": {
+          "due": "2026-03-20",
+          "captured": false
+        },
+        "day_14": {
+          "due": "2026-03-27",
+          "captured": false
+        },
+        "day_28": {
+          "due": "2026-04-10",
+          "captured": true
+        },
+        "day_56": {
+          "due": "2026-05-08",
+          "captured": false
+        },
+        "day_84": {
+          "due": "2026-06-05",
+          "captured": false
+        }
+      }
+    },
+    {
+      "track_id": "east_side_love",
+      "title": "East Side Love",
+      "status": "upload_pending",
+      "release_date": "2026-05-01",
+      "upload_date": "2026-04-24",
+      "pivot_note": "Apr 24 pivot — uploaded as LEAD SINGLE (not SF). Drops May 1 via Release Radar, then becomes EP track May 8 via Amuse ISRC waterfall. Prior 'live 2026-04-14' entry was Antigravity aspirational plan text, never true.",
+      "label": "past.El noir Records (Ethan Payton LLC)",
+      "project": "ALL_LOVE_EP",
+      "metadata": {
+        "isrc": null,
+        "isrc_note": "Pull from Amuse confirmation email after Apr 7 upload",
+        "upc": null,
+        "amuse_id": null,
+        "spotify_uri": null,
+        "apple_music_uri": null
+      },
+      "audio": {
+        "bpm": 105,
+        "key": "C#",
+        "mode": "minor",
+        "cyanite_run": true,
+        "moods": {
+          "sexy": 0.87,
+          "chill": 0.63,
+          "romantic": 0.62,
+          "happy": 0.38,
+          "uplifting": null,
+          "energetic": null,
+          "sad": null
+        },
+        "genres": {
+          "rb": 0.59,
+          "hip_hop": null
+        },
+        "comparable_artists": [
+          "PARTYNEXTDOOR",
+          "Bryson Tiller"
+        ],
+        "lane": "Late-night TrapSoul / PARTYNEXTDOOR-Bryson Tiller axis",
+        "lead_identifier": "Highest Romantic score alongside Like I Did (62%) · Second-highest Chill"
+      },
+      "streaming": {
+        "snapshot_date": "2026-04-20",
+        "spotify_12mo": null,
+        "apple_12mo": null,
+        "youtube_12mo": null,
+        "total_12mo": null,
+        "spotify_alltime": null,
+        "saves": null,
+        "playlist_count": null,
+        "shazams": null
+      },
+      "geographic": {
+        "top_cities": [],
+        "international_pct": null
+      },
+      "audience": {
+        "snapshot_date": null,
+        "age_demo": null,
+        "gender_split": null,
+        "new_listener_rate": null
+      },
+      "playlist": {
+        "editorial_placements": null,
+        "independent_placements": null,
+        "editorial_targets": [
+          "TrapSoul",
+          "Late Night R&B",
+          "Are & Be",
+          "Slow Jamz",
+          "Sensual Beats",
+          "Bedroom Jams"
+        ],
+        "groover_submitted": null,
+        "groover_note": "French R&B market — TrapSoul is huge in France"
+      },
+      "performance": {
+        "first_week_streams": null,
+        "30_day_streams": null,
+        "90_day_streams": null
+      },
+      "content": {
+        "reels_posted": null,
+        "tiktoks_posted": null,
+        "top_url": null,
+        "core_drive_complete": true,
+        "core_drive_file": "core-drive-esl.json",
+        "gorilla_geo_complete": false,
+        "campaign_kit": "docs/handoff_mar24/esl_campaign_kit.md",
+        "event_note": "414 Day drop — Milwaukee anthem"
+      },
+      "compliance": {
+        "isrc_pulled": false,
+        "ascap": "not_started",
+        "mlc": "not_started",
+        "songtrust": "not_started",
+        "sound_exchange": "complete",
+        "musixmatch": null
+      },
+      "snapshot_schedule": {
+        "day_7": {
+          "due": "2026-05-08",
+          "captured": false
+        },
+        "day_14": {
+          "due": "2026-05-15",
+          "captured": false
+        },
+        "day_28": {
+          "due": "2026-05-29",
+          "captured": false
+        },
+        "day_56": {
+          "due": "2026-06-26",
+          "captured": false
+        },
+        "day_84": {
+          "due": "2026-07-24",
+          "captured": false
+        }
+      }
+    },
+    {
+      "track_id": "sweet_frustration",
+      "title": "Sweet Frustration",
+      "status": "unreleased",
+      "release_date": "2026-05-08",
+      "upload_date": "2026-04-30",
+      "pivot_note": "Apr 24 pivot — EP-only (not a single). Master must lock by Apr 30 for EP upload. Prior 'live 2026-04-10' entry was Antigravity aspirational text.",
+      "label": "past.El noir Records (Ethan Payton LLC)",
+      "project": "ALL_LOVE_EP",
+      "metadata": {
+        "isrc": null,
+        "upc": null,
+        "amuse_id": null,
+        "spotify_uri": null,
+        "apple_music_uri": null
+      },
+      "audio": {
+        "bpm": 124,
+        "key": "Bb",
+        "mode": "minor",
+        "cyanite_run": true,
+        "moods": {
+          "sexy": 0.85,
+          "happy": 0.69,
+          "uplifting": 0.58,
+          "energetic": 0.48,
+          "chill": null,
+          "romantic": null,
+          "sad": null
+        },
+        "genres": {
+          "rb": 0.25,
+          "hip_hop": 0.27,
+          "electronic": null
+        },
+        "comparable_artists": [
+          "KAYTRANADA",
+          "GoldLink",
+          "Syd"
+        ],
+        "lane": "House-R&B / Electronic Soul / KAYTRANADA pocket — GENRE OUTLIER",
+        "lead_identifier": "Only Energetic track (48%). Highest Uplifting (58%). Lowest R&B confidence (25%).",
+        "warning": "DIFFERENT CURATOR SET — do NOT resubmit to ESL/SEE ME curators"
+      },
+      "streaming": {
+        "snapshot_date": "2026-04-20",
+        "spotify_12mo": null,
+        "apple_12mo": null,
+        "youtube_12mo": null,
+        "total_12mo": null,
+        "spotify_alltime": null,
+        "saves": null,
+        "playlist_count": null,
+        "shazams": null
+      },
+      "geographic": {
+        "top_cities": [],
+        "international_pct": null
+      },
+      "audience": {
+        "snapshot_date": null,
+        "age_demo": null,
+        "gender_split": null,
+        "new_listener_rate": null
+      },
+      "playlist": {
+        "editorial_placements": null,
+        "independent_placements": null,
+        "editorial_targets": [
+          "Dance & R&B",
+          "Feel Good R&B",
+          "Electronic Rising",
+          "Mood Booster",
+          "New Music Friday",
+          "Hot Rhythmic"
+        ],
+        "groover_submitted": null,
+        "groover_note": "French electronic market is strong"
+      },
+      "performance": {
+        "first_week_streams": null,
+        "30_day_streams": null,
+        "90_day_streams": null
+      },
+      "content": {
+        "reels_posted": null,
+        "tiktoks_posted": null,
+        "top_url": null,
+        "core_drive_complete": true,
+        "core_drive_file": "core-drive-sf.json",
+        "gorilla_geo_complete": false,
+        "campaign_kit": "docs/handoff_mar24/sf_campaign_kit.md"
+      },
+      "compliance": {
+        "isrc_pulled": false,
+        "ascap": "not_started",
+        "mlc": "not_started",
+        "songtrust": "not_started",
+        "sound_exchange": "complete",
+        "musixmatch": null
+      },
+      "snapshot_schedule": {
+        "day_7": {
+          "due": "2026-05-15",
+          "captured": false
+        },
+        "day_14": {
+          "due": "2026-05-22",
+          "captured": false
+        },
+        "day_28": {
+          "due": "2026-06-05",
+          "captured": false
+        },
+        "day_56": {
+          "due": "2026-07-03",
+          "captured": false
+        },
+        "day_84": {
+          "due": "2026-07-31",
+          "captured": false
+        }
+      }
+    },
+    {
+      "track_id": "all_love_ep",
+      "title": "ALL LOVE (EP)",
+      "status": "unreleased",
+      "release_date": "2026-05-08",
+      "upload_date": "2026-04-30",
+      "pivot_note": "Apr 24 pivot — EP release moved to May 8. ESL is lead single May 1, then waterfalls into EP track 1 via ISRC preservation. Upload by Apr 30.",
+      "label": "past.El noir Records (Ethan Payton LLC)",
+      "project": "ALL_LOVE_EP",
+      "entity_type": "ep",
+      "tracklist": [
+        "see_me",
+        "east_side_love",
+        "green_light",
+        "sweet_frustration",
+        "want_u_2"
+      ],
+      "metadata": {
+        "isrc": null,
+        "upc": null,
+        "amuse_id": null,
+        "spotify_uri": null,
+        "apple_music_uri": null,
+        "ep_art_locked": false,
+        "spotify_pitch_submitted": false
+      },
+      "streaming": {
+        "snapshot_date": null,
+        "total_12mo": null
+      },
+      "content": {
+        "event_note": "Drops 10 days after 414 Day live performance. Performance footage = launch content.",
+        "presave_link": null
+      },
+      "compliance": {
+        "isrc_pulled": false,
+        "upc_assigned": false,
+        "note": "UPC assigned by Amuse at EP upload"
+      },
+      "snapshot_schedule": {
+        "day_7": {
+          "due": "2026-05-15",
+          "captured": false
+        },
+        "day_14": {
+          "due": "2026-05-22",
+          "captured": false
+        },
+        "day_28": {
+          "due": "2026-06-05",
+          "captured": false
+        },
+        "day_56": {
+          "due": "2026-07-03",
+          "captured": false
+        },
+        "day_84": {
+          "due": "2026-07-31",
+          "captured": false
+        }
+      }
+    }
+  ],
+  "note": "Trimmed to EP tracks only for NotebookLM. Full catalog has 17 entries."
+}

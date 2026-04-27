@@ -888,9 +888,10 @@
     {
       "track_id": "east_side_love",
       "title": "East Side Love",
-      "status": "unreleased",
-      "release_date": "2026-04-14",
-      "upload_date": "2026-04-07",
+      "status": "upload_pending",
+      "release_date": "2026-05-01",
+      "upload_date": "2026-04-24",
+      "pivot_note": "Apr 24 pivot — uploaded as LEAD SINGLE. Drops May 1, then becomes EP track May 8 via Amuse ISRC waterfall.",
       "label": "past.El noir Records (Ethan Payton LLC)",
       "project": "ALL_LOVE_EP",
       "metadata": {
@@ -989,8 +990,9 @@
       "track_id": "sweet_frustration",
       "title": "Sweet Frustration",
       "status": "unreleased",
-      "release_date": "2026-04-10",
-      "upload_date": "2026-04-02",
+      "release_date": "2026-05-08",
+      "upload_date": "2026-04-30",
+      "pivot_note": "Apr 24 pivot — EP-only (not a single). Master must lock by Apr 30 for EP upload.",
       "label": "past.El noir Records (Ethan Payton LLC)",
       "project": "ALL_LOVE_EP",
       "metadata": {
@@ -1188,8 +1190,9 @@
       "track_id": "all_love_ep",
       "title": "ALL LOVE (EP)",
       "status": "unreleased",
-      "release_date": "2026-04-24",
-      "upload_date": "2026-04-14",
+      "release_date": "2026-05-08",
+      "upload_date": "2026-04-30",
+      "pivot_note": "Apr 24 pivot — EP release moved to May 8. ESL is lead single May 1, waterfalls into EP track 1.",
       "label": "past.El noir Records (Ethan Payton LLC)",
       "project": "ALL_LOVE_EP",
       "entity_type": "ep",
@@ -1197,7 +1200,8 @@
         "see_me",
         "east_side_love",
         "sweet_frustration",
-        "like_i_did"
+        "green_light",
+        "want_u_2"
       ],
       "metadata": {
         "isrc": null,
@@ -1280,7 +1284,7 @@
   "next_projects": [
     {
       "title": "ALL LOVE (Deluxe)",
-      "target_release": "2026-04-28",
+      "target_release": "2026-06-19",
       "status": "parked",
       "track_count": 12
     },

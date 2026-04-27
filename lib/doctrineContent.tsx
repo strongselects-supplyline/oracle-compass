@@ -629,6 +629,38 @@ function MixingPage() {
         <tr><td>Danceability</td><td>High</td><td>Groove that moves the body.</td></tr>
         <tr><td>Energy</td><td>Low</td><td>The contradiction that makes the sound distinctive.</td></tr>
       </tbody></table></div>
+
+      <h2 className="scroll-h3">Phase 9 — The Mastering Gems (Final Polish)</h2>
+      <Callout type="important" icon="💎"><strong>The Golden Rule of Mastering:</strong> Always identify what pulls you in (enhance it) and what pushes you away (fix it). <strong>Fix what pushes you away first.</strong></Callout>
+      
+      <h3 className="scroll-h3" style={{fontSize: 16, marginTop: 16}}>1. Level-Matched Assessment</h3>
+      <div className="scroll-table-wrap"><table className="scroll-table"><tbody>
+        <tr><td><strong>Gain Staging</strong></td><td>Drop source mix by -6dB to sit around -10 LUFS before starting chain. Protects transient integrity.</td></tr>
+        <tr><td><strong>Level Matching Protocol</strong></td><td>Every single A/B test must be level-matched to within <strong>0.1dB</strong>. Insert a trim plugin at the end of the chain just to verify a 1dB EQ cut accurately. Volume tricks the ear into thinking "louder is better."</td></tr>
+      </tbody></table></div>
+
+      <h3 className="scroll-h3" style={{fontSize: 16, marginTop: 16}}>2. Surgical Mid-Side & Low-Mid Contrast</h3>
+      <div className="scroll-card scroll-card-left sc-blue">
+        <ol style={{paddingLeft:20}}>
+          <li className="scroll-p"><strong>M/S Phase Warning:</strong> When using Mid-Side EQ, you MUST use <strong>Linear Phase mode</strong>. Standard minimum phase alters the encode/decode matrix, physically rotating elements around the stereo image.</li>
+          <li className="scroll-p"><strong>Side-Channel De-Essing:</strong> Use separate de-essers for Mid vs. Side. <strong>Mid Channel:</strong> Slow Attack (preserves snare/kick transient). <strong>Side Channel:</strong> Fast Attack (smashes wide sibilance without killing center punch).</li>
+          <li className="scroll-p"><strong>Low-Mid Cut & Harmonic Compensation:</strong> Cut Side signal at ~350Hz (-1dB) to uncloud the stereo field. To compensate for width loss, apply multiband Exciter/Saturation strictly to Side channel (400Hz - 1.7kHz). Generates harmonics that bring brightness and width back without the 300Hz mud.</li>
+        </ol>
+      </div>
+
+      <h3 className="scroll-h3" style={{fontSize: 16, marginTop: 16}}>3. Spectrogram Kick Sculpting</h3>
+      <div className="scroll-stack">
+        <div className="scroll-stack-level"><div className="scroll-stack-title">Step 1 · Extended Log View</div><div className="scroll-stack-desc">Open spectrogram (iZotope RX/Ozone). Change view from Mel scale to <strong>Extended Log</strong> for high visual resolution in the sub frequencies.</div></div>
+        <div className="scroll-stack-level"><div className="scroll-stack-title">Step 2 · Transient Knock</div><div className="scroll-stack-desc">Locate the physical "knock" (100Hz–300Hz). Target the exact peak (e.g., 120Hz) with dynamic EQ for chest-punch.</div></div>
+        <div className="scroll-stack-level sc-highlight"><div className="scroll-stack-title">Step 3 · The Post-Transient Flab Cut</div><div className="scroll-stack-desc">Locate the resonant "vroom" lingering after the hit (e.g., 52Hz). Make a highly targeted 1dB cut immediately <em>after</em> the transient. The kick turns into a tight, pumping heartbeat. It will sound <em>bigger</em> because the masking flab is gone.</div></div>
+      </div>
+
+      <h3 className="scroll-h3" style={{fontSize: 16, marginTop: 16}}>4. Limiting & True Peak Delivery</h3>
+      <div className="scroll-table-wrap"><table className="scroll-table"><tbody>
+        <tr><td><strong>Limiter Threshold</strong></td><td>Hit max 0.8dB–1.0dB of gain reduction. If you need more, your mix is wrong.</td></tr>
+        <tr><td><strong>The High-Pass Myth</strong></td><td><strong>DO NOT</strong> blindly high-pass below 30Hz to gain headroom. Phase rotation changes peak sample values, often losing more headroom than gained. Use a low-shelf instead.</td></tr>
+        <tr><td><strong>Codec Preview Testing</strong></td><td>Turn on Codec Preview (128kbps MP3) and <strong>solo the artifacts</strong>. Hear exactly what digital distortion the streaming compression will introduce to your DBTP.</td></tr>
+      </tbody></table></div>
     </>
   );
 }

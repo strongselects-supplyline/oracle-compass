@@ -1,0 +1,513 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+<meta charset="UTF-8">
+<meta name="viewport" content="width=device-width, initial-scale=1.0, maximum-scale=1.0, user-scalable=no">
+<title>Ethan Payton — past.El noir Records</title>
+<meta name="description" content="Ethan Payton — Alt-R&B artist. Stream ALL LOVE EP, join the inner circle, and connect.">
+<link rel="preconnect" href="https://fonts.googleapis.com">
+<link href="https://fonts.googleapis.com/css2?family=Inter:wght@400;500;600;700;800&display=swap" rel="stylesheet">
+<style>
+:root {
+  --bg: #060a06;
+  --bg2: #0c120c;
+  --card: #111a11;
+  --card-hover: #152015;
+  --border: rgba(4,120,87,0.2);
+  --border-hover: rgba(4,120,87,0.5);
+  --emerald: #047857;
+  --emerald-glow: rgba(4,120,87,0.35);
+  --gold: #d4a843;
+  --gold-dim: rgba(212,168,67,0.12);
+  --navy: #1e293b;
+  --text: #e8e6e3;
+  --text-mid: #a3a3a3;
+  --text-dim: #666;
+  --radius: 14px;
+}
+
+* { margin: 0; padding: 0; box-sizing: border-box; }
+
+body {
+  font-family: 'Inter', -apple-system, sans-serif;
+  background: var(--bg);
+  color: var(--text);
+  min-height: 100vh;
+  display: flex;
+  justify-content: center;
+  -webkit-font-smoothing: antialiased;
+}
+
+.container {
+  width: 100%;
+  max-width: 440px;
+  padding: 0 20px 60px;
+}
+
+/* ─── BACKGROUND TEXTURE ─── */
+body::before {
+  content: '';
+  position: fixed;
+  top: 0; left: 0; right: 0; bottom: 0;
+  background:
+    radial-gradient(ellipse at 50% 0%, rgba(4,120,87,0.08) 0%, transparent 60%),
+    radial-gradient(ellipse at 50% 100%, rgba(212,168,67,0.04) 0%, transparent 50%);
+  pointer-events: none;
+  z-index: 0;
+}
+
+.container { position: relative; z-index: 1; }
+
+/* ─── HEADER ─── */
+.header {
+  text-align: center;
+  padding: 48px 0 32px;
+}
+
+.avatar {
+  width: 96px;
+  height: 96px;
+  border-radius: 50%;
+  background: linear-gradient(135deg, var(--emerald), var(--gold));
+  margin: 0 auto 16px;
+  display: flex;
+  align-items: center;
+  justify-content: center;
+  font-size: 36px;
+  font-weight: 800;
+  color: var(--bg);
+  letter-spacing: -2px;
+  box-shadow: 0 0 40px var(--emerald-glow);
+}
+
+.header h1 {
+  font-size: 22px;
+  font-weight: 800;
+  letter-spacing: 0.5px;
+  margin-bottom: 4px;
+}
+
+.header .label {
+  font-size: 12px;
+  font-weight: 500;
+  color: var(--gold);
+  letter-spacing: 2px;
+  text-transform: uppercase;
+}
+
+.header .bio {
+  font-size: 13px;
+  color: var(--text-mid);
+  margin-top: 10px;
+  line-height: 1.5;
+}
+
+/* ─── HERO CARD ─── */
+.hero-card {
+  background: linear-gradient(135deg, rgba(4,120,87,0.15), rgba(30,41,59,0.3));
+  border: 1px solid var(--border);
+  border-radius: var(--radius);
+  padding: 24px;
+  margin-bottom: 16px;
+  text-align: center;
+  position: relative;
+  overflow: hidden;
+  cursor: pointer;
+  transition: all 0.3s ease;
+}
+
+.hero-card::before {
+  content: '';
+  position: absolute;
+  top: 0; left: 0; right: 0;
+  height: 3px;
+  background: linear-gradient(90deg, var(--emerald), var(--gold));
+}
+
+.hero-card:hover {
+  border-color: var(--border-hover);
+  box-shadow: 0 0 30px var(--emerald-glow);
+  transform: translateY(-2px);
+}
+
+.hero-card .badge {
+  display: inline-block;
+  padding: 3px 10px;
+  border-radius: 20px;
+  font-size: 10px;
+  font-weight: 700;
+  letter-spacing: 1px;
+  text-transform: uppercase;
+  background: var(--gold-dim);
+  color: var(--gold);
+  margin-bottom: 10px;
+}
+
+.hero-card h2 {
+  font-size: 20px;
+  font-weight: 800;
+  margin-bottom: 6px;
+}
+
+.hero-card p {
+  font-size: 13px;
+  color: var(--text-mid);
+  margin-bottom: 16px;
+}
+
+.hero-btn {
+  display: inline-flex;
+  align-items: center;
+  gap: 8px;
+  padding: 12px 28px;
+  background: linear-gradient(135deg, var(--emerald), #059669);
+  color: white;
+  border: none;
+  border-radius: 30px;
+  font-family: inherit;
+  font-size: 14px;
+  font-weight: 700;
+  cursor: pointer;
+  transition: all 0.3s ease;
+  text-decoration: none;
+}
+
+.hero-btn:hover {
+  transform: scale(1.05);
+  box-shadow: 0 4px 20px var(--emerald-glow);
+}
+
+/* ─── SECTION LABELS ─── */
+.section-label {
+  font-size: 10px;
+  font-weight: 600;
+  letter-spacing: 2px;
+  text-transform: uppercase;
+  color: var(--text-dim);
+  margin: 28px 0 10px 4px;
+}
+
+/* ─── LINK CARDS ─── */
+.link-card {
+  display: flex;
+  align-items: center;
+  gap: 14px;
+  padding: 16px 18px;
+  background: var(--card);
+  border: 1px solid rgba(255,255,255,0.05);
+  border-radius: var(--radius);
+  margin-bottom: 8px;
+  cursor: pointer;
+  transition: all 0.25s ease;
+  text-decoration: none;
+  color: var(--text);
+}
+
+.link-card:hover {
+  background: var(--card-hover);
+  border-color: var(--border-hover);
+  box-shadow: 0 0 20px var(--emerald-glow);
+  transform: translateY(-1px);
+}
+
+.link-icon {
+  width: 40px;
+  height: 40px;
+  border-radius: 10px;
+  display: flex;
+  align-items: center;
+  justify-content: center;
+  font-size: 18px;
+  flex-shrink: 0;
+}
+
+.link-icon.spotify { background: rgba(30,215,96,0.12); color: #1DB954; }
+.link-icon.apple { background: rgba(252,60,68,0.12); color: #FC3C44; }
+.link-icon.youtube { background: rgba(255,0,0,0.12); color: #FF0000; }
+.link-icon.soundcloud { background: rgba(255,85,0,0.12); color: #FF5500; }
+.link-icon.ig { background: linear-gradient(135deg, rgba(131,58,180,0.12), rgba(253,29,29,0.12)); color: #E1306C; }
+.link-icon.x { background: rgba(255,255,255,0.06); color: #fff; }
+.link-icon.email { background: rgba(212,168,67,0.12); color: var(--gold); }
+.link-icon.viz { background: rgba(4,120,87,0.12); color: var(--emerald); }
+
+.link-info { flex: 1; }
+.link-info .link-title { font-size: 14px; font-weight: 600; }
+.link-info .link-sub { font-size: 11px; color: var(--text-dim); margin-top: 2px; }
+
+.link-arrow {
+  font-size: 16px;
+  color: var(--text-dim);
+  transition: transform 0.2s ease;
+}
+
+.link-card:hover .link-arrow {
+  transform: translateX(3px);
+  color: var(--emerald);
+}
+
+/* ─── EMAIL CAPTURE ─── */
+.email-section {
+  background: linear-gradient(135deg, rgba(212,168,67,0.06), rgba(30,41,59,0.2));
+  border: 1px solid rgba(212,168,67,0.15);
+  border-radius: var(--radius);
+  padding: 28px 22px;
+  margin: 24px 0 16px;
+  text-align: center;
+}
+
+.email-section h3 {
+  font-size: 16px;
+  font-weight: 800;
+  margin-bottom: 6px;
+  background: linear-gradient(135deg, var(--gold), #f0c75e);
+  -webkit-background-clip: text;
+  -webkit-text-fill-color: transparent;
+  background-clip: text;
+}
+
+.email-section p {
+  font-size: 12px;
+  color: var(--text-mid);
+  margin-bottom: 18px;
+  line-height: 1.5;
+}
+
+.email-form {
+  display: flex;
+  gap: 8px;
+}
+
+.email-form input {
+  flex: 1;
+  padding: 12px 16px;
+  background: rgba(0,0,0,0.4);
+  border: 1px solid rgba(255,255,255,0.08);
+  border-radius: 10px;
+  color: var(--text);
+  font-family: inherit;
+  font-size: 13px;
+  outline: none;
+  transition: border-color 0.3s;
+}
+
+.email-form input::placeholder { color: var(--text-dim); }
+.email-form input:focus { border-color: var(--gold); }
+
+.email-form button {
+  padding: 12px 20px;
+  background: linear-gradient(135deg, var(--gold), #c49a30);
+  color: var(--bg);
+  border: none;
+  border-radius: 10px;
+  font-family: inherit;
+  font-size: 13px;
+  font-weight: 700;
+  cursor: pointer;
+  transition: all 0.3s ease;
+  white-space: nowrap;
+}
+
+.email-form button:hover {
+  transform: scale(1.05);
+  box-shadow: 0 4px 16px rgba(212,168,67,0.3);
+}
+
+.email-note {
+  font-size: 10px;
+  color: var(--text-dim);
+  margin-top: 10px;
+}
+
+/* ─── FOOTER ─── */
+.footer {
+  text-align: center;
+  padding: 32px 0 16px;
+  border-top: 1px solid rgba(255,255,255,0.04);
+  margin-top: 24px;
+}
+
+.footer p {
+  font-size: 11px;
+  color: var(--text-dim);
+  letter-spacing: 0.5px;
+}
+
+.footer .brand {
+  font-size: 10px;
+  letter-spacing: 2px;
+  text-transform: uppercase;
+  color: var(--gold);
+  margin-top: 6px;
+  opacity: 0.6;
+}
+
+/* ─── ANIMATIONS ─── */
+@keyframes fadeUp {
+  from { opacity: 0; transform: translateY(16px); }
+  to { opacity: 1; transform: translateY(0); }
+}
+
+.header { animation: fadeUp 0.6s ease both; }
+.hero-card { animation: fadeUp 0.6s ease 0.1s both; }
+.section-label { animation: fadeUp 0.6s ease 0.15s both; }
+.link-card:nth-child(1) { animation: fadeUp 0.5s ease 0.2s both; }
+.link-card:nth-child(2) { animation: fadeUp 0.5s ease 0.25s both; }
+.link-card:nth-child(3) { animation: fadeUp 0.5s ease 0.3s both; }
+.link-card:nth-child(4) { animation: fadeUp 0.5s ease 0.35s both; }
+.email-section { animation: fadeUp 0.6s ease 0.4s both; }
+
+/* ─── RESPONSIVE ─── */
+@media (max-width: 380px) {
+  .email-form { flex-direction: column; }
+  .email-form button { width: 100%; }
+}
+
+/* ─── PULSE GLOW ON HERO ─── */
+@keyframes pulse {
+  0%, 100% { box-shadow: 0 0 20px var(--emerald-glow); }
+  50% { box-shadow: 0 0 40px var(--emerald-glow), 0 0 60px rgba(4,120,87,0.15); }
+}
+
+.hero-card { animation: fadeUp 0.6s ease 0.1s both, pulse 4s ease-in-out 1s infinite; }
+</style>
+</head>
+<body>
+
+<div class="container">
+
+  <!-- HEADER -->
+  <div class="header">
+    <div class="avatar">EP</div>
+    <h1>Ethan Payton</h1>
+    <div class="label">past.El noir Records</div>
+    <p class="bio">Alt-R&B · Milwaukee, WI<br>3.4M+ streams · Songwriter · Producer</p>
+  </div>
+
+  <!-- HERO: CURRENT RELEASE -->
+  <a href="https://open.spotify.com/artist/28K5R8RuejXij5lB3MZxaQ" target="_blank" class="hero-card" id="hero-release">
+    <div class="badge">New Release</div>
+    <h2>ALL LOVE EP</h2>
+    <p>5 tracks · Alt-R&B · Out Now</p>
+    <span class="hero-btn">
+      <svg width="16" height="16" viewBox="0 0 24 24" fill="currentColor"><path d="M8 5v14l11-7z"/></svg>
+      Stream Now
+    </span>
+  </a>
+
+  <!-- STREAMING -->
+  <div class="section-label">Stream</div>
+
+  <a href="https://open.spotify.com/artist/28K5R8RuejXij5lB3MZxaQ" target="_blank" class="link-card">
+    <div class="link-icon spotify">
+      <svg width="20" height="20" viewBox="0 0 24 24" fill="currentColor"><path d="M12 0C5.4 0 0 5.4 0 12s5.4 12 12 12 12-5.4 12-12S18.66 0 12 0zm5.521 17.34c-.24.359-.66.48-1.021.24-2.82-1.74-6.36-2.101-10.561-1.141-.418.122-.779-.179-.899-.539-.12-.421.18-.78.54-.9 4.56-1.021 8.52-.6 11.64 1.32.42.18.479.659.301 1.02zm1.44-3.3c-.301.42-.841.6-1.262.3-3.239-1.98-8.159-2.58-11.939-1.38-.479.12-1.02-.12-1.14-.6-.12-.48.12-1.021.6-1.141C9.6 9.9 15 10.561 18.72 12.84c.361.181.54.78.241 1.2zm.12-3.36C15.24 8.4 8.82 8.16 5.16 9.301c-.6.179-1.2-.181-1.38-.721-.18-.601.18-1.2.72-1.381 4.26-1.26 11.28-1.02 15.721 1.621.539.3.719 1.02.419 1.56-.299.421-1.02.599-1.559.3z"/></svg>
+    </div>
+    <div class="link-info">
+      <div class="link-title">Spotify</div>
+      <div class="link-sub">Full catalog · 3.4M+ streams</div>
+    </div>
+    <span class="link-arrow">→</span>
+  </a>
+
+  <a href="https://music.apple.com/us/artist/ethan-payton" target="_blank" class="link-card">
+    <div class="link-icon apple">
+      <svg width="18" height="18" viewBox="0 0 24 24" fill="currentColor"><path d="M23.994 6.124a9.23 9.23 0 00-.24-2.19c-.317-1.31-1.062-2.31-2.18-3.043A5.022 5.022 0 0019.2.04a10.49 10.49 0 00-1.97-.04H6.77a10.49 10.49 0 00-1.97.04 5.022 5.022 0 00-2.374.851C1.308 1.624.563 2.624.246 3.934a9.23 9.23 0 00-.24 2.19C0 6.584 0 7.044 0 7.504v8.992c0 .46 0 .92.006 1.38a9.23 9.23 0 00.24 2.19c.317 1.31 1.062 2.31 2.18 3.043a5.022 5.022 0 002.374.851c.653.04 1.31.04 1.97.04h10.46c.66 0 1.317 0 1.97-.04a5.022 5.022 0 002.374-.851c1.118-.733 1.863-1.733 2.18-3.043a9.23 9.23 0 00.24-2.19c.006-.46.006-.92.006-1.38V7.504c0-.46 0-.92-.006-1.38zM17.17 17.508c0 .186-.04.36-.13.514a1.07 1.07 0 01-.37.384 3.21 3.21 0 01-1.094.494 4.471 4.471 0 01-1.29.196c-.37 0-.72-.066-1.05-.196a1.834 1.834 0 01-.78-.584c-.21-.27-.32-.6-.32-1.004 0-.4.1-.73.31-1 .21-.27.5-.47.88-.6.38-.13.8-.2 1.27-.2.22 0 .44.01.66.04v-.48c0-.27-.08-.47-.24-.6-.16-.13-.42-.2-.78-.2-.26 0-.53.03-.81.1-.28.06-.56.15-.84.28l-.1-.76c.3-.12.6-.21.91-.28.31-.06.61-.1.91-.1.64 0 1.12.15 1.43.44.32.3.47.72.47 1.28v2.48zm-1.03-1.29a3.09 3.09 0 00-.68-.08c-.4 0-.71.07-.93.22-.22.15-.33.37-.33.66 0 .24.07.42.22.56.15.13.36.2.63.2.34 0 .63-.1.87-.3.25-.21.37-.47.37-.78v-.48zM12.48 6.48h-.96v-.4c0-.13.01-.27.04-.4.03-.14.08-.27.16-.38.08-.11.19-.2.34-.27.15-.07.35-.1.6-.1.28 0 .52.05.74.14l-.14.66c-.18-.08-.35-.12-.5-.12-.19 0-.32.06-.38.18-.06.12-.09.29-.09.52v.17h.76v.66h-.58v5.06h-.91V7.14h.02z"/></svg>
+    </div>
+    <div class="link-info">
+      <div class="link-title">Apple Music</div>
+      <div class="link-sub">Stream & add to library</div>
+    </div>
+    <span class="link-arrow">→</span>
+  </a>
+
+  <a href="https://youtube.com/@ethanpayton" target="_blank" class="link-card">
+    <div class="link-icon youtube">
+      <svg width="18" height="18" viewBox="0 0 24 24" fill="currentColor"><path d="M23.498 6.186a3.016 3.016 0 00-2.122-2.136C19.505 3.545 12 3.545 12 3.545s-7.505 0-9.377.505A3.017 3.017 0 00.502 6.186C0 8.07 0 12 0 12s0 3.93.502 5.814a3.016 3.016 0 002.122 2.136c1.871.505 9.376.505 9.376.505s7.505 0 9.377-.505a3.015 3.015 0 002.122-2.136C24 15.93 24 12 24 12s0-3.93-.502-5.814zM9.545 15.568V8.432L15.818 12l-6.273 3.568z"/></svg>
+    </div>
+    <div class="link-info">
+      <div class="link-title">YouTube</div>
+      <div class="link-sub">Music videos & visuals</div>
+    </div>
+    <span class="link-arrow">→</span>
+  </a>
+
+  <!-- EMAIL CAPTURE -->
+  <div class="email-section">
+    <h3>JOIN THE INNER CIRCLE</h3>
+    <p>First access to drops, unreleased tracks,<br>behind-the-scenes, and exclusive content.</p>
+    <form class="email-form" id="email-capture" action="#" method="POST" onsubmit="handleEmailSubmit(event)">
+      <input type="email" id="email-input" placeholder="Your email" required autocomplete="email">
+      <button type="submit">I'm In</button>
+    </form>
+    <p class="email-note">No spam. Unsubscribe anytime.</p>
+  </div>
+
+  <!-- CONNECT -->
+  <div class="section-label">Connect</div>
+
+  <a href="https://instagram.com/ethanjpayton" target="_blank" class="link-card">
+    <div class="link-icon ig">
+      <svg width="18" height="18" viewBox="0 0 24 24" fill="currentColor"><path d="M12 2.163c3.204 0 3.584.012 4.85.07 3.252.148 4.771 1.691 4.919 4.919.058 1.265.069 1.645.069 4.849 0 3.205-.012 3.584-.069 4.849-.149 3.225-1.664 4.771-4.919 4.919-1.266.058-1.644.07-4.85.07-3.204 0-3.584-.012-4.849-.07-3.26-.149-4.771-1.699-4.919-4.92-.058-1.265-.07-1.644-.07-4.849 0-3.204.013-3.583.07-4.849.149-3.227 1.664-4.771 4.919-4.919 1.266-.057 1.645-.069 4.849-.069zM12 0C8.741 0 8.333.014 7.053.072 2.695.272.273 2.69.073 7.052.014 8.333 0 8.741 0 12c0 3.259.014 3.668.072 4.948.2 4.358 2.618 6.78 6.98 6.98C8.333 23.986 8.741 24 12 24c3.259 0 3.668-.014 4.948-.072 4.354-.2 6.782-2.618 6.979-6.98.059-1.28.073-1.689.073-4.948 0-3.259-.014-3.667-.072-4.947-.196-4.354-2.617-6.78-6.979-6.98C15.668.014 15.259 0 12 0zm0 5.838a6.162 6.162 0 100 12.324 6.162 6.162 0 000-12.324zM12 16a4 4 0 110-8 4 4 0 010 8zm6.406-11.845a1.44 1.44 0 100 2.881 1.44 1.44 0 000-2.881z"/></svg>
+    </div>
+    <div class="link-info">
+      <div class="link-title">Instagram</div>
+      <div class="link-sub">@ethanjpayton</div>
+    </div>
+    <span class="link-arrow">→</span>
+  </a>
+
+  <a href="mailto:ethanpaytonmusic@gmail.com" class="link-card">
+    <div class="link-icon email">
+      <svg width="18" height="18" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2"><rect x="2" y="4" width="20" height="16" rx="2"/><path d="M22 4L12 13 2 4"/></svg>
+    </div>
+    <div class="link-info">
+      <div class="link-title">Business & Press</div>
+      <div class="link-sub">Booking · Sync · Collabs</div>
+    </div>
+    <span class="link-arrow">→</span>
+  </a>
+
+  <!-- FOOTER -->
+  <div class="footer">
+    <p>Milwaukee, WI · Independent · All masters owned</p>
+    <p class="brand">past.El noir Records · 2026</p>
+  </div>
+
+</div>
+
+<script>
+// Email capture handler — redirect to Kit landing page when set up
+// For now, stores locally and shows confirmation
+function handleEmailSubmit(e) {
+  e.preventDefault();
+  const email = document.getElementById('email-input').value;
+  const form = document.getElementById('email-capture');
+  
+  // TODO: Replace with Kit form action URL when account is created
+  // Example: form.action = 'https://app.kit.com/forms/YOUR_FORM_ID/subscriptions';
+  
+  // Temporary: show confirmation
+  form.innerHTML = '<p style="color: var(--gold); font-size: 14px; font-weight: 600;">✓ You\'re in. Welcome to the circle.</p>';
+  
+  // Store locally for transfer to Kit later
+  try {
+    const existing = JSON.parse(localStorage.getItem('inner_circle_emails') || '[]');
+    existing.push({ email, timestamp: new Date().toISOString() });
+    localStorage.setItem('inner_circle_emails', JSON.stringify(existing));
+  } catch(e) {}
+}
+
+// Update hero card based on release state
+// Change 'pre-save' to 'stream' after release
+const RELEASE_DATE = new Date('2026-05-08');
+const hero = document.getElementById('hero-release');
+if (new Date() < RELEASE_DATE) {
+  hero.querySelector('.badge').textContent = 'Coming May 8';
+  hero.querySelector('.hero-btn').innerHTML = `
+    <svg width="16" height="16" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2"><path d="M19 21l-7-5-7 5V5a2 2 0 012-2h10a2 2 0 012 2z"/></svg>
+    Pre-Save
+  `;
+}
+</script>
+
+</body>
+</html>
