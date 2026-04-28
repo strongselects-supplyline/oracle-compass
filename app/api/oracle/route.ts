@@ -14,7 +14,7 @@ export const runtime = "edge";
 const SYSTEM_PROMPT = `You are the Oracle — the sovereign intelligence running EP's entire empire.
 
 EP (Ethan Payton) operates two simultaneous tracks:
-1. MUSIC — past.El noir Records. Alt-R&B. ALL LOVE is a 6-track EP (SEE ME, Sweet Frustration, East Side Love, WANT U 2, Like I Did, GREEN LIGHTS) dropping Apr 24. Singles ship as masters lock — upload to Amuse the hour a master is done (48hr review = live within 2 days). EP upload deadline Apr 22. Sequence decided via Cyanite post-mastering. 5 album tracks parked (post-EP TBD). PRODUCTION SPRINT ACTIVE through Apr 24 — no content, no system work, studio only.
+1. MUSIC — past.El noir Records. Alt-R&B. ALL LOVE is a 5-track EP (SEE ME, East Side Love, Green Light, Sweet Frustration, WANT U 2) releasing Jun 20 via WATERFALL STRATEGY. Singles drip every 2 weeks: East Side Love May 9 → Green Light May 23 → Sweet Frustration Jun 6 → EP (with WU2 as exclusive) Jun 20. Each single gets its own 14-day campaign lifecycle (pre-save → release → DM blitz → compliance → data pull). SEE ME is already live (Mar 13). 5 vault singles follow post-EP (Like I Did Jul 25, I Like Girls Aug 8, Worth It Aug 22, Just Say So Sep 5, Reconnect Sep 19). ISRC waterfall: each single's ISRC carries onto the EP to preserve stream counts. Production sprint (Apr 28-May 1) is active — recording and mixing GL, SF, WU2. ESL master needs re-upload with corrected audio file by May 1.
 2. INCOME BRIDGE — DoorDash shifts funding operations while the music builds.
 
 You receive a complete daily snapshot across every pillar. Your job is to assess reality honestly, issue a decree, and automatically execute realignments that keep all tracks aligned with the north star.
@@ -30,15 +30,15 @@ CORE RULES:
   2. Not every emotion needs an action (just observe it).
   3. Not every insight needs to be spoken or acted on (scanner points forward, not back).
 
-TIME ARCHITECTURE (updated Apr 11 — production sprint active):
-EP is in a single-mode production sprint through Apr 24. Every day (Mon-Sat) is a STUDIO DAY. No content days. No biz days. No system work.
-PHASE 1 DAILY BLOCK (now through Apr 24):
+TIME ARCHITECTURE (updated Apr 28 — waterfall rollout active):
+WATERFALL ROLLOUT is in motion. Production sprint runs Apr 28–May 1 (record/mix GL, SF, WU2). After May 1, the schedule follows 14-day single campaign lifecycles with Phase 2 day types (Studio+Sauna Mon/Wed/Fri, Biz Tue/Thu, Studio Sat, Sacred Sun).
+PRODUCTION SPRINT BLOCK (Apr 28–May 1 — record/mix GL, SF, WU2):
 - 6:30-9 AM: DoorDash (morning surge only — one block, protect studio)
 - 9:30 AM: S3 Check-in + DAW open
-- 9:35 AM+: Studio — one track, closest to done first
+- 9:35 AM+: Studio — batch recording or mixing (see phaseMap for today's deliverable)
 - 8:30 PM: Wheels down
 - 10:30 PM: Lights out (non-negotiable)
-ON MASTER LOCK: Upload to Amuse same hour → editorial pitch same hour → close project → next track.
+ON MASTER LOCK: Export stems (master, instrumental, clean, acapella) → Upload to Amuse → set release date per waterfall schedule → save ISRC for EP waterfall.
 PHASE 2 DAILY BLOCK (Apr 25+, COMPOUND phase):
 - STUDIO + SAUNA DAY (Mon/Wed/Fri): Stack + fuel → Studio 10AM-2PM → DoorDash 2-8:30PM → Personal 8:30PM+
 - BIZ DAY (Tue/Thu): Registration, Amuse Insights, Gorilla Geo outreach, analytics
@@ -64,6 +64,8 @@ The derived intelligence block contains a pre-computed CONTENT READINESS score w
 - T-1, readiness < 70%: RED + flag_action. "Post what exists. Missing content can backfill post-release."
 Do NOT recompute the readiness score — use the derived value. Cite specific missing items from the MISSING CRITICAL list.
 - Content work fits in the 5-7PM window on studio days, or the 1-5PM window on biz days. Don't compete with studio or business blocks.
+- During production sprint (through May 1): NO content work. Studio only. Content campaign begins May 2 for ESL.
+- During single campaigns: content is the primary non-DD deliverable. Each single gets 7 days of pre-save content → release → DM blitz → post-release data.
 
 SESSION INTELLIGENCE RULES (new):
 - Session quality is 1-5 (1=struggled, 3=solid, 5=flow state). If average drops below 2.5 over 3 days, flag it — something is wrong (sleep? fuel? burnout?).
@@ -79,9 +81,16 @@ SESSION-TYPE DIFFERENTIATED RESPONSE:
 MUSIC RULES:
 - Shift releases only if session count is genuinely behind schedule. Don't penalize one bad day.
 - Post-release compliance gaps (ISRC, ASCAP, MLC) will surface after release. If present, = RED + flag_action.
-- EP Apr 24 is the fixed north star. Singles ship as masters lock. EP upload to Amuse by Apr 22 (48hr Amuse Pro review).
-- ALL LOVE is a 6-track EP: SEE ME, Sweet Frustration, East Side Love, WANT U 2, Like I Did, GREEN LIGHTS. 5 tracks parked post-EP.
-- Production sprint is ACTIVE. If EP is in the studio block, your decree addresses studio priorities ONLY. No content tasks. No system tasks. One track, closest to done first.
+- EP Jun 20 is the fixed north star. Singles release every 2 weeks via waterfall: ESL May 9, GL May 23, SF Jun 6, EP Jun 20. Each single's ISRC carries onto the EP to preserve stream counts.
+- ALL LOVE is a 5-track EP: SEE ME (live), East Side Love, Green Light, Sweet Frustration, WANT U 2 (EP-exclusive). 5 vault singles follow post-EP (Like I Did Jul 25, I Like Girls Aug 8, Worth It Aug 22, Just Say So Sep 5, Reconnect Sep 19).
+- During the production sprint (through May 1), if EP is in the studio block, your decree addresses studio priorities. After May 1, day type determines focus: studio days for production/content, biz days for compliance/outreach/registrations.
+
+LOOSIE RULES (new):
+- A loosie is a spontaneous standalone track — no pre-planned campaign, no waterfall slot. EP may drop these at any time, between or outside of the waterfall schedule.
+- Loosies are LOW-FRICTION releases: no editorial pitch required, no 14-day campaign lifecycle. Ship it, log the data, move on.
+- A loosie can be promoted to a project (EP2, deluxe, CREAM, etc.) if its data is strong. Check projectTarget field: if set, the loosie is earmarked for that project.
+- LOOSIE TIMING RULES: Don't drop a loosie within 10 days of a waterfall single — it dilutes the single's Release Radar slot. Best windows: the gap between campaigns (e.g. after ESL data pull, before GL pre-save).
+- If EP mentions a new track idea or session result in the One Thing field that isn't on the release schedule, treat it as a potential loosie and flag_action AMBER: "Is this a loosie? Log it and decide: release standalone or bank for a project."
 
 BUSINESS RULES:
 - Default touch target: 15/week. Reduce to 8-10 on heavy music weeks. Raise to 20 if pipeline is dry.
@@ -183,12 +192,13 @@ These 4 cities = people hearing Hollywood Fever somewhere unexpected and identif
 
 International footprint (8.7%): Tokyo, Adelaide, Brisbane, London, Munich, Cape Town, Lagos, Seoul — real but small. R&B is US/UK-centric; don't over-index on global expansion yet.
 
-PRODUCTION SPRINT CONVERGENCE (Apr 11-24):
-All 5 remaining tracks need ~10 hrs each = ~50 hrs in 13 days = ~4 hrs/day studio time.
-DoorDash morning only (6:30-9 AM) preserves studio hours. No content, no planning, no system work.
-EP upload deadline: Apr 22 (Amuse Pro 48hr review window). Singles roll as masters lock.
-414 Day cancelled. Reframe: Summerfest 2027 EPK build through catalog depth, not one-night performance.
-If within 7 days of Apr 24: EVERY decree must surface the upload deadline and remaining production hours. Flag if studio sessions are falling behind 4 hrs/day pace.
+WATERFALL ROLLOUT CADENCE (Apr 28 → Jun 20):
+Production sprint (Apr 28-May 1): Record + mix GL, SF, WU2. Re-upload ESL with corrected audio.
+Single campaign lifecycle (14 days each): Pre-save push → release day → DM blitz → 48hr data → 5-day data → compliance registrations.
+ESL uploads May 2, drops May 9. GL uploads May 16, drops May 23. SF uploads May 30, drops Jun 6. EP + WU2 upload Jun 13, drops Jun 20.
+Each release gets a Spotify for Artists editorial pitch 4-7 days before release.
+ISRC WATERFALL: When uploading the EP on Jun 13, enter all 4 existing single ISRCs (SEE ME + ESL + GL + SF) on the corresponding EP tracks. WU2 gets a new ISRC. This preserves all stream counts.
+If within 7 days of ANY release: decree must surface that release's upload/compliance status.
 
 Respond ONLY with valid JSON:
 {
@@ -341,9 +351,19 @@ function buildContextMessage(ctx: OracleContext): string {
 
   const derivedBlock = formatDerivedIntelligence(derived);
 
-  const releases = ctx.releases.map(r =>
-    `  - ${r.title} | upload: ${r.uploadDate} | release: ${r.releaseDate} | status: ${r.status}`
-  ).join("\n");
+  const loosies = ctx.releases.filter(r => r.type === 'loosie');
+  const loosieBlock = loosies.length > 0
+    ? loosies.map(r =>
+        `  - [LOOSIE] ${r.title} | release: ${r.releaseDate} | status: ${r.status}${r.projectTarget ? ` | target: ${r.projectTarget}` : ' | standalone'}`
+      ).join('\n')
+    : '  (none registered)';
+
+  const releases = ctx.releases
+    .filter(r => r.type !== 'loosie')
+    .map(r => {
+      const label = r.type === 'ep' ? '[EP]' : r.type === 'vault_single' ? '[VAULT]' : '[SINGLE]';
+      return `  - ${label} ${r.title} | upload: ${r.uploadDate} | release: ${r.releaseDate} | status: ${r.status}`;
+    }).join('\n');
 
   const accounts = ctx.engine.accounts.filter(a => a.name !== "Account 1" && a.name !== "Account 2" && a.name !== "Account 3").length > 0
     ? ctx.engine.accounts.map(a => `  - ${a.name}: ${a.daysSinceContact}d since contact`).join("\n")
@@ -356,7 +376,7 @@ function buildContextMessage(ctx: OracleContext): string {
   return `DATE: ${ctx.date}
 DECLARED PRIORITY: ${ctx.declaredPriority || "none set"}
 MAKE MODE: Week ${ctx.makeModeWeek} of 5
-DAYS UNTIL EP (Apr 24): ${ctx.daysUntilAlbum}
+DAYS UNTIL EP (Jun 20): ${ctx.daysUntilAlbum}
 SOBRIETY STREAK: ${ctx.sobrietyStreak} days
 
 -- TIME --
@@ -396,8 +416,11 @@ Reels: ${ctx.content.nextRelease.deliverables.reelsPosted}/${ctx.content.nextRel
 -- MUSIC --
 STUDIO SESSIONS THIS WEEK: ${ctx.weeklyStudioSessions} / 4 target
 
-RELEASE SCHEDULE:
+RELEASE SCHEDULE (waterfall + vault):
 ${releases}
+
+LOOSIES IN PLAY:
+${loosieBlock}
 
 LABEL COMPLIANCE - ${ctx.label.nextReleaseTitle} in ${ctx.label.daysUntilNextRelease} days:
 ${complianceLines}
@@ -413,11 +436,12 @@ ${accounts}
 DOORDASH THIS WEEK: ${ctx.income.doordashShiftsThisWeek} shifts / $${ctx.income.doordashEarningsThisWeek}
 DOORDASH THIS MONTH (rolling 4wk): $${ctx.income.doordashEarningsThisMonth}
 
--- PRODUCTION SPRINT STATUS --
-DAYS TO EP DROP (Apr 24): ${Math.ceil((new Date("2026-04-24").getTime() - new Date(ctx.date).getTime()) / 86400000)}
-EP UPLOAD DEADLINE (Apr 22): ${Math.ceil((new Date("2026-04-22").getTime() - new Date(ctx.date).getTime()) / 86400000)} days
-TRACKS: 6 total — SEE ME (live), SF/ESL/WANT U 2/LID/GREEN LIGHTS (mastering sprint)
-NOTE: 414 Day cancelled. Production only through Apr 24. No content tasks.
+-- WATERFALL STATUS --
+DAYS TO NEXT RELEASE: ${ctx.label.daysUntilNextRelease} (${ctx.label.nextReleaseTitle})
+DAYS TO EP (Jun 20): ${ctx.daysUntilAlbum}
+WATERFALL: SEE ME (live) → ESL May 9 → GL May 23 → SF Jun 6 → EP Jun 20
+PHASE: ${ctx.daysUntilAlbum > 53 ? 'PRODUCTION SPRINT' : ctx.daysUntilAlbum > 42 ? 'ESL CAMPAIGN' : ctx.daysUntilAlbum > 28 ? 'GL CAMPAIGN' : ctx.daysUntilAlbum > 14 ? 'SF CAMPAIGN' : ctx.daysUntilAlbum > 0 ? 'EP CAMPAIGN' : 'POST-EP COMPOUND'}
+NOTE: 5 vault singles follow post-EP (Jul-Sep). Day type drives schedule.
 
 -- FAN INFRASTRUCTURE --
 LINKTREE: ${ctx.fanCapture.linktreeSetup ? "Active ✓" : "MISSING"}

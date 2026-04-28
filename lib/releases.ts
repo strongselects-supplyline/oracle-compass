@@ -115,11 +115,20 @@ const DEFAULT_DELIVERABLES: ContentDeliverables = {
 };
 
 /* ── Release type ── */
+// type breakdown:
+//   waterfall_single — planned single in the EP waterfall (ESL, GL, SF)
+//   ep               — the ALL LOVE EP compilation itself
+//   vault_single     — post-EP scheduled release (Like I Did, ILG, etc.)
+//   loosie           — spontaneous standalone; unscheduled, may absorb into future project
+export type ReleaseType = "waterfall_single" | "ep" | "vault_single" | "loosie";
+
 export type Release = {
   title: string;
   uploadDate: string;   // YYYY-MM-DD
   releaseDate: string;  // YYYY-MM-DD
   status: "live" | "upload_pending" | "unreleased";
+  type: ReleaseType;    // determines Oracle handling + campaign lifecycle
+  projectTarget?: string | null; // if loosie, which project it MIGHT roll into ("EP2", "deluxe", etc.)
   pitchDeadline?: string | null;
   contentDeliverables: ContentDeliverables;
 };
@@ -129,69 +138,75 @@ export type Release = {
 // ESL May 9 → GL May 23 → SF Jun 6 → EP Jun 20. WU2 is EP-exclusive.
 const RELEASE_DEFAULTS: Release[] = [
   {
-    title: "SEE ME", uploadDate: "2026-03-09", releaseDate: "2026-03-13", status: "live",
+    title: "SEE ME", uploadDate: "2026-03-09", releaseDate: "2026-03-13", status: "live", type: "waterfall_single",
     contentDeliverables: { ...DEFAULT_DELIVERABLES, coreDriveComplete: true, campaignKitGenerated: true, ascap: "pending", mlc: "pending", soundExchange: "complete", songtrust: "pending", notes: "Live Mar 13. Core Drive: 2,713 tracks / 38 playlists. Campaign kit in docs/handoff_mar24/." }
   },
   {
-    title: "East Side Love", uploadDate: "2026-05-02", releaseDate: "2026-05-09", status: "unreleased",
+    title: "East Side Love", uploadDate: "2026-05-02", releaseDate: "2026-05-09", status: "unreleased", type: "waterfall_single",
     contentDeliverables: { ...DEFAULT_DELIVERABLES, coreDriveComplete: true, campaignKitGenerated: true, soundExchange: "complete", notes: "SINGLE #1 (lead). Waterfall → EP track Jun 20. Fix audio file, re-upload to Amuse. Core Drive: 1,221 tracks / 20 playlists." }
   },
   {
-    title: "Green Light", uploadDate: "2026-05-16", releaseDate: "2026-05-23", status: "unreleased",
+    title: "Green Light", uploadDate: "2026-05-16", releaseDate: "2026-05-23", status: "unreleased", type: "waterfall_single",
     contentDeliverables: { ...DEFAULT_DELIVERABLES, notes: "SINGLE #2. Master must lock by May 14. Upload May 16. Waterfall → EP track Jun 20." }
   },
   {
-    title: "Sweet Frustration", uploadDate: "2026-05-30", releaseDate: "2026-06-06", status: "unreleased",
+    title: "Sweet Frustration", uploadDate: "2026-05-30", releaseDate: "2026-06-06", status: "unreleased", type: "waterfall_single",
     contentDeliverables: { ...DEFAULT_DELIVERABLES, coreDriveComplete: true, campaignKitGenerated: true, soundExchange: "complete", notes: "SINGLE #3. KAYTRANADA lane. Master must lock by May 28. Upload May 30. Waterfall → EP track Jun 20." }
   },
   {
-    title: "WANT U 2", uploadDate: "2026-06-13", releaseDate: "2026-06-20", status: "unreleased",
+    title: "WANT U 2", uploadDate: "2026-06-13", releaseDate: "2026-06-20", status: "unreleased", type: "ep",
     contentDeliverables: { ...DEFAULT_DELIVERABLES, notes: "EP-EXCLUSIVE. Not released as single. Gives listeners incentive to play the full EP. Master must lock by Jun 11." }
   },
   {
-    title: "ALL LOVE (EP)", uploadDate: "2026-06-13", releaseDate: "2026-06-20", status: "unreleased",
+    title: "ALL LOVE (EP)", uploadDate: "2026-06-13", releaseDate: "2026-06-20", status: "unreleased", type: "ep",
     contentDeliverables: { ...DEFAULT_DELIVERABLES, notes: "5-track EP compilation: SEE ME → East Side Love → Green Light → Sweet Frustration → WANT U 2. Waterfall all 3 single ISRCs + SEE ME ISRC onto EP tracks. WU2 is EP-exclusive new content. Needs: EP cover art, UPC, EP-level Spotify pitch." }
   },
   {
-    title: "Like I Did", uploadDate: "2026-07-18", releaseDate: "2026-07-25", status: "unreleased",
+    title: "Like I Did", uploadDate: "2026-07-18", releaseDate: "2026-07-25", status: "unreleased", type: "vault_single",
     contentDeliverables: { ...DEFAULT_DELIVERABLES, notes: "Vault single #1. 110 BPM, D major. First post-EP release. Tests if audience stuck. Jul 18 unconditional topline/recording batch week begins." }
   },
   {
-    title: "I Like Girls", uploadDate: "2026-08-01", releaseDate: "2026-08-08", status: "unreleased",
+    title: "I Like Girls", uploadDate: "2026-08-01", releaseDate: "2026-08-08", status: "unreleased", type: "vault_single",
     contentDeliverables: { ...DEFAULT_DELIVERABLES, notes: "Vault single #2. 107 BPM, F# minor, R&B 0.74. High R&B confidence. Strong standalone." }
   },
   {
-    title: "Worth It", uploadDate: "2026-08-15", releaseDate: "2026-08-22", status: "unreleased",
+    title: "Worth It", uploadDate: "2026-08-15", releaseDate: "2026-08-22", status: "unreleased", type: "vault_single",
     contentDeliverables: { ...DEFAULT_DELIVERABLES, notes: "Vault single #3. 97 BPM, F minor, R&B 0.57. Slower tempo = mood shift. Tests range." }
   },
   {
-    title: "Just Say So", uploadDate: "2026-08-29", releaseDate: "2026-09-05", status: "unreleased",
+    title: "Just Say So", uploadDate: "2026-08-29", releaseDate: "2026-09-05", status: "unreleased", type: "vault_single",
     contentDeliverables: { ...DEFAULT_DELIVERABLES, notes: "Vault single #4. 122 BPM, Bb minor, R&B 0.60. Uptempo. Meme-friendly energy." }
   },
   {
-    title: "Reconnect", uploadDate: "2026-09-12", releaseDate: "2026-09-19", status: "unreleased",
+    title: "Reconnect", uploadDate: "2026-09-12", releaseDate: "2026-09-19", status: "unreleased", type: "vault_single",
     contentDeliverables: { ...DEFAULT_DELIVERABLES, notes: "Vault single #5. 82 BPM, D major, R&B 0.56. Only major key. Warm/intimate. Palette cleanser before CREAM." }
   },
+  // Loosies are added dynamically by the user — no defaults seeded here.
+  // Use addLoosie() to register a new loosie at any time.
 ];
 
 const RELEASES_KEY = "dynamic_releases";
 const RELEASES_VERSION_KEY = "releases_data_version";
-const RELEASE_DATA_VERSION = 33; // v33: Apr 28 — INDEPENDENCE BUILD. Vault singles: Like I Did Jul 25, I Like Girls Aug 8, Worth It Aug 22, Just Say So Sep 5, Reconnect Sep 19. Oracle runs autonomously through Sep 25.
+const RELEASE_DATA_VERSION = 34; // v34: Apr 28 — LOOSIE SUPPORT. Added type field (waterfall_single | ep | vault_single | loosie) + projectTarget field. Added addLoosie() helper. All existing releases tagged with their type.
 
 // Read from IndexedDB, seeding defaults on first call or after version bump
 export async function getDynamicReleases(): Promise<Release[]> {
   const storedVersion = await getStoreValue<number>(RELEASES_VERSION_KEY);
   if (storedVersion !== RELEASE_DATA_VERSION) {
-    // Force re-seed — defaults have changed
-    await setStoreValue(RELEASES_KEY, RELEASE_DEFAULTS);
+    // Force re-seed — defaults have changed. Preserve any loosies already added.
+    const existing = await getStoreValue<Release[]>(RELEASES_KEY);
+    const existingLoosies = (existing || []).filter(r => r.type === 'loosie');
+    const merged = [...RELEASE_DEFAULTS, ...existingLoosies];
+    await setStoreValue(RELEASES_KEY, merged);
     await setStoreValue(RELEASES_VERSION_KEY, RELEASE_DATA_VERSION);
-    return RELEASE_DEFAULTS;
+    return merged;
   }
   const stored = await getStoreValue<Release[]>(RELEASES_KEY);
   if (stored && stored.length > 0) {
-    // Back-fill contentDeliverables for any releases that lack it (migration safety)
+    // Back-fill type + contentDeliverables for any releases that lack them (migration safety)
     const patched = stored.map(r => ({
       ...r,
+      type: r.type || 'waterfall_single' as ReleaseType,
       contentDeliverables: r.contentDeliverables
         ? { ...DEFAULT_DELIVERABLES, ...r.contentDeliverables }
         : { ...DEFAULT_DELIVERABLES },
@@ -202,6 +217,51 @@ export async function getDynamicReleases(): Promise<Release[]> {
   await setStoreValue(RELEASES_KEY, RELEASE_DEFAULTS);
   await setStoreValue(RELEASES_VERSION_KEY, RELEASE_DATA_VERSION);
   return RELEASE_DEFAULTS;
+}
+
+/**
+ * Register a new loosie — a spontaneous standalone track, unscheduled.
+ * Loosies skip the waterfall lifecycle. They can optionally be assigned
+ * to a projectTarget (e.g. "EP2", "deluxe", "CREAM") later.
+ */
+export async function addLoosie({
+  title,
+  uploadDate,
+  releaseDate,
+  projectTarget = null,
+  notes = "",
+}: {
+  title: string;
+  uploadDate: string;
+  releaseDate: string;
+  projectTarget?: string | null;
+  notes?: string;
+}): Promise<void> {
+  const releases = await getDynamicReleases();
+  const loosie: Release = {
+    title,
+    uploadDate,
+    releaseDate,
+    status: 'unreleased',
+    type: 'loosie',
+    projectTarget,
+    contentDeliverables: { ...DEFAULT_DELIVERABLES, notes },
+  };
+  await saveDynamicReleases([...releases, loosie]);
+}
+
+/**
+ * Promote a loosie into a project — changes its type and assigns it.
+ * Call this when EP decides to absorb a loosie into an EP/album/deluxe.
+ */
+export async function promoteLoosie(title: string, projectTarget: string, newType: Exclude<ReleaseType, 'loosie'> = 'vault_single'): Promise<void> {
+  const releases = await getDynamicReleases();
+  const updated = releases.map(r =>
+    r.title === title && r.type === 'loosie'
+      ? { ...r, type: newType, projectTarget }
+      : r
+  );
+  await saveDynamicReleases(updated);
 }
 
 export async function saveDynamicReleases(releases: Release[]): Promise<void> {
