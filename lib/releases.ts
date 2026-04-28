@@ -152,11 +152,31 @@ const RELEASE_DEFAULTS: Release[] = [
     title: "ALL LOVE (EP)", uploadDate: "2026-06-13", releaseDate: "2026-06-20", status: "unreleased",
     contentDeliverables: { ...DEFAULT_DELIVERABLES, notes: "5-track EP compilation: SEE ME → East Side Love → Green Light → Sweet Frustration → WANT U 2. Waterfall all 3 single ISRCs + SEE ME ISRC onto EP tracks. WU2 is EP-exclusive new content. Needs: EP cover art, UPC, EP-level Spotify pitch." }
   },
+  {
+    title: "Like I Did", uploadDate: "2026-07-18", releaseDate: "2026-07-25", status: "unreleased",
+    contentDeliverables: { ...DEFAULT_DELIVERABLES, notes: "Vault single #1. 110 BPM, D major. First post-EP release. Tests if audience stuck. Jul 18 unconditional topline/recording batch week begins." }
+  },
+  {
+    title: "I Like Girls", uploadDate: "2026-08-01", releaseDate: "2026-08-08", status: "unreleased",
+    contentDeliverables: { ...DEFAULT_DELIVERABLES, notes: "Vault single #2. 107 BPM, F# minor, R&B 0.74. High R&B confidence. Strong standalone." }
+  },
+  {
+    title: "Worth It", uploadDate: "2026-08-15", releaseDate: "2026-08-22", status: "unreleased",
+    contentDeliverables: { ...DEFAULT_DELIVERABLES, notes: "Vault single #3. 97 BPM, F minor, R&B 0.57. Slower tempo = mood shift. Tests range." }
+  },
+  {
+    title: "Just Say So", uploadDate: "2026-08-29", releaseDate: "2026-09-05", status: "unreleased",
+    contentDeliverables: { ...DEFAULT_DELIVERABLES, notes: "Vault single #4. 122 BPM, Bb minor, R&B 0.60. Uptempo. Meme-friendly energy." }
+  },
+  {
+    title: "Reconnect", uploadDate: "2026-09-12", releaseDate: "2026-09-19", status: "unreleased",
+    contentDeliverables: { ...DEFAULT_DELIVERABLES, notes: "Vault single #5. 82 BPM, D major, R&B 0.56. Only major key. Warm/intimate. Palette cleanser before CREAM." }
+  },
 ];
 
 const RELEASES_KEY = "dynamic_releases";
 const RELEASES_VERSION_KEY = "releases_data_version";
-const RELEASE_DATA_VERSION = 32; // v32: Apr 27 — WATERFALL PIVOT. Singles drip: ESL May 9, GL May 23, SF Jun 6, EP Jun 20. WU2 EP-exclusive.
+const RELEASE_DATA_VERSION = 33; // v33: Apr 28 — INDEPENDENCE BUILD. Vault singles: Like I Did Jul 25, I Like Girls Aug 8, Worth It Aug 22, Just Say So Sep 5, Reconnect Sep 19. Oracle runs autonomously through Sep 25.
 
 // Read from IndexedDB, seeding defaults on first call or after version bump
 export async function getDynamicReleases(): Promise<Release[]> {
