@@ -20,6 +20,8 @@ import { getTrackHoursSummaries, TrackHoursSummary } from "@/lib/studioLog";
 import type { OracleDecree } from "@/lib/oracle";
 import TrackCards from "@/components/TrackCards";
 import Link from "next/link";
+import { getContextualDoctrineLinks } from "@/lib/doctrineLinks";
+import { getTodayPlan } from "@/lib/phaseMap";
 
 const URGENCY_STYLES: Record<string, { color: string; bg: string; border: string }> = {
   RED:   { color: "#FF2D2D", bg: "rgba(255,45,45,0.06)",   border: "rgba(255,45,45,0.2)" },
@@ -417,6 +419,67 @@ function ReleaseGroup({
   );
 }
 
+// ── Contextual Doctrine Links ───────────────────────────────────────
+
+function ContextualDoctrineLinks() {
+  const phase = getTodayPlan();
+  if (!phase) return null;
+
+  const links = getContextualDoctrineLinks(phase);
+  if (links.length === 0) return null;
+
+  return (
+    <div
+      className="mb-5 rounded-xl overflow-hidden"
+      style={{
+        background: "rgba(139,92,246,0.04)",
+        border: "1px solid rgba(139,92,246,0.15)",
+        animation: "killFadeIn 0.25s ease 0.08s both",
+      }}
+    >
+      <div className="px-4 py-3">
+        <p
+          className="text-[9px] font-black tracking-[0.2em] uppercase mb-2.5"
+          style={{ color: "rgba(139,92,246,0.7)" }}
+        >
+          📚 Today&apos;s References
+        </p>
+        <div className="space-y-1.5">
+          {links.map((link) => (
+            <Link
+              key={link.slug}
+              href={`/doctrine/${link.slug}`}
+              className="flex items-center gap-2.5 px-3 py-2 rounded-lg transition-all active:scale-[0.98]"
+              style={{
+                background: "rgba(255,255,255,0.03)",
+                border: "1px solid rgba(255,255,255,0.05)",
+                textDecoration: "none",
+              }}
+            >
+              <span className="text-[14px] flex-shrink-0">{link.icon}</span>
+              <div className="min-w-0 flex-1">
+                <p className="text-[12px] font-bold text-white leading-snug">{link.title}</p>
+                <p
+                  className="text-[10px] leading-snug mt-0.5"
+                  style={{ color: "rgba(255,255,255,0.35)" }}
+                >
+                  {link.reason}
+                </p>
+              </div>
+              <span
+                className="text-[10px] flex-shrink-0"
+                style={{ color: "rgba(255,255,255,0.15)" }}
+              >
+                →
+              </span>
+            </Link>
+          ))}
+        </div>
+      </div>
+    </div>
+  );
+}
+
 // ── Oracle Decree Banner ─────────────────────────────────────────────
 
 function OracleDecreeBanner({ decree }: { decree: OracleDecree }) {
@@ -781,6 +844,9 @@ export default function KillPage() {
 
         {/* ── Track Status Cards ── */}
         <TrackCards />
+
+        {/* ── Contextual Doctrine Links — surfaces relevant scrolls based on today's phase ── */}
+        <ContextualDoctrineLinks />
 
         {/* ── ONE THING — reads from DailyLog (shared with Today page) ── */}
         <div
