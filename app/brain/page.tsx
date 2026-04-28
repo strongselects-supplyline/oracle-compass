@@ -12,8 +12,8 @@ import {
 
 
 function getPhasePercent(): number {
-  const makeStart = Date.UTC(2026, 2, 1);
-  const pushEnd = Date.UTC(2026, 3, 24);
+  const makeStart = Date.UTC(2026, 3, 28);  // Apr 28 — waterfall pivot
+  const pushEnd = Date.UTC(2026, 5, 20);    // Jun 20 — EP drops
   const now = Date.UTC(new Date().getFullYear(), new Date().getMonth(), new Date().getDate());
   const total = pushEnd - makeStart;
   const elapsed = Math.max(0, Math.min(now - makeStart, total));
@@ -53,7 +53,7 @@ export default function BrainPage() {
           <h1 className="text-5xl font-black tracking-tight mb-2 leading-none">MAKE MODE</h1>
           <p className="text-[var(--text-secondary)] text-sm leading-relaxed font-medium">
             Studio is primary. Everything else is Track 2.<br />
-            Mar 1 → Apr 24
+            Apr 28 → Jun 20 — Waterfall Rollout
           </p>
         </div>
 
@@ -94,9 +94,9 @@ export default function BrainPage() {
             <div className="waterfall-fill bg-amber-500" style={{ width: `${phasePercent}%` }} />
           </div>
           <div className="flex justify-between text-[10px] font-black tracking-[0.15em] text-[#555] uppercase">
-            <span className={currentPhase === "MAKE" ? "text-amber-400" : ""}>MAKE</span>
-            <span className={currentPhase === "SHIP" ? "text-amber-400" : ""}>SHIP</span>
-            <span className={currentPhase === "PUSH" ? "text-amber-400" : ""}>PUSH</span>
+            <span className={currentPhase === "MAKE" ? "text-amber-400" : ""}>PREP</span>
+            <span className={currentPhase === "SHIP" ? "text-amber-400" : ""}>WATERFALL</span>
+            <span className={currentPhase === "PUSH" ? "text-amber-400" : ""}>EP</span>
           </div>
           <p className="text-[10px] text-amber-500 mt-2 font-black tracking-widest uppercase text-center">
             ↑ Week {week} of 5

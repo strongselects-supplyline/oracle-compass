@@ -1,35 +1,35 @@
 // lib/dayType.ts
 // Core gating logic for Oracle Compass
 //
-// PHASE 1 — THE SPRINT (through Apr 24, 2026):
+// PHASE 1 — PRODUCTION SPRINT (through May 8, 2026):
 //   Mon-Sat: STUDIO DAY — single-mode days, no multitasking
 //   Sunday: SACRED
 //   Daily structure: DoorDash 6:30-9 AM → Studio 9:30 AM onward → Wheels down 8:30 PM
 //   No content, no planning, no system building. Production only.
 //
-// PHASE 2 — THE COMPOUND (Apr 25 onward):
+// PHASE 2 — THE WATERFALL (May 9 onward):
 //   Mon/Wed/Fri: STUDIO + SAUNA DAY
 //   Tue/Thu: BIZ DAY (registration, Amuse Insights, Gorilla Geo outreach)
 //   Sat: STUDIO DAY
 //   Sunday: SACRED
 //
-// Switch is automatic — no deploy needed. Triggered by EP_SPRINT_END date.
+// Switch is automatic — no deploy needed. Triggered by WATERFALL_START date.
 //
-// PHASE 1 DAILY BLOCK MAP (Apr 11-24):
+// PHASE 1 DAILY BLOCK MAP (through May 8):
 //   6:30-9 AM → DoorDash (morning surge only)
 //   9:30 AM   → S3 Check-in + DAW open
 //   9:35 AM+  → Studio (one track, closest to done)
 //   8:30 PM   → Wheels down
 //   10:30 PM  → Lights out
 //
-// PHASE 2 DAILY BLOCK MAP (Apr 25+):
+// PHASE 2 DAILY BLOCK MAP (May 9+):
 //   Same as before — multi-block DD schedule returns
 //
 // DD TARGET: $1,800/mo @ $25/hr net = ~72 hrs/mo
 // Phase 1: morning block only. Phase 2: 2-3 sprints/day.
 
-// EP sprint ends after Apr 24. Phase 2 (COMPOUND) begins Apr 25.
-const EP_SPRINT_END = new Date("2026-04-25T00:00:00");
+// Production sprint ends May 8. Phase 2 (WATERFALL) begins May 9 with ESL drop.
+const EP_SPRINT_END = new Date("2026-05-09T00:00:00");
 
 export type DayType = "STUDIO + SAUNA DAY" | "BIZ DAY" | "\u{1F6D1} SACRED \u2014 no building" | "STUDIO DAY";
 
@@ -41,7 +41,7 @@ export function getDayType(date: Date = new Date()): DayType {
         return "\u{1F6D1} SACRED \u2014 no building";
     }
 
-    // Phase 1 (through Apr 24): every day is a studio day. No BIZ days. Production only.
+    // Phase 1 (through May 8): every day is a studio day. No BIZ days. Production only.
     if (!isPostEP) {
         return "STUDIO DAY";
     }

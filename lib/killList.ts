@@ -350,32 +350,42 @@ export async function deriveKillList(): Promise<KillTask[]> {
     }
   }
 
-  // ── 2.7 "ITS ALL LOVE" CONTENT SPRINT ──────────
-  // PAUSED during Phase 1 production sprint (through Apr 24).
-  // No content creation during the mastering window — studio only.
-  // Content sprint activates on DROP DAY (Apr 24) only.
-  const epDropDate = new Date("2026-04-24T00:00:00");
-  const daysToEpDrop = Math.ceil((epDropDate.getTime() - new Date().getTime()) / 86400000);
-  const contentSprKey = `content_sprint_clear:${today}`;
-  const contentSprintCleared = await getStoreValue(contentSprKey);
-
-  if (!contentSprintCleared && daysToEpDrop === 0) {
-    // DROP DAY ONLY — Apr 24
-    tasks.push({
-      id: "content-sprint-phase4",
-      title: "DROP DAY — ALL LOVE EP is here.",
-      subtitle: "6-track EP. Morning resolution, midday announce, evening live.",
-      howTo: [
-        "MORNING: Final \"Its All Love\" video — \"...but it's ALL LOVE. Out now.\"",
-        "MIDDAY: Full EP announcement post with all 6 tracks.",
-        "EVENING: Go live or post a longer-form reaction/listen-along.",
-        "This is the day. Execute the 3-post stack.",
-      ],
-      urgency: "RED" as const,
-      pillar: "creative" as const,
-      timeBlock: "content" as const,
-      action: async () => { await setStoreValue(contentSprKey, true); },
-    });
+  // ── 2.7 WATERFALL CONTENT SPRINT ──────────
+  // Fires on each waterfall release day. Each single gets a 3-post stack.
+  const waterfallDates: { date: string; track: string; isEP: boolean }[] = [
+    { date: '2026-05-09', track: 'East Side Love', isEP: false },
+    { date: '2026-05-23', track: 'Green Light', isEP: false },
+    { date: '2026-06-06', track: 'Sweet Frustration', isEP: false },
+    { date: '2026-06-20', track: 'ALL LOVE EP', isEP: true },
+  ];
+  const todayWaterfall = waterfallDates.find(w => w.date === today);
+  if (todayWaterfall) {
+    const contentSprKey = `content_sprint_clear:${today}`;
+    const contentSprintCleared = await getStoreValue(contentSprKey);
+    if (!contentSprintCleared) {
+      tasks.push({
+        id: `content-sprint-${today}`,
+        title: todayWaterfall.isEP ? "DROP DAY — ALL LOVE EP is here." : `RELEASE DAY — ${todayWaterfall.track}`,
+        subtitle: todayWaterfall.isEP
+          ? "5-track EP. Morning resolution, midday announce, evening live."
+          : `Waterfall single. 3-post stack: teaser → announcement → engagement.`,
+        howTo: todayWaterfall.isEP ? [
+          "MORNING: Final \"Its All Love\" video — \"...but it's ALL LOVE. Out now.\"",
+          "MIDDAY: Full EP announcement post with all 5 tracks.",
+          "EVENING: Go live or post a longer-form reaction/listen-along.",
+          "This is the day. Execute the 3-post stack.",
+        ] : [
+          `MORNING: Story teaser — snippet of ${todayWaterfall.track} with "out now" text.`,
+          `MIDDAY: Feed post — ${todayWaterfall.track} announcement. Link in bio.`,
+          `EVENING: Engagement — respond to DMs, post a reaction/listen story.`,
+          "Execute the 3-post stack for this single.",
+        ],
+        urgency: "RED" as const,
+        pillar: "creative" as const,
+        timeBlock: "content" as const,
+        action: async () => { await setStoreValue(contentSprKey, true); },
+      });
+    }
   }
 
   // ── 2.8 WAR ROOM REBUILD — Procurement tasks from Blueprint ────────
@@ -1083,7 +1093,7 @@ export async function deriveKillList(): Promise<KillTask[]> {
         '  past.El noir Records',
         '  Hearing In Color 🎨🎶✨',
         '  Milwaukee → everywhere',
-        '  all lovE EP — Apr 24',
+        '  ALL LOVE — Waterfall Singles Out Now',
         '  [Spotify link or Linktree URL]',
         'The world first, not the job title.',
         'Tap ✓ when saved.',
@@ -1299,9 +1309,9 @@ export async function deriveKillList(): Promise<KillTask[]> {
   if (ddRemaining > 0 && !isSunday) {
     const ddUrgency = ddDailyTarget > 120 ? "RED" : ddDailyTarget > 80 ? "AMBER" : "GREEN";
 
-    // Phase 1 (through Apr 24): Morning block ONLY. Protect studio time.
-    // Phase 2 (Apr 25+): Multi-block DD schedule returns.
-    const isPhase1 = now < epReleaseDeadline;
+    // Phase 1 (through first single drop May 9): Morning block ONLY. Protect studio time.
+    // Phase 2 (May 9+): Multi-block DD schedule returns as waterfall is live.
+    const isPhase1 = now < new Date("2026-05-09T00:00:00");
 
     // Morning sprint: 6:30-9 AM (~$50, 2.5hrs)
     const ddMornKey = `dd_morning:${today}`;

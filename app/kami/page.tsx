@@ -228,7 +228,7 @@ export default function KamiPage() {
         </div>
         <div style={{ display: 'flex', alignItems: 'center', gap: 20 }}>
           <div style={{ textAlign: 'right' }}>
-            <div style={{ fontSize: 11, color: 'rgba(255,255,255,0.4)' }}>EP DROP</div>
+            <div style={{ fontSize: 11, color: 'rgba(255,255,255,0.4)' }}>NEXT DROP</div>
             <div style={{ fontSize: 13, fontWeight: 700, color: epCountdown === 'LIVE' ? '#4ade80' : '#facc15' }}>
               {epCountdown === 'LIVE' ? '🟢 LIVE' : `⏱ ${epCountdown}`}
             </div>
@@ -315,15 +315,16 @@ export default function KamiPage() {
               <div style={{ fontSize: 22, fontWeight: 800, letterSpacing: '-1px', marginBottom: 2 }}>
                 {epCountdown === 'LIVE' ? '🟢 OUT NOW' : epCountdown}
               </div>
-              <div style={{ fontSize: 11, color: 'rgba(255,255,255,0.45)' }}>April 24, 2026 · Amuse Pro</div>
+              <div style={{ fontSize: 11, color: 'rgba(255,255,255,0.45)' }}>June 20, 2026 · Amuse Pro · Waterfall</div>
             </div>
 
             <div style={{ display: 'flex', flexDirection: 'column', gap: 8 }}>
               {[
                 { label: 'SEE ME', date: 'Mar 13, 2026', status: 'live' },
-                { label: 'Sweet Frustration', date: 'Apr 24, 2026', status: 'unreleased' },
-                { label: 'East Side Love', date: 'Apr 24, 2026', status: 'unreleased' },
-                { label: 'Like I Did', date: 'Apr 24, 2026', status: 'unreleased' },
+                { label: 'East Side Love', date: 'May 9, 2026', status: 'unreleased' },
+                { label: 'Green Light', date: 'May 23, 2026', status: 'unreleased' },
+                { label: 'Sweet Frustration', date: 'Jun 6, 2026', status: 'unreleased' },
+                { label: 'ALL LOVE EP', date: 'Jun 20, 2026', status: 'unreleased' },
               ].map(r => (
                 <div key={r.label} style={{ display: 'flex', justifyContent: 'space-between', alignItems: 'center', padding: '8px 0', borderBottom: '1px solid rgba(255,255,255,0.05)' }}>
                   <span style={{ fontSize: 12, color: '#fff' }}>{r.label}</span>
@@ -338,12 +339,12 @@ export default function KamiPage() {
             </div>
 
             <div style={{ marginTop: 4 }}>
-              <div style={{ fontSize: 10, color: 'rgba(255,255,255,0.35)', marginBottom: 6 }}>8-DAY SPRINT: Apr 16 → Apr 24</div>
+              <div style={{ fontSize: 10, color: 'rgba(255,255,255,0.35)', marginBottom: 6 }}>WATERFALL SPRINT: Apr 28 → Jun 20</div>
               <div style={{ height: 4, background: 'rgba(255,255,255,0.08)', borderRadius: 2, overflow: 'hidden' }}>
                 <div style={{
                   height: '100%',
                   background: '#facc15',
-                  width: `${Math.min(100, Math.max(0, ((new Date().getTime() - new Date('2026-04-16').getTime()) / (new Date('2026-04-24').getTime() - new Date('2026-04-16').getTime())) * 100))}%`,
+                  width: `${Math.min(100, Math.max(0, ((new Date().getTime() - new Date('2026-04-28').getTime()) / (new Date('2026-06-20').getTime() - new Date('2026-04-28').getTime())) * 100))}%`,
                   borderRadius: 2,
                   transition: 'width 1s',
                 }} />

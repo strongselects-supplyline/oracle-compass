@@ -1,7 +1,7 @@
 // marathon-data.ts
 // Source of truth for the 43-Track, 14-Week Sprint
 // Updated March 24, 2026: Unified IndexedDB (uses OracleCompassDB via db.ts),
-// sprint weeks updated to EP cadence (Apr 24), BUFFER phase added.
+// sprint weeks updated to waterfall cadence (ESL May 9 → GL May 23 → SF Jun 6 → EP Jun 20).
 
 import { getStoreValue, setStoreValue } from '@/lib/db';
 
@@ -36,20 +36,20 @@ export const PHASE_CONFIG: Record<Phase | 'BUFFER', { label: string; badge: stri
 };
 
 export const ALL_TRACKS: Track[] = [
-  // ── ALL LOVE EP — 6 active tracks (expanded Apr 11 audit) ──
+  // ── ALL LOVE EP — 5 active tracks (waterfall pivot Apr 28) ──
   { id: 'al-02', name: 'See Me',            phase: 'ALL_LOVE' },
-  { id: 'al-08', name: 'Sweet Frustration', phase: 'ALL_LOVE' },
   { id: 'al-03', name: 'East Side Love',    phase: 'ALL_LOVE' },
+  { id: 'al-05', name: 'Green Light',       phase: 'ALL_LOVE' },
+  { id: 'al-08', name: 'Sweet Frustration', phase: 'ALL_LOVE' },
   { id: 'al-04', name: 'WANT U 2',          phase: 'ALL_LOVE' },
-  { id: 'al-09', name: 'Like I Did',        phase: 'ALL_LOVE' },
-  { id: 'al-05', name: 'GREEN LIGHTS',      phase: 'ALL_LOVE' },
 
-  // ── ALL LOVE — 5 parked tracks (post-EP release TBD) ──
+  // ── ALL LOVE — 6 vault/parked tracks (post-EP waterfall + TBD) ──
+  { id: 'al-09', name: 'Like I Did',    phase: 'ALL_LOVE', parked: true },
   { id: 'al-01', name: 'I Like Girls',  phase: 'ALL_LOVE', parked: true },
-  { id: 'al-06', name: 'Luxury',        phase: 'ALL_LOVE', parked: true },
   { id: 'al-07', name: 'Worth It',      phase: 'ALL_LOVE', parked: true },
   { id: 'al-10', name: 'Just Say So',   phase: 'ALL_LOVE', parked: true },
   { id: 'al-11', name: 'Reconnect',     phase: 'ALL_LOVE', parked: true },
+  { id: 'al-06', name: 'Luxury',        phase: 'ALL_LOVE', parked: true },
 
   // ── DELUXE — 12 tracks ──
   { id: 'dl-01', name: 'All My Love (intro flip)', phase: 'DELUXE' },
@@ -113,23 +113,23 @@ export const SPRINT_WEEKS: SprintWeek[] = [
   },
   {
     wk: 5, dates: 'Apr 5\u201311', startDate: '2026-04-05', endDate: '2026-04-11',
-    phase: 'ALL_LOVE', phaseBadge: 'ALL LOVE', target: 'Master all 6 tracks', total: 1,
-    keyEvents: ['6 tracks × ~10 hrs = 50 hrs total', '~4 hrs/day studio after DoorDash', 'Upload each track the hour it locks (Amuse Pro = 48hr)'],
+    phase: 'ALL_LOVE', phaseBadge: 'ALL LOVE', target: 'Master all 5 EP tracks', total: 1,
+    keyEvents: ['5 tracks × ~10 hrs = 50 hrs total', '~4 hrs/day studio after DoorDash', 'Upload each track as master locks (Amuse Pro = 48hr)'],
   },
   {
     wk: 6, dates: 'Apr 12\u201318', startDate: '2026-04-12', endDate: '2026-04-18',
-    phase: 'ALL_LOVE', phaseBadge: 'ALL LOVE', target: 'Singles rolling live as masters lock', total: 6,
-    keyEvents: ['Upload each single the hour master locks', 'EP upload deadline: Apr 22 (48hr Amuse review)', 'No content, no planning — studio only', '414 Day cancelled — focus stays in DAW'],
+    phase: 'ALL_LOVE', phaseBadge: 'ALL LOVE', target: 'Mastering completion sprint', total: 5,
+    keyEvents: ['Finish all mastering sessions', 'ESL upload target: May 2 (Amuse 7-day review)', 'No content, no planning — studio only'],
   },
   {
     wk: 7, dates: 'Apr 19\u201325', startDate: '2026-04-19', endDate: '2026-04-25',
-    phase: 'ALL_LOVE', phaseBadge: 'ALL LOVE', target: 'EP DROPS \u2014 north star', total: 6,
-    keyEvents: ['ALL LOVE EP drops Apr 24 \uD83D\uDD25 (6 tracks)', 'Sequence locked via Cyanite post-mastering', '$75 Spotify ad push (EP \u2014 all markets)', 'First week stream check (target score 20\u2192 25+)'],
+    phase: 'ALL_LOVE', phaseBadge: 'ALL LOVE', target: 'Production sprint + waterfall prep', total: 5,
+    keyEvents: ['WATERFALL PIVOT: singles drip every 2 weeks', 'East Side Love drops May 9 🔥', 'Green Light drops May 23', 'Sweet Frustration drops Jun 6', 'ALL LOVE EP (5 tracks) drops Jun 20'],
   },
   {
     wk: 8, dates: 'Apr 26\u2013May 2', startDate: '2026-04-26', endDate: '2026-05-02',
-    phase: 'DELUXE', phaseBadge: 'DELUXE', target: '3 tracks', total: 7,
-    keyEvents: ['DELUXE sprint begins', 'Post-EP marketing continues'],
+    phase: 'ALL_LOVE', phaseBadge: 'ALL LOVE', target: 'ESL pre-release marketing + upload', total: 5,
+    keyEvents: ['ESL upload to Amuse by May 2', 'Content sprint for ESL single launch', 'Spotify ad campaign prep ($50 ESL push)'],
   },
   {
     wk: 9, dates: 'May 3\u20139', startDate: '2026-05-03', endDate: '2026-05-09',

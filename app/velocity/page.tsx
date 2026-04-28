@@ -18,14 +18,14 @@ import {
 } from "@/lib/streaming";
 import { getDynamicReleases, Release } from "@/lib/releases";
 
-// ── EP Release Calendar (static north star) ───────────────────────────
+// ── Waterfall Release Calendar ────────────────────────────────────────
 
 const EP_RELEASES = [
   { title: "SEE ME",            releaseDate: "2026-03-13", color: "#8b5cf6" },
-  { title: "East Side Love",    releaseDate: "2026-04-14", color: "#3b82f6" },
-  { title: "Sweet Frustration", releaseDate: "2026-04-10", color: "#f59e0b" },
-  { title: "Like I Did",        releaseDate: "2026-04-17", color: "#ec4899" },
-  { title: "ALL LOVE (EP)",     releaseDate: "2026-04-24", color: "#d4a853" },
+  { title: "East Side Love",    releaseDate: "2026-05-09", color: "#3b82f6" },
+  { title: "Green Light",       releaseDate: "2026-05-23", color: "#10b981" },
+  { title: "Sweet Frustration", releaseDate: "2026-06-06", color: "#f59e0b" },
+  { title: "ALL LOVE (EP)",     releaseDate: "2026-06-20", color: "#d4a853" },
 ];
 
 // ── Helpers ───────────────────────────────────────────────────────────

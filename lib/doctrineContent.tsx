@@ -71,7 +71,7 @@ function RoadmapPage() {
       <Header tag="The Plan · Arc 1→3" title="90-Day Roadmap" sub="April 18 → July 17, 2026. Three releases. One catalog. Compounding data." />
       <h2 className="scroll-h3">Overview — Three Arcs</h2>
       <div className="scroll-table-wrap"><table className="scroll-table"><thead><tr><th>Arc</th><th>Dates</th><th>Release</th><th>Pop Target</th><th>Sovereignty</th></tr></thead><tbody>
-        <tr><td><span className="stp-badge badge-gold">Arc 1 — EP</span></td><td>Apr 18 – May 17</td><td>ALL LOVE EP (5 trk) · Apr 25</td><td>21 → 25</td><td>Wk 1 Honeymoon → Flatline</td></tr>
+        <tr><td><span className="stp-badge badge-gold">Arc 1 — Waterfall</span></td><td>Apr 28 – Jun 20</td><td>ALL LOVE EP (5 trk) · Waterfall singles</td><td>21 → 25</td><td>Production sprint → Release cadence</td></tr>
         <tr><td><span className="stp-badge badge-blue">Arc 2 — Album</span></td><td>May 18 – Jun 16</td><td>ALL LOVE (11 trk) · May 19-20</td><td>25 → 30</td><td>Emotions Return</td></tr>
         <tr><td><span className="stp-badge badge-purple">Arc 3 — Deluxe</span></td><td>Jun 17 – Jul 17</td><td>ALL LOVE DELUXE (22 trk) · ~Jul 1</td><td>30 → 35</td><td>Compounding</td></tr>
       </tbody></table></div>
@@ -79,7 +79,7 @@ function RoadmapPage() {
       <h2 className="scroll-h3">Key Dates</h2>
       <div className="scroll-table-wrap"><table className="scroll-table"><thead><tr><th>Date</th><th>Event</th></tr></thead><tbody>
         <tr><td>Mon Apr 21</td><td>Amuse upload (EP)</td></tr>
-        <tr><td style={{color:"#e05545",fontWeight:700}}>Fri Apr 25</td><td><strong>EP DROPS</strong> (Uranus enters Gemini)</td></tr>
+        <tr><td style={{color:"#e05545",fontWeight:700}}>Fri May 9</td><td><strong>East Side Love drops</strong> (Waterfall Single 1)</td></tr>
         <tr><td>Apr 26 – May 7</td><td>THE FLATLINE (lowest motivation)</td></tr>
         <tr><td>Tue Apr 28</td><td>Birthday (Flatline day 4 — keep personal)</td></tr>
         <tr><td>Thu May 7</td><td>Flatline ends (emotions return)</td></tr>
@@ -145,8 +145,8 @@ function WartimePage() {
 
       <h2 className="scroll-h3">Part V — The 90-Day Arc</h2>
       <div className="scroll-grid-3">
-        <div className="scroll-grid-card" style={{borderTop:"3px solid #e05545"}}><div className="scroll-gc-title" style={{color:"#e05545"}}>Phase 1 · THE SPRINT</div><div className="scroll-gc-desc">Apr 6–24 (18 days). 4 actions/day. Hard time limits. Campaign execution, not new production.</div></div>
-        <div className="scroll-grid-card" style={{borderTop:"3px solid #3ecf71"}}><div className="scroll-gc-title" style={{color:"#3ecf71"}}>Phase 2 · THE COMPOUND</div><div className="scroll-gc-desc">Apr 25–May 31 (37 days). Serotonin takes over. CREAM pre-production. Rhythm IS the system.</div></div>
+        <div className="scroll-grid-card" style={{borderTop:"3px solid #e05545"}}><div className="scroll-gc-title" style={{color:"#e05545"}}>Phase 1 · THE SPRINT</div><div className="scroll-gc-desc">Apr 6–May 8 (32 days). 4 actions/day. Hard time limits. Production mastering + waterfall prep.</div></div>
+        <div className="scroll-grid-card" style={{borderTop:"3px solid #3ecf71"}}><div className="scroll-gc-title" style={{color:"#3ecf71"}}>Phase 2 · THE WATERFALL</div><div className="scroll-gc-desc">May 9–Jun 20 (43 days). Singles drip biweekly. Content sprint per release. Rhythm IS the system.</div></div>
         <div className="scroll-grid-card" style={{borderTop:"3px solid #4d9de0"}}><div className="scroll-gc-title" style={{color:"#4d9de0"}}>Phase 3 · THE SUMMER</div><div className="scroll-gc-desc">Jun 1–Jul 5 (35 days). Data-informed launch. CREAM executes what ALL LOVE proved.</div></div>
       </div>
 
@@ -207,7 +207,7 @@ function WartimePage() {
 
       <h2 className="scroll-h3">Grief Protocol</h2>
       <div className="scroll-table-wrap"><table className="scroll-table"><tbody>
-        <tr><td>Phase 1 (Apr 6–24)</td><td>No formal grief work. The 414 Day performance IS emotional processing through art.</td></tr>
+        <tr><td>Phase 1 (Apr 6–May 8)</td><td>No formal grief work. The production sprint IS emotional processing through art.</td></tr>
         <tr><td>Phase 2 (Apr 27+)</td><td>20-min Sunday journaling. Write to your father. What you&apos;d say. What you&apos;d ask. Controlled exposure.</td></tr>
         <tr><td>Phase 3 (Jun 1+)</td><td>If journaling running consistently, research one trauma-oriented therapist. Goal: one consultation before Jul 5.</td></tr>
       </tbody></table></div>
@@ -221,7 +221,7 @@ function WartimePage() {
       <h2 className="scroll-h3">Part VIII — North Star Metrics</h2>
       <p className="scroll-p">Check every Sunday. These are the only numbers that matter.</p>
       <div className="scroll-metrics-grid">
-        <div className="scroll-metric-card"><span className="scroll-metric-val">1,600+</span><div className="scroll-metric-lbl">Spotify Followers · Apr 24</div></div>
+        <div className="scroll-metric-card"><span className="scroll-metric-val">1,600+</span><div className="scroll-metric-lbl">Spotify Followers · Jun 20</div></div>
         <div className="scroll-metric-card"><span className="scroll-metric-val">2,500+</span><div className="scroll-metric-lbl">Spotify Followers · Jul 5</div></div>
         <div className="scroll-metric-card"><span className="scroll-metric-val">3%+</span><div className="scroll-metric-lbl">Save Rate · SF Target</div></div>
         <div className="scroll-metric-card"><span className="scroll-metric-val">4%+</span><div className="scroll-metric-lbl">Save Rate · CREAM Target</div></div>
@@ -244,7 +244,7 @@ function WartimePage() {
           <li className="scroll-p"><strong>Distributor is Amuse.</strong> Do not change without explicit instruction.</li>
           <li className="scroll-p"><strong>Builder-avoidance loops are neurochemical, not laziness.</strong> When the urge to &quot;fix the system&quot; hits, open the DAW instead.</li>
           <li className="scroll-p"><strong>The 90-second exit signal is sacred.</strong> Morning Kill List scan = 90 seconds max, then close it.</li>
-          <li className="scroll-p"><strong>Phase 2 rhythm is protected.</strong> Apr 25 is a hard boundary. Do not let Phase 1 sprint energy bleed into May.</li>
+          <li className="scroll-p"><strong>Phase 2 rhythm is protected.</strong> May 9 is a hard boundary. Do not let Phase 1 sprint energy bleed into the waterfall.</li>
           <li className="scroll-p"><strong>ALL LOVE Deluxe is data-dependent.</strong> Decide Apr 27 after reviewing EP first-week numbers.</li>
           <li className="scroll-p"><strong>Before any collaboration, splits in writing before production begins.</strong></li>
           <li className="scroll-p"><strong>Post what you want to be discovered as.</strong> The portfolio test applies to every post.</li>
@@ -313,7 +313,7 @@ function ProtocolPage() {
       <h2 className="scroll-h3">Phase Timeline</h2>
       <div className="scroll-stack">
         <div className="scroll-stack-level"><div className="scroll-stack-title"><span>Week 1 (Apr 17–24) · THE HONEYMOON</span><span className="stp-badge badge-green">Now</span></div><div className="scroll-stack-desc">Motivation is high. Lock in the morning routines. Stay structural. You are installing, not performing.</div></div>
-        <div className="scroll-stack-level"><div className="scroll-stack-title"><span>Weeks 2–3 (Apr 25–May 7) · THE FLATLINE</span><span className="stp-badge badge-red">Critical</span></div><div className="scroll-stack-desc">Dopamine recalibration. 80% of protocol failures happen here. <strong>Do not measure results in this window. Just show up.</strong></div></div>
+        <div className="scroll-stack-level"><div className="scroll-stack-title"><span>Weeks 2–4 (Apr 25–May 8) · THE FLATLINE</span><span className="stp-badge badge-red">Critical</span></div><div className="scroll-stack-desc">Dopamine recalibration. 80% of protocol failures happen here. <strong>Do not measure results in this window. Just show up.</strong></div></div>
         <div className="scroll-stack-level"><div className="scroll-stack-title">Weeks 4–6 (May 8–28) · EMOTIONS RETURN</div><div className="scroll-stack-desc">Feelings come back louder. Music gets better. Motivation returns grounded in demonstrated identity.</div></div>
         <div className="scroll-stack-level sc-highlight"><div className="scroll-stack-title">Weeks 7–12 (Jun – mid Jul) · COMPOUNDING</div><div className="scroll-stack-desc">The identity shift locks in. The new behavior IS you. Creative output accelerates.</div></div>
       </div>
@@ -501,13 +501,13 @@ function RankScrollPage() {
       </tbody></table></div>
       <h2 className="scroll-h3">Jonin → Anbu Benchmarks</h2>
       <div className="scroll-card scroll-card-left">
-        <Bench text={<><strong>ALL LOVE EP Released</strong> — April 24, 2026. First-week data collected.</>} />
-        <Bench text={<><strong>Three Tracks Live on Spotify</strong> — Sweet Frustration, East Side Love, Like I Did.</>} />
+        <Bench text={<><strong>ALL LOVE EP Released</strong> — June 20, 2026. Waterfall complete. First-week data collected.</>} />
+        <Bench text={<><strong>Three Waterfall Singles Live on Spotify</strong> — East Side Love, Green Light, Sweet Frustration.</>} />
         <Bench text={<><strong>Save Rate 3%+</strong> — Achieved on at least 1 track.</>} />
         <Bench text={<><strong>Gorilla Geo Activated</strong> — DM outreach running 3–5 messages/day.</>} />
         <Bench text={<><strong>Sobriety Day 60</strong> — Clock not reset.</>} />
         <Bench text={<><strong>Content Factory Output</strong> — 3+ assets/week consistently.</>} />
-        <Bench text={<><strong>DoorDash Revenue</strong> — $1,800/month for April AND May confirmed.</>} />
+        <Bench text={<><strong>DoorDash Revenue</strong> — $1,800/month for May AND June confirmed.</>} />
       </div>
     </>
   );
