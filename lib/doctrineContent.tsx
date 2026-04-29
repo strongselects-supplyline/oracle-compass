@@ -601,7 +601,19 @@ function WakingMindPage() {
 function MixingPage() {
   return (
     <>
-      <Header tag="Studio · End-to-End Audio Production" title="Sovereign Mixing Codex" sub="The complete 9-stage protocol from textured sample production through final master." />
+      <Header tag="Studio · End-to-End Audio Production" title="Sovereign Mixing Codex" sub="The complete 18-day batch production engine and 9-stage mixing protocol." />
+      
+      <h2 className="scroll-h3">The 18-Day Batch Production Engine (6 Tracks)</h2>
+      <p className="scroll-p mb-4 text-[#aaa]">The staggered macro-architecture. Production is decoupled from release. 6 fully mastered tracks in 18 days.</p>
+      <div className="scroll-table-wrap mb-8"><table className="scroll-table"><thead><tr><th>Days</th><th>Stage</th><th>Protocol</th></tr></thead><tbody>
+        <tr><td><strong>Days 1–4</strong></td><td>Write / Record / Rough Comp</td><td>Performer brain. Topline, write, record, and rough comp all 6 songs simultaneously. Find the pocket and stay in the booth.</td></tr>
+        <tr><td><strong>Day 5</strong></td><td>Recovery + Analysis</td><td>Vocal cord recovery. Run rough bounces through Cyanite to verify emotional targets.</td></tr>
+        <tr><td><strong>Day 6</strong></td><td>The Gap Day</td><td>Zero studio time. Total rest OR DoorDash hard to fund the upcoming mix sprint.</td></tr>
+        <tr><td><strong>Days 7–14</strong></td><td>The Mix Batch</td><td>Engineer brain. Cycle through the 6 tracks, mixing 2-3 at a time. Pushing them forward together prevents ear fatigue on a single loop.</td></tr>
+        <tr><td><strong>Days 15–17</strong></td><td>Ear Rest (72hrs)</td><td>The golden rule. Do not listen to the mixes. You must approach mastering with objective, fresh ears.</td></tr>
+        <tr><td><strong>Day 18</strong></td><td>The Master Batch</td><td>12–18 hour marathon session. Master all 6 tracks. Level match. Final Cyanite check.</td></tr>
+      </tbody></table></div>
+
       <h2 className="scroll-h3">Phase 1 — Gain Staging &amp; Bus Architecture</h2>
       <div className="scroll-table-wrap"><table className="scroll-table"><thead><tr><th>Bus</th><th>Contains</th><th>Fader Start</th></tr></thead><tbody>
         <tr><td>DRUMS</td><td>Kick, snare, hats, percs, 808</td><td>-6dB</td></tr>
