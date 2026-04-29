@@ -614,6 +614,17 @@ function MixingPage() {
         <tr><td><strong>Day 18</strong></td><td>The Master Batch</td><td>12–18 hour marathon session. Master all 6 tracks. Level match. Final Cyanite check.</td></tr>
       </tbody></table></div>
 
+      <h2 className="scroll-h3">The Micro-Rhythm: The 3-Hour Studio Block</h2>
+      <p className="scroll-p mb-4 text-[#aaa]">The execution layer. How the 18-day engine actually gets powered day-to-day.</p>
+      <div className="scroll-table-wrap mb-8"><table className="scroll-table"><thead><tr><th>Block</th><th>Duration</th><th>Focus</th></tr></thead><tbody>
+        <tr><td><strong>Deep Work 1</strong></td><td>50 Min</td><td>High-intensity flow. Phone is in another room.</td></tr>
+        <tr><td><strong>Reset 1</strong></td><td>10 Min</td><td>Step away from the monitors. Water, stretch, walk. Ear reset.</td></tr>
+        <tr><td><strong>Deep Work 2</strong></td><td>50 Min</td><td>Resume flow state.</td></tr>
+        <tr><td><strong>Reset 2</strong></td><td>10 Min</td><td>Physical reset.</td></tr>
+        <tr><td><strong>Deep Work 3</strong></td><td>50 Min</td><td>Final push for the block.</td></tr>
+        <tr><td><strong>The Void</strong></td><td>1 Hour</td><td>Complete detachment. DoorDash sprint, eat, or total rest. No screens. No music.</td></tr>
+      </tbody></table></div>
+
       <h2 className="scroll-h3">Phase 1 — Gain Staging &amp; Bus Architecture</h2>
       <div className="scroll-table-wrap"><table className="scroll-table"><thead><tr><th>Bus</th><th>Contains</th><th>Fader Start</th></tr></thead><tbody>
         <tr><td>DRUMS</td><td>Kick, snare, hats, percs, 808</td><td>-6dB</td></tr>
