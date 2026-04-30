@@ -1395,7 +1395,7 @@ export async function deriveKillList(): Promise<KillTask[]> {
     tasks.push({
       id: "telemetry-sf",
       title: `Mix/Master SF: ${dailyTargetSF} hr pace`,
-      subtitle: `Sweet Frustration: ${sfHours} / 10 hrs logged. ${daysToUpload} days to EP upload (Jun 13).`,
+      subtitle: `Sweet Frustration: ${sfHours} / 10 hrs logged. ${daysToUpload} days to EP upload (May 7).`,
       howTo: [
         "9:30 AM: S3 Check-in + DAW open. SF is closest to done — start here.",
         "Work until it locks or you've hit a wall (3 bounce max rule).",
