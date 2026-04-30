@@ -118,9 +118,10 @@ const DEFAULT_DELIVERABLES: ContentDeliverables = {
 // type breakdown:
 //   waterfall_single — planned single in the EP waterfall (ESL, GL, SF)
 //   ep               — the ALL LOVE EP compilation itself
+//   ep_track         — track on the EP that is NOT released as a standalone single
 //   vault_single     — post-EP scheduled release (Like I Did, ILG, etc.)
 //   loosie           — spontaneous standalone; unscheduled, may absorb into future project
-export type ReleaseType = "waterfall_single" | "ep" | "vault_single" | "loosie";
+export type ReleaseType = "waterfall_single" | "ep" | "ep_track" | "vault_single" | "loosie";
 
 export type Release = {
   title: string;
@@ -134,52 +135,52 @@ export type Release = {
 };
 
 // Canonical defaults — source of truth for first seed only
-// Apr 27 WATERFALL PIVOT: Singles drip 2 weeks apart → EP compilation at end.
-// ESL May 9 → GL May 23 → SF Jun 6 → EP Jun 20. WU2 is EP-exclusive.
+// Apr 29 EP BOMB PIVOT: Full 5-track EP drops May 15 (ICEMAN day).
+// All tracks upload May 7. Post-EP vault waterfall starts May 30.
 const RELEASE_DEFAULTS: Release[] = [
   {
-    title: "SEE ME", uploadDate: "2026-03-09", releaseDate: "2026-03-13", status: "live", type: "waterfall_single",
-    contentDeliverables: { ...DEFAULT_DELIVERABLES, coreDriveComplete: true, campaignKitGenerated: true, ascap: "pending", mlc: "pending", soundExchange: "complete", songtrust: "pending", notes: "Live Mar 13. Core Drive: 2,713 tracks / 38 playlists. Campaign kit in docs/handoff_mar24/." }
+    title: "SEE ME", uploadDate: "2026-03-09", releaseDate: "2026-03-13", status: "live", type: "ep_track",
+    contentDeliverables: { ...DEFAULT_DELIVERABLES, coreDriveComplete: true, campaignKitGenerated: true, ascap: "pending", mlc: "pending", soundExchange: "complete", songtrust: "pending", notes: "Live Mar 13. EP track 1. Core Drive: 2,713 tracks / 38 playlists. ISRC exists (not recorded — pull from Amuse)." }
   },
   {
-    title: "East Side Love", uploadDate: "2026-05-02", releaseDate: "2026-05-09", status: "unreleased", type: "waterfall_single",
-    contentDeliverables: { ...DEFAULT_DELIVERABLES, coreDriveComplete: true, campaignKitGenerated: true, soundExchange: "complete", notes: "SINGLE #1 (lead). Waterfall → EP track Jun 20. Fix audio file, re-upload to Amuse. Core Drive: 1,221 tracks / 20 playlists." }
+    title: "East Side Love", uploadDate: "2026-05-07", releaseDate: "2026-05-15", status: "unreleased", type: "ep_track",
+    contentDeliverables: { ...DEFAULT_DELIVERABLES, coreDriveComplete: true, campaignKitGenerated: true, soundExchange: "complete", notes: "EP track 2. Previous wrong-file upload pulled down (no ISRC). Fresh upload May 7 as part of EP bomb. Core Drive: 1,221 tracks / 20 playlists." }
   },
   {
-    title: "Green Light", uploadDate: "2026-05-16", releaseDate: "2026-05-23", status: "unreleased", type: "waterfall_single",
-    contentDeliverables: { ...DEFAULT_DELIVERABLES, notes: "SINGLE #2. Master must lock by May 14. Upload May 16. Waterfall → EP track Jun 20." }
+    title: "Green Light", uploadDate: "2026-05-07", releaseDate: "2026-05-15", status: "unreleased", type: "ep_track",
+    contentDeliverables: { ...DEFAULT_DELIVERABLES, notes: "EP track 3. NOT a standalone single. Drops as part of EP bomb May 15." }
   },
   {
-    title: "Sweet Frustration", uploadDate: "2026-05-30", releaseDate: "2026-06-06", status: "unreleased", type: "waterfall_single",
-    contentDeliverables: { ...DEFAULT_DELIVERABLES, coreDriveComplete: true, campaignKitGenerated: true, soundExchange: "complete", notes: "SINGLE #3. KAYTRANADA lane. Master must lock by May 28. Upload May 30. Waterfall → EP track Jun 20." }
+    title: "Sweet Frustration", uploadDate: "2026-05-07", releaseDate: "2026-05-15", status: "unreleased", type: "ep_track",
+    contentDeliverables: { ...DEFAULT_DELIVERABLES, coreDriveComplete: true, campaignKitGenerated: true, soundExchange: "complete", notes: "EP track 4. KAYTRANADA lane. NOT a standalone single. Drops as part of EP bomb May 15." }
   },
   {
-    title: "WANT U 2", uploadDate: "2026-06-13", releaseDate: "2026-06-20", status: "unreleased", type: "ep",
-    contentDeliverables: { ...DEFAULT_DELIVERABLES, notes: "EP-EXCLUSIVE. Not released as single. Gives listeners incentive to play the full EP. Master must lock by Jun 11." }
+    title: "WANT U 2", uploadDate: "2026-05-07", releaseDate: "2026-05-15", status: "unreleased", type: "ep_track",
+    contentDeliverables: { ...DEFAULT_DELIVERABLES, notes: "EP track 5. EP-exclusive — never released as single. Gives listeners incentive to play the full EP." }
   },
   {
-    title: "ALL LOVE (EP)", uploadDate: "2026-06-13", releaseDate: "2026-06-20", status: "unreleased", type: "ep",
-    contentDeliverables: { ...DEFAULT_DELIVERABLES, notes: "5-track EP compilation: SEE ME → East Side Love → Green Light → Sweet Frustration → WANT U 2. Waterfall all 3 single ISRCs + SEE ME ISRC onto EP tracks. WU2 is EP-exclusive new content. Needs: EP cover art, UPC, EP-level Spotify pitch." }
+    title: "ALL LOVE (EP)", uploadDate: "2026-05-07", releaseDate: "2026-05-15", status: "unreleased", type: "ep",
+    contentDeliverables: { ...DEFAULT_DELIVERABLES, notes: "5-track EP bomb: SEE ME → East Side Love → Green Light → Sweet Frustration → WANT U 2. All tracks upload May 7. Release May 15 (ICEMAN day). SEE ME ISRC from Mar 13 release carries over. All other tracks get new ISRCs. Needs: EP cover art, UPC, EP-level Spotify pitch." }
   },
   {
-    title: "Like I Did", uploadDate: "2026-07-18", releaseDate: "2026-07-25", status: "unreleased", type: "vault_single",
-    contentDeliverables: { ...DEFAULT_DELIVERABLES, notes: "Vault single #1. 110 BPM, D major. First post-EP release. Tests if audience stuck. Jul 18 unconditional topline/recording batch week begins." }
+    title: "Like I Did", uploadDate: "2026-05-23", releaseDate: "2026-05-30", status: "unreleased", type: "vault_single",
+    contentDeliverables: { ...DEFAULT_DELIVERABLES, notes: "Vault single #1. 110 BPM, D major. First post-EP release. 2-week cadence begins." }
   },
   {
-    title: "I Like Girls", uploadDate: "2026-08-01", releaseDate: "2026-08-08", status: "unreleased", type: "vault_single",
-    contentDeliverables: { ...DEFAULT_DELIVERABLES, notes: "Vault single #2. 107 BPM, F# minor, R&B 0.74. High R&B confidence. Strong standalone." }
+    title: "I Like Girls", uploadDate: "2026-06-06", releaseDate: "2026-06-13", status: "unreleased", type: "vault_single",
+    contentDeliverables: { ...DEFAULT_DELIVERABLES, notes: "Vault single #2. 107 BPM, F# minor, R&B 0.74. High R&B confidence." }
   },
   {
-    title: "Worth It", uploadDate: "2026-08-15", releaseDate: "2026-08-22", status: "unreleased", type: "vault_single",
-    contentDeliverables: { ...DEFAULT_DELIVERABLES, notes: "Vault single #3. 97 BPM, F minor, R&B 0.57. Slower tempo = mood shift. Tests range." }
+    title: "Worth It", uploadDate: "2026-06-20", releaseDate: "2026-06-27", status: "unreleased", type: "vault_single",
+    contentDeliverables: { ...DEFAULT_DELIVERABLES, notes: "Vault single #3. 97 BPM, F minor, R&B 0.57. Slower tempo = mood shift." }
   },
   {
-    title: "Just Say So", uploadDate: "2026-08-29", releaseDate: "2026-09-05", status: "unreleased", type: "vault_single",
-    contentDeliverables: { ...DEFAULT_DELIVERABLES, notes: "Vault single #4. 122 BPM, Bb minor, R&B 0.60. Uptempo. Meme-friendly energy." }
+    title: "Just Say So", uploadDate: "2026-07-04", releaseDate: "2026-07-11", status: "unreleased", type: "vault_single",
+    contentDeliverables: { ...DEFAULT_DELIVERABLES, notes: "Vault single #4. 122 BPM, Bb minor, R&B 0.60. Uptempo. Meme-friendly." }
   },
   {
-    title: "Reconnect", uploadDate: "2026-09-12", releaseDate: "2026-09-19", status: "unreleased", type: "vault_single",
-    contentDeliverables: { ...DEFAULT_DELIVERABLES, notes: "Vault single #5. 82 BPM, D major, R&B 0.56. Only major key. Warm/intimate. Palette cleanser before CREAM." }
+    title: "Reconnect", uploadDate: "2026-07-18", releaseDate: "2026-07-25", status: "unreleased", type: "vault_single",
+    contentDeliverables: { ...DEFAULT_DELIVERABLES, notes: "Vault single #5. 82 BPM, D major, R&B 0.56. Warm/intimate. Palette cleanser before CREAM." }
   },
   // Loosies are added dynamically by the user — no defaults seeded here.
   // Use addLoosie() to register a new loosie at any time.
@@ -187,7 +188,7 @@ const RELEASE_DEFAULTS: Release[] = [
 
 const RELEASES_KEY = "dynamic_releases";
 const RELEASES_VERSION_KEY = "releases_data_version";
-const RELEASE_DATA_VERSION = 34; // v34: Apr 28 — LOOSIE SUPPORT. Added type field (waterfall_single | ep | vault_single | loosie) + projectTarget field. Added addLoosie() helper. All existing releases tagged with their type.
+const RELEASE_DATA_VERSION = 35; // v35: Apr 29 — EP BOMB PIVOT. All 5 tracks upload May 7, release May 15. Post-EP vault waterfall starts May 30.
 
 // Read from IndexedDB, seeding defaults on first call or after version bump
 export async function getDynamicReleases(): Promise<Release[]> {
@@ -206,7 +207,7 @@ export async function getDynamicReleases(): Promise<Release[]> {
     // Back-fill type + contentDeliverables for any releases that lack them (migration safety)
     const patched = stored.map(r => ({
       ...r,
-      type: r.type || 'waterfall_single' as ReleaseType,
+      type: r.type || 'ep_track' as ReleaseType,
       contentDeliverables: r.contentDeliverables
         ? { ...DEFAULT_DELIVERABLES, ...r.contentDeliverables }
         : { ...DEFAULT_DELIVERABLES },
@@ -303,10 +304,11 @@ export async function shiftRelease(title: string, days: number): Promise<void> {
 }
 
 // Static EP date — this is the fixed north star, doesn't shift
-// Apr 27 WATERFALL PIVOT: Singles drip → EP Jun 20. ESL May 9, GL May 23, SF Jun 6.
-export const EP_RELEASE_DATE = "2026-06-20";
-export const ESL_SINGLE_RELEASE_DATE = "2026-05-09";
-/** @deprecated Use EP_RELEASE_DATE. Kept for any stale import references. */
+// Apr 29 EP BOMB PIVOT: Full EP drops May 15. Upload May 7. Post-EP vault waterfall starts May 30.
+export const EP_RELEASE_DATE = "2026-05-15";
+export const EP_UPLOAD_DATE = "2026-05-07";
+/** @deprecated Removed. ESL is no longer a standalone single. */
+export const ESL_SINGLE_RELEASE_DATE = EP_RELEASE_DATE;
 export const ALBUM_RELEASE_DATE = EP_RELEASE_DATE;
 
 // How many days after EP drop we display "Honeymoon Phase" on the homepage instead of a countdown

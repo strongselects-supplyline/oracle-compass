@@ -350,24 +350,26 @@ export async function deriveKillList(): Promise<KillTask[]> {
     }
   }
 
-  // ── 2.7 WATERFALL CONTENT SPRINT ──────────
-  // Fires on each waterfall release day. Each single gets a 3-post stack.
-  const waterfallDates: { date: string; track: string; isEP: boolean }[] = [
-    { date: '2026-05-09', track: 'East Side Love', isEP: false },
-    { date: '2026-05-23', track: 'Green Light', isEP: false },
-    { date: '2026-06-06', track: 'Sweet Frustration', isEP: false },
-    { date: '2026-06-20', track: 'ALL LOVE EP', isEP: true },
+  // ── 2.7 EP BOMB + VAULT CONTENT SPRINT ──────────
+  // Fires on EP release day and each vault single release day.
+  const contentSprintDates: { date: string; track: string; isEP: boolean }[] = [
+    { date: '2026-05-15', track: 'ALL LOVE EP', isEP: true },
+    { date: '2026-05-30', track: 'Like I Did', isEP: false },
+    { date: '2026-06-13', track: 'I Like Girls', isEP: false },
+    { date: '2026-06-27', track: 'Worth It', isEP: false },
+    { date: '2026-07-11', track: 'Just Say So', isEP: false },
+    { date: '2026-07-25', track: 'Reconnect', isEP: false },
   ];
-  const todayWaterfall = waterfallDates.find(w => w.date === today);
+  const todayWaterfall = contentSprintDates.find(w => w.date === today);
   if (todayWaterfall) {
     const contentSprKey = `content_sprint_clear:${today}`;
     const contentSprintCleared = await getStoreValue(contentSprKey);
     if (!contentSprintCleared) {
       tasks.push({
         id: `content-sprint-${today}`,
-        title: todayWaterfall.isEP ? "DROP DAY — ALL LOVE EP is here." : `RELEASE DAY — ${todayWaterfall.track}`,
+        title: todayWaterfall.isEP ? "DROP DAY — ALL LOVE EP is here. 5 tracks. ICEMAN day." : `RELEASE DAY — ${todayWaterfall.track}`,
         subtitle: todayWaterfall.isEP
-          ? "5-track EP. Morning resolution, midday announce, evening live."
+          ? "Full EP bomb + ICEMAN momentum. Morning resolution, midday announce, evening live."
           : `Waterfall single. 3-post stack: teaser → announcement → engagement.`,
         howTo: todayWaterfall.isEP ? [
           "MORNING: Final \"Its All Love\" video — \"...but it's ALL LOVE. Out now.\"",
@@ -1275,9 +1277,9 @@ export async function deriveKillList(): Promise<KillTask[]> {
   }
 
   // ── 12. ANTI-DRIFT TELEMETRY ESCALATIONS ─────────────────────────
-  // Hard deadlines — EP upload by Jun 13 (Amuse Pro 48hr review), EP release Jun 20
-  const epUploadDeadline = new Date("2026-06-13T00:00:00");
-  const epReleaseDeadline = new Date("2026-06-20T00:00:00");
+  // Hard deadlines — EP upload by May 7, EP release May 15
+  const epUploadDeadline = new Date("2026-05-07T00:00:00");
+  const epReleaseDeadline = new Date("2026-05-15T00:00:00");
   const daysToUpload = Math.max(1, Math.ceil((epUploadDeadline.getTime() - now.getTime()) / 86400000));
   const daysToRelease = Math.max(1, Math.ceil((epReleaseDeadline.getTime() - now.getTime()) / 86400000));
 
@@ -1309,9 +1311,9 @@ export async function deriveKillList(): Promise<KillTask[]> {
   if (ddRemaining > 0 && !isSunday) {
     const ddUrgency = ddDailyTarget > 120 ? "RED" : ddDailyTarget > 80 ? "AMBER" : "GREEN";
 
-    // Phase 1 (through first single drop May 9): Morning block ONLY. Protect studio time.
-    // Phase 2 (May 9+): Multi-block DD schedule returns as waterfall is live.
-    const isPhase1 = now < new Date("2026-05-09T00:00:00");
+    // Phase 1 (through EP drop May 15): Morning block ONLY. Protect studio time.
+    // Phase 2 (May 15+): Multi-block DD schedule returns.
+    const isPhase1 = now < new Date("2026-05-15T00:00:00");
 
     // Morning sprint: 6:30-9 AM (~$50, 2.5hrs)
     const ddMornKey = `dd_morning:${today}`;
