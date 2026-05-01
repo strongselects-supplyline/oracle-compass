@@ -353,6 +353,7 @@ export async function deriveKillList(): Promise<KillTask[]> {
   // ── 2.7 EP BOMB + VAULT CONTENT SPRINT ──────────
   // Fires on EP release day and each vault single release day.
   const contentSprintDates: { date: string; track: string; isEP: boolean }[] = [
+    { date: '2026-05-08', track: 'East Side Love', isEP: false },
     { date: '2026-05-15', track: 'ALL LOVE EP', isEP: true },
     { date: '2026-05-30', track: 'Like I Did', isEP: false },
     { date: '2026-06-13', track: 'I Like Girls', isEP: false },
@@ -386,6 +387,33 @@ export async function deriveKillList(): Promise<KillTask[]> {
         pillar: "creative" as const,
         timeBlock: "content" as const,
         action: async () => { await setStoreValue(contentSprKey, true); },
+      });
+    }
+  }
+
+  // ── 2.75 FOLLOW CTA BLITZ (May 1–15) ──────────────────────────────
+  const followBlitzStart = new Date('2026-05-01T00:00:00');
+  const followBlitzEnd = new Date('2026-05-15T23:59:59');
+  const _blitzNow = new Date();
+  if (_blitzNow >= followBlitzStart && _blitzNow <= followBlitzEnd) {
+    const followBlitzKey = `follow_cta_blitz:${today}`;
+    const followBlitzDone = await getStoreValue<boolean>(followBlitzKey);
+    if (!followBlitzDone) {
+      tasks.push({
+        id: `follow-cta-blitz-${today}`,
+        title: 'FOLLOW CTA — Every post ends with "Follow on Spotify"',
+        subtitle: 'Followers 1.4K (+0.6% in 28d). Too low for Release Radar. Convert listeners → followers before EP.',
+        howTo: [
+          'Every IG post, story, and Reel today: end with "Follow me on Spotify — link in bio."',
+          'Every caption: close with one clear follow CTA.',
+          'DMs: if anyone engages, reply + ask them to follow on Spotify.',
+          'Do this every single day May 1–15. Release Radar is gated on follower velocity.',
+          'Tap ✓ when today\'s posts all have the follow CTA.',
+        ],
+        urgency: 'RED' as const,
+        pillar: 'creative' as const,
+        timeBlock: 'content' as const,
+        action: async () => { await setStoreValue(followBlitzKey, true); },
       });
     }
   }
@@ -1095,7 +1123,7 @@ export async function deriveKillList(): Promise<KillTask[]> {
         '  past.El noir Records',
         '  Hearing In Color 🎨🎶✨',
         '  Milwaukee → everywhere',
-        '  ALL LOVE — Waterfall Singles Out Now',
+        '  East Side Love — May 8 | ALL LOVE EP — May 15',
         '  [Spotify link or Linktree URL]',
         'The world first, not the job title.',
         'Tap ✓ when saved.',

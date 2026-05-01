@@ -143,8 +143,8 @@ const RELEASE_DEFAULTS: Release[] = [
     contentDeliverables: { ...DEFAULT_DELIVERABLES, coreDriveComplete: true, campaignKitGenerated: true, ascap: "pending", mlc: "pending", soundExchange: "complete", songtrust: "pending", notes: "Live Mar 13. EP track 1. Core Drive: 2,713 tracks / 38 playlists. ISRC exists (not recorded — pull from Amuse)." }
   },
   {
-    title: "East Side Love", uploadDate: "2026-05-07", releaseDate: "2026-05-15", status: "unreleased", type: "ep_track",
-    contentDeliverables: { ...DEFAULT_DELIVERABLES, coreDriveComplete: true, campaignKitGenerated: true, soundExchange: "complete", notes: "EP track 2. Previous wrong-file upload pulled down (no ISRC). Fresh upload May 7 as part of EP bomb. Core Drive: 1,221 tracks / 20 playlists." }
+    title: "East Side Love", uploadDate: "2026-04-30", releaseDate: "2026-05-08", status: "upload_pending", type: "waterfall_single",
+    contentDeliverables: { ...DEFAULT_DELIVERABLES, coreDriveComplete: true, campaignKitGenerated: true, soundExchange: "complete", notes: "ADVANCE SINGLE — uploaded Apr 30, releases May 8 (MSTR 2). Also EP track 2. Release Radar trigger #1 (May 8). EP carries it as track 2 on May 15. Cyanite: 104 BPM, C# minor, R&B 0.84, Sexy 0.85. Core Drive: 1,221 tracks / 20 playlists." }
   },
   {
     title: "Green Light", uploadDate: "2026-05-07", releaseDate: "2026-05-15", status: "unreleased", type: "ep_track",
@@ -160,7 +160,7 @@ const RELEASE_DEFAULTS: Release[] = [
   },
   {
     title: "ALL LOVE (EP)", uploadDate: "2026-05-07", releaseDate: "2026-05-15", status: "unreleased", type: "ep",
-    contentDeliverables: { ...DEFAULT_DELIVERABLES, notes: "5-track EP bomb: SEE ME → East Side Love → Green Light → Sweet Frustration → WANT U 2. All tracks upload May 7. Release May 15 (ICEMAN day). SEE ME ISRC from Mar 13 release carries over. All other tracks get new ISRCs. Needs: EP cover art, UPC, EP-level Spotify pitch." }
+    contentDeliverables: { ...DEFAULT_DELIVERABLES, notes: "5-track EP: Green Light → Sweet Frustration → SEE ME → East Side Love → WANT U 2. GL/SF open — 2.0 streams/listener means most bail after track 2, new tracks must hit first. ESL advance single May 8 (Release Radar #1). EP May 15 (Release Radar #2 via GL/SF/WU2). Editorial pitch: Sweet Frustration (KAYTRANADA lane, genre outlier). Needs: EP cover art (DEADLINE May 5), UPC, EP-level Spotify pitch." }
   },
   {
     title: "Like I Did", uploadDate: "2026-05-23", releaseDate: "2026-05-30", status: "unreleased", type: "vault_single",
@@ -188,7 +188,7 @@ const RELEASE_DEFAULTS: Release[] = [
 
 const RELEASES_KEY = "dynamic_releases";
 const RELEASES_VERSION_KEY = "releases_data_version";
-const RELEASE_DATA_VERSION = 35; // v35: Apr 29 — EP BOMB PIVOT. All 5 tracks upload May 7, release May 15. Post-EP vault waterfall starts May 30.
+const RELEASE_DATA_VERSION = 36; // v36: May 1 — STAGGER AMENDMENT. ESL advance single May 8, EP May 15. Tracklist reorder (GL/SF first). SF editorial pitch.
 
 // Read from IndexedDB, seeding defaults on first call or after version bump
 export async function getDynamicReleases(): Promise<Release[]> {
@@ -307,8 +307,7 @@ export async function shiftRelease(title: string, days: number): Promise<void> {
 // Apr 29 EP BOMB PIVOT: Full EP drops May 15. Upload May 7. Post-EP vault waterfall starts May 30.
 export const EP_RELEASE_DATE = "2026-05-15";
 export const EP_UPLOAD_DATE = "2026-05-07";
-/** @deprecated Removed. ESL is no longer a standalone single. */
-export const ESL_SINGLE_RELEASE_DATE = EP_RELEASE_DATE;
+export const ESL_SINGLE_RELEASE_DATE = "2026-05-08";
 export const ALBUM_RELEASE_DATE = EP_RELEASE_DATE;
 
 // How many days after EP drop we display "Honeymoon Phase" on the homepage instead of a countdown
