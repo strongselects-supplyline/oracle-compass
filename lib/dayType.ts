@@ -7,7 +7,7 @@
 //   Daily structure: DoorDash 6:30-9 AM → Studio 9:30 AM onward → Wheels down 8:30 PM
 //   No content, no planning, no system building. Production only.
 //
-// PHASE 2 — THE WATERFALL (May 9 onward):
+// PHASE 2 — VAULT WATERFALL (May 30 onward):
 //   Mon/Wed/Fri: STUDIO + SAUNA DAY
 //   Tue/Thu: BIZ DAY (registration, Amuse Insights, Gorilla Geo outreach)
 //   Sat: STUDIO DAY
@@ -22,13 +22,13 @@
 //   8:30 PM   → Wheels down
 //   10:30 PM  → Lights out
 //
-// PHASE 2 DAILY BLOCK MAP (May 9+):
+// PHASE 2 DAILY BLOCK MAP (May 30+):
 //   Same as before — multi-block DD schedule returns
 //
 // DD TARGET: $1,800/mo @ $25/hr net = ~72 hrs/mo
 // Phase 1: morning block only. Phase 2: 2-3 sprints/day.
 
-// Production sprint ends May 8. Phase 2 (WATERFALL) begins May 9 with ESL drop.
+// EP drops May 15. Phase 2 (VAULT WATERFALL) begins May 30 with Like I Did.
 const EP_SPRINT_END = new Date("2026-05-09T00:00:00");
 
 export type DayType = "STUDIO + SAUNA DAY" | "BIZ DAY" | "\u{1F6D1} SACRED \u2014 no building" | "STUDIO DAY";

@@ -70,7 +70,7 @@ const placeholderTracks = (prefix: string, count: number): Track[] =>
 export const PROJECTS: Project[] = [
     {
         id: 'all-love', name: 'ALL LOVE', color: '#6ee7b7', emoji: '🔥',
-        role: 'EP — 5-track waterfall. ESL May 9 → GL May 23 → SF Jun 6 → EP Jun 20. WU2 EP-exclusive.', trackCount: 5, targetDate: '2026-06-20',
+        role: 'EP — 5-track bomb May 15. Post-EP vault waterfall: LID May 30 → ILG Jun 13 → WI Jun 27 → JSS Jul 11 → RCN Jul 25.', trackCount: 5, targetDate: '2026-05-15',
         tracks: [
             // ── 5 ACTIVE EP TRACKS (waterfall singles + EP-exclusive) ──
             { title: 'SEE ME', bpm: 120, key: 'B min', rbConf: 0.68, sexy: 0.69, chill: 0.45, romantic: 0.46, happy: 0.50, uplifting: 0.46, energetic: 0.25, isrc: '', status: 'single_live', releaseDate: '2026-03-13', pitchDeadline: '2026-03-06', isLeadSingle: true, leadRank: 1 },
@@ -119,7 +119,7 @@ export const LOOSIES: Loosie[] = [
 
 export const TIMELINE_EVENTS: TimelineEvent[] = [
     { date: '2026-03-13', label: 'SEE ME', project: 'all-love', type: 'single' },
-    // WATERFALL PIVOT (Apr 28): Singles drip every 2 weeks → EP compilation at end.
+    // EP BOMB PIVOT (Apr 29): Full EP drops May 15. Vault singles waterfall starts May 30.
     { date: '2026-05-09', label: 'East Side Love', project: 'all-love', type: 'single' },
     { date: '2026-05-23', label: 'Green Light', project: 'all-love', type: 'single' },
     { date: '2026-06-06', label: 'Sweet Frustration', project: 'all-love', type: 'single' },

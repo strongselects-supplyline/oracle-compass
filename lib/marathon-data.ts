@@ -1,7 +1,7 @@
 // marathon-data.ts
 // Source of truth for the 43-Track, 14-Week Sprint
 // Updated March 24, 2026: Unified IndexedDB (uses OracleCompassDB via db.ts),
-// sprint weeks updated to waterfall cadence (ESL May 9 → GL May 23 → SF Jun 6 → EP Jun 20).
+// EP BOMB May 15. Vault waterfall: LID May 30 → ILG Jun 13 → WI Jun 27 → JSS Jul 11 → RCN Jul 25.
 
 import { getStoreValue, setStoreValue } from '@/lib/db';
 
@@ -124,7 +124,7 @@ export const SPRINT_WEEKS: SprintWeek[] = [
   {
     wk: 7, dates: 'Apr 19\u201325', startDate: '2026-04-19', endDate: '2026-04-25',
     phase: 'ALL_LOVE', phaseBadge: 'ALL LOVE', target: 'Production sprint + waterfall prep', total: 5,
-    keyEvents: ['WATERFALL PIVOT: singles drip every 2 weeks', 'East Side Love drops May 9 🔥', 'Green Light drops May 23', 'Sweet Frustration drops Jun 6', 'ALL LOVE EP (5 tracks) drops Jun 20'],
+    keyEvents: ['EP BOMB: ALL LOVE drops May 15 (ICEMAN day)', 'Like I Did May 30', 'I Like Girls Jun 13', 'Worth It Jun 27', 'Just Say So Jul 11', 'Reconnect Jul 25'],
   },
   {
     wk: 8, dates: 'Apr 26\u2013May 2', startDate: '2026-04-26', endDate: '2026-05-02',

@@ -79,7 +79,7 @@ function RoadmapPage() {
       <h2 className="scroll-h3">Key Dates</h2>
       <div className="scroll-table-wrap"><table className="scroll-table"><thead><tr><th>Date</th><th>Event</th></tr></thead><tbody>
         <tr><td>Mon Apr 21</td><td>Amuse upload (EP)</td></tr>
-        <tr><td style={{color:"#e05545",fontWeight:700}}>Fri May 9</td><td><strong>East Side Love drops</strong> (Waterfall Single 1)</td></tr>
+        <tr><td style={{color:"#e05545",fontWeight:700}}>Thu May 15</td><td><strong>ALL LOVE EP drops</strong> (5 tracks — ICEMAN day)</td></tr>
         <tr><td>Apr 26 – May 7</td><td>THE FLATLINE (lowest motivation)</td></tr>
         <tr><td>Tue Apr 28</td><td>Birthday (Flatline day 4 — keep personal)</td></tr>
         <tr><td>Thu May 7</td><td>Flatline ends (emotions return)</td></tr>
@@ -146,7 +146,7 @@ function WartimePage() {
       <h2 className="scroll-h3">Part V — The 90-Day Arc</h2>
       <div className="scroll-grid-3">
         <div className="scroll-grid-card" style={{borderTop:"3px solid #e05545"}}><div className="scroll-gc-title" style={{color:"#e05545"}}>Phase 1 · THE SPRINT</div><div className="scroll-gc-desc">Apr 6–May 8 (32 days). 4 actions/day. Hard time limits. Production mastering + waterfall prep.</div></div>
-        <div className="scroll-grid-card" style={{borderTop:"3px solid #3ecf71"}}><div className="scroll-gc-title" style={{color:"#3ecf71"}}>Phase 2 · THE WATERFALL</div><div className="scroll-gc-desc">May 9–Jun 20 (43 days). Singles drip biweekly. Content sprint per release. Rhythm IS the system.</div></div>
+        <div className="scroll-grid-card" style={{borderTop:"3px solid #3ecf71"}}><div className="scroll-gc-title" style={{color:"#3ecf71"}}>Phase 2 · VAULT WATERFALL</div><div className="scroll-gc-desc">May 30–Jul 25 (57 days). Vault singles biweekly. Content sprint per release. Rhythm IS the system.</div></div>
         <div className="scroll-grid-card" style={{borderTop:"3px solid #4d9de0"}}><div className="scroll-gc-title" style={{color:"#4d9de0"}}>Phase 3 · THE SUMMER</div><div className="scroll-gc-desc">Jun 1–Jul 5 (35 days). Data-informed launch. CREAM executes what ALL LOVE proved.</div></div>
       </div>
 
@@ -244,7 +244,7 @@ function WartimePage() {
           <li className="scroll-p"><strong>Distributor is Amuse.</strong> Do not change without explicit instruction.</li>
           <li className="scroll-p"><strong>Builder-avoidance loops are neurochemical, not laziness.</strong> When the urge to &quot;fix the system&quot; hits, open the DAW instead.</li>
           <li className="scroll-p"><strong>The 90-second exit signal is sacred.</strong> Morning Kill List scan = 90 seconds max, then close it.</li>
-          <li className="scroll-p"><strong>Phase 2 rhythm is protected.</strong> May 9 is a hard boundary. Do not let Phase 1 sprint energy bleed into the waterfall.</li>
+          <li className="scroll-p"><strong>Phase 2 rhythm is protected.</strong> May 30 is a hard boundary. EP compound phase (May 15-29) transitions cleanly into vault waterfall.</li>
           <li className="scroll-p"><strong>ALL LOVE Deluxe is data-dependent.</strong> Decide Apr 27 after reviewing EP first-week numbers.</li>
           <li className="scroll-p"><strong>Before any collaboration, splits in writing before production begins.</strong></li>
           <li className="scroll-p"><strong>Post what you want to be discovered as.</strong> The portfolio test applies to every post.</li>
