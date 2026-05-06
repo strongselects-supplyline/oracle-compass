@@ -12,7 +12,8 @@
 //   - Kill List CTA is auto-computed (red count drives urgency)
 
 import { useEffect, useState, useCallback } from "react";
-import { getDayType, isSacredDay, isStudioDay } from "@/lib/dayType";
+import { getDayType, isSacredDay, isStudioDay, isBizDay } from "@/lib/dayType";
+import { TRAINING_PROGRAM } from "@/lib/departments/health";
 import { getDailyLog, saveDailyLog, DailyLog } from "@/lib/db";
 import { getDynamicReleases, Release, EP_RELEASE_DATE, EP_HONEYMOON_DAYS } from "@/lib/releases";
 import { useCloudSync } from "@/lib/useCloudSync";
@@ -28,44 +29,48 @@ import Link from "next/link";
 type ProtocolStep = { icon: string; action: string; tab?: string };
 
 function getProtocolSteps(dayType: string): { tagline: string; steps: ProtocolStep[] } {
+  const dow = new Date().getDay();
+  const workout = TRAINING_PROGRAM.find(t => t.dayOfWeek.includes(dow));
+
+  const base: ProtocolStep[] = [
+    { icon: "🚗", action: "6:30 AM → DD Morning Sprint (90 min target)" },
+    { icon: "💧", action: "Wake: 16oz water + electrolytes" },
+    { icon: "☀️", action: "2-10 min morning sunlight (no sunglasses)" },
+    { icon: "🫁", action: "Breathwork: Nadi Shodhana or Box (5 min)" },
+  ];
+
+  if (workout) {
+    base.push({ icon: "🏋️", action: `${workout.title} (${workout.duration})` });
+  }
+
   if (dayType === "STUDIO + SAUNA DAY") return {
-    tagline: "Split-Block Studio + Thermal Reset + DD Sprints.",
+    tagline: "Hydrate → Sunlight → Breathe → Move → Create.",
     steps: [
-      { icon: "🚗", action: "6 AM → DD Morning Sprint (1hr)" },
-      { icon: "☀️", action: "7 AM → Sovereignty Stack → log below" },
+      ...base,
       { icon: "🎹", action: "10 AM → Studio Block 1 (mix/vocals)" },
-      { icon: "🚗", action: "12 PM → DD Midday Sprint (2hrs)" },
-      { icon: "🎤", action: "2 PM → Studio Block 2" },
       { icon: "🔥", action: "4 PM → Sauna (thermal reset)" },
-      { icon: "🚗", action: "5:30 PM → DD Evening Sprint (2-3hrs)" },
       { icon: "📱", action: "Post content from STUDIO queue", tab: "studio" },
     ],
   };
-  if (dayType === "STUDIO DAY") return {
-    tagline: "Split-Block Studio + DD Sprints. No Distractions.",
+  if (isStudioDay(dayType as any)) return {
+    tagline: "Hydrate → Sunlight → Breathe → Move → Create.",
     steps: [
-      { icon: "🚗", action: "6 AM → DD Morning Sprint (1hr)" },
-      { icon: "☀️", action: "7 AM → Sovereignty Stack → log below" },
+      ...base,
       { icon: "🎹", action: "10 AM → Studio Block 1 (mix/vocals)" },
-      { icon: "🚗", action: "12 PM → DD Midday Sprint (2hrs)" },
       { icon: "🎤", action: "2 PM → Studio Block 2" },
-      { icon: "🚗", action: "5:30 PM → DD Evening Sprint (2-3hrs)" },
       { icon: "📱", action: "Post content from STUDIO queue", tab: "studio" },
     ],
   };
-  if (dayType === "BIZ DAY") return {
-    tagline: "Pipeline moves + DD Sprints. ENGINE is Track 1.",
+  if (isBizDay(dayType as any)) return {
+    tagline: "Hydrate → Sunlight → Breathe → Move → Execute.",
     steps: [
-      { icon: "🚗", action: "6 AM → DD Morning Sprint (1hr)" },
-      { icon: "☀️", action: "7 AM → Sovereignty Stack → log below" },
-      { icon: "⚙️", action: "9 AM → ENGINE: pipeline tasks", tab: "engine" },
-      { icon: "📱", action: "9:30 AM → IG Community Sprint — 20 min", tab: "kill" },
-      { icon: "🚗", action: "12 PM → DD Midday Sprint (2hrs)" },
-      { icon: "📤", action: "3 PM → Push content to IG/TikTok/YouTube" },
-      { icon: "🚗", action: "5:30 PM → DD Evening Sprint (2-3hrs)" },
+      ...base,
+      { icon: "⚙️", action: "9 AM → Kill List: pipeline tasks", tab: "kill" },
+      { icon: "📱", action: "9:30 AM → Community Trace (15 min)" },
+      { icon: "📤", action: "3 PM → Content push (IG → TikTok → Shorts)" },
     ],
   };
-  return { tagline: "", steps: [] };
+  return { tagline: "Rest + recovery.", steps: base };
 }
 
 function HydrationSelector({ value, onChange }: { value: number | null; onChange: (v: number) => void }) {

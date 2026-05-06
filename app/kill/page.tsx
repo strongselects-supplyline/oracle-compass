@@ -33,6 +33,13 @@ const PILLAR_LABELS: Record<string, string> = {
   creative: "CREATIVE", business: "BUSINESS", body: "BODY", ops: "OPS",
 };
 
+const DEPT_LABELS: Record<string, { label: string; color: string }> = {
+  creative: { label: "CONTENT", color: "#FFB800" },
+  business: { label: "SOCIAL/BIZ", color: "#3B82F6" },
+  body: { label: "HEALTH", color: "#22c55e" },
+  ops: { label: "OPS", color: "#A855F7" },
+};
+
 // ── Needle vs Infrastructure classification ─────────────────────────
 const NEEDLE_PREFIXES = [
   "telemetry-", "session-", "content-sprint-", "instrumental-",
@@ -310,8 +317,8 @@ function TaskRow({
         </button>
 
         <div className="flex items-center gap-3 flex-shrink-0">
-          <span className="text-[9px] font-black tracking-[0.15em] px-2 py-1 rounded-md bg-white/5 border border-white/5" style={{ color: style.color }}>
-            {PILLAR_LABELS[task.pillar]}
+          <span className="text-[9px] font-black tracking-[0.15em] px-2 py-1 rounded-md bg-white/5 border border-white/5" style={{ color: DEPT_LABELS[task.pillar]?.color ?? style.color }}>
+            {DEPT_LABELS[task.pillar]?.label ?? PILLAR_LABELS[task.pillar]}
           </span>
           <button
             onClick={handleComplete}

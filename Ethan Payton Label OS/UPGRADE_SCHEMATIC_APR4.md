@@ -1,6 +1,10 @@
 # UPGRADE SCHEMATIC — April 4, 2026
 ## Sonnet Implementation Handoff
 
+> ⚠️ **DEPRECATED — DO NOT EXECUTE.** This schematic contains a critical error
+> (DistroKid migration that never happened). Distributor remains **Amuse**.
+> Any instruction in this file referencing DistroKid is incorrect. Ignore entirely.
+
 > Compiled by Opus after full audit of: Oracle Compass, Gorilla Geo, Core Drive Builder, Core Drive Engine, brain/, GLOBAL_BRAIN/, antigravity/, scratch/, Label OS/, and all Apr 1-4 handoff docs.
 >
 > **Instructions for Sonnet:** Execute these in priority order. Each item has the file path, what's wrong, and the exact fix. Skip nothing marked CRITICAL.

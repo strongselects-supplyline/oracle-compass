@@ -15,6 +15,11 @@ import { getTrackHoursSummaries } from "@/lib/studioLog";
 import { getLedgerStats, getUntouched } from "@/lib/audienceLedger";
 import { getWarRoomItems, markWarRoomItemDone } from "@/lib/warRoom";
 import { getVisualQueue, markVisualShotDone } from "@/lib/visualQueue";
+import { TRAINING_PROGRAM, MORNING_STACK } from "@/lib/departments/health";
+import { CONTENT_PILLARS } from "@/lib/departments/content";
+import { COMMUNITY_TRACE, UNFOLLOW_PROGRAM } from "@/lib/departments/social";
+import { BUDGET_RULES, CAMPAIGN_CALENDAR } from "@/lib/departments/marketing";
+import { SYNC_PIPELINE } from "@/lib/departments/revenue";
 
 // ── Types ────────────────────────────────────────────────────────────
 
@@ -118,6 +123,42 @@ export async function deriveKillList(): Promise<KillTask[]> {
       }
     } catch (_e) {
       // Silence if ledger unavailable
+    }
+  }
+
+  // ── SOCIAL DEPARTMENT: Community Trace (15 min, BIZ + STUDIO days) ──
+  if (isBizDay(dayType) || isStudioDay(dayType as any)) {
+    const traceKey = `community_trace:${today}`;
+    const traceDone = await getStoreValue<boolean>(traceKey);
+    if (!traceDone && hour >= 9 && hour < 20) {
+      tasks.push({
+        id: `community-trace-${today}`,
+        title: "Community Trace — 15 min (SET TIMER)",
+        subtitle: "Reply to comments, DM sharers, engage peers. Timer on.",
+        howTo: COMMUNITY_TRACE.actions,
+        urgency: hour >= 14 ? "AMBER" : "GREEN",
+        pillar: "business" as const,
+        timeBlock: "biz" as const,
+        action: async () => { await setStoreValue(traceKey, true); },
+      });
+    }
+  }
+
+  // ── SOCIAL DEPARTMENT: Sunday Unfollow Batch ──
+  if (new Date().getDay() === 0) {
+    const unfollowKey = `unfollow_batch:${today}`;
+    const unfollowDone = await getStoreValue<boolean>(unfollowKey);
+    if (!unfollowDone) {
+      tasks.push({
+        id: `unfollow-${today}`,
+        title: "Sunday Unfollow Batch (50 accounts)",
+        subtitle: `Ratio fix: ${UNFOLLOW_PROGRAM.currentRatio} → ${UNFOLLOW_PROGRAM.targetRatio}`,
+        howTo: UNFOLLOW_PROGRAM.instructions,
+        urgency: "GREEN" as const,
+        pillar: "business" as const,
+        timeBlock: "any" as const,
+        action: async () => { await setStoreValue(unfollowKey, true); },
+      });
     }
   }
 
@@ -418,6 +459,63 @@ export async function deriveKillList(): Promise<KillTask[]> {
     }
   }
 
+  // ── CONTENT DEPARTMENT: Daily pillar task (non-sprint, BIZ days) ──
+  const isSprintDay = contentSprintDates.some(d => {
+    const releaseDate = new Date(d.date);
+    const daysDiff = Math.ceil((now.getTime() - releaseDate.getTime()) / 86400000);
+    return daysDiff >= -7 && daysDiff <= 7;
+  });
+
+  if (!isSprintDay && isBizDay(dayType)) {
+    const contentDailyKey = `content_daily:${today}`;
+    const contentDone = await getStoreValue<boolean>(contentDailyKey);
+    if (!contentDone) {
+      const dow = new Date().getDay();
+      // Talk to 'Em on odd days (Mon/Wed/Fri), Studio Sauce on even (Tue/Thu)
+      const pillarToday = dow % 2 !== 0 ? CONTENT_PILLARS[0] : CONTENT_PILLARS[1];
+      tasks.push({
+        id: `content-daily-${today}`,
+        title: `Post: ${pillarToday.name} content`,
+        subtitle: pillarToday.description.slice(0, 80) + "...",
+        howTo: [
+          `Format options: ${pillarToday.format.join(", ")}`,
+          "Create NATIVE on Instagram first (no watermarks).",
+          "Cross-post to TikTok (2 min: re-upload, adjust caption).",
+          "Cross-post to YouTube Shorts (2 min: re-upload).",
+          "IG caption: 1-2 sentences + 3 niche hashtags for search only.",
+          "Hook in first 1.5 seconds. Sends-per-reach is the metric.",
+          "End with: 'Follow on Spotify — link in bio.'",
+        ],
+        urgency: "AMBER" as const,
+        pillar: "creative" as const,
+        timeBlock: "content" as const,
+        action: async () => { await setStoreValue(contentDailyKey, true); },
+        needle: true,
+      });
+    }
+  }
+
+  // ── CONTENT DEPARTMENT: Cross-post reminder (after 2 PM) ──
+  const crossPostKey = `cross_post:${today}`;
+  const crossPostDone = await getStoreValue<boolean>(crossPostKey);
+  if (!crossPostDone && hour >= 14) {
+    tasks.push({
+      id: `cross-post-${today}`,
+      title: "Cross-post today's content → TikTok + Shorts",
+      subtitle: "2 min each. Same video, no watermark. TikTok = discovery. Shorts = long-tail.",
+      howTo: [
+        "Open today's IG Reel in your camera roll.",
+        "TikTok: Upload → adjust caption → add 2-3 tags → post.",
+        "YouTube Shorts: Upload → title (searchable) → post.",
+        "Total time: 4 minutes. Do not skip — TikTok drives discovery.",
+      ],
+      urgency: "AMBER" as const,
+      pillar: "creative" as const,
+      timeBlock: "content" as const,
+      action: async () => { await setStoreValue(crossPostKey, true); },
+    });
+  }
+
   // ── 2.8 WAR ROOM REBUILD — Procurement tasks from Blueprint ────────
   // Derives from lib/warRoom.ts seed data. Items are RED (wk1) / AMBER (wk2) / GREEN (wk3).
   // Source: past-el-war-room.html (Apr 20, 2026).
@@ -482,113 +580,16 @@ export async function deriveKillList(): Promise<KillTask[]> {
       },
     });
   }
+  // ── HEALTH DEPARTMENT: Training (from lib/departments/health.ts) ──
   if (!dailyLog.movement && hour < 16) {
-    const dow = new Date().getDay(); // 0=Sun, 1=Mon, 2=Tue...
-
-    // Day-specific training program — see docs/training_program.md
-    const workoutByDay: Record<number, { id: string; title: string; subtitle: string; howTo: string[] }> = {
-      1: { // Monday — Push/Core Calisthenics
-        id: "grind-calisthenics-push",
-        title: "Calisthenics — Push/Core (25 min)",
-        subtitle: "Upper body strength + core stability. Stage foundation.",
-        howTo: [
-          "Warm-up (3 min): arm circles, shoulder dislocates, cat-cow, high knees.",
-          "Main work — 3 rounds, 45 sec rest between exercises:",
-          "  Push-ups: 12–15 reps",
-          "  Pike push-ups: 8–10 reps",
-          "  Dips (chair/counter): 8–12 reps",
-          "  Hollow body hold: 30 sec",
-          "  Plank to push-up: 8 each arm",
-          "  Mountain climbers: 20 total",
-          "Finisher: max push-ups in 60 sec (track the number weekly).",
-          "Full program details: docs/training_program.md",
-          "Tap ✓ when done.",
-        ],
-      },
-      2: { // Tuesday — Run (BIZ DAY)
-        id: "grind-run",
-        title: "Run — 30 min easy pace",
-        subtitle: "Cardio base. Conversational pace — if you can't talk, slow down.",
-        howTo: [
-          "Pre-run: banana or toast + PB, 20 min before. Don't run fasted.",
-          "Pace target: 11:30–12:30/mi. If you can only mouth-breathe, too fast.",
-          "Week 1–2: run 3 min / walk 2 min, repeat x6.",
-          "Week 3–4: run 5 min / walk 1 min, repeat x5.",
-          "Week 5+: 30 min continuous.",
-          "Post-run: +16 oz water. Add carbs to breakfast (oatmeal, rice).",
-          "Don't record vocals for 30+ min after — let breathing normalize.",
-          "Tap ✓ when done.",
-        ],
-      },
-      3: { // Wednesday — Dance (STUDIO DAY)
-        id: "grind-dance-floor",
-        title: "Dance — Floor Work (20 min)",
-        subtitle: "Movement vocabulary to your own tracks. Not choreo — YOUR body language.",
-        howTo: [
-          "Pick one track from the EP. Play it 4 times:",
-          "  Listen 1: Stand still. Feel where your body wants to move.",
-          "  Listen 2: Move freely. Eyes closed. Find what feels natural.",
-          "  Listen 3: Mirror or phone camera. Repeat what felt good. Add intention.",
-          "  Listen 4: Film it. Full run. Reference + content.",
-          "Focus: isolations (chest/shoulders/hips), weight transfer, hand vocabulary.",
-          "Key question: what does stillness vs movement look like in each section?",
-          "This is stage rehearsal AND Content Factory material.",
-          "Tap ✓ when done.",
-        ],
-      },
-      4: { // Thursday — Run (BIZ DAY)
-        id: "grind-run",
-        title: "Run — 30 min easy pace",
-        subtitle: "Cardio base. Same progression as Tuesday.",
-        howTo: [
-          "Pre-run: banana or toast + PB, 20 min before. Don't run fasted.",
-          "Pace target: 11:30–12:30/mi. Conversational — full sentences.",
-          "Follow the same week progression as Tuesday.",
-          "Post-run: +16 oz water. Add carbs to breakfast.",
-          "Tap ✓ when done.",
-        ],
-      },
-      5: { // Friday — Pull/Legs Calisthenics
-        id: "grind-calisthenics-pull",
-        title: "Calisthenics — Pull/Legs (25 min)",
-        subtitle: "Lower body + posterior chain. Stage movement power.",
-        howTo: [
-          "Warm-up (3 min): bodyweight squats, hip circles, lunge with twist, jumping jacks.",
-          "Main work — 3 rounds, 45 sec rest between exercises:",
-          "  Bodyweight squats: 15–20 reps",
-          "  Lunges: 10 each leg",
-          "  Glute bridges: 15 reps",
-          "  Inverted rows (table edge): 8–12 reps",
-          "  Pull-ups if bar available: 5–8 (or negatives)",
-          "  Calf raises: 20 reps",
-          "Core finisher: L-sit 3x15sec, side plank 30 sec each, flutter kicks 30 sec.",
-          "Sauna after if available — recovery day.",
-          "Tap ✓ when done.",
-        ],
-      },
-      6: { // Saturday — Performance Run (Dance)
-        id: "grind-dance-performance",
-        title: "Dance — Performance Run (20–30 min)",
-        subtitle: "Full song run-throughs with vocals. Film everything.",
-        howTo: [
-          "Pick 2–3 songs from the setlist.",
-          "Full performance: half-voice vocals + movement + transitions.",
-          "Film everything — this is stage rehearsal AND content.",
-          "Watch playback once. Note: one thing to KEEP, one thing to CHANGE.",
-          "This is where you build the performer, not just the musician.",
-          "Tap ✓ when done.",
-        ],
-      },
-    };
-
-    // Sunday (0) = rest day, no movement task
-    const workout = workoutByDay[dow];
-    if (workout) {
+    const dow = new Date().getDay();
+    const todaysWorkout = TRAINING_PROGRAM.find(t => t.dayOfWeek.includes(dow));
+    if (todaysWorkout) {
       tasks.push({
-        id: workout.id,
-        title: workout.title,
-        subtitle: workout.subtitle,
-        howTo: workout.howTo,
+        id: todaysWorkout.id,
+        title: todaysWorkout.title,
+        subtitle: todaysWorkout.subtitle,
+        howTo: todaysWorkout.howTo,
         urgency: "GREEN" as const,
         pillar: "body" as const,
         timeBlock: "any" as const,
@@ -597,6 +598,25 @@ export async function deriveKillList(): Promise<KillTask[]> {
           log.movement = true;
           await saveDailyLog(log);
         },
+      });
+    }
+  }
+
+  // ── HEALTH DEPARTMENT: Morning Stack (from lib/departments/health.ts) ──
+  for (const step of MORNING_STACK) {
+    const stepKey = `health_morning_${step.id}:${today}`;
+    const stepDone = await getStoreValue<boolean>(stepKey);
+    if (!stepDone && hour < 14) {
+      tasks.push({
+        id: step.id,
+        title: step.title,
+        subtitle: step.subtitle,
+        howTo: step.howTo,
+        urgency: hour >= step.urgencyEscalation ? "RED" : hour >= step.triggerHour ? "AMBER" : "GREEN",
+        pillar: "body" as const,
+        timeBlock: "any" as const,
+        action: async () => { await setStoreValue(stepKey, true); },
+        needle: hour >= step.triggerHour,
       });
     }
   }
@@ -1535,6 +1555,59 @@ export async function deriveKillList(): Promise<KillTask[]> {
           action: async () => {
             await setStoreValue(velAckKey, true);
           },
+        });
+      }
+    }
+  }
+
+  // ── MARKETING DEPARTMENT: Campaign calendar check ──
+  const todayCampaign = CAMPAIGN_CALENDAR.find(c => c.date === today);
+  if (todayCampaign) {
+    const campaignKey = `campaign_action:${today}`;
+    const campaignDone = await getStoreValue<boolean>(campaignKey);
+    if (!campaignDone) {
+      tasks.push({
+        id: `campaign-${today}`,
+        title: `MARKETING: ${todayCampaign.track} campaign actions`,
+        subtitle: todayCampaign.actions.join(" · "),
+        howTo: [
+          `Track: ${todayCampaign.track}`,
+          ...todayCampaign.actions.map(a => `→ ${a}`),
+          `Budget ceiling: $${BUDGET_RULES.monthlyCap}/month. Kill at $${BUDGET_RULES.killThreshold.costPerStream} CPS.`,
+          "NEVER spend without organic proof. Check sends/reach first.",
+        ],
+        urgency: "RED" as const,
+        pillar: "business" as const,
+        timeBlock: "biz" as const,
+        action: async () => { await setStoreValue(campaignKey, true); },
+        needle: true,
+      });
+    }
+  }
+
+  // ── REVENUE DEPARTMENT: Sync pipeline (Mondays post-EP, once per week) ──
+  const epReleased = now >= new Date('2026-05-15T00:00:00');
+  const isMonday = new Date().getDay() === 1;
+  if (epReleased && isMonday && isBizDay(dayType)) {
+    const syncKey = `sync_check:${weekKey}`;
+    const syncChecked = await getStoreValue<boolean>(syncKey);
+    if (!syncChecked) {
+      const nextStep = SYNC_PIPELINE.checklist.find(c => !c.done);
+      if (nextStep) {
+        tasks.push({
+          id: `sync-${nextStep.id}`,
+          title: `SYNC: ${nextStep.task}`,
+          subtitle: "Sync licensing = #1 revenue priority post-EP. One placement = 100K streams.",
+          howTo: [
+            `This week's sync task: ${nextStep.task}`,
+            "Single TV placement ($500-$5,000) = 100K-1M stream equivalent.",
+            "Do ONE task per week. Consistency > intensity.",
+            "Tap ✓ when done.",
+          ],
+          urgency: "AMBER" as const,
+          pillar: "business" as const,
+          timeBlock: "biz" as const,
+          action: async () => { await setStoreValue(syncKey, true); },
         });
       }
     }

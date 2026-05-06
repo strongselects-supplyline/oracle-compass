@@ -9,14 +9,9 @@ import { useTheme } from "@/components/ThemeProvider";
 // War Room grid items — reference only, no notification dots
 const WAR_ROOM_ITEMS = [
   { name: "Studio",    path: "/studio",    icon: "🎤", desc: "Waterfall · Cycles · Sessions" },
-  { name: "Velocity",  path: "/velocity",  icon: "📈", desc: "Streaming momentum" },
-  { name: "Sonic",     path: "/sonic",     icon: "🎧", desc: "Identity data" },
   { name: "Label",     path: "/label",     icon: "🏷️", desc: "Release ops" },
   { name: "Planner",   path: "/planner",   icon: "📋", desc: "Marathon · Lanes · Mirror" },
-  { name: "Engine",    path: "/engine",    icon: "⚙️", desc: "Biz touches · Content" },
-  { name: "Grind",     path: "/grind",     icon: "💪", desc: "Recovery · Conditioning" },
   { name: "Brain",     path: "/brain",     icon: "🧠", desc: "Scrolls · Sovereignty" },
-  { name: "Geo",       path: "/geo",       icon: "🗺️", desc: "Gorilla Geo map" },
   { name: "Analytics", path: "/analytics", icon: "📊", desc: "S4A monthly intake" },
   { name: "Doctrine",  path: "/doctrine",  icon: "📚", desc: "Sovereign Scroll" },
   { name: "Settings",  path: "/settings",  icon: "⚙️", desc: "Theme · Data · Export" },
@@ -41,7 +36,8 @@ export default function BottomNav() {
   }, []);
 
   // Which nav group is "active" — War Room pages count as War Room active
-  const isWarRoomPage = WAR_ROOM_ITEMS.some(n => pathname === n.path || (n.name === "Studio" && pathname === "/sonic"));
+  const isWarRoomPage = WAR_ROOM_ITEMS.some(n => pathname === n.path);
+  const isLog = pathname === "/grind";
   const isToday = pathname === "/";
   const isExecute = pathname === "/kill";
 
@@ -140,6 +136,12 @@ export default function BottomNav() {
             )}
           </div>
           <span>EXECUTE</span>
+        </Link>
+
+        {/* LOG */}
+        <Link href="/grind" className={`nav-item ${isLog ? "active" : ""}`} style={{ flex: 1 }}>
+          <div className="text-2xl">📓</div>
+          <span>LOG</span>
         </Link>
 
         {/* WAR ROOM */}
