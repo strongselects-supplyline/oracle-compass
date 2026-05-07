@@ -7,10 +7,7 @@ import path from "path";
 
 export const runtime = "nodejs";
 
-const CATALOG_PATH = path.resolve(
-  process.cwd(),
-  "../../brain/catalog_intelligence_matrix.json"
-);
+const CATALOG_PATH = path.resolve(process.cwd(), "data/catalog.json");
 
 export type LiveTrack = {
   track_id: string;
@@ -37,20 +34,22 @@ export async function GET() {
     const catalog = JSON.parse(raw);
 
     const liveTracks: LiveTrack[] = catalog.catalog
-      .filter((t: any) => t.status === "live" && t.entity_type !== "ep")
+      .filter((t: any) => t.status === "live")
       .map((t: any) => ({
         track_id: t.track_id,
         title: t.title,
         release_date: t.release_date,
         spotify_uri: t.metadata?.spotify_uri ?? null,
-        current_popularity: t.streaming?.spotify_popularity ?? null,
-        current_streams_cumulative: t.streaming?.streams_cumulative ?? null,
+        current_popularity: null,
+        current_streams_cumulative: t.streaming?.spotify_alltime ?? t.streaming?.streams_cumulative ?? null,
         current_saves: t.streaming?.saves ?? null,
         current_save_rate: t.streaming?.save_rate_percent ?? null,
-        current_top_cities: t.streaming?.top_cities ?? [],
-        current_playlist_adds: t.streaming?.playlist_adds ?? null,
+        current_top_cities: (t.geographic?.top_cities ?? t.streaming?.top_cities ?? []).map((c: any) =>
+          typeof c === "string" ? c : c.city ?? ""
+        ).filter(Boolean),
+        current_playlist_adds: t.streaming?.playlist_count ?? t.streaming?.playlist_adds ?? null,
         current_discover_weekly: t.streaming?.discover_weekly ?? false,
-        last_s4a_date: t.streaming?.spotify_for_artists_date ?? null,
+        last_s4a_date: t.streaming?.snapshot_date ?? t.streaming?.spotify_for_artists_date ?? null,
       }));
 
     return NextResponse.json({ tracks: liveTracks });

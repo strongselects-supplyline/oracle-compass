@@ -23,6 +23,10 @@ const SECTIONS = [
   { cat: "Business", items: [
     { slug: "spotify-ads", icon: "📈", title: "Spotify Ads Mastery", desc: "Comprehensive ad strategy with real CPMs, targeting, and scripts." },
   ]},
+  { cat: "Reference", items: [
+    { slug: "visual-bible", icon: "🎬", title: "Visual Bible", desc: "Cinematic identity, color palette, aesthetic rules, and shot language." },
+    { slug: "war-room",     icon: "⚔️", title: "War Room",     desc: "Active tools, systems, and operational stack for the current sprint." },
+  ]},
 ];
 
 export default function DoctrinePage() {

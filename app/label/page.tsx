@@ -15,11 +15,10 @@ import AgentStatus from "@/components/label/AgentStatus";
 import ComplianceBoard from "@/components/label/ComplianceBoard";
 import CreativeDept from "@/components/label/CreativeDept";
 import ContentDept from "@/components/label/ContentDept";
-import ANRPanel from "@/components/label/ANRPanel";
 import SubmissionLog from "@/components/label/SubmissionLog";
 import VaultManager from "@/components/label/VaultManager";
 
-type Tab = "rollout" | "content" | "subs" | "vault" | "compliance" | "creative" | "anr" | "assets";
+type Tab = "rollout" | "content" | "subs" | "vault" | "compliance" | "creative" | "assets";
 
 const ALL_TABS: { id: Tab; label: string; emoji: string; primary: boolean }[] = [
   { id: "content",    label: "Content",  emoji: "🎬", primary: true },
@@ -28,7 +27,6 @@ const ALL_TABS: { id: Tab; label: string; emoji: string; primary: boolean }[] = 
   { id: "subs",       label: "Subs",     emoji: "📋", primary: false },
   { id: "vault",      label: "Copy",     emoji: "✍️", primary: false },
   { id: "creative",   label: "Creative", emoji: "🎨", primary: false },
-  { id: "anr",        label: "A&R",      emoji: "🎧", primary: false },
   { id: "assets",     label: "Vault",    emoji: "📦", primary: false },
 ];
 
@@ -154,7 +152,6 @@ export default function LabelPage() {
                       {activeTab === "vault"      && <CopyVault trackTitle={s.title} />}
                       {activeTab === "compliance" && <ComplianceBoard />}
                       {activeTab === "creative"   && <CreativeDept trackTitle={s.title} />}
-                      {activeTab === "anr"        && <ANRPanel trackTitle={s.title} />}
                       {activeTab === "assets"     && <VaultManager trackTitle={s.title} />}
                     </div>
                   </div>
