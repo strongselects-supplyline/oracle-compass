@@ -2,9 +2,10 @@
 
 // app/analytics/page.tsx — S4A Monthly Analytics Intake
 // Open → fill in Spotify for Artists numbers track by track → Save.
-// Writes directly to catalog_intelligence_matrix.json. Zero tokens.
+// Saves to IndexedDB (client-side) — no server write needed.
 
 import { useEffect, useState } from "react";
+import { setStoreValue } from "@/lib/db";
 
 type LiveTrack = {
   track_id: string;
@@ -112,37 +113,49 @@ export default function AnalyticsPage() {
     setResult(null);
     setError(null);
 
-    const payload = {
-      date,
-      tracks: Object.fromEntries(
-        Object.entries(forms).map(([id, f]) => [
-          id,
-          {
-            streams_7day: f.streams_7day !== "" ? Number(f.streams_7day) : null,
-            streams_cumulative: f.streams_cumulative !== "" ? Number(f.streams_cumulative) : null,
-            saves: f.saves !== "" ? Number(f.saves) : null,
-            save_rate_percent: f.save_rate_percent !== "" ? Number(f.save_rate_percent) : null,
-            city_1: f.city_1,
-            city_2: f.city_2,
-            city_3: f.city_3,
-            playlist_adds: f.playlist_adds !== "" ? Number(f.playlist_adds) : null,
-            discover_weekly: f.discover_weekly,
-            notes: f.notes,
-          },
-        ])
-      ),
-    };
-
     try {
-      const res = await fetch("/api/analytics/intake", {
-        method: "POST",
-        headers: { "Content-Type": "application/json" },
-        body: JSON.stringify(payload),
+      const flags: { strong: string[]; weak: string[]; dw: string[] } = { strong: [], weak: [], dw: [] };
+      const cityCounts: Record<string, number> = {};
+      let updatedCount = 0;
+
+      for (const track of tracks) {
+        const f = forms[track.track_id];
+        if (!f || !hasData(f)) continue;
+
+        const entry = {
+          date,
+          streams_7day: f.streams_7day !== "" ? Number(f.streams_7day) : null,
+          streams_cumulative: f.streams_cumulative !== "" ? Number(f.streams_cumulative) : null,
+          saves: f.saves !== "" ? Number(f.saves) : null,
+          save_rate_percent: f.save_rate_percent !== "" ? Number(f.save_rate_percent) : null,
+          top_cities: [f.city_1, f.city_2, f.city_3].filter(Boolean),
+          playlist_adds: f.playlist_adds !== "" ? Number(f.playlist_adds) : null,
+          discover_weekly: f.discover_weekly,
+          notes: f.notes,
+        };
+
+        await setStoreValue(`s4a_intake:${track.track_id}`, entry);
+
+        const sr = entry.save_rate_percent;
+        if (sr !== null) {
+          if (sr > 4) flags.strong.push(track.title);
+          if (sr < 2) flags.weak.push(track.title);
+        }
+        if (f.discover_weekly) flags.dw.push(track.title);
+        entry.top_cities.forEach(c => { cityCounts[c] = (cityCounts[c] || 0) + 1; });
+        updatedCount++;
+      }
+
+      const topCity = Object.entries(cityCounts).sort((a, b) => b[1] - a[1])[0]?.[0] ?? null;
+
+      setResult({
+        success: true,
+        updated: updatedCount,
+        flags,
+        top_city: topCity,
+        message: `${updatedCount} track${updatedCount !== 1 ? "s" : ""} saved`,
       });
-      const data = await res.json();
-      if (!res.ok) throw new Error(data.error || "Save failed");
-      setResult(data);
-      // Reset forms on success
+
       const reset: Record<string, TrackForm> = {};
       tracks.forEach(t => { reset[t.track_id] = emptyForm(); });
       setForms(reset);
