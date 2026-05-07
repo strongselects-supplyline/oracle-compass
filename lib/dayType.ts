@@ -1,7 +1,7 @@
 // lib/dayType.ts
 // Core gating logic for Oracle Compass
 //
-// PHASE 1 — PRODUCTION SPRINT (through May 8, 2026):
+// PHASE 1 — PRODUCTION SPRINT (through May 11, 2026):
 //   Mon-Sat: STUDIO DAY — single-mode days, no multitasking
 //   Sunday: SACRED
 //   Daily structure: DoorDash 6:30-9 AM → Studio 9:30 AM onward → Wheels down 8:30 PM
@@ -15,7 +15,7 @@
 //
 // Switch is automatic — no deploy needed. Triggered by WATERFALL_START date.
 //
-// PHASE 1 DAILY BLOCK MAP (through May 8):
+// PHASE 1 DAILY BLOCK MAP (through May 11):
 //   6:30-9 AM → DoorDash (morning surge only)
 //   9:30 AM   → S3 Check-in + DAW open
 //   9:35 AM+  → Studio (one track, closest to done)
@@ -29,7 +29,7 @@
 // Phase 1: morning block only. Phase 2: 2-3 sprints/day.
 
 // EP drops May 15. Phase 2 (VAULT WATERFALL) begins May 30 with Like I Did.
-const EP_SPRINT_END = new Date("2026-05-09T00:00:00");
+const EP_SPRINT_END = new Date("2026-05-12T00:00:00");
 
 export type DayType = "STUDIO + SAUNA DAY" | "BIZ DAY" | "\u{1F6D1} SACRED \u2014 no building" | "STUDIO DAY";
 
@@ -41,7 +41,7 @@ export function getDayType(date: Date = new Date()): DayType {
         return "\u{1F6D1} SACRED \u2014 no building";
     }
 
-    // Phase 1 (through May 8): every day is a studio day. No BIZ days. Production only.
+    // Phase 1 (through May 11): every day is a studio day. No BIZ days. Production only.
     if (!isPostEP) {
         return "STUDIO DAY";
     }

@@ -1,0 +1,8 @@
+node_modules/
+*.lock
+package-lock.json
+.next/
+dist/
+build/
+.cache/
+.DS_Store

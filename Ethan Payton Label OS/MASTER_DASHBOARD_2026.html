@@ -1,0 +1,402 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Sovereign Master Dashboard 2026 | past.El</title>
+    <style>
+        :root {
+            --bg: #0A0A0A;
+            --surface: #171717;
+            --surface-hover: #262626;
+            --text-primary: #FFFFFF;
+            --text-secondary: #A3A3A3;
+            --border: #333333;
+            
+            --health: #22c55e;
+            --content: #eab308;
+            --social: #a855f7;
+            --marketing: #3b82f6;
+            --revenue: #f59e0b;
+            --alert: #ef4444;
+        }
+
+        * { box-sizing: border-box; margin: 0; padding: 0; }
+
+        body {
+            background-color: var(--bg);
+            color: var(--text-primary);
+            font-family: -apple-system, BlinkMacSystemFont, "Segoe UI", Roboto, Helvetica, Arial, sans-serif;
+            line-height: 1.5;
+            padding: 1.5rem;
+            max-width: 1400px;
+            margin: 0 auto;
+        }
+
+        h1, h2, h3 { text-transform: uppercase; letter-spacing: -0.02em; }
+        h1 { font-size: 2rem; font-weight: 800; margin-bottom: 0.25rem; }
+        .subtitle { color: var(--text-secondary); font-size: 0.85rem; margin-bottom: 2rem; letter-spacing: 0.05em; text-transform: uppercase; }
+        h2 { font-size: 1.25rem; font-weight: 800; margin-bottom: 1rem; border-bottom: 1px solid var(--border); padding-bottom: 0.5rem; color: #fff; }
+        h3 { font-size: 1rem; font-weight: 700; margin-bottom: 0.5rem; }
+
+        /* GRID SYSTEM */
+        .dashboard-grid {
+            display: grid;
+            grid-template-columns: 1fr;
+            gap: 1.5rem;
+            margin-bottom: 2rem;
+        }
+
+        @media (min-width: 1024px) {
+            .dashboard-grid.cols-3 { grid-template-columns: repeat(3, 1fr); }
+            .dashboard-grid.cols-2 { grid-template-columns: 2fr 1fr; }
+            .dashboard-grid.cols-4 { grid-template-columns: repeat(4, 1fr); }
+        }
+
+        .panel {
+            background: var(--surface);
+            border: 1px solid var(--border);
+            border-radius: 8px;
+            padding: 1.25rem;
+        }
+
+        /* METRICS */
+        .metrics-grid {
+            display: grid;
+            grid-template-columns: repeat(2, 1fr);
+            gap: 1rem;
+        }
+        @media (min-width: 768px) { .metrics-grid { grid-template-columns: repeat(4, 1fr); } }
+        
+        .metric-card {
+            background: rgba(255,255,255,0.03);
+            border: 1px solid var(--border);
+            padding: 1rem;
+            border-radius: 6px;
+            text-align: center;
+        }
+        .metric-value { font-size: 1.5rem; font-weight: 800; color: var(--text-primary); }
+        .metric-label { font-size: 0.7rem; color: var(--text-secondary); text-transform: uppercase; letter-spacing: 0.05em; margin-top: 0.25rem; }
+        .metric-target { font-size: 0.65rem; color: var(--health); margin-top: 0.25rem; }
+
+        /* DEPARTMENTS */
+        .dept-card { border-top: 3px solid; height: 100%; }
+        .dept-card.health { border-color: var(--health); }
+        .dept-card.content { border-color: var(--content); }
+        .dept-card.social { border-color: var(--social); }
+        .dept-card.marketing { border-color: var(--marketing); }
+        .dept-card.revenue { border-color: var(--revenue); }
+
+        .dept-card h3 { display: flex; align-items: center; justify-content: space-between; }
+        .dept-card.health h3 { color: var(--health); }
+        .dept-card.content h3 { color: var(--content); }
+        .dept-card.social h3 { color: var(--social); }
+        .dept-card.marketing h3 { color: var(--marketing); }
+        .dept-card.revenue h3 { color: var(--revenue); }
+
+        ul.tight-list { list-style: none; }
+        ul.tight-list li { font-size: 0.85rem; margin-bottom: 0.5rem; padding-left: 1rem; position: relative; color: #ddd; }
+        ul.tight-list li::before { content: '→'; position: absolute; left: 0; color: var(--text-secondary); }
+        ul.tight-list strong { color: var(--text-primary); }
+
+        /* TIMELINE */
+        .timeline-scroll {
+            display: flex;
+            gap: 1rem;
+            overflow-x: auto;
+            padding-bottom: 0.5rem;
+            scrollbar-width: thin;
+            scrollbar-color: var(--border) var(--surface);
+        }
+        .time-node {
+            min-width: 120px;
+            background: rgba(255,255,255,0.03);
+            border: 1px solid var(--border);
+            padding: 0.75rem;
+            border-radius: 6px;
+        }
+        .time-node.active { border-color: var(--content); background: rgba(234, 179, 8, 0.1); }
+        .time-node.past { opacity: 0.5; }
+        .node-date { font-size: 0.7rem; color: var(--text-secondary); text-transform: uppercase; }
+        .node-event { font-size: 0.9rem; font-weight: 700; margin-top: 0.25rem; }
+
+        /* EXECUTION ENGINE */
+        .mode-card {
+            border-left: 3px solid var(--text-secondary);
+            padding-left: 1rem;
+            margin-bottom: 1rem;
+        }
+        .mode-card h4 { font-size: 0.9rem; text-transform: uppercase; margin-bottom: 0.25rem; color: var(--text-primary); }
+        .mode-card p { font-size: 0.8rem; color: var(--text-secondary); }
+
+        /* SYSTEMS STACK */
+        .system-item {
+            display: flex;
+            justify-content: space-between;
+            align-items: center;
+            padding: 0.75rem 0;
+            border-bottom: 1px solid var(--border);
+        }
+        .system-item:last-child { border-bottom: none; }
+        .sys-name { font-weight: 600; font-size: 0.85rem; }
+        .sys-status { font-size: 0.7rem; padding: 0.2rem 0.5rem; border-radius: 4px; background: rgba(34, 197, 94, 0.2); color: var(--health); text-transform: uppercase; }
+
+        /* DETAILS/ACCORDION */
+        details {
+            background: rgba(255,255,255,0.03);
+            border: 1px solid var(--border);
+            border-radius: 6px;
+            margin-bottom: 0.5rem;
+        }
+        summary {
+            padding: 1rem;
+            font-weight: 600;
+            font-size: 0.9rem;
+            cursor: pointer;
+            text-transform: uppercase;
+        }
+        summary:hover { background: rgba(255,255,255,0.05); }
+        .details-content {
+            padding: 1rem;
+            border-top: 1px solid var(--border);
+            font-size: 0.85rem;
+            color: #ccc;
+        }
+
+        /* TABLES */
+        table { width: 100%; border-collapse: collapse; font-size: 0.8rem; }
+        th, td { padding: 0.5rem; text-align: left; border-bottom: 1px solid var(--border); }
+        th { color: var(--text-secondary); text-transform: uppercase; font-weight: 600; }
+        .status-vault { color: var(--marketing); }
+        .status-rec { color: var(--revenue); }
+        .status-live { color: var(--health); }
+    </style>
+</head>
+<body>
+
+    <h1>Label OS / Master Schematic</h1>
+    <div class="subtitle">Replacing 7 legacy docs → 1 operational truth. Updated: May 6, 2026.</div>
+
+    <!-- NORTH STAR METRICS -->
+    <section class="panel">
+        <h2>North Star Targets (Jul 17 Review)</h2>
+        <div class="metrics-grid">
+            <div class="metric-card">
+                <div class="metric-value">2,800</div>
+                <div class="metric-label">Spotify Followers</div>
+                <div class="metric-target">Current: 1,400</div>
+            </div>
+            <div class="metric-card">
+                <div class="metric-value">4.0%</div>
+                <div class="metric-label">Save Rate (Top Track)</div>
+                <div class="metric-target">Target: >3% average</div>
+            </div>
+            <div class="metric-card">
+                <div class="metric-value">4</div>
+                <div class="metric-label">Release Radar Triggers</div>
+                <div class="metric-target">EP + LID + ILG + WI</div>
+            </div>
+            <div class="metric-card">
+                <div class="metric-value">$1,800</div>
+                <div class="metric-label">Monthly Floor</div>
+                <div class="metric-target">DoorDash Cap</div>
+            </div>
+        </div>
+    </section>
+
+    <!-- RELEASE CALENDAR & TIMELINE -->
+    <section class="panel">
+        <h2>Release Pipeline & Timeline</h2>
+        <div class="timeline-scroll">
+            <div class="time-node active">
+                <div class="node-date">May 9</div>
+                <div class="node-event">ESL Advance</div>
+            </div>
+            <div class="time-node active" style="border-color: var(--health)">
+                <div class="node-date">May 15</div>
+                <div class="node-event">ALL LOVE EP Bomb</div>
+            </div>
+            <div class="time-node">
+                <div class="node-date">May 30</div>
+                <div class="node-event">Like I Did</div>
+            </div>
+            <div class="time-node">
+                <div class="node-date">Jun 13</div>
+                <div class="node-event">I Like Girls</div>
+            </div>
+            <div class="time-node">
+                <div class="node-date">Jun 27</div>
+                <div class="node-event">Worth It</div>
+            </div>
+            <div class="time-node">
+                <div class="node-date">Jul 10</div>
+                <div class="node-event" style="color:var(--content)">CREAM Decision</div>
+            </div>
+            <div class="time-node">
+                <div class="node-date">Jul 11</div>
+                <div class="node-event">Just Say So</div>
+            </div>
+            <div class="time-node">
+                <div class="node-date">Jul 25</div>
+                <div class="node-event">Reconnect</div>
+            </div>
+        </div>
+        <div style="margin-top: 1.5rem; overflow-x: auto;">
+            <table>
+                <thead>
+                    <tr><th>Track</th><th>Upload</th><th>Release</th><th>Status</th><th>Role</th></tr>
+                </thead>
+                <tbody>
+                    <tr><td>East Side Love</td><td>Apr 30</td><td><strong>May 9</strong></td><td class="status-live">UPLOADED</td><td>Advance single</td></tr>
+                    <tr><td>Green Light</td><td>May 11</td><td><strong>May 15</strong></td><td class="status-rec">RECORDING</td><td>EP track 1</td></tr>
+                    <tr><td>Sweet Frustration</td><td>May 11</td><td><strong>May 15</strong></td><td class="status-rec">RECORDING</td><td>EP track 2</td></tr>
+                    <tr><td>SEE ME</td><td>Mar 13 ✓</td><td><strong>LIVE</strong></td><td class="status-live">LIVE</td><td>EP track 3 (ISRC carries)</td></tr>
+                    <tr><td>Want U 2</td><td>May 11</td><td><strong>May 15</strong></td><td class="status-rec">RECORDING</td><td>EP exclusive</td></tr>
+                    <tr><td>Like I Did</td><td>May 23</td><td><strong>May 30</strong></td><td class="status-vault">VAULT</td><td>Vault Single 1</td></tr>
+                </tbody>
+            </table>
+        </div>
+    </section>
+
+    <!-- DEPARTMENT PROTOCOLS & SYSTEMS STACK -->
+    <div class="dashboard-grid cols-2">
+        <section class="panel">
+            <h2>Department Protocols</h2>
+            <div class="dashboard-grid cols-2" style="margin-bottom:0;">
+                <div class="panel dept-card health">
+                    <h3>1. Health</h3>
+                    <ul class="tight-list">
+                        <li><strong>Morning:</strong> S-Tier (Water, Sun, Nadi Shodhana, 3m Pelvic release) vs Compressed.</li>
+                        <li><strong>Training:</strong> 4x/wk Galpin. Zone 2 + Calisthenics.</li>
+                        <li><strong>Constraints:</strong> 7.5hr sleep. No dairy 2hr pre-vox. Caffeine cutoff 1pm.</li>
+                    </ul>
+                </div>
+                <div class="panel dept-card content">
+                    <h3>2. Content</h3>
+                    <ul class="tight-list">
+                        <li><strong>Pillars:</strong> Talk to 'Em, Studio Sauce, Release, World Building.</li>
+                        <li><strong>Meme Engine:</strong> 30% music injection post-EP. Growth engine.</li>
+                        <li><strong>Metric:</strong> IG Sends/Reach > 2%. Completion rate > 50%.</li>
+                    </ul>
+                </div>
+                <div class="panel dept-card social">
+                    <h3>3. Social</h3>
+                    <ul class="tight-list">
+                        <li><strong>Daily Trace:</strong> 15m commenting on T4 artists (Faiyaz, Tiller lane).</li>
+                        <li><strong>Ratio Fix:</strong> Unfollow 50/wk on Sundays (Target 4k/800).</li>
+                        <li><strong>DMs:</strong> Outbound blitz on drops. Lane 1 (presence) before Lane 2 (DM).</li>
+                    </ul>
+                </div>
+                <div class="panel dept-card marketing">
+                    <h3>4. Marketing</h3>
+                    <ul class="tight-list">
+                        <li><strong>Meta Ads ($50 test):</strong> IG reel → Feature.fm Smart Link ONLY if organic sends ≥ 3%.</li>
+                        <li><strong>Discovery Mode:</strong> Auto-activate on 7-day save rate > 3%.</li>
+                        <li><strong>Hard Cap:</strong> $250/mo. Kill if cost/stream > $0.10.</li>
+                    </ul>
+                </div>
+            </div>
+        </section>
+
+        <section class="panel">
+            <h2>Active Systems Stack</h2>
+            <div class="system-item">
+                <span class="sys-name">Oracle Compass</span>
+                <span class="sys-status">Active</span>
+            </div>
+            <div class="system-item">
+                <span class="sys-name">Gorilla Geo (AIE Terminal)</span>
+                <span class="sys-status">Active / Sprint Mode</span>
+            </div>
+            <div class="system-item">
+                <span class="sys-name">Content Factory V4</span>
+                <span class="sys-status">Ready (OBS Pipeline)</span>
+            </div>
+            <div class="system-item">
+                <span class="sys-name">Catalog Auto-Refresh</span>
+                <span class="sys-status">Cron Active</span>
+            </div>
+            
+            <div class="panel dept-card revenue" style="margin-top: 1.5rem;">
+                <h3>5. Revenue</h3>
+                <ul class="tight-list">
+                    <li><strong>Sync Setup:</strong> -14 LUFS masters, stems, instrumentals by Jun 30.</li>
+                    <li><strong>Admin:</strong> ASCAP/MLC/Songtrust every Thu post-release.</li>
+                    <li><strong>Target:</strong> Exit DoorDash Mar 2027 ($2k/mo x 3 mos).</li>
+                </ul>
+            </div>
+        </section>
+    </div>
+
+    <!-- ADHD EXECUTION ENGINE -->
+    <section class="panel">
+        <h2>The ADHD Execution Engine (Weekly Cadence)</h2>
+        <div class="dashboard-grid cols-4">
+            <div class="mode-card" style="border-color: var(--health)">
+                <h4>Mode 1: Production Week</h4>
+                <p>Batch record/mix/master. 2hr focus → 20m walk. Deep blocks 10a-12p, 12:20p-2:20p. No context switching.</p>
+            </div>
+            <div class="mode-card" style="border-color: var(--content)">
+                <h4>Mode 2: Pre-Release Week</h4>
+                <p>Upload to Amuse. LYRC session (generate 30-50 variations). Schedule content batch. DM list prep.</p>
+            </div>
+            <div class="mode-card" style="border-color: var(--social)">
+                <h4>Mode 3: Release Week</h4>
+                <p>Drop day story blitz. Meme account drops 3-5 LYRC edits. DM blitz rounds 1 & 2. Compliance on Thursday.</p>
+            </div>
+            <div class="mode-card" style="border-color: var(--marketing)">
+                <h4>Mode 4: Compound Week</h4>
+                <p>No release active. Sync pitch prep. Meme account pure memes (no music). Pre-prod for next batch.</p>
+            </div>
+        </div>
+    </section>
+
+    <!-- ANTI-DRIFT RULES -->
+    <section class="panel" style="margin-bottom: 1rem;">
+        <h2>The Codex (Anti-Drift Rules)</h2>
+        
+        <details>
+            <summary>1. System Integrity & Distraction</summary>
+            <div class="details-content">
+                <ul class="tight-list">
+                    <li><strong>Never trust Antigravity's claimed file writes:</strong> verify against live filesystem.</li>
+                    <li><strong>Builder-avoidance loops are neurochemical:</strong> The urge to "fix the system" during execution is dopamine-seeking. Open the DAW instead.</li>
+                    <li><strong>The 90-second exit signal is sacred:</strong> Morning Kill List scan = 90 seconds max, then close it. No rabbit holes.</li>
+                    <li><strong>Software work is open as needed:</strong> Build only what is blocking the active release cycle.</li>
+                    <li><strong>Kill List is the single source of truth:</strong> for daily priorities.</li>
+                </ul>
+            </div>
+        </details>
+        
+        <details>
+            <summary>2. Creative & Marketing Execution</summary>
+            <div class="details-content">
+                <ul class="tight-list">
+                    <li><strong>The 8-day sprint window (upload → release):</strong> is ALL marketing work. No production.</li>
+                    <li><strong>Post what you want to be discovered as:</strong> The Portfolio Test applies to every post.</li>
+                    <li><strong>Lane discipline on content:</strong> No jumping niches. Five pillars, one world. Depth, not width.</li>
+                    <li><strong>Deluxe concept is retired:</strong> EP bomb drops May 15. Then vault singles waterfall.</li>
+                </ul>
+            </div>
+        </details>
+
+        <details>
+            <summary>3. Business & Logistics</summary>
+            <div class="details-content">
+                <ul class="tight-list">
+                    <li><strong>Splits are agreed in writing BEFORE production begins:</strong> Not after. Before the session opens. (Troy Taylor rule).</li>
+                    <li><strong>Compliance/registrations happen Thursday AFTER release:</strong> Not before.</li>
+                    <li><strong>Distributor is Amuse:</strong> Always has been. Do not change.</li>
+                    <li><strong>Don't reset the clock:</strong> 94 days is the target. Ignition structures carry you through detox.</li>
+                    <li><strong>Phase 2 rhythm is protected:</strong> Don't let sprint energy bleed into May. Rest, then rhythm.</li>
+                </ul>
+            </div>
+        </details>
+    </section>
+
+    <footer>
+        Distributor: Amuse | Genre: R&B / Alt-R&B | Oracle: <a href="https://oracle-compass-ni8g.vercel.app" target="_blank" style="color:var(--text-secondary);text-decoration:none;">oracle-compass-ni8g.vercel.app</a> | Updated: May 6, 2026
+    </footer>
+
+</body>
+</html>

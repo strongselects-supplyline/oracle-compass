@@ -1,0 +1,347 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Label OS | Ethan Payton</title>
+    <style>
+        :root {
+            --bg-color: #0A0A0A;
+            --card-bg: #171717;
+            --text-main: #F5F5F5;
+            --text-muted: #A3A3A3;
+            --health: #22c55e;
+            --content: #eab308;
+            --social: #a855f7;
+            --marketing: #3b82f6;
+            --revenue: #f59e0b;
+        }
+
+        * {
+            box-sizing: border-box;
+            margin: 0;
+            padding: 0;
+        }
+
+        body {
+            background-color: var(--bg-color);
+            color: var(--text-main);
+            font-family: -apple-system, BlinkMacSystemFont, "Segoe UI", Roboto, Helvetica, Arial, sans-serif;
+            line-height: 1.5;
+            padding: 1.5rem;
+            max-width: 1200px;
+            margin: 0 auto;
+        }
+
+        header {
+            margin-bottom: 2rem;
+        }
+
+        h1 {
+            font-size: 1.75rem;
+            font-weight: 800;
+            letter-spacing: -0.02em;
+            margin-bottom: 0.5rem;
+            text-transform: uppercase;
+        }
+
+        .subtitle {
+            color: var(--text-muted);
+            font-size: 0.875rem;
+            margin-bottom: 1.5rem;
+            text-transform: uppercase;
+            letter-spacing: 0.05em;
+        }
+
+        /* Timeline Bar */
+        .timeline {
+            background-color: var(--card-bg);
+            border-radius: 8px;
+            padding: 1rem;
+            display: flex;
+            align-items: center;
+            overflow-x: auto;
+            white-space: nowrap;
+            scrollbar-width: none; /* Firefox */
+            border-left: 4px solid var(--text-main);
+        }
+        
+        .timeline::-webkit-scrollbar {
+            display: none; /* Chrome/Safari */
+        }
+
+        .timeline-item {
+            display: inline-flex;
+            align-items: center;
+            font-size: 0.85rem;
+            font-weight: 600;
+        }
+
+        .timeline-date {
+            color: var(--text-muted);
+            margin-left: 0.3rem;
+            font-weight: 400;
+        }
+
+        .timeline-arrow {
+            color: #404040;
+            margin: 0 0.75rem;
+        }
+
+        /* Grid Layout */
+        .grid {
+            display: grid;
+            grid-template-columns: 1fr;
+            gap: 1.5rem;
+            margin-bottom: 3rem;
+        }
+
+        @media (min-width: 768px) {
+            .grid {
+                grid-template-columns: repeat(2, 1fr);
+            }
+        }
+
+        @media (min-width: 1024px) {
+            .grid {
+                grid-template-columns: repeat(3, 1fr);
+            }
+        }
+
+        /* Cards */
+        .card {
+            background-color: var(--card-bg);
+            border-radius: 10px;
+            padding: 1.5rem;
+            position: relative;
+            overflow: hidden;
+            transition: transform 0.2s ease, box-shadow 0.2s ease;
+        }
+
+        .card:hover {
+            transform: translateY(-2px);
+        }
+
+        .card::before {
+            content: '';
+            position: absolute;
+            top: 0;
+            left: 0;
+            right: 0;
+            height: 4px;
+        }
+
+        .card.health::before { background-color: var(--health); }
+        .card.content::before { background-color: var(--content); }
+        .card.social::before { background-color: var(--social); }
+        .card.marketing::before { background-color: var(--marketing); }
+        .card.revenue::before { background-color: var(--revenue); }
+
+        .card.health:hover { box-shadow: 0 10px 30px -10px rgba(34, 197, 94, 0.15); }
+        .card.content:hover { box-shadow: 0 10px 30px -10px rgba(234, 179, 8, 0.15); }
+        .card.social:hover { box-shadow: 0 10px 30px -10px rgba(168, 85, 247, 0.15); }
+        .card.marketing:hover { box-shadow: 0 10px 30px -10px rgba(59, 130, 246, 0.15); }
+        .card.revenue:hover { box-shadow: 0 10px 30px -10px rgba(245, 158, 11, 0.15); }
+
+        .card-title {
+            font-size: 1.25rem;
+            font-weight: 700;
+            margin-bottom: 1.25rem;
+            display: flex;
+            align-items: center;
+        }
+
+        .card.health .card-title { color: var(--health); }
+        .card.content .card-title { color: var(--content); }
+        .card.social .card-title { color: var(--social); }
+        .card.marketing .card-title { color: var(--marketing); }
+        .card.revenue .card-title { color: var(--revenue); }
+
+        .actions-list {
+            list-style: none;
+            margin-bottom: 1.5rem;
+        }
+
+        .actions-list li {
+            font-size: 0.875rem;
+            margin-bottom: 0.75rem;
+            padding-left: 1.25rem;
+            position: relative;
+            line-height: 1.4;
+        }
+
+        .actions-list li::before {
+            content: '→';
+            position: absolute;
+            left: 0;
+            color: var(--text-muted);
+        }
+
+        .metric-box {
+            background-color: rgba(255,255,255,0.05);
+            border-radius: 6px;
+            padding: 1rem;
+            border-left: 2px solid;
+        }
+
+        .card.health .metric-box { border-color: var(--health); }
+        .card.content .metric-box { border-color: var(--content); }
+        .card.social .metric-box { border-color: var(--social); }
+        .card.marketing .metric-box { border-color: var(--marketing); }
+        .card.revenue .metric-box { border-color: var(--revenue); }
+
+        .metric-label {
+            font-size: 0.7rem;
+            text-transform: uppercase;
+            letter-spacing: 0.05em;
+            color: var(--text-muted);
+            margin-bottom: 0.25rem;
+            display: block;
+        }
+
+        .metric-value {
+            font-size: 0.95rem;
+            font-weight: 600;
+        }
+
+        /* Footer */
+        footer {
+            border-top: 1px solid #262626;
+            padding-top: 1.5rem;
+            font-size: 0.75rem;
+            color: var(--text-muted);
+            display: flex;
+            flex-direction: column;
+            align-items: center;
+            gap: 0.5rem;
+            text-align: center;
+        }
+
+        @media (min-width: 768px) {
+            footer {
+                flex-direction: row;
+                justify-content: space-between;
+                text-align: left;
+            }
+        }
+
+        .footer-link {
+            color: var(--text-muted);
+            text-decoration: none;
+            transition: color 0.2s;
+        }
+
+        .footer-link:hover {
+            color: var(--text-main);
+        }
+    </style>
+</head>
+<body>
+
+    <header>
+        <h1>Label OS Dashboard</h1>
+        <div class="subtitle">Ethan Payton // past.El noir Records</div>
+        
+        <div class="timeline">
+            <div class="timeline-item">ESL <span class="timeline-date">May 9</span></div>
+            <div class="timeline-arrow">→</div>
+            <div class="timeline-item" style="color: var(--content)">EP <span class="timeline-date">May 15</span></div>
+            <div class="timeline-arrow">→</div>
+            <div class="timeline-item">LID <span class="timeline-date">May 30</span></div>
+            <div class="timeline-arrow">→</div>
+            <div class="timeline-item">ILG <span class="timeline-date">Jun 13</span></div>
+            <div class="timeline-arrow">→</div>
+            <div class="timeline-item">WI <span class="timeline-date">Jun 27</span></div>
+            <div class="timeline-arrow">→</div>
+            <div class="timeline-item">JSS <span class="timeline-date">Jul 11</span></div>
+            <div class="timeline-arrow">→</div>
+            <div class="timeline-item">RCN <span class="timeline-date">Jul 25</span></div>
+        </div>
+    </header>
+
+    <div class="grid">
+        
+        <!-- Health & Foundation -->
+        <div class="card health">
+            <div class="card-title">Health & Foundation</div>
+            <ul class="actions-list">
+                <li><strong>4x/week training:</strong> Strength (Mon/Thu), Cardio+Mobility (Tue/Fri). Minimum effective dose.</li>
+                <li><strong>Postural stack (5m):</strong> Chin tucks & pull-aparts to kill the caveman hunch.</li>
+                <li><strong>Pre-session vocal (4m):</strong> Jaw massage and neck stretch before stepping to mic.</li>
+                <li><strong>Down-regulation breathing:</strong> 3-5 mins post-training & DoorDash to shift nervous system.</li>
+            </ul>
+            <div class="metric-box">
+                <span class="metric-label">Non-Negotiable Constraint</span>
+                <span class="metric-value">7.5–8 hrs sleep. (5 hrs sleep = 15% testosterone drop)</span>
+            </div>
+        </div>
+
+        <!-- Content & Visual -->
+        <div class="card content">
+            <div class="card-title">Content & Visual</div>
+            <ul class="actions-list">
+                <li><strong>8-Day Sprint:</strong> Execute specific content sequence (Talk to 'Em, World-Building, Release) per release.</li>
+                <li><strong>Batch Shoot Fridays:</strong> 2 hrs to capture next week's 3 Talk to 'Em takes & B-roll.</li>
+                <li><strong>OBS Always On:</strong> Record every vocal/mix session for Content Factory V4 extraction.</li>
+                <li><strong>DM Blitz:</strong> Send 20-30 personalized DMs to God Tier/Warm list on release day.</li>
+            </ul>
+            <div class="metric-box">
+                <span class="metric-label">The Primary Signal</span>
+                <span class="metric-value">Sends-per-reach ≥ 2% on IG Reels. (1 share ≈ 15 likes)</span>
+            </div>
+        </div>
+
+        <!-- Social & Community -->
+        <div class="card social">
+            <div class="card-title">Social & Community</div>
+            <ul class="actions-list">
+                <li><strong>Community Trace:</strong> 15m/day leaving thoughtful comments on T4 artists & replying to DMs.</li>
+                <li><strong>Cross-Post Distribution:</strong> Native IG reels → TikTok (adjust caption) → YT Shorts (add SEO).</li>
+                <li><strong>Sunday Ratio Fix:</strong> Unfollow batch (inactive/non-mutuals) to correct engagement penalty.</li>
+                <li><strong>Nurture Top 50:</strong> Give super-fans early access via IG Close Friends.</li>
+            </ul>
+            <div class="metric-box">
+                <span class="metric-label">Key Growth Constraint</span>
+                <span class="metric-value">Fix IG Ratio: Target 4,000 / 800 (5:1) by Oct.</span>
+            </div>
+        </div>
+
+        <!-- Marketing & Paid -->
+        <div class="card marketing">
+            <div class="card-title">Marketing & Paid</div>
+            <ul class="actions-list">
+                <li><strong>Meta Ads ($50 test):</strong> ONLY promote organic reels that hit ≥ 3% sends-per-reach.</li>
+                <li><strong>Discovery Mode:</strong> Activate natively on any track hitting ≥ 3% save rate after 7 days.</li>
+                <li><strong>Marquee ($100):</strong> Deploy on release week ONLY if Day 3 velocity is 100+ streams/day.</li>
+                <li><strong>Smart Links Only:</strong> Always route ads through feature.fm to track Meta Pixel conversions.</li>
+            </ul>
+            <div class="metric-box">
+                <span class="metric-label">Budget Hard Rule</span>
+                <span class="metric-value">Max $200-$250/mo. Kill ads if cost-per-stream > $0.10.</span>
+            </div>
+        </div>
+
+        <!-- Revenue & Business -->
+        <div class="card revenue">
+            <div class="card-title">Revenue & Business</div>
+            <ul class="actions-list">
+                <li><strong>Sync Readiness:</strong> Bounce instrumentals, -14 LUFS sync masters, and stems. Pitch to Songtradr/Musicbed.</li>
+                <li><strong>Post-Release Admin:</strong> Register Thursday after release (ASCAP, MLC, Songtrust, SoundExchange).</li>
+                <li><strong>Live Performance:</strong> Book 2-3 Milwaukee shows in Q4 to prove the 45-min set.</li>
+                <li><strong>Email Capture:</strong> Collect emails via Linktree/Smart links to own the audience.</li>
+            </ul>
+            <div class="metric-box">
+                <span class="metric-label">The Exit Target</span>
+                <span class="metric-value">$2,000/mo non-DoorDash revenue for 3 consecutive months.</span>
+            </div>
+        </div>
+
+    </div>
+
+    <footer>
+        <div>Distributor: Amuse | Genre: R&B / Alt-R&B</div>
+        <div>Oracle Compass: <a href="https://oracle-compass-ni8g.vercel.app" target="_blank" class="footer-link">oracle-compass-ni8g.vercel.app</a></div>
+    </footer>
+
+</body>
+</html>
