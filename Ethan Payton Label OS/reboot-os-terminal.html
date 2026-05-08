@@ -1,0 +1,1316 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+<meta charset="UTF-8">
+<meta name="viewport" content="width=device-width, initial-scale=1.0">
+<title>REBOOT OS — Offline Civilization Archive</title>
+<style>
+  :root {
+    --bg: #0a0a0a;
+    --bg2: #111111;
+    --bg3: #1a1a1a;
+    --border: #2a2a2a;
+    --text: #c8c8c8;
+    --text-dim: #666;
+    --accent: #D4A017;
+    --accent-dim: #8a6810;
+    --green: #4a9a4a;
+    --red: #9a3a3a;
+    --blue: #3a6a9a;
+    --purple: #6a3a9a;
+    --mono: 'Courier New', 'Lucida Console', monospace;
+    --sans: 'Arial', 'Helvetica Neue', sans-serif;
+  }
+
+  * { box-sizing: border-box; margin: 0; padding: 0; }
+
+  body {
+    background: var(--bg);
+    color: var(--text);
+    font-family: var(--sans);
+    font-size: 13px;
+    display: flex;
+    flex-direction: column;
+    height: 100vh;
+    overflow: hidden;
+  }
+
+  /* TOPBAR */
+  #topbar {
+    background: var(--bg2);
+    border-bottom: 1px solid var(--accent-dim);
+    padding: 8px 16px;
+    display: flex;
+    align-items: center;
+    gap: 16px;
+    flex-shrink: 0;
+  }
+
+  #topbar h1 {
+    font-family: var(--mono);
+    font-size: 14px;
+    color: var(--accent);
+    letter-spacing: 2px;
+    white-space: nowrap;
+  }
+
+  #topbar .subtitle {
+    font-family: var(--mono);
+    font-size: 10px;
+    color: var(--text-dim);
+    white-space: nowrap;
+  }
+
+  #search-wrap {
+    flex: 1;
+    display: flex;
+    align-items: center;
+    gap: 8px;
+    max-width: 400px;
+    margin-left: auto;
+  }
+
+  #search-wrap label {
+    font-family: var(--mono);
+    color: var(--accent);
+    font-size: 11px;
+    white-space: nowrap;
+  }
+
+  #search {
+    flex: 1;
+    background: var(--bg3);
+    border: 1px solid var(--border);
+    color: var(--text);
+    font-family: var(--mono);
+    font-size: 12px;
+    padding: 4px 8px;
+    outline: none;
+    border-radius: 2px;
+  }
+
+  #search:focus { border-color: var(--accent); }
+
+  #search-count {
+    font-family: var(--mono);
+    font-size: 10px;
+    color: var(--text-dim);
+    white-space: nowrap;
+    min-width: 60px;
+    text-align: right;
+  }
+
+  /* LAYOUT */
+  #layout {
+    display: flex;
+    flex: 1;
+    overflow: hidden;
+  }
+
+  /* SIDEBAR */
+  #sidebar {
+    width: 200px;
+    background: var(--bg2);
+    border-right: 1px solid var(--border);
+    overflow-y: auto;
+    flex-shrink: 0;
+    padding: 8px 0;
+  }
+
+  .nav-tier {
+    padding: 6px 12px;
+    cursor: pointer;
+    font-family: var(--mono);
+    font-size: 11px;
+    color: var(--text-dim);
+    border-left: 3px solid transparent;
+    transition: all 0.1s;
+  }
+
+  .nav-tier:hover { color: var(--text); background: var(--bg3); }
+
+  .nav-tier.active {
+    color: var(--accent);
+    border-left-color: var(--accent);
+    background: var(--bg3);
+  }
+
+  .nav-tier .tier-num {
+    color: var(--accent-dim);
+    margin-right: 4px;
+  }
+
+  .nav-divider {
+    height: 1px;
+    background: var(--border);
+    margin: 6px 0;
+  }
+
+  .nav-meta {
+    padding: 4px 12px;
+    font-family: var(--mono);
+    font-size: 9px;
+    color: var(--text-dim);
+  }
+
+  /* MAIN */
+  #main {
+    flex: 1;
+    overflow-y: auto;
+    padding: 16px;
+  }
+
+  .tier-section {
+    margin-bottom: 32px;
+  }
+
+  .tier-header {
+    border-bottom: 1px solid var(--accent-dim);
+    margin-bottom: 12px;
+    padding-bottom: 6px;
+    display: flex;
+    align-items: baseline;
+    gap: 12px;
+  }
+
+  .tier-header h2 {
+    font-family: var(--mono);
+    font-size: 14px;
+    color: var(--accent);
+    letter-spacing: 1px;
+  }
+
+  .tier-header .tier-desc {
+    font-size: 11px;
+    color: var(--text-dim);
+    font-style: italic;
+  }
+
+  .tier-header .tier-size {
+    margin-left: auto;
+    font-family: var(--mono);
+    font-size: 10px;
+    color: var(--accent-dim);
+  }
+
+  /* CATEGORY */
+  details.category {
+    margin-bottom: 8px;
+    border: 1px solid var(--border);
+    border-radius: 2px;
+  }
+
+  details.category > summary {
+    padding: 6px 10px;
+    background: var(--bg3);
+    cursor: pointer;
+    list-style: none;
+    display: flex;
+    align-items: center;
+    gap: 8px;
+    font-family: var(--mono);
+    font-size: 11px;
+    color: var(--text);
+    user-select: none;
+  }
+
+  details.category > summary::-webkit-details-marker { display: none; }
+
+  details.category > summary::before {
+    content: '▶';
+    color: var(--accent-dim);
+    font-size: 8px;
+    transition: transform 0.1s;
+    flex-shrink: 0;
+  }
+
+  details.category[open] > summary::before { transform: rotate(90deg); }
+
+  details.category > summary:hover { background: var(--bg2); }
+
+  .cat-count {
+    margin-left: auto;
+    font-size: 9px;
+    color: var(--text-dim);
+  }
+
+  .cat-body {
+    padding: 4px;
+  }
+
+  /* ENTRY */
+  .entry {
+    display: grid;
+    grid-template-columns: 1fr auto;
+    grid-template-rows: auto auto;
+    gap: 2px 8px;
+    padding: 6px 8px;
+    border-bottom: 1px solid var(--bg3);
+    align-items: start;
+  }
+
+  .entry:last-child { border-bottom: none; }
+  .entry:hover { background: #131313; }
+
+  .entry.purchase { border-left: 2px solid var(--red); }
+  .entry.free { border-left: 2px solid transparent; }
+
+  .entry-title {
+    font-family: var(--mono);
+    font-size: 12px;
+    color: var(--text);
+    grid-column: 1;
+    grid-row: 1;
+  }
+
+  .entry-title a {
+    color: var(--text);
+    text-decoration: none;
+  }
+
+  .entry-title a:hover { color: var(--accent); text-decoration: underline; }
+
+  .entry-badges {
+    grid-column: 2;
+    grid-row: 1;
+    display: flex;
+    gap: 4px;
+    align-items: center;
+    flex-wrap: nowrap;
+  }
+
+  .badge {
+    font-family: var(--mono);
+    font-size: 9px;
+    padding: 1px 5px;
+    border-radius: 2px;
+    white-space: nowrap;
+  }
+
+  .badge-format { background: var(--bg3); color: var(--text-dim); border: 1px solid var(--border); }
+  .badge-pd { background: #1a3a1a; color: var(--green); border: 1px solid #2a4a2a; }
+  .badge-os { background: #1a2a3a; color: #4a8abf; border: 1px solid #2a3a4a; }
+  .badge-cc { background: #1a2a3a; color: #4a8abf; border: 1px solid #2a3a4a; }
+  .badge-buy { background: #3a1a1a; color: #bf5a5a; border: 1px solid #4a2a2a; }
+  .badge-size { background: var(--bg); color: var(--text-dim); border: 1px solid var(--border); }
+
+  .entry-meta {
+    grid-column: 1 / 3;
+    grid-row: 2;
+    display: flex;
+    gap: 12px;
+    align-items: center;
+  }
+
+  .entry-desc {
+    font-size: 11px;
+    color: var(--text-dim);
+    flex: 1;
+  }
+
+  .entry-path {
+    font-family: var(--mono);
+    font-size: 9px;
+    color: #444;
+    white-space: nowrap;
+    overflow: hidden;
+    text-overflow: ellipsis;
+    max-width: 300px;
+  }
+
+  /* HARDWARE TABLE */
+  .hw-table {
+    width: 100%;
+    border-collapse: collapse;
+    font-family: var(--mono);
+    font-size: 11px;
+    margin: 4px 0;
+  }
+
+  .hw-table th {
+    text-align: left;
+    color: var(--accent-dim);
+    padding: 4px 8px;
+    border-bottom: 1px solid var(--border);
+    font-weight: normal;
+  }
+
+  .hw-table td {
+    padding: 4px 8px;
+    border-bottom: 1px solid var(--bg3);
+    color: var(--text-dim);
+    vertical-align: top;
+  }
+
+  .hw-table tr:hover td { color: var(--text); }
+
+  .hw-total td { color: var(--accent); border-top: 1px solid var(--accent-dim); }
+
+  /* PURCHASE SUMMARY */
+  .purchase-note {
+    background: #1a0a0a;
+    border: 1px solid var(--red);
+    border-radius: 2px;
+    padding: 8px 12px;
+    font-family: var(--mono);
+    font-size: 11px;
+    color: #9a5a5a;
+    margin: 4px 0;
+  }
+
+  /* CHECKLIST */
+  .checklist-section {
+    margin: 8px 0;
+  }
+
+  .checklist-item {
+    display: flex;
+    align-items: baseline;
+    gap: 8px;
+    padding: 4px 8px;
+    font-family: var(--mono);
+    font-size: 11px;
+    color: var(--text-dim);
+    border-bottom: 1px solid var(--bg3);
+  }
+
+  .checklist-item::before {
+    content: '☐';
+    color: var(--accent-dim);
+    flex-shrink: 0;
+  }
+
+  .checklist-item:hover { color: var(--text); }
+
+  /* SEARCH HIGHLIGHT */
+  .entry.hidden { display: none; }
+  .category.all-hidden { display: none; }
+  .tier-section.all-hidden { display: none; }
+
+  mark {
+    background: var(--accent-dim);
+    color: var(--bg);
+    padding: 0 1px;
+  }
+
+  /* FOOTER */
+  #footer {
+    background: var(--bg2);
+    border-top: 1px solid var(--border);
+    padding: 4px 16px;
+    display: flex;
+    justify-content: space-between;
+    align-items: center;
+    flex-shrink: 0;
+  }
+
+  #footer span {
+    font-family: var(--mono);
+    font-size: 9px;
+    color: var(--text-dim);
+  }
+
+  #footer .accent { color: var(--accent-dim); }
+
+  /* SCROLLBARS */
+  ::-webkit-scrollbar { width: 6px; height: 6px; }
+  ::-webkit-scrollbar-track { background: var(--bg2); }
+  ::-webkit-scrollbar-thumb { background: var(--border); border-radius: 3px; }
+  ::-webkit-scrollbar-thumb:hover { background: #3a3a3a; }
+
+  /* PRINT */
+  @media print {
+    body { background: white; color: black; font-size: 11px; height: auto; overflow: auto; }
+    #topbar { background: white; border-bottom: 2px solid black; }
+    #topbar h1, #sidebar .nav-tier.active, .tier-header h2, .entry-title { color: black; }
+    #sidebar { display: none; }
+    #main { padding: 0; }
+    .badge { border: 1px solid #ccc; color: #333; background: white; }
+    .entry-path { color: #666; }
+    #footer { background: white; border-top: 1px solid black; }
+    #search-wrap { display: none; }
+    details.category { page-break-inside: avoid; }
+    details.category[open] { display: block; }
+    details.category:not([open]) > summary::before { content: '▶'; }
+  }
+</style>
+</head>
+<body>
+
+<div id="topbar">
+  <div>
+    <h1>⬡ REBOOT OS</h1>
+    <div class="subtitle">OFFLINE CIVILIZATION ARCHIVE · v1.0 · 2TB SSD</div>
+  </div>
+  <div id="search-wrap">
+    <label>SEARCH:</label>
+    <input id="search" type="text" placeholder="filter entries..." autocomplete="off" spellcheck="false">
+    <div id="search-count"></div>
+  </div>
+</div>
+
+<div id="layout">
+  <nav id="sidebar">
+    <div class="nav-meta">TIERS</div>
+    <div class="nav-tier active" data-target="tier0"><span class="tier-num">0</span>Terminal</div>
+    <div class="nav-tier" data-target="tier1"><span class="tier-num">1</span>Survival</div>
+    <div class="nav-tier" data-target="tier2"><span class="tier-num">2</span>Infrastructure</div>
+    <div class="nav-tier" data-target="tier3"><span class="tier-num">3</span>Industry</div>
+    <div class="nav-tier" data-target="tier4"><span class="tier-num">4</span>Governance</div>
+    <div class="nav-tier" data-target="tier5"><span class="tier-num">5</span>Renaissance</div>
+    <div class="nav-divider"></div>
+    <div class="nav-meta">REFERENCE</div>
+    <div class="nav-tier" data-target="purchase"><span class="tier-num">$</span>Buy List</div>
+    <div class="nav-tier" data-target="checklist"><span class="tier-num">✓</span>Download Order</div>
+    <div class="nav-divider"></div>
+    <div class="nav-meta" style="margin-top:8px;">STORAGE</div>
+    <div class="nav-meta">T0: ~1GB</div>
+    <div class="nav-meta">T1: ~500MB</div>
+    <div class="nav-meta">T2: ~20GB</div>
+    <div class="nav-meta">T3: ~100GB</div>
+    <div class="nav-meta">T4: ~5GB</div>
+    <div class="nav-meta">T5: ~10GB</div>
+    <div class="nav-meta" style="color:var(--accent-dim);margin-top:4px;">Total: ~137GB / 2TB</div>
+  </nav>
+
+  <main id="main">
+
+    <!-- TIER 0 -->
+    <section class="tier-section" id="tier0">
+      <div class="tier-header">
+        <h2>TIER 0 — TERMINAL</h2>
+        <span class="tier-desc">hardware + software to access everything else</span>
+        <span class="tier-size">~1GB</span>
+      </div>
+
+      <details class="category" open>
+        <summary>Software <span class="cat-count">4 items</span></summary>
+        <div class="cat-body">
+          <div class="entry free" data-search="raspberry pi os lite operating system">
+            <div class="entry-title"><a href="https://www.raspberrypi.com/software/operating-systems/" target="_blank">Raspberry Pi OS Lite</a></div>
+            <div class="entry-badges"><span class="badge badge-format">IMG</span><span class="badge badge-os">OPEN SOURCE</span><span class="badge badge-size">~500MB</span></div>
+            <div class="entry-meta"><div class="entry-desc">Headless Debian-based OS for RPi 4/5. No desktop — SSH only. Flash to microSD with Raspberry Pi Imager.</div><div class="entry-path">./00_Terminal/rpi-os-lite.img</div></div>
+          </div>
+          <div class="entry free" data-search="kiwix reader offline wiki zim">
+            <div class="entry-title"><a href="https://kiwix.org/en/downloads/kiwix-desktop/" target="_blank">Kiwix Desktop (Linux ARM)</a></div>
+            <div class="entry-badges"><span class="badge badge-format">AppImage</span><span class="badge badge-os">GPL-3.0</span><span class="badge badge-size">~50MB</span></div>
+            <div class="entry-meta"><div class="entry-desc">Offline ZIM file reader. Required to open Wikipedia, Gutenberg, Khan Academy ZIM files without internet.</div><div class="entry-path">./00_Terminal/kiwix-desktop-linux-arm.appimage</div></div>
+          </div>
+          <div class="entry free" data-search="evince pdf reader linux">
+            <div class="entry-title">Evince PDF Reader</div>
+            <div class="entry-badges"><span class="badge badge-format">deb</span><span class="badge badge-os">GPL-2.0</span><span class="badge badge-size">~5MB</span></div>
+            <div class="entry-meta"><div class="entry-desc">Lightweight PDF reader for Linux. Install via: <code>sudo apt install evince</code>. Pre-installed on many RPi OS configs.</div><div class="entry-path">./00_Terminal/INSTALL_NOTES.md</div></div>
+          </div>
+          <div class="entry free" data-search="chromium browser raspberry pi">
+            <div class="entry-title">Chromium Browser</div>
+            <div class="entry-badges"><span class="badge badge-format">deb</span><span class="badge badge-os">BSD</span><span class="badge badge-size">~80MB</span></div>
+            <div class="entry-meta"><div class="entry-desc">Required to open this dashboard (index.html). Install: <code>sudo apt install chromium-browser</code>. Launch: <code>file:///mnt/reboot/REBOOT_OS/index.html</code></div><div class="entry-path">./00_Terminal/INSTALL_NOTES.md</div></div>
+          </div>
+        </div>
+      </details>
+
+      <details class="category" open>
+        <summary>Hardware Bill of Materials <span class="cat-count">8 items · ~$375–$550</span></summary>
+        <div class="cat-body" style="padding:8px;">
+          <table class="hw-table">
+            <thead><tr><th>Item</th><th>Model / Spec</th><th>Est. Cost</th></tr></thead>
+            <tbody>
+              <tr data-search="raspberry pi computer"><td>Single-board computer</td><td>Raspberry Pi 4 or 5 (8GB RAM)</td><td>$80–$100</td></tr>
+              <tr data-search="samsung t7 ssd storage"><td>SSD</td><td>Samsung T7 2TB USB-C</td><td>$120–$150</td></tr>
+              <tr data-search="solar panel usb charging"><td>Solar panel</td><td>20W–50W folding USB-C</td><td>$40–$80</td></tr>
+              <tr data-search="power bank battery usb"><td>Power bank</td><td>20,000mAh USB-C (65W PD)</td><td>$40–$60</td></tr>
+              <tr data-search="keyboard usb"><td>Keyboard</td><td>Wired USB (any)</td><td>$15–$25</td></tr>
+              <tr data-search="mouse usb"><td>Mouse</td><td>Wired USB (any)</td><td>$10–$15</td></tr>
+              <tr data-search="display monitor hdmi portable"><td>Display</td><td>7" portable HDMI monitor or e-ink</td><td>$50–$80</td></tr>
+              <tr data-search="faraday bag emp protection ammo can mylar"><td>EMP protection</td><td>Faraday bag OR ammo can + Mylar + desiccant</td><td>$20–$40</td></tr>
+              <tr class="hw-total"><td><strong>Total</strong></td><td></td><td><strong>~$375–$550</strong></td></tr>
+            </tbody>
+          </table>
+        </div>
+      </details>
+    </section>
+
+    <!-- TIER 1 -->
+    <section class="tier-section" id="tier1">
+      <div class="tier-header">
+        <h2>TIER 1 — SURVIVAL</h2>
+        <span class="tier-desc">calories, clean water, triage medicine, shelter, self-defense</span>
+        <span class="tier-size">~500MB</span>
+      </div>
+
+      <details class="category" open>
+        <summary>Medical <span class="cat-count">6 items</span></summary>
+        <div class="cat-body">
+          <div class="entry free" data-search="where there is no doctor hesperian medical">
+            <div class="entry-title"><a href="https://hesperian.org/books/where-there-is-no-doctor/" target="_blank">Where There Is No Doctor</a></div>
+            <div class="entry-badges"><span class="badge badge-format">PDF</span><span class="badge badge-cc">CC BY-SA</span><span class="badge badge-size">~20MB</span></div>
+            <div class="entry-meta"><div class="entry-desc">Primary field medicine reference. Diagnosis, treatment, childbirth, nutrition — no hospital assumed. Hesperian Foundation.</div><div class="entry-path">./01_Survival/Medical/where_there_is_no_doctor.pdf</div></div>
+          </div>
+          <div class="entry free" data-search="where there is no dentist hesperian dental">
+            <div class="entry-title"><a href="https://hesperian.org/books/where-there-is-no-dentist/" target="_blank">Where There Is No Dentist</a></div>
+            <div class="entry-badges"><span class="badge badge-format">PDF</span><span class="badge badge-cc">CC BY-SA</span><span class="badge badge-size">~10MB</span></div>
+            <div class="entry-meta"><div class="entry-desc">Dental care, extraction, abscess treatment, cavity prevention without a clinic.</div><div class="entry-path">./01_Survival/Medical/where_there_is_no_dentist.pdf</div></div>
+          </div>
+          <div class="entry free" data-search="where women have no doctor hesperian womens health">
+            <div class="entry-title"><a href="https://hesperian.org/books-and-resources/books/" target="_blank">Where Women Have No Doctor</a></div>
+            <div class="entry-badges"><span class="badge badge-format">PDF</span><span class="badge badge-cc">CC BY-SA</span><span class="badge badge-size">~15MB</span></div>
+            <div class="entry-meta"><div class="entry-desc">Women's health: reproductive, gynecological, mental health in resource-limited settings.</div><div class="entry-path">./01_Survival/Medical/where_women_have_no_doctor.pdf</div></div>
+          </div>
+          <div class="entry free" data-search="book for midwives hesperian childbirth">
+            <div class="entry-title"><a href="https://hesperian.org/books-and-resources/books/" target="_blank">A Book for Midwives</a></div>
+            <div class="entry-badges"><span class="badge badge-format">PDF</span><span class="badge badge-cc">CC BY-SA</span><span class="badge badge-size">~12MB</span></div>
+            <div class="entry-meta"><div class="entry-desc">Childbirth without hospitals. Prenatal care, labor, newborn care, complication management.</div><div class="entry-path">./01_Survival/Medical/a_book_for_midwives.pdf</div></div>
+          </div>
+          <div class="entry free" data-search="SOF special operations medical handbook surgery trauma field">
+            <div class="entry-title"><a href="https://archive.org/details/SpecialOperationsForcesMedicalHandbook" target="_blank">Special Operations Forces Medical Handbook</a></div>
+            <div class="entry-badges"><span class="badge badge-format">PDF</span><span class="badge badge-pd">PUBLIC DOMAIN</span><span class="badge badge-size">~15MB</span></div>
+            <div class="entry-meta"><div class="entry-desc">Advanced field medicine: trauma, field surgery, pharmacology, wound care. Military-grade reference for austere conditions.</div><div class="entry-path">./01_Survival/Medical/sof_medical_handbook.pdf</div></div>
+          </div>
+          <div class="entry purchase" data-search="SAS survival handbook john wiseman">
+            <div class="entry-title">SAS Survival Handbook — John Wiseman</div>
+            <div class="entry-badges"><span class="badge badge-buy">PURCHASE REQUIRED</span></div>
+            <div class="entry-meta"><div class="entry-desc">Climate-specific survival by SAS veteran. Best single volume for field craft. ISBN: 978-0062378071.</div><div class="entry-path">— (purchase physical copy)</div></div>
+          </div>
+        </div>
+      </details>
+
+      <details class="category">
+        <summary>Field Craft &amp; Defense <span class="cat-count">4 items</span></summary>
+        <div class="cat-body">
+          <div class="entry free" data-search="US army survival manual FM 21-76 water firecraft shelter navigation">
+            <div class="entry-title"><a href="https://archive.org/details/armysurvivalmanual" target="_blank">US Army Survival Manual FM 21-76</a></div>
+            <div class="entry-badges"><span class="badge badge-format">PDF</span><span class="badge badge-pd">PUBLIC DOMAIN</span><span class="badge badge-size">~5MB</span></div>
+            <div class="entry-meta"><div class="entry-desc">Water procurement, firecraft, shelter construction, navigation, signaling, foraging. Appendix F has plant/trap guides.</div><div class="entry-path">./01_Survival/Field_Craft/fm_21-76_survival.pdf</div></div>
+          </div>
+          <div class="entry free" data-search="FM 5-103 survivability fighting positions construction">
+            <div class="entry-title"><a href="https://archive.org/details/FM5-103" target="_blank">FM 5-103: Survivability</a></div>
+            <div class="entry-badges"><span class="badge badge-format">PDF</span><span class="badge badge-pd">PUBLIC DOMAIN</span><span class="badge badge-size">~8MB</span></div>
+            <div class="entry-meta"><div class="entry-desc">Fighting positions, protective construction, overhead cover, camouflage. Defense-in-depth planning.</div><div class="entry-path">./01_Survival/Shelter/fm_5-103_survivability.pdf</div></div>
+          </div>
+          <div class="entry free" data-search="FM 5-34 engineer field data construction load calculations">
+            <div class="entry-title"><a href="https://archive.org/details/FM5-34" target="_blank">FM 5-34: Engineer Field Data</a></div>
+            <div class="entry-badges"><span class="badge badge-format">PDF</span><span class="badge badge-pd">PUBLIC DOMAIN</span><span class="badge badge-size">~10MB</span></div>
+            <div class="entry-meta"><div class="entry-desc">Construction tables, load calculations, bridge formulas, material strengths. Builder's math reference.</div><div class="entry-path">./01_Survival/Shelter/fm_5-34_engineer_field_data.pdf</div></div>
+          </div>
+          <div class="entry free" data-search="FM 21-150 combatives hand to hand self defense army">
+            <div class="entry-title"><a href="https://archive.org/details/FM21-150" target="_blank">FM 21-150: Combatives</a></div>
+            <div class="entry-badges"><span class="badge badge-format">PDF</span><span class="badge badge-pd">PUBLIC DOMAIN</span><span class="badge badge-size">~10MB</span></div>
+            <div class="entry-meta"><div class="entry-desc">US Army hand-to-hand combat system. Strikes, takedowns, weapon retention, multiple attackers.</div><div class="entry-path">./01_Survival/Defense/fm_21-150_combatives.pdf</div></div>
+          </div>
+        </div>
+      </details>
+
+      <details class="category">
+        <summary>Water <span class="cat-count">3 items</span></summary>
+        <div class="cat-body">
+          <div class="entry free" data-search="WHO drinking water quality guidelines purification">
+            <div class="entry-title"><a href="https://www.who.int/publications/i/item/9789241549950" target="_blank">WHO Guidelines for Drinking-Water Quality (4th ed.)</a></div>
+            <div class="entry-badges"><span class="badge badge-format">PDF</span><span class="badge badge-cc">CC BY-NC-SA</span><span class="badge badge-size">~3MB</span></div>
+            <div class="entry-meta"><div class="entry-desc">Contamination thresholds, treatment methods, testing procedures. The science behind safe water.</div><div class="entry-path">./01_Survival/Water/who_drinking_water_guidelines.pdf</div></div>
+          </div>
+          <div class="entry free" data-search="biosand filter construction CAWST water treatment">
+            <div class="entry-title"><a href="https://resources.cawst.org/design-guide/biosand-filter" target="_blank">Biosand Filter Construction Manual</a></div>
+            <div class="entry-badges"><span class="badge badge-format">PDF</span><span class="badge badge-cc">CC BY</span><span class="badge badge-size">~8MB</span></div>
+            <div class="entry-meta"><div class="entry-desc">Build a concrete biosand filter from local materials. Removes 99%+ of pathogens. Household scale.</div><div class="entry-path">./01_Survival/Water/biosand_filter_manual.pdf</div></div>
+          </div>
+          <div class="entry free" data-search="SODIS solar water disinfection sunlight bottle">
+            <div class="entry-title"><a href="https://www.sodis.ch/methode/anwendung/ausbildungsmaterial/index_EN" target="_blank">SODIS Solar Water Disinfection Guide</a></div>
+            <div class="entry-badges"><span class="badge badge-format">PDF</span><span class="badge badge-os">OPEN</span><span class="badge badge-size">~3MB</span></div>
+            <div class="entry-meta"><div class="entry-desc">Disinfect water using sunlight + clear PET bottles. Zero equipment method. Backed by WHO.</div><div class="entry-path">./01_Survival/Water/sodis_guide.pdf</div></div>
+          </div>
+        </div>
+      </details>
+
+      <details class="category">
+        <summary>Psychology <span class="cat-count">1 item</span></summary>
+        <div class="cat-body">
+          <div class="entry free" data-search="WHO mhGAP mental health crisis counseling trauma grief">
+            <div class="entry-title"><a href="https://www.who.int/publications/i/item/9789241549790" target="_blank">mhGAP Intervention Guide v2.0</a></div>
+            <div class="entry-badges"><span class="badge badge-format">PDF</span><span class="badge badge-cc">CC BY-NC-SA</span><span class="badge badge-size">~5MB</span></div>
+            <div class="entry-meta"><div class="entry-desc">Crisis counseling, trauma, grief, psychosis, suicide risk management in austere environments. WHO field guide for non-specialists.</div><div class="entry-path">./01_Survival/Psychology/mhgap_intervention_guide.pdf</div></div>
+          </div>
+        </div>
+      </details>
+
+      <details class="category">
+        <summary>Communications <span class="cat-count">4 items</span></summary>
+        <div class="cat-body">
+          <div class="entry free" data-search="FCC part 97 amateur ham radio rules regulations">
+            <div class="entry-title"><a href="https://www.ecfr.gov/current/title-47/chapter-I/subchapter-D/part-97" target="_blank">FCC Part 97 Amateur Radio Rules</a></div>
+            <div class="entry-badges"><span class="badge badge-format">PDF</span><span class="badge badge-pd">PUBLIC DOMAIN</span><span class="badge badge-size">~1MB</span></div>
+            <div class="entry-meta"><div class="entry-desc">Legal framework for amateur radio operation in the US. Frequency privileges, power limits, emergency provisions.</div><div class="entry-path">./01_Survival/Communications/fcc_part97_amateur_radio.pdf</div></div>
+          </div>
+          <div class="entry free" data-search="US frequency allocation chart NTIA radio spectrum">
+            <div class="entry-title"><a href="https://www.ntia.gov/page/us-frequency-allocation-chart" target="_blank">US Frequency Allocation Chart</a></div>
+            <div class="entry-badges"><span class="badge badge-format">PDF</span><span class="badge badge-pd">PUBLIC DOMAIN</span><span class="badge badge-size">~2MB</span></div>
+            <div class="entry-meta"><div class="entry-desc">Complete spectrum map from 3kHz to 300GHz. Wall-chart format. Know what frequency to find what service on.</div><div class="entry-path">./01_Survival/Communications/us_frequency_allocation.pdf</div></div>
+          </div>
+          <div class="entry free" data-search="morse code reference chart telegraph">
+            <div class="entry-title"><a href="https://archive.org/search?query=morse+code+reference" target="_blank">Morse Code Reference Sheet</a></div>
+            <div class="entry-badges"><span class="badge badge-format">PDF</span><span class="badge badge-pd">PUBLIC DOMAIN</span><span class="badge badge-size">~100KB</span></div>
+            <div class="entry-meta"><div class="entry-desc">International Morse alphabet, numbers, punctuation. Print and laminate.</div><div class="entry-path">./01_Survival/Communications/morse_code_reference.pdf</div></div>
+          </div>
+          <div class="entry free" data-search="baofeng UV-5R programming radio handheld">
+            <div class="entry-title"><a href="https://archive.org/details/baofeng-uv5r-manual" target="_blank">Baofeng UV-5R Programming Guide</a></div>
+            <div class="entry-badges"><span class="badge badge-format">PDF</span><span class="badge badge-os">OPEN</span><span class="badge badge-size">~2MB</span></div>
+            <div class="entry-meta"><div class="entry-desc">Complete guide to programming the most common budget dual-band radio. Frequencies, CHIRP software setup, repeater access.</div><div class="entry-path">./01_Survival/Communications/baofeng_uv5r_guide.pdf</div></div>
+          </div>
+        </div>
+      </details>
+    </section>
+
+    <!-- TIER 2 -->
+    <section class="tier-section" id="tier2">
+      <div class="tier-header">
+        <h2>TIER 2 — INFRASTRUCTURE</h2>
+        <span class="tier-desc">feeding 10–50 people, building tools, basic trade</span>
+        <span class="tier-size">~20GB</span>
+      </div>
+
+      <details class="category" open>
+        <summary>Agriculture &amp; Food Production <span class="cat-count">4 items</span></summary>
+        <div class="cat-body">
+          <div class="entry free" data-search="CD3WD agriculture forestry water construction farming">
+            <div class="entry-title"><a href="https://archive.org/search?query=cd3wd" target="_blank">CD3WD Project Archive</a></div>
+            <div class="entry-badges"><span class="badge badge-format">ZIP/PDF</span><span class="badge badge-pd">PUBLIC DOMAIN</span><span class="badge badge-size">~15GB</span></div>
+            <div class="entry-meta"><div class="entry-desc">Thousands of development-sector PDFs: agriculture, forestry, water, construction, livestock, food processing. Single largest Tier 2 download. Source on archive.org — search "cd3wd".</div><div class="entry-path">./02_Infrastructure/Agriculture/cd3wd/</div></div>
+          </div>
+          <div class="entry free" data-search="Appropedia appropriate technology wiki offline kiwix">
+            <div class="entry-title"><a href="https://wiki.kiwix.org/wiki/Content_in_all_languages" target="_blank">Appropedia ZIM (offline wiki)</a></div>
+            <div class="entry-badges"><span class="badge badge-format">ZIM</span><span class="badge badge-cc">CC BY-SA</span><span class="badge badge-size">~1GB</span></div>
+            <div class="entry-meta"><div class="entry-desc">Appropriate technology wiki — low-tech solutions for food, water, energy, health. Requires Kiwix reader. Open via Kiwix download page.</div><div class="entry-path">./02_Infrastructure/Agriculture/appropedia.zim</div></div>
+          </div>
+          <div class="entry free" data-search="seed saving guide seed savers exchange heirloom">
+            <div class="entry-title"><a href="https://seedsavers.org/learn" target="_blank">Seed Saving Guide</a></div>
+            <div class="entry-badges"><span class="badge badge-format">PDF</span><span class="badge badge-os">OPEN</span><span class="badge badge-size">~5MB</span></div>
+            <div class="entry-meta"><div class="entry-desc">How to harvest, clean, dry, and store seeds from 20+ vegetables. Seed Savers Exchange.</div><div class="entry-path">./02_Infrastructure/Agriculture/seed_saving_guide.pdf</div></div>
+          </div>
+          <div class="entry purchase" data-search="self sufficient gardener john seymour homestead">
+            <div class="entry-title">The New Self-Sufficient Gardener — John Seymour</div>
+            <div class="entry-badges"><span class="badge badge-buy">PURCHASE REQUIRED</span></div>
+            <div class="entry-meta"><div class="entry-desc">Most comprehensive homestead food guide. Planting, harvesting, preserving, livestock basics. ISBN: 978-1405331463.</div><div class="entry-path">— (purchase physical copy)</div></div>
+          </div>
+        </div>
+      </details>
+
+      <details class="category">
+        <summary>Construction <span class="cat-count">3 items</span></summary>
+        <div class="cat-body">
+          <div class="entry free" data-search="open source ecology global village construction set GVCS tractor sawmill">
+            <div class="entry-title"><a href="https://wiki.opensourceecology.org/wiki/Global_Village_Construction_Set" target="_blank">Global Village Construction Set (OSE)</a></div>
+            <div class="entry-badges"><span class="badge badge-format">CAD+PDF</span><span class="badge badge-cc">CC BY-SA</span><span class="badge badge-size">~2GB</span></div>
+            <div class="entry-meta"><div class="entry-desc">Complete CAD files + build instructions for 50 machines. Key machines: Compressed Earth Brick Press · LifeTrac Tractor · 3D Printer · Sawmill · Wind Turbine · Micro-house · Bakery Oven · Well-Drilling Rig.</div><div class="entry-path">./02_Infrastructure/Construction/gvcs/</div></div>
+          </div>
+          <div class="entry free" data-search="earthbag building construction cal-earth adobe">
+            <div class="entry-title"><a href="https://calearth.org/building-designs" target="_blank">Earthbag Building Guide</a></div>
+            <div class="entry-badges"><span class="badge badge-format">PDF</span><span class="badge badge-os">OPEN</span><span class="badge badge-size">~10MB</span></div>
+            <div class="entry-meta"><div class="entry-desc">Build permanent structures from sandbags filled with local soil. No wood, no concrete required. Cal-Earth Institute.</div><div class="entry-path">./02_Infrastructure/Construction/earthbag_building_guide.pdf</div></div>
+          </div>
+          <div class="entry free" data-search="cob building adobe rammed earth natural building">
+            <div class="entry-title"><a href="https://archive.org/search?query=cob+building" target="_blank">Cob Building Handbook</a></div>
+            <div class="entry-badges"><span class="badge badge-format">PDF</span><span class="badge badge-os">OPEN</span><span class="badge badge-size">~5MB</span></div>
+            <div class="entry-meta"><div class="entry-desc">Clay-sand-straw mixture construction. Zero-tool permanent housing. Load-bearing walls, arches, domes.</div><div class="entry-path">./02_Infrastructure/Construction/cob_building_handbook.pdf</div></div>
+          </div>
+        </div>
+      </details>
+
+      <details class="category">
+        <summary>Water &amp; Sanitation <span class="cat-count">3 items</span></summary>
+        <div class="cat-body">
+          <div class="entry free" data-search="well drilling manual UNICEF hand pump water">
+            <div class="entry-title"><a href="https://www.unicef.org/wash/files/WASHTech_handdrilling_Manual_FINAL.pdf" target="_blank">UNICEF/WHO Well Drilling Manual</a></div>
+            <div class="entry-badges"><span class="badge badge-format">PDF</span><span class="badge badge-os">OPEN</span><span class="badge badge-size">~5MB</span></div>
+            <div class="entry-meta"><div class="entry-desc">Hand-drilling and percussion well construction. Access groundwater with minimal equipment. UNICEF field manual.</div><div class="entry-path">./02_Infrastructure/Water_Sanitation/unicef_well_drilling.pdf</div></div>
+          </div>
+          <div class="entry free" data-search="rainwater harvesting collection storage CAWST">
+            <div class="entry-title"><a href="https://resources.cawst.org/" target="_blank">Rainwater Harvesting Manual</a></div>
+            <div class="entry-badges"><span class="badge badge-format">PDF</span><span class="badge badge-cc">CC BY</span><span class="badge badge-size">~8MB</span></div>
+            <div class="entry-meta"><div class="entry-desc">Collection systems, storage tanks, first-flush diverters, treatment. Household to community scale. CAWST.</div><div class="entry-path">./02_Infrastructure/Water_Sanitation/rainwater_harvesting.pdf</div></div>
+          </div>
+          <div class="entry purchase" data-search="humanure handbook composting toilet human waste sanitation">
+            <div class="entry-title">Humanure Handbook — Joseph Jenkins (excerpts free)</div>
+            <div class="entry-badges"><span class="badge badge-buy">PURCHASE REQUIRED (full)</span></div>
+            <div class="entry-meta"><div class="entry-desc">Composting human waste safely. Full text copyrighted — free excerpts at humanurehandbook.com. ISBN: 978-0964425835.</div><div class="entry-path">./02_Infrastructure/Water_Sanitation/humanure_excerpts.pdf</div></div>
+          </div>
+        </div>
+      </details>
+
+      <details class="category">
+        <summary>Energy <span class="cat-count">3 items</span></summary>
+        <div class="cat-body">
+          <div class="entry free" data-search="micro hydro turbine water power electricity practical action">
+            <div class="entry-title"><a href="https://practicalaction.org/knowledge-centre/resources/" target="_blank">Micro-Hydro Turbine Technical Briefs</a></div>
+            <div class="entry-badges"><span class="badge badge-format">PDF</span><span class="badge badge-os">OPEN</span><span class="badge badge-size">~3MB</span></div>
+            <div class="entry-meta"><div class="entry-desc">Build a run-of-river turbine for off-grid electricity if near running water. Practical Action technical brief series.</div><div class="entry-path">./02_Infrastructure/Energy/micro_hydro_turbine.pdf</div></div>
+          </div>
+          <div class="entry free" data-search="solar panel wiring 12v 24v off grid system">
+            <div class="entry-title"><a href="https://archive.org/search?query=off+grid+solar+wiring" target="_blank">Small Solar 12V/24V Wiring Guide</a></div>
+            <div class="entry-badges"><span class="badge badge-format">PDF</span><span class="badge badge-os">OPEN</span><span class="badge badge-size">~5MB</span></div>
+            <div class="entry-meta"><div class="entry-desc">Panel sizing, battery banks, charge controllers, inverters, wire gauging. Household off-grid solar setup.</div><div class="entry-path">./02_Infrastructure/Energy/small_solar_wiring.pdf</div></div>
+          </div>
+          <div class="entry free" data-search="biogas digester methane construction anaerobic">
+            <div class="entry-title">Biogas Digester Construction</div>
+            <div class="entry-badges"><span class="badge badge-format">PDF</span><span class="badge badge-pd">PUBLIC DOMAIN</span><span class="badge badge-size">~8MB</span></div>
+            <div class="entry-meta"><div class="entry-desc">Convert animal/human waste into cooking gas. Fixed-dome and floating-drum designs. Covered in CD3WD archive.</div><div class="entry-path">./02_Infrastructure/Energy/ (see CD3WD)</div></div>
+          </div>
+        </div>
+      </details>
+
+      <details class="category">
+        <summary>Preservation &amp; Storage <span class="cat-count">1 item</span></summary>
+        <div class="cat-body">
+          <div class="entry free" data-search="USDA canning home preservation food storage">
+            <div class="entry-title"><a href="https://nchfp.uga.edu/publications/publications_usda.html" target="_blank">USDA Complete Guide to Home Canning</a></div>
+            <div class="entry-badges"><span class="badge badge-format">PDF</span><span class="badge badge-pd">PUBLIC DOMAIN</span><span class="badge badge-size">~5MB</span></div>
+            <div class="entry-meta"><div class="entry-desc">Definitive food preservation reference. Water bath and pressure canning, botulism prevention, tested recipes. NCHFP.</div><div class="entry-path">./02_Infrastructure/Preservation/usda_home_canning.pdf</div></div>
+          </div>
+        </div>
+      </details>
+    </section>
+
+    <!-- TIER 3 -->
+    <section class="tier-section" id="tier3">
+      <div class="tier-header">
+        <h2>TIER 3 — INDUSTRY</h2>
+        <span class="tier-desc">light industry, power grids, chemistry, mass communication, education systems</span>
+        <span class="tier-size">~100GB</span>
+      </div>
+
+      <details class="category" open>
+        <summary>Encyclopedia — The Knowledge Base <span class="cat-count">4 items · backbone of Tier 3</span></summary>
+        <div class="cat-body">
+          <div class="entry free" data-search="wikipedia english offline kiwix ZIM encyclopedia">
+            <div class="entry-title"><a href="https://download.kiwix.org/zim/wikipedia/" target="_blank">Wikipedia — English (all, with images)</a></div>
+            <div class="entry-badges"><span class="badge badge-format">ZIM</span><span class="badge badge-cc">CC BY-SA</span><span class="badge badge-size">~95GB</span></div>
+            <div class="entry-meta"><div class="entry-desc">THE backbone. Chemistry, physics, metallurgy, history, medicine, engineering, math — all of it. Download the "all" variant with images. Requires Kiwix.</div><div class="entry-path">./03_Industry/Encyclopedia/wikipedia_en_all.zim</div></div>
+          </div>
+          <div class="entry free" data-search="project gutenberg books public domain literature kiwix">
+            <div class="entry-title"><a href="https://download.kiwix.org/zim/gutenberg/" target="_blank">Project Gutenberg (all books)</a></div>
+            <div class="entry-badges"><span class="badge badge-format">ZIM</span><span class="badge badge-pd">PUBLIC DOMAIN</span><span class="badge badge-size">~60GB (images) / ~3GB (text)</span></div>
+            <div class="entry-meta"><div class="entry-desc">60,000+ public domain books. Text-only ZIM is 3GB; full-images variant is 60GB. Recommend text-only for space efficiency.</div><div class="entry-path">./03_Industry/Encyclopedia/gutenberg_en_all.zim</div></div>
+          </div>
+          <div class="entry free" data-search="stack exchange Q&A engineering programming homesteading offline kiwix">
+            <div class="entry-title"><a href="https://download.kiwix.org/zim/stack_exchange/" target="_blank">StackExchange Offline (selected sites)</a></div>
+            <div class="entry-badges"><span class="badge badge-format">ZIM</span><span class="badge badge-cc">CC BY-SA</span><span class="badge badge-size">~15GB (selected)</span></div>
+            <div class="entry-meta"><div class="entry-desc">Prioritize: HomeImprovement · DIY · Gardening · Chemistry · Physics · Engineering · Survival · Cooking. Download individually by site from Kiwix.</div><div class="entry-path">./03_Industry/Encyclopedia/stackexchange_selected.zim</div></div>
+          </div>
+          <div class="entry free" data-search="wikibooks textbook math science language kiwix offline">
+            <div class="entry-title"><a href="https://download.kiwix.org/zim/wikibooks/" target="_blank">Wikibooks — English</a></div>
+            <div class="entry-badges"><span class="badge badge-format">ZIM</span><span class="badge badge-cc">CC BY-SA</span><span class="badge badge-size">~2GB</span></div>
+            <div class="entry-meta"><div class="entry-desc">Textbook-quality content: math, science, languages, engineering, cooking. More structured than Wikipedia for learning.</div><div class="entry-path">./03_Industry/Encyclopedia/wikibooks_en_all.zim</div></div>
+          </div>
+        </div>
+      </details>
+
+      <details class="category">
+        <summary>Metallurgy &amp; Smithing <span class="cat-count">1 item</span></summary>
+        <div class="cat-body">
+          <div class="entry free" data-search="blacksmithing practical metallurgy iron steel forge">
+            <div class="entry-title"><a href="https://archive.org/search?query=practical+blacksmithing+richardson" target="_blank">Practical Blacksmithing (4 vols., 1889)</a></div>
+            <div class="entry-badges"><span class="badge badge-format">PDF</span><span class="badge badge-pd">PUBLIC DOMAIN</span><span class="badge badge-size">~30MB</span></div>
+            <div class="entry-meta"><div class="entry-desc">M.T. Richardson's comprehensive Victorian-era smithing reference. Forge operations, tool making, heat treatment, alloy basics.</div><div class="entry-path">./03_Industry/Metallurgy/practical_blacksmithing_richardson.pdf</div></div>
+          </div>
+        </div>
+      </details>
+
+      <details class="category">
+        <summary>Chemistry (Applied) <span class="cat-count">3 items + Wikipedia</span></summary>
+        <div class="cat-body">
+          <div class="entry free" data-search="soap making lye chemistry historical manufacturing">
+            <div class="entry-title"><a href="https://archive.org/search?query=soap+making+lye+historical" target="_blank">Soap Making Reference (historical)</a></div>
+            <div class="entry-badges"><span class="badge badge-format">PDF</span><span class="badge badge-pd">PUBLIC DOMAIN</span><span class="badge badge-size">~3MB</span></div>
+            <div class="entry-meta"><div class="entry-desc">Wood ash lye extraction + animal fat saponification. Basic sanitation chemistry. Historical industrial texts.</div><div class="entry-path">./03_Industry/Chemistry/soap_making.pdf</div></div>
+          </div>
+          <div class="entry free" data-search="glass making silica sand soda ash furnace manufacturing">
+            <div class="entry-title"><a href="https://archive.org/search?query=glass+making+historical" target="_blank">Glass Making Techniques</a></div>
+            <div class="entry-badges"><span class="badge badge-format">PDF</span><span class="badge badge-pd">PUBLIC DOMAIN</span><span class="badge badge-size">~2MB</span></div>
+            <div class="entry-meta"><div class="entry-desc">Sand + soda ash + lime, furnace temperatures, annealing. Windows and containers from local silica.</div><div class="entry-path">./03_Industry/Chemistry/glass_making.pdf</div></div>
+          </div>
+          <div class="entry free" data-search="paper making pulp cellulose manufacturing">
+            <div class="entry-title"><a href="https://archive.org/search?query=paper+making+historical" target="_blank">Paper Making Manual</a></div>
+            <div class="entry-badges"><span class="badge badge-format">PDF</span><span class="badge badge-pd">PUBLIC DOMAIN</span><span class="badge badge-size">~3MB</span></div>
+            <div class="entry-meta"><div class="entry-desc">Rags-to-paper process. Pulping, vat forming, pressing, drying. Critical for record-keeping and printing.</div><div class="entry-path">./03_Industry/Chemistry/paper_making.pdf</div></div>
+          </div>
+        </div>
+      </details>
+
+      <details class="category">
+        <summary>Power (Grid-scale) <span class="cat-count">2 items</span></summary>
+        <div class="cat-body">
+          <div class="entry free" data-search="steam engine construction Victorian historical power generation">
+            <div class="entry-title"><a href="https://archive.org/search?query=steam+engine+construction+historical" target="_blank">Steam Engine Construction (Victorian texts)</a></div>
+            <div class="entry-badges"><span class="badge badge-format">PDF</span><span class="badge badge-pd">PUBLIC DOMAIN</span><span class="badge badge-size">~20MB</span></div>
+            <div class="entry-meta"><div class="entry-desc">Multiple Victorian-era engineering texts on steam boiler and engine construction. The bridge between wood fire and electrical generation.</div><div class="entry-path">./03_Industry/Power/steam_engine_historical.pdf</div></div>
+          </div>
+          <div class="entry free" data-search="Hugh Piggott wind turbine design open source energy">
+            <div class="entry-title"><a href="https://scoraigwind.co.uk/" target="_blank">Hugh Piggott Wind Turbine Design</a></div>
+            <div class="entry-badges"><span class="badge badge-format">PDF</span><span class="badge badge-cc">CC</span><span class="badge badge-size">~10MB</span></div>
+            <div class="entry-meta"><div class="entry-desc">Build a 2–4kW permanent-magnet wind turbine from scratch. Open-source design by Scotland's foremost DIY wind engineer.</div><div class="entry-path">./03_Industry/Power/piggott_wind_turbine.pdf</div></div>
+          </div>
+        </div>
+      </details>
+
+      <details class="category">
+        <summary>Communications <span class="cat-count">2 items</span></summary>
+        <div class="cat-body">
+          <div class="entry free" data-search="meshtastic lora mesh network radio off-grid communications">
+            <div class="entry-title"><a href="https://meshtastic.org/docs/" target="_blank">Meshtastic / LoRa Mesh Networking Docs</a></div>
+            <div class="entry-badges"><span class="badge badge-format">PDF/HTML</span><span class="badge badge-os">Apache 2.0</span><span class="badge badge-size">~5MB</span></div>
+            <div class="entry-meta"><div class="entry-desc">Encrypted long-range radio mesh network using cheap LoRa modules. Town-to-town communication without internet infrastructure.</div><div class="entry-path">./03_Industry/Communications/meshtastic_docs.pdf</div></div>
+          </div>
+          <div class="entry free" data-search="semaphore flag signaling signal communication visual">
+            <div class="entry-title"><a href="https://archive.org/search?query=flag+signaling+semaphore" target="_blank">Semaphore &amp; Flag Signaling Systems</a></div>
+            <div class="entry-badges"><span class="badge badge-format">PDF</span><span class="badge badge-pd">PUBLIC DOMAIN</span><span class="badge badge-size">~2MB</span></div>
+            <div class="entry-meta"><div class="entry-desc">Visual communication when radio fails. Naval flag alphabet, semaphore positions, signal fire protocols.</div><div class="entry-path">./03_Industry/Communications/flag_semaphore_signaling.pdf</div></div>
+          </div>
+        </div>
+      </details>
+
+      <details class="category">
+        <summary>Medicine (Advanced) <span class="cat-count">2 items</span></summary>
+        <div class="cat-body">
+          <div class="entry free" data-search="WHO essential medicines list pharmacology drugs">
+            <div class="entry-title"><a href="https://www.who.int/publications/i/item/WHO-MHP-HPS-EML-2023.02" target="_blank">WHO Model List of Essential Medicines (23rd ed.)</a></div>
+            <div class="entry-badges"><span class="badge badge-format">PDF</span><span class="badge badge-os">OPEN</span><span class="badge badge-size">~1MB</span></div>
+            <div class="entry-meta"><div class="entry-desc">The 502 medicines a functioning health system needs. Stock list for a community pharmacy or medical cache.</div><div class="entry-path">./03_Industry/Medicine_Advanced/who_essential_medicines.pdf</div></div>
+          </div>
+          <div class="entry free" data-search="herbal medicine pharmacopoeia plants medicinal natural remedies">
+            <div class="entry-title"><a href="https://www.who.int/medicines/publications/pharmacopoeia/en/" target="_blank">WHO Herbal Medicine Pharmacopoeia</a></div>
+            <div class="entry-badges"><span class="badge badge-format">PDF</span><span class="badge badge-os">OPEN</span><span class="badge badge-size">~10MB</span></div>
+            <div class="entry-meta"><div class="entry-desc">WHO monographs on medicinal plants. Dosages, preparations, contraindications. When pharmaceutical supply chains fail.</div><div class="entry-path">./03_Industry/Medicine_Advanced/herbal_medicine_pharmacopoeia.pdf</div></div>
+          </div>
+        </div>
+      </details>
+
+      <details class="category">
+        <summary>Education <span class="cat-count">1 item</span></summary>
+        <div class="cat-body">
+          <div class="entry free" data-search="Khan Academy education math science computing offline kiwix">
+            <div class="entry-title"><a href="https://download.kiwix.org/zim/khan_academy/" target="_blank">Khan Academy Lite</a></div>
+            <div class="entry-badges"><span class="badge badge-format">ZIM</span><span class="badge badge-cc">CC BY-NC-SA</span><span class="badge badge-size">~15GB</span></div>
+            <div class="entry-meta"><div class="entry-desc">Full K-12 + university math, science, computing curriculum. Structured lessons, exercises. The offline school. Requires Kiwix.</div><div class="entry-path">./03_Industry/Education/khan_academy.zim</div></div>
+          </div>
+        </div>
+      </details>
+    </section>
+
+    <!-- TIER 4 -->
+    <section class="tier-section" id="tier4">
+      <div class="tier-header">
+        <h2>TIER 4 — GOVERNANCE</h2>
+        <span class="tier-desc">preventing internal collapse — the layer everyone forgets, most important long-term</span>
+        <span class="tier-size">~5GB</span>
+      </div>
+
+      <details class="category" open>
+        <summary>Constitutions &amp; Governance Templates <span class="cat-count">8 items</span></summary>
+        <div class="cat-body">
+          <div class="entry free" data-search="US constitution bill of rights amendments federal government">
+            <div class="entry-title"><a href="https://constitution.congress.gov/" target="_blank">US Constitution + Bill of Rights + All Amendments</a></div>
+            <div class="entry-badges"><span class="badge badge-format">PDF</span><span class="badge badge-pd">PUBLIC DOMAIN</span><span class="badge badge-size">~200KB</span></div>
+            <div class="entry-meta"><div class="entry-desc">Original constitutional structure. Separation of powers, rights framework, amendment process. The template.</div><div class="entry-path">./04_Governance/Constitutions/us_constitution_full.pdf</div></div>
+          </div>
+          <div class="entry free" data-search="federalist papers Hamilton Madison Jay constitutional design">
+            <div class="entry-title"><a href="https://archive.org/details/federalistpaper00madigoog" target="_blank">The Federalist Papers</a></div>
+            <div class="entry-badges"><span class="badge badge-format">PDF</span><span class="badge badge-pd">PUBLIC DOMAIN</span><span class="badge badge-size">~3MB</span></div>
+            <div class="entry-meta"><div class="entry-desc">85 essays explaining the design logic behind the US Constitution. The reasoning behind the rules — essential for adapting them.</div><div class="entry-path">./04_Governance/Constitutions/federalist_papers.pdf</div></div>
+          </div>
+          <div class="entry free" data-search="great law of peace iroquois confederacy Gayanashagowa decentralized governance">
+            <div class="entry-title"><a href="https://archive.org/search?query=great+law+of+peace+iroquois" target="_blank">The Great Law of Peace (Gayanashagowa)</a></div>
+            <div class="entry-badges"><span class="badge badge-format">PDF</span><span class="badge badge-pd">PUBLIC DOMAIN</span><span class="badge badge-size">~500KB</span></div>
+            <div class="entry-meta"><div class="entry-desc">Iroquois Confederacy constitution. Decentralized confederal model with built-in accountability: chiefs serve at pleasure of clan mothers. Influenced US founders directly.</div><div class="entry-path">./04_Governance/Constitutions/great_law_of_peace.pdf</div></div>
+          </div>
+          <div class="entry free" data-search="Swiss federal constitution direct democracy canton subsidiarity">
+            <div class="entry-title"><a href="https://www.fedlex.admin.ch/eli/cc/1999/404/en" target="_blank">Swiss Federal Constitution (English)</a></div>
+            <div class="entry-badges"><span class="badge badge-format">PDF</span><span class="badge badge-pd">PUBLIC DOMAIN</span><span class="badge badge-size">~500KB</span></div>
+            <div class="entry-meta"><div class="entry-desc">Model for canton-level direct democracy and subsidiarity — decisions made at the lowest practical level. One of the most stable governance models in history.</div><div class="entry-path">./04_Governance/Constitutions/swiss_federal_constitution.pdf</div></div>
+          </div>
+          <div class="entry free" data-search="Magna Carta 1215 rights limits royal power">
+            <div class="entry-title"><a href="https://archive.org/details/magnacarta" target="_blank">Magna Carta (1215)</a></div>
+            <div class="entry-badges"><span class="badge badge-format">PDF</span><span class="badge badge-pd">PUBLIC DOMAIN</span><span class="badge badge-size">~100KB</span></div>
+            <div class="entry-meta"><div class="entry-desc">First formal limits on sovereign power. Due process, property rights, no arbitrary imprisonment. Foundation of constitutional rule.</div><div class="entry-path">./04_Governance/Constitutions/magna_carta.pdf</div></div>
+          </div>
+          <div class="entry free" data-search="UDHR universal declaration human rights UN 1948">
+            <div class="entry-title"><a href="https://www.un.org/en/about-us/universal-declaration-of-human-rights" target="_blank">Universal Declaration of Human Rights (1948)</a></div>
+            <div class="entry-badges"><span class="badge badge-format">PDF</span><span class="badge badge-pd">PUBLIC DOMAIN</span><span class="badge badge-size">~200KB</span></div>
+            <div class="entry-meta"><div class="entry-desc">30 articles. The international consensus on what a person is owed by any government. Baseline for any new constitution.</div><div class="entry-path">./04_Governance/Constitutions/udhr.pdf</div></div>
+          </div>
+          <div class="entry free" data-search="Robert's rules of order meeting governance procedure">
+            <div class="entry-title"><a href="https://archive.org/details/robertsrulesofor00robe_0" target="_blank">Robert's Rules of Order (1915 ed.)</a></div>
+            <div class="entry-badges"><span class="badge badge-format">PDF</span><span class="badge badge-pd">PUBLIC DOMAIN</span><span class="badge badge-size">~5MB</span></div>
+            <div class="entry-meta"><div class="entry-desc">Meeting governance: motions, quorum, voting, amendments, debate. How to run a group decision process without it becoming a mob.</div><div class="entry-path">./04_Governance/Constitutions/roberts_rules_of_order.pdf</div></div>
+          </div>
+        </div>
+      </details>
+
+      <details class="category">
+        <summary>Economics &amp; Resource Management <span class="cat-count">4 items</span></summary>
+        <div class="cat-body">
+          <div class="entry free" data-search="wealth of nations adam smith economics market division labor">
+            <div class="entry-title"><a href="https://archive.org/details/WealthOfNationsAdamSmith" target="_blank">The Wealth of Nations — Adam Smith</a></div>
+            <div class="entry-badges"><span class="badge badge-format">PDF</span><span class="badge badge-pd">PUBLIC DOMAIN</span><span class="badge badge-size">~5MB</span></div>
+            <div class="entry-meta"><div class="entry-desc">How markets form, why specialization works, what disrupts trade. The diagnostic framework for building an economy from scratch.</div><div class="entry-path">./04_Governance/Economics/wealth_of_nations.pdf</div></div>
+          </div>
+          <div class="entry free" data-search="capital Marx labor exploitation surplus value economics">
+            <div class="entry-title"><a href="https://archive.org/details/capitalcritiqueo00marx" target="_blank">Capital Vol. I — Karl Marx</a></div>
+            <div class="entry-badges"><span class="badge badge-format">PDF</span><span class="badge badge-pd">PUBLIC DOMAIN</span><span class="badge badge-size">~8MB</span></div>
+            <div class="entry-meta"><div class="entry-desc">Include not as ideology but as diagnostic: how labor extraction patterns emerge, what warning signs look like in early economic systems.</div><div class="entry-path">./04_Governance/Economics/capital_vol1_marx.pdf</div></div>
+          </div>
+          <div class="entry purchase" data-search="governing commons Ostrom shared resources tragedy commons">
+            <div class="entry-title">Governing the Commons — Elinor Ostrom</div>
+            <div class="entry-badges"><span class="badge badge-buy">PURCHASE REQUIRED</span></div>
+            <div class="entry-meta"><div class="entry-desc">8 rules for managing shared resources without tragedy-of-the-commons collapse. Nobel Prize-winning framework. ISBN: 978-1107569782. Ostrom's 8 rules also summarized in her Wikipedia article (Tier 3).</div><div class="entry-path">— (purchase)</div></div>
+          </div>
+          <div class="entry free" data-search="Pacioli double entry bookkeeping accounting ledger 1494">
+            <div class="entry-title"><a href="https://archive.org/search?query=pacioli+summa+de+arithmetica" target="_blank">Pacioli's Summa — Double-Entry Bookkeeping (1494)</a></div>
+            <div class="entry-badges"><span class="badge badge-format">PDF</span><span class="badge badge-pd">PUBLIC DOMAIN</span><span class="badge badge-size">~2MB</span></div>
+            <div class="entry-meta"><div class="entry-desc">The original double-entry accounting text. How to track debts, assets, and trade fairly across a community. Foundation of any trade system.</div><div class="entry-path">./04_Governance/Economics/pacioli_summa_double_entry.pdf</div></div>
+          </div>
+        </div>
+      </details>
+
+      <details class="category">
+        <summary>Philosophy &amp; Ethics <span class="cat-count">4 items</span></summary>
+        <div class="cat-body">
+          <div class="entry free" data-search="Marcus Aurelius meditations stoic leadership crisis">
+            <div class="entry-title"><a href="https://archive.org/details/meditationsofmar00marc" target="_blank">Meditations — Marcus Aurelius</a></div>
+            <div class="entry-badges"><span class="badge badge-format">PDF</span><span class="badge badge-pd">PUBLIC DOMAIN</span><span class="badge badge-size">~1MB</span></div>
+            <div class="entry-meta"><div class="entry-desc">Stoic framework for leading under pressure. Duty, resilience, rational decision-making. Written by a ruler managing empire-scale crisis.</div><div class="entry-path">./04_Governance/Philosophy/marcus_aurelius_meditations.pdf</div></div>
+          </div>
+          <div class="entry free" data-search="Tao Te Ching Lao Tzu governance non-coercion leadership">
+            <div class="entry-title"><a href="https://archive.org/search?query=tao+te+ching+lao+tzu" target="_blank">Tao Te Ching — Lao Tzu</a></div>
+            <div class="entry-badges"><span class="badge badge-format">PDF</span><span class="badge badge-pd">PUBLIC DOMAIN</span><span class="badge badge-size">~500KB</span></div>
+            <div class="entry-meta"><div class="entry-desc">Governance through non-coercion. 81 verses on leading without domination. Counterweight to authoritarian drift in crisis governance.</div><div class="entry-path">./04_Governance/Philosophy/tao_te_ching.pdf</div></div>
+          </div>
+          <div class="entry free" data-search="Aristotle politics city-state formation governance">
+            <div class="entry-title"><a href="https://archive.org/details/politicsofarist00arisuoft" target="_blank">Politics — Aristotle</a></div>
+            <div class="entry-badges"><span class="badge badge-format">PDF</span><span class="badge badge-pd">PUBLIC DOMAIN</span><span class="badge badge-size">~2MB</span></div>
+            <div class="entry-meta"><div class="entry-desc">City-state formation theory. Forms of government, their failure modes, citizen participation. Still the foundational text on political organization.</div><div class="entry-path">./04_Governance/Philosophy/aristotle_politics.pdf</div></div>
+          </div>
+          <div class="entry free" data-search="John Locke two treatises government natural rights property">
+            <div class="entry-title"><a href="https://archive.org/details/twotreatisesofgo00lock" target="_blank">Two Treatises of Government — John Locke</a></div>
+            <div class="entry-badges"><span class="badge badge-format">PDF</span><span class="badge badge-pd">PUBLIC DOMAIN</span><span class="badge badge-size">~2MB</span></div>
+            <div class="entry-meta"><div class="entry-desc">Natural rights foundation. Consent of the governed, property rights, right of revolution. The philosophical ground of most modern constitutions.</div><div class="entry-path">./04_Governance/Philosophy/locke_two_treatises.pdf</div></div>
+          </div>
+        </div>
+      </details>
+
+      <details class="category">
+        <summary>Historical Collapse Case Studies <span class="cat-count">2 items + Wikipedia</span></summary>
+        <div class="cat-body">
+          <div class="entry free" data-search="Gibbon decline fall roman empire history collapse">
+            <div class="entry-title"><a href="https://archive.org/details/declineandfallof00gibb" target="_blank">Decline and Fall of the Roman Empire — Gibbon</a></div>
+            <div class="entry-badges"><span class="badge badge-format">PDF</span><span class="badge badge-pd">PUBLIC DOMAIN</span><span class="badge badge-size">~30MB</span></div>
+            <div class="entry-meta"><div class="entry-desc">The definitive case study in civilizational collapse. Military overextension, currency debasement, institutional decay, barbarian pressure.</div><div class="entry-path">./04_Governance/History/gibbon_decline_fall_roman_empire.pdf</div></div>
+          </div>
+          <div class="entry purchase" data-search="Diamond collapse Easter Island Maya Norse civilization failure">
+            <div class="entry-title">Collapse — Jared Diamond</div>
+            <div class="entry-badges"><span class="badge badge-buy">PURCHASE REQUIRED</span></div>
+            <div class="entry-meta"><div class="entry-desc">Why societies fail: deforestation, soil depletion, hostile neighbors, trade loss, cultural rigidity. ISBN: 978-0143117001. Case studies covered in Wikipedia ZIM (Tier 3).</div><div class="entry-path">— (purchase)</div></div>
+          </div>
+        </div>
+      </details>
+
+      <details class="category">
+        <summary>Military &amp; Security (Defensive) <span class="cat-count">2 items</span></summary>
+        <div class="cat-body">
+          <div class="entry free" data-search="Sun Tzu art of war strategy military tactics">
+            <div class="entry-title"><a href="https://archive.org/details/theartofwar00suntgoog" target="_blank">The Art of War — Sun Tzu</a></div>
+            <div class="entry-badges"><span class="badge badge-format">PDF</span><span class="badge badge-pd">PUBLIC DOMAIN</span><span class="badge badge-size">~500KB</span></div>
+            <div class="entry-meta"><div class="entry-desc">Strategic principles for conflict avoidance and decisive action. More relevant for community defense planning than offensive war.</div><div class="entry-path">./04_Governance/Defense/sun_tzu_art_of_war.pdf</div></div>
+          </div>
+          <div class="entry free" data-search="Geneva conventions ICRC rules of war humanitarian law">
+            <div class="entry-title"><a href="https://www.icrc.org/en/document/geneva-conventions-1949-additional-protocols" target="_blank">Geneva Conventions (simplified summary)</a></div>
+            <div class="entry-badges"><span class="badge badge-format">PDF</span><span class="badge badge-os">OPEN</span><span class="badge badge-size">~2MB</span></div>
+            <div class="entry-meta"><div class="entry-desc">Rules of engagement for armed conflict. Prisoner treatment, civilian protection, medical personnel immunity. ICRC summary format.</div><div class="entry-path">./04_Governance/Defense/geneva_conventions_summary.pdf</div></div>
+          </div>
+        </div>
+      </details>
+    </section>
+
+    <!-- TIER 5 -->
+    <section class="tier-section" id="tier5">
+      <div class="tier-header">
+        <h2>TIER 5 — RENAISSANCE</h2>
+        <span class="tier-desc">once survival is handled and governance is stable, rebuild culture and push forward</span>
+        <span class="tier-size">~10GB</span>
+      </div>
+
+      <details class="category" open>
+        <summary>Mathematics <span class="cat-count">1 item + Khan Academy (Tier 3)</span></summary>
+        <div class="cat-body">
+          <div class="entry free" data-search="Euclid elements geometry mathematics foundation">
+            <div class="entry-title"><a href="https://archive.org/details/thirteenbookseu00heibgoog" target="_blank">Euclid's Elements (Heath translation)</a></div>
+            <div class="entry-badges"><span class="badge badge-format">PDF</span><span class="badge badge-pd">PUBLIC DOMAIN</span><span class="badge badge-size">~5MB</span></div>
+            <div class="entry-meta"><div class="entry-desc">13 books of geometry. The foundation of mathematical reasoning for 2,300 years. T.L. Heath translation with commentary.</div><div class="entry-path">./05_Renaissance/Mathematics/euclid_elements.pdf</div></div>
+          </div>
+        </div>
+      </details>
+
+      <details class="category">
+        <summary>Science (Theoretical) <span class="cat-count">4 items</span></summary>
+        <div class="cat-body">
+          <div class="entry free" data-search="Newton Principia mathematica physics laws motion gravity">
+            <div class="entry-title"><a href="https://archive.org/details/newtonspmathema00newtrich" target="_blank">Principia Mathematica — Isaac Newton</a></div>
+            <div class="entry-badges"><span class="badge badge-format">PDF</span><span class="badge badge-pd">PUBLIC DOMAIN</span><span class="badge badge-size">~10MB</span></div>
+            <div class="entry-meta"><div class="entry-desc">Laws of motion, universal gravitation. The foundation of classical mechanics — everything engineering depends on.</div><div class="entry-path">./05_Renaissance/Science/newton_principia.pdf</div></div>
+          </div>
+          <div class="entry free" data-search="Darwin origin of species evolution biology natural selection">
+            <div class="entry-title"><a href="https://archive.org/details/onoriginofspecie00darw" target="_blank">On the Origin of Species (1st ed., 1859)</a></div>
+            <div class="entry-badges"><span class="badge badge-format">PDF</span><span class="badge badge-pd">PUBLIC DOMAIN</span><span class="badge badge-size">~3MB</span></div>
+            <div class="entry-meta"><div class="entry-desc">Natural selection and evolution. Critical for understanding disease adaptation, breeding programs, ecosystem management.</div><div class="entry-path">./05_Renaissance/Science/darwin_origin_of_species.pdf</div></div>
+          </div>
+          <div class="entry free" data-search="periodic table elements chemistry reference extraction">
+            <div class="entry-title"><a href="https://archive.org/search?query=periodic+table+reference" target="_blank">Periodic Table (extended reference)</a></div>
+            <div class="entry-badges"><span class="badge badge-format">PDF</span><span class="badge badge-pd">PUBLIC DOMAIN</span><span class="badge badge-size">~2MB</span></div>
+            <div class="entry-meta"><div class="entry-desc">Full element properties, electron configurations, common compounds, extraction methods. Chemistry reference sheet.</div><div class="entry-path">./05_Renaissance/Science/periodic_table_reference.pdf</div></div>
+          </div>
+          <div class="entry free" data-search="star charts navigation astronomy calendar planting seasons">
+            <div class="entry-title"><a href="https://archive.org/search?query=star+chart+navigation" target="_blank">Star Charts + Navigation / Planting Calendar</a></div>
+            <div class="entry-badges"><span class="badge badge-format">PDF</span><span class="badge badge-pd">PUBLIC DOMAIN</span><span class="badge badge-size">~5MB</span></div>
+            <div class="entry-meta"><div class="entry-desc">Night sky navigation without GPS. Seasonal star positions, latitude determination, planting calendars tied to celestial events.</div><div class="entry-path">./05_Renaissance/Science/star_charts_navigation.pdf</div></div>
+          </div>
+        </div>
+      </details>
+
+      <details class="category">
+        <summary>Art &amp; Music <span class="cat-count">3 items</span></summary>
+        <div class="cat-body">
+          <div class="entry free" data-search="Vitruvius architecture proportion load-bearing aesthetics design">
+            <div class="entry-title"><a href="https://archive.org/details/vitruviustenbook00vitr" target="_blank">De Architectura — Vitruvius</a></div>
+            <div class="entry-badges"><span class="badge badge-format">PDF</span><span class="badge badge-pd">PUBLIC DOMAIN</span><span class="badge badge-size">~5MB</span></div>
+            <div class="entry-meta"><div class="entry-desc">10 books on architecture: proportion, column orders, load-bearing, acoustics, engineering, aesthetics. The Roman engineering manual.</div><div class="entry-path">./05_Renaissance/Art/vitruvius_de_architectura.pdf</div></div>
+          </div>
+          <div class="entry free" data-search="drawing illustration art instruction historical fundamentals">
+            <div class="entry-title"><a href="https://archive.org/search?query=drawing+instruction+historical" target="_blank">Drawing &amp; Illustration Fundamentals (historical)</a></div>
+            <div class="entry-badges"><span class="badge badge-format">PDF</span><span class="badge badge-pd">PUBLIC DOMAIN</span><span class="badge badge-size">~10MB</span></div>
+            <div class="entry-meta"><div class="entry-desc">Public domain drawing instruction texts. Observation, proportion, perspective, composition. Record-keeping and communication through illustration.</div><div class="entry-path">./05_Renaissance/Art/drawing_fundamentals.pdf</div></div>
+          </div>
+          <div class="entry free" data-search="instrument making flute drum string construction music">
+            <div class="entry-title"><a href="https://archive.org/search?query=instrument+making+flute+drum" target="_blank">Instrument Construction Guides</a></div>
+            <div class="entry-badges"><span class="badge badge-format">PDF</span><span class="badge badge-os">OPEN</span><span class="badge badge-size">~5MB</span></div>
+            <div class="entry-meta"><div class="entry-desc">Build drums, string instruments, flutes from local materials. Music as social binding — ceremony, morale, cultural continuity.</div><div class="entry-path">./05_Renaissance/Art/instrument_construction.pdf</div></div>
+          </div>
+        </div>
+      </details>
+
+      <details class="category">
+        <summary>Language <span class="cat-count">1 item</span></summary>
+        <div class="cat-body">
+          <div class="entry free" data-search="Wiktionary dictionary grammar language translation multilingual kiwix">
+            <div class="entry-title"><a href="https://download.kiwix.org/zim/wiktionary/" target="_blank">Wiktionary ZIM (all languages)</a></div>
+            <div class="entry-badges"><span class="badge badge-format">ZIM</span><span class="badge badge-cc">CC BY-SA</span><span class="badge badge-size">~5GB</span></div>
+            <div class="entry-meta"><div class="entry-desc">Dictionaries, grammar guides, and translations for all major world languages. Bootstrap translation between communities with different native languages.</div><div class="entry-path">./05_Renaissance/Language/wiktionary_all.zim</div></div>
+          </div>
+        </div>
+      </details>
+    </section>
+
+    <!-- PURCHASE LIST -->
+    <section class="tier-section" id="purchase">
+      <div class="tier-header">
+        <h2>PURCHASE LIST</h2>
+        <span class="tier-desc">8 books that fill gaps not covered by free sources — ~$150–$200 total</span>
+      </div>
+      <details class="category" open>
+        <summary>Required Purchases <span class="cat-count">8 books</span></summary>
+        <div class="cat-body">
+          <div class="entry purchase" data-search="SAS survival handbook wiseman field craft">
+            <div class="entry-title">SAS Survival Handbook — John "Lofty" Wiseman</div>
+            <div class="entry-badges"><span class="badge badge-buy">PURCHASE</span></div>
+            <div class="entry-meta"><div class="entry-desc">Tier 1. Climate-specific survival techniques, comprehensive field craft. ISBN: 978-0062378071.</div></div>
+          </div>
+          <div class="entry purchase" data-search="The Knowledge Lewis Dartnell civilization reboot restart">
+            <div class="entry-title">The Knowledge — Lewis Dartnell</div>
+            <div class="entry-badges"><span class="badge badge-buy">PURCHASE</span></div>
+            <div class="entry-meta"><div class="entry-desc">Tier 3. Best single narrative on civilizational restart sequences. ISBN: 978-0143127048.</div></div>
+          </div>
+          <div class="entry purchase" data-search="Peterson field guide foraging edible plants regional">
+            <div class="entry-title">Peterson Field Guide (your region)</div>
+            <div class="entry-badges"><span class="badge badge-buy">PURCHASE</span></div>
+            <div class="entry-meta"><div class="entry-desc">Tier 1. Local foraging — what's edible in YOUR specific area. ISBN varies by region.</div></div>
+          </div>
+          <div class="entry purchase" data-search="ARRL ham radio license manual amateur radio">
+            <div class="entry-title">ARRL Ham Radio License Manual</div>
+            <div class="entry-badges"><span class="badge badge-buy">PURCHASE</span></div>
+            <div class="entry-meta"><div class="entry-desc">Tier 1. Complete radio licensing and operating guide. ISBN: 978-1625951373.</div></div>
+          </div>
+          <div class="entry purchase" data-search="governing commons Ostrom shared resources management">
+            <div class="entry-title">Governing the Commons — Elinor Ostrom</div>
+            <div class="entry-badges"><span class="badge badge-buy">PURCHASE</span></div>
+            <div class="entry-meta"><div class="entry-desc">Tier 4. 8-rule framework for shared resource management. ISBN: 978-1107569782.</div></div>
+          </div>
+          <div class="entry purchase" data-search="Collapse Jared Diamond civilization failure societies">
+            <div class="entry-title">Collapse — Jared Diamond</div>
+            <div class="entry-badges"><span class="badge badge-buy">PURCHASE</span></div>
+            <div class="entry-meta"><div class="entry-desc">Tier 4. Why societies fail. Pattern recognition for governance. ISBN: 978-0143117001.</div></div>
+          </div>
+          <div class="entry purchase" data-search="New Self-Sufficient Gardener John Seymour homestead food">
+            <div class="entry-title">The New Self-Sufficient Gardener — John Seymour</div>
+            <div class="entry-badges"><span class="badge badge-buy">PURCHASE</span></div>
+            <div class="entry-meta"><div class="entry-desc">Tier 2. Most comprehensive homestead food production guide. ISBN: 978-1405331463.</div></div>
+          </div>
+          <div class="entry purchase" data-search="Humanure Handbook Jenkins composting toilet sanitation">
+            <div class="entry-title">Humanure Handbook — Joseph Jenkins</div>
+            <div class="entry-badges"><span class="badge badge-buy">PURCHASE</span></div>
+            <div class="entry-meta"><div class="entry-desc">Tier 2. Complete composting toilet system design. ISBN: 978-0964425835.</div></div>
+          </div>
+        </div>
+      </details>
+    </section>
+
+    <!-- DOWNLOAD CHECKLIST -->
+    <section class="tier-section" id="checklist">
+      <div class="tier-header">
+        <h2>DOWNLOAD ORDER</h2>
+        <span class="tier-desc">largest files first — run sessions sequentially, not in parallel</span>
+      </div>
+
+      <details class="category" open>
+        <summary>Session 1 — The Big ZIMs <span class="cat-count">~185GB · plan 2–3 days on fast connection</span></summary>
+        <div class="cat-body" style="padding:4px 0;">
+          <div class="checklist-item">Wikipedia English (all, with images) — ~95GB — download.kiwix.org/zim/wikipedia/</div>
+          <div class="checklist-item">Project Gutenberg (text-only variant) — ~3GB — download.kiwix.org/zim/gutenberg/</div>
+          <div class="checklist-item">Khan Academy — ~15GB — download.kiwix.org/zim/khan_academy/</div>
+          <div class="checklist-item">StackExchange selected sites — ~15GB — download.kiwix.org/zim/stack_exchange/ (HomeImprovement, DIY, Gardening, Chemistry, Physics, Engineering, Survival, Cooking)</div>
+        </div>
+      </details>
+
+      <details class="category">
+        <summary>Session 2 — Infrastructure Archives <span class="cat-count">~18GB</span></summary>
+        <div class="cat-body" style="padding:4px 0;">
+          <div class="checklist-item">CD3WD Archive — ~15GB — archive.org (search "cd3wd")</div>
+          <div class="checklist-item">Open Source Ecology GVCS — ~2GB — wiki.opensourceecology.org</div>
+          <div class="checklist-item">Appropedia ZIM — ~1GB — download.kiwix.org/zim/</div>
+        </div>
+      </details>
+
+      <details class="category">
+        <summary>Session 3 — Wikibooks + Wiktionary <span class="cat-count">~7GB</span></summary>
+        <div class="cat-body" style="padding:4px 0;">
+          <div class="checklist-item">Wikibooks English — ~2GB — download.kiwix.org/zim/wikibooks/</div>
+          <div class="checklist-item">Wiktionary all languages — ~5GB — download.kiwix.org/zim/wiktionary/</div>
+        </div>
+      </details>
+
+      <details class="category">
+        <summary>Session 4 — Small PDFs <span class="cat-count">~500MB · fast</span></summary>
+        <div class="cat-body" style="padding:4px 0;">
+          <div class="checklist-item">Hesperian Foundation (4 books) — hesperian.org</div>
+          <div class="checklist-item">FM 21-76 + FM 5-103 + FM 5-34 + FM 21-150 — archive.org</div>
+          <div class="checklist-item">SOF Medical Handbook — archive.org</div>
+          <div class="checklist-item">WHO Water Guidelines + mhGAP + Essential Medicines — who.int</div>
+          <div class="checklist-item">CAWST Biosand Filter + Rainwater Harvesting — resources.cawst.org</div>
+          <div class="checklist-item">SODIS Guide — sodis.ch</div>
+          <div class="checklist-item">USDA Complete Canning Guide — nchfp.uga.edu</div>
+          <div class="checklist-item">US Constitution + Federalist Papers + UDHR + Magna Carta + Swiss Constitution — official sources + archive.org</div>
+          <div class="checklist-item">Great Law of Peace + Robert's Rules (1915) — archive.org</div>
+          <div class="checklist-item">Meshtastic Docs — meshtastic.org/docs</div>
+          <div class="checklist-item">Marcus Aurelius + Locke + Aristotle + Tao Te Ching — archive.org</div>
+          <div class="checklist-item">Gibbon's Decline and Fall — archive.org</div>
+          <div class="checklist-item">Practical Blacksmithing (Richardson, 4 vols) — archive.org</div>
+          <div class="checklist-item">Newton Principia + Darwin Origin + Euclid Elements — archive.org</div>
+          <div class="checklist-item">Vitruvius De Architectura — archive.org</div>
+          <div class="checklist-item">FCC Part 97 + Frequency Chart + Morse Reference + Baofeng Guide</div>
+          <div class="checklist-item">Hugh Piggott Wind Turbine Design — scoraigwind.co.uk</div>
+          <div class="checklist-item">Practical Action Micro-Hydro Briefs — practicalaction.org</div>
+          <div class="checklist-item">UNICEF Well Drilling Manual + Sun Tzu + Geneva Conventions — archive.org / icrc.org</div>
+          <div class="checklist-item">Wealth of Nations + Capital Vol I — archive.org</div>
+          <div class="checklist-item">Drawing Fundamentals + Instrument Construction + Periodic Table + Star Charts — archive.org</div>
+        </div>
+      </details>
+
+      <details class="category">
+        <summary>Session 5 — Verify &amp; Organize <span class="cat-count"></span></summary>
+        <div class="cat-body" style="padding:4px 0;">
+          <div class="checklist-item">Open index.html in Chromium on the Pi — confirm all tiers load and search works</div>
+          <div class="checklist-item">Spot-check 10 random file paths against actual SSD folder structure</div>
+          <div class="checklist-item">Purchase and add physical books — store in waterproof bag with drive</div>
+          <div class="checklist-item">Seal drive in Faraday bag / ammo can with desiccant packs</div>
+          <div class="checklist-item">Label drive exterior: "REBOOT OS v1.0 — [date]"</div>
+        </div>
+      </details>
+    </section>
+
+  </main>
+</div>
+
+<div id="footer">
+  <span class="accent">REBOOT OS v1.0</span>
+  <span>Offline Civilization Archive · ethan payton / past.El</span>
+  <span>Updated: 2026-05-06 · Total: ~137GB / 2TB SSD</span>
+</div>
+
+<script>
+  // Sidebar nav
+  const navTiers = document.querySelectorAll('.nav-tier[data-target]');
+  navTiers.forEach(nav => {
+    nav.addEventListener('click', () => {
+      navTiers.forEach(n => n.classList.remove('active'));
+      nav.classList.add('active');
+      const target = document.getElementById(nav.dataset.target);
+      if (target) target.scrollIntoView({ behavior: 'smooth', block: 'start' });
+    });
+  });
+
+  // Search
+  const searchInput = document.getElementById('search');
+  const searchCount = document.getElementById('search-count');
+  const allEntries = document.querySelectorAll('.entry[data-search], .hw-table tr[data-search], .checklist-item');
+  const allCategories = document.querySelectorAll('details.category');
+  const allSections = document.querySelectorAll('.tier-section');
+
+  searchInput.addEventListener('input', () => {
+    const query = searchInput.value.toLowerCase().trim();
+
+    if (!query) {
+      allEntries.forEach(e => e.classList.remove('hidden'));
+      allCategories.forEach(c => c.classList.remove('all-hidden'));
+      allSections.forEach(s => s.classList.remove('all-hidden'));
+      searchCount.textContent = '';
+      return;
+    }
+
+    let visibleCount = 0;
+
+    allEntries.forEach(entry => {
+      const searchText = (entry.dataset.search || '') + ' ' + (entry.textContent || '');
+      const matches = searchText.toLowerCase().includes(query);
+      entry.classList.toggle('hidden', !matches);
+      if (matches) visibleCount++;
+    });
+
+    // Show/hide categories based on whether they have visible entries
+    allCategories.forEach(cat => {
+      const visibleEntries = cat.querySelectorAll('.entry:not(.hidden), tr:not(.hidden)');
+      const hasVisible = visibleEntries.length > 0;
+      cat.classList.toggle('all-hidden', !hasVisible);
+      if (hasVisible) cat.setAttribute('open', '');
+    });
+
+    // Show/hide tier sections
+    allSections.forEach(section => {
+      const visibleCats = section.querySelectorAll('details.category:not(.all-hidden)');
+      section.classList.toggle('all-hidden', visibleCats.length === 0);
+    });
+
+    searchCount.textContent = visibleCount + ' results';
+  });
+
+  // Scroll-based active nav highlight
+  const sections = document.querySelectorAll('.tier-section');
+  const mainEl = document.getElementById('main');
+
+  mainEl.addEventListener('scroll', () => {
+    let current = '';
+    sections.forEach(section => {
+      const rect = section.getBoundingClientRect();
+      if (rect.top <= 120) current = section.id;
+    });
+    navTiers.forEach(nav => {
+      nav.classList.toggle('active', nav.dataset.target === current);
+    });
+  });
+</script>
+</body>
+</html>
