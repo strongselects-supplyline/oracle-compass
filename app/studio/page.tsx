@@ -45,9 +45,9 @@ function Timeline() {
         "all-love": "#6ee7b7", "all-love-deluxe": "#fbbf24",
         "cream": "#f472b6", "freakshow": "#c084fc", "loosies": "#60a5fa",
     };
-    // Focusing on the MOVE window (Mar-Apr/May) for better mobile visibility
-    const yearStart = new Date("2026-03-01T00:00:00");
-    const yearEnd = new Date("2026-05-01T00:00:00");
+    // Extended to cover EP release (May 15) through vault waterfall end (Jul 25)
+    const yearStart = new Date("2026-04-01T00:00:00");
+    const yearEnd = new Date("2026-08-01T00:00:00");
     const totalMs = yearEnd.getTime() - yearStart.getTime();
     const now = new Date(); now.setHours(0, 0, 0, 0);
 

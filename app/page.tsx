@@ -31,6 +31,8 @@ type ProtocolStep = { icon: string; action: string; tab?: string };
 function getProtocolSteps(dayType: string): { tagline: string; steps: ProtocolStep[] } {
   const dow = new Date().getDay();
   const workout = TRAINING_PROGRAM.find(t => t.dayOfWeek.includes(dow));
+  // Phase 1 = production sprint (through May 11). No content, no planning.
+  const isPhase1 = new Date() < new Date("2026-05-12T00:00:00");
 
   const base: ProtocolStep[] = [
     { icon: "🚗", action: "6:30 AM → DD Morning Sprint (90 min target)" },
@@ -49,7 +51,7 @@ function getProtocolSteps(dayType: string): { tagline: string; steps: ProtocolSt
       ...base,
       { icon: "🎹", action: "10 AM → Studio Block 1 (mix/vocals)" },
       { icon: "🔥", action: "4 PM → Sauna (thermal reset)" },
-      { icon: "📱", action: "Post content from STUDIO queue", tab: "studio" },
+      ...(!isPhase1 ? [{ icon: "📱", action: "Post content from STUDIO queue", tab: "studio" }] : []),
     ],
   };
   if (isStudioDay(dayType as any)) return {
@@ -58,7 +60,7 @@ function getProtocolSteps(dayType: string): { tagline: string; steps: ProtocolSt
       ...base,
       { icon: "🎹", action: "10 AM → Studio Block 1 (mix/vocals)" },
       { icon: "🎤", action: "2 PM → Studio Block 2" },
-      { icon: "📱", action: "Post content from STUDIO queue", tab: "studio" },
+      ...(!isPhase1 ? [{ icon: "📱", action: "Post content from STUDIO queue", tab: "studio" }] : []),
     ],
   };
   if (isBizDay(dayType as any)) return {
@@ -81,7 +83,7 @@ function HydrationSelector({ value, onChange }: { value: number | null; onChange
           key={n}
           onClick={() => onChange(n)}
           className={`flex-1 h-10 rounded-lg text-sm font-black transition-all active:scale-95 ${
-            value === n ? "bg-blue-500 text-white" : "bg-[#111] text-[#555] border border-[#222]"
+            value === n ? "bg-blue-500 text-white" : "bg-surface-2 text-muted border border-[var(--border)]"
           }`}
         >
           {n}
@@ -96,7 +98,7 @@ function StepCheck({ done }: { done: boolean }) {
   return (
     <div
       className={`w-5 h-5 rounded-full flex items-center justify-center flex-shrink-0 transition-all duration-300 ${
-        done ? "bg-green-500 border-green-500" : "border-2 border-[#333]"
+        done ? "bg-green-500 border-green-500" : "border-2 border-[var(--border)]"
       }`}
     >
       {done && <span className="text-black text-[10px] font-black">✓</span>}
@@ -267,7 +269,7 @@ export default function TodayPage() {
         {/* Day-type header */}
         <header className="mb-6 text-center">
           <p className="text-lg font-black tracking-tight text-white uppercase">{dayType || dateStr}</p>
-          <p className="text-[10px] font-bold tracking-[0.15em] text-[#555] uppercase mt-1">{dateStr}</p>
+          <p className="text-[10px] font-bold tracking-[0.15em] text-muted uppercase mt-1">{dateStr}</p>
         </header>
 
         {/* Sovereign Scroll — TodayPlan */}
@@ -278,11 +280,11 @@ export default function TodayPage() {
           <div className="text-center mt-12">
             <div className="text-6xl mb-6">🛑</div>
             <h2 className="text-xl font-black mb-2">Sunday is sacred.</h2>
-            <p className="text-[#666] text-sm leading-relaxed">Zero building.<br />Nadi Shodhana. Rest.<br />The week depends on this.</p>
+            <p className="text-muted text-sm leading-relaxed">Zero building.<br />Nadi Shodhana. Rest.<br />The week depends on this.</p>
 
             {griefProtocolActive && (
               <div className="mt-8 mx-auto max-w-xs text-left">
-                <p className="text-[10px] font-black tracking-[0.2em] text-[#444] uppercase mb-3">Grief Protocol</p>
+                <p className="text-[10px] font-black tracking-[0.2em] text-muted uppercase mb-3">Grief Protocol</p>
                 <button
                   onClick={async () => {
                     const next = !griefJournalDone;
@@ -291,15 +293,15 @@ export default function TodayPage() {
                     await saveSundayChecklist({ ...checklist, griefJournalDone: next });
                   }}
                   className={`w-full flex items-center gap-3 p-4 rounded-xl border text-left transition-all ${
-                    griefJournalDone ? "border-green-500/30 bg-green-500/5" : "border-[#222] bg-[#0a0a0a]"
+                    griefJournalDone ? "border-green-500/30 bg-green-500/5" : "border-[var(--border)] bg-surface-1"
                   }`}
                 >
-                  <span className={`w-5 h-5 rounded-full border-2 flex items-center justify-center flex-shrink-0 transition-all ${griefJournalDone ? "border-green-500 bg-green-500" : "border-[#444]"}`}>
+                  <span className={`w-5 h-5 rounded-full border-2 flex items-center justify-center flex-shrink-0 transition-all ${griefJournalDone ? "border-green-500 bg-green-500" : "border-[var(--border)]"}`}>
                     {griefJournalDone && <span className="text-black text-xs font-black">✓</span>}
                   </span>
                   <div>
                     <p className={`text-sm font-bold ${griefJournalDone ? "text-green-400" : "text-white"}`}>Write to your father — 20 min</p>
-                    <p className="text-[11px] text-[#555] mt-0.5">What you'd say. What you'd ask. What you grieve.</p>
+                    <p className="text-[11px] text-muted mt-0.5">What you'd say. What you'd ask. What you grieve.</p>
                   </div>
                 </button>
               </div>
@@ -318,7 +320,7 @@ export default function TodayPage() {
                 <input
                   autoFocus
                   type="text"
-                  className="w-full bg-transparent text-xl font-black text-center text-white outline-none placeholder-[#333]"
+                  className="w-full bg-transparent text-xl font-black text-center text-white outline-none placeholder-muted"
                   value={oneThingInput}
                   onChange={e => setOneThingInput(e.target.value)}
                   onKeyDown={e => e.key === "Enter" && handleSaveOneThing()}
@@ -326,7 +328,7 @@ export default function TodayPage() {
                   placeholder="The single move..."
                 />
               ) : (
-                <p className={`text-xl font-black leading-tight tracking-tight px-4 ${log.oneThing ? "text-white" : "text-[#555] opacity-60"}`}>
+                <p className={`text-xl font-black leading-tight tracking-tight px-4 ${log.oneThing ? "text-white" : "text-muted opacity-60"}`}>
                   {log.oneThing || "Tap to define the single move →"}
                 </p>
               )}
@@ -336,15 +338,15 @@ export default function TodayPage() {
             {protocol.steps.length > 0 && (
               <div className="mb-6">
                 <div className="flex justify-between items-center mb-3 px-1">
-                  <h3 className="text-[10px] font-black tracking-[0.2em] text-[#555] uppercase">{dayType}</h3>
-                  <span className="text-[10px] text-[#444] font-bold">{protocol.tagline}</span>
+                  <h3 className="text-[10px] font-black tracking-[0.2em] text-muted uppercase">{dayType}</h3>
+                  <span className="text-[10px] text-muted font-bold">{protocol.tagline}</span>
                 </div>
                 {showProtocolExpanded && (
-                  <div className="card !p-0 overflow-hidden divide-y divide-[#1a1a1a] animate-fade-in">
+                  <div className="card !p-0 overflow-hidden divide-y divide-[var(--border)] animate-fade-in">
                     {protocol.steps.map((step, i) => (
                       <div key={i} className="flex items-center gap-3 px-4 py-3.5">
                         <span className="text-lg">{step.icon}</span>
-                        <span className="text-[12px] font-bold text-[#ccc] leading-snug flex-1">{step.action}</span>
+                        <span className="text-[12px] font-bold text-secondary leading-snug flex-1">{step.action}</span>
                         {step.tab && (
                           <span className="text-[8px] font-black tracking-widest text-amber-500/70 uppercase bg-amber-500/10 px-1.5 py-0.5 rounded">
                             {step.tab}
@@ -369,17 +371,17 @@ export default function TodayPage() {
                 {killRedCount > 0 ? (
                   <>
                     <p className="text-sm font-black text-red-400">{killRedCount} RED TASK{killRedCount > 1 ? "S" : ""} → EXECUTE</p>
-                    <p className="text-[10px] text-[#555] mt-0.5">Urgent items on the kill list</p>
+                    <p className="text-[10px] text-muted mt-0.5">Urgent items on the kill list</p>
                   </>
                 ) : killTotalRemaining > 0 ? (
                   <>
                     <p className="text-sm font-black text-amber-400">{killTotalRemaining} TASK{killTotalRemaining > 1 ? "S" : ""} → EXECUTE</p>
-                    <p className="text-[10px] text-[#555] mt-0.5">Open the kill list</p>
+                    <p className="text-[10px] text-muted mt-0.5">Open the kill list</p>
                   </>
                 ) : (
                   <>
                     <p className="text-sm font-black text-green-400">KILL LIST CLEAR ✓</p>
-                    <p className="text-[10px] text-[#555] mt-0.5">Execute freely</p>
+                    <p className="text-[10px] text-muted mt-0.5">Execute freely</p>
                   </>
                 )}
               </div>
@@ -387,7 +389,7 @@ export default function TodayPage() {
 
             {/* ── MORNING STACK — 4-step progressive flow ── */}
             <div className="mb-8">
-              <h3 className="text-[10px] font-black tracking-[0.2em] text-[#555] uppercase mb-4 px-1">Morning Stack</h3>
+              <h3 className="text-[10px] font-black tracking-[0.2em] text-muted uppercase mb-4 px-1">Morning Stack</h3>
 
               {/* Step progress row — aria-live so screen readers announce completion */}
               <div className="flex items-center gap-2 mb-5 px-1" aria-live="polite" aria-label="Morning stack progress">
@@ -468,7 +470,7 @@ export default function TodayPage() {
                 <button
                   onClick={() => setMorningStep(0)}
                   className={`w-full flex items-center gap-3 p-3 rounded-xl border mb-2 transition-all ${
-                    sovereigntyDone ? "border-green-500/20 bg-green-500/[0.03]" : "border-[#1a1a1a]"
+                    sovereigntyDone ? "border-green-500/20 bg-green-500/[0.03]" : "border-[var(--border)]"
                   }`}
                 >
                   <StepCheck done={sovereigntyDone} />
@@ -524,7 +526,7 @@ export default function TodayPage() {
                     />
                   </div>
                   <div className="card flex items-center justify-between p-3 mb-3">
-                    <span className="text-[10px] font-black tracking-widest text-[#555] uppercase">Hydration</span>
+                    <span className="text-[10px] font-black tracking-widest text-muted uppercase">Hydration</span>
                     <HydrationSelector value={log.fuelHydration} onChange={v => updateLog({ fuelHydration: v })} />
                   </div>
                   <button
@@ -541,7 +543,7 @@ export default function TodayPage() {
                 <button
                   onClick={() => setMorningStep(1)}
                   className={`w-full flex items-center gap-3 p-3 rounded-xl border mb-2 transition-all ${
-                    fuelDone ? "border-green-500/20 bg-green-500/[0.03]" : "border-[#1a1a1a]"
+                    fuelDone ? "border-green-500/20 bg-green-500/[0.03]" : "border-[var(--border)]"
                   }`}
                 >
                   <StepCheck done={fuelDone} />
@@ -596,7 +598,7 @@ export default function TodayPage() {
                 <button
                   onClick={() => setMorningStep(2)}
                   className={`w-full flex items-center gap-3 p-3 rounded-xl border mb-2 transition-all ${
-                    numbersDone ? "border-green-500/20 bg-green-500/[0.03]" : "border-[#1a1a1a]"
+                    numbersDone ? "border-green-500/20 bg-green-500/[0.03]" : "border-[var(--border)]"
                   }`}
                 >
                   <StepCheck done={numbersDone} />
@@ -612,7 +614,7 @@ export default function TodayPage() {
                   <div className="card p-3 mb-3">
                     <textarea
                       autoFocus
-                      className="w-full bg-transparent outline-none text-sm font-semibold placeholder-[#333] resize-none h-20"
+                      className="w-full bg-transparent outline-none text-sm font-semibold placeholder-muted resize-none h-20"
                       placeholder="WINS / GRATITUDE / TOMORROW'S ONE THING..."
                       value={log.journalLine || ""}
                       onChange={e => updateLog({ journalLine: e.target.value })}
@@ -637,7 +639,7 @@ export default function TodayPage() {
                 <button
                   onClick={() => setMorningStep(3)}
                   className={`w-full flex items-center gap-3 p-3 rounded-xl border mb-2 transition-all ${
-                    journalDone ? "border-green-500/20 bg-green-500/[0.03]" : "border-[#1a1a1a]"
+                    journalDone ? "border-green-500/20 bg-green-500/[0.03]" : "border-[var(--border)]"
                   }`}
                 >
                   <StepCheck done={journalDone} />
@@ -656,7 +658,7 @@ export default function TodayPage() {
                   aria-live="polite"
                 >
                   <p className="text-sm font-black text-green-400 mb-1">Morning stack complete ✓</p>
-                  <p className="text-[10px] text-[#555]">
+                  <p className="text-[10px] text-muted">
                     {[sovereigntyDone, fuelDone, numbersDone, journalDone].filter(Boolean).length}/4 steps logged
                   </p>
                   <Link href="/kill">

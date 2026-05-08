@@ -141,7 +141,7 @@ function CompletionModal({
         <div className="px-5 py-5">
           {input.type === "rating" && (
             <div>
-              <p className="text-[10px] font-black tracking-wider text-[#555] uppercase mb-3">Session Quality</p>
+              <p className="text-[10px] font-black tracking-wider text-muted uppercase mb-3">Session Quality</p>
               <div className="flex gap-3 justify-center">
                 {[1, 2, 3, 4, 5].map(n => (
                   <button
@@ -168,7 +168,7 @@ function CompletionModal({
 
           {input.type === "number" && (
             <div>
-              <p className="text-[10px] font-black tracking-wider text-[#555] uppercase mb-3">{input.label}</p>
+              <p className="text-[10px] font-black tracking-wider text-muted uppercase mb-3">{input.label}</p>
               <input
                 autoFocus
                 type="number"
@@ -176,14 +176,14 @@ function CompletionModal({
                 value={numValue}
                 onChange={e => setNumValue(e.target.value)}
                 onKeyDown={e => e.key === "Enter" && canSubmit() && handleSubmit()}
-                className="w-full bg-[#111] border border-[#222] rounded-xl px-4 py-3 text-xl font-black text-center text-white outline-none focus:border-[#444]"
+                className="w-full bg-surface-2 border border-[var(--border)] rounded-xl px-4 py-3 text-xl font-black text-center text-white outline-none focus:border-[var(--border-2)]"
               />
             </div>
           )}
 
           {input.type === "text" && (
             <div>
-              <p className="text-[10px] font-black tracking-wider text-[#555] uppercase mb-3">{input.label}</p>
+              <p className="text-[10px] font-black tracking-wider text-muted uppercase mb-3">{input.label}</p>
               <input
                 autoFocus
                 type="text"
@@ -191,14 +191,14 @@ function CompletionModal({
                 value={textValue}
                 onChange={e => setTextValue(e.target.value)}
                 onKeyDown={e => e.key === "Enter" && canSubmit() && handleSubmit()}
-                className="w-full bg-[#111] border border-[#222] rounded-xl px-4 py-3 text-sm font-bold text-white outline-none focus:border-[#444] placeholder-[#333]"
+                className="w-full bg-surface-2 border border-[var(--border)] rounded-xl px-4 py-3 text-sm font-bold text-white outline-none focus:border-[var(--border-2)] placeholder-muted"
               />
             </div>
           )}
 
           {input.type === "doordash" && (
             <div>
-              <p className="text-[10px] font-black tracking-wider text-[#555] uppercase mb-3">Log DoorDash Shift</p>
+              <p className="text-[10px] font-black tracking-wider text-muted uppercase mb-3">Log DoorDash Shift</p>
               <div className="flex gap-3">
                 <input
                   autoFocus
@@ -206,7 +206,7 @@ function CompletionModal({
                   placeholder="Hours"
                   value={ddHours}
                   onChange={e => setDdHours(e.target.value)}
-                  className="flex-1 bg-[#111] border border-[#222] rounded-xl px-3 py-3 text-center text-sm font-black text-white outline-none focus:border-[#444] placeholder-[#333]"
+                  className="flex-1 bg-surface-2 border border-[var(--border)] rounded-xl px-3 py-3 text-center text-sm font-black text-white outline-none focus:border-[var(--border-2)] placeholder-muted"
                 />
                 <input
                   type="number"
@@ -214,7 +214,7 @@ function CompletionModal({
                   value={ddRevenue}
                   onChange={e => setDdRevenue(e.target.value)}
                   onKeyDown={e => e.key === "Enter" && canSubmit() && handleSubmit()}
-                  className="flex-1 bg-[#111] border border-[#222] rounded-xl px-3 py-3 text-center text-sm font-black text-white outline-none focus:border-[#444] placeholder-[#333]"
+                  className="flex-1 bg-surface-2 border border-[var(--border)] rounded-xl px-3 py-3 text-center text-sm font-black text-white outline-none focus:border-[var(--border-2)] placeholder-muted"
                 />
               </div>
             </div>
@@ -767,8 +767,12 @@ export default function KillPage() {
   }
   infraGroups.push(...Array.from(infraGroupMap.entries()).map(([name, tasks]) => ({ name, tasks })));
 
-  const sfHoursFromLog = trackSummaries.find(t => t.trackName.toUpperCase() === "SWEET FRUSTRATION")?.totalHours || 0;
-  const lidHoursFromLog = trackSummaries.find(t => t.trackName.toUpperCase() === "LIKE I DID")?.totalHours || 0;
+  // Dynamic: 2 EP tracks with fewest hours logged (closest to needing work)
+  const EP_TRACKS = ["GREEN LIGHT", "SWEET FRUSTRATION", "WANT U 2"];
+  const activeTrackSummaries = trackSummaries
+    .filter(t => EP_TRACKS.includes(t.trackName.toUpperCase()))
+    .sort((a, b) => a.totalHours - b.totalHours)
+    .slice(0, 2);
 
   const pct = stats.total > 0 ? Math.round((stats.cleared / stats.total) * 100) : 0;
   const statusColor = tasks.some(t => t.urgency === "RED") ? "#FF2D2D"
@@ -781,7 +785,7 @@ export default function KillPage() {
   if (loading) {
     return (
       <main className="page flex items-center justify-center animate-fade-in">
-        <p className="text-[10px] tracking-[0.3em] text-[#333]">DERIVING KILL LIST...</p>
+        <p className="text-[10px] tracking-[0.3em] text-muted">DERIVING KILL LIST...</p>
       </main>
     );
   }
@@ -878,7 +882,7 @@ export default function KillPage() {
                   onChange={e => setOneThingDraft(e.target.value)}
                   onKeyDown={e => { if (e.key === "Enter") saveOneThing(); }}
                   placeholder="What's the one thing today?"
-                  className="flex-1 bg-[#0a0a0a] border border-[#222] rounded-lg px-3 py-2.5 text-[13px] font-bold text-white outline-none placeholder-[#333] focus:border-[#d4a853]/30"
+                  className="flex-1 bg-surface-1 border border-[var(--border)] rounded-lg px-3 py-2.5 text-[13px] font-bold text-white outline-none placeholder-muted focus:border-[#d4a853]/30"
                   autoFocus
                 />
                 <button
@@ -918,18 +922,16 @@ export default function KillPage() {
             <h2 className="text-[9px] font-black tracking-[0.2em] uppercase" style={{ color: "rgba(255,255,255,0.4)" }}>Anti-Drift Telemetry</h2>
           </div>
           <div className="grid grid-cols-2 gap-3 mb-4 border-b border-[#ffffff10] pb-4">
-            <div>
-              <p className="text-[10px] uppercase font-bold text-white mb-2 opacity-80 text-center">SF Mixdown</p>
-              <div className="text-center font-black text-[14px] text-white tabular-nums">
-                {sfHoursFromLog} <span className="opacity-40 text-[10px]">/ 11h</span>
+            {activeTrackSummaries.length > 0 ? activeTrackSummaries.map(t => (
+              <div key={t.trackName}>
+                <p className="text-[10px] uppercase font-bold text-white mb-2 opacity-80 text-center">{t.trackName} Mixdown</p>
+                <div className="text-center font-black text-[14px] text-white tabular-nums">
+                  {t.totalHours} <span className="opacity-40 text-[10px]">/ 11h</span>
+                </div>
               </div>
-            </div>
-            <div>
-              <p className="text-[10px] uppercase font-bold text-white mb-2 opacity-80 text-center">LID Mixdown</p>
-              <div className="text-center font-black text-[14px] text-white tabular-nums">
-                {lidHoursFromLog} <span className="opacity-40 text-[10px]">/ 11h</span>
-              </div>
-            </div>
+            )) : (
+              <div className="col-span-2 text-center text-[10px] text-muted">No EP track hours logged yet</div>
+            )}
           </div>
           <div>
             <p className="text-[10px] uppercase font-bold text-white mb-2 opacity-80 text-center">DoorDash Earned</p>
@@ -1035,17 +1037,17 @@ export default function KillPage() {
                 <div className="card !p-4 flex items-center justify-between border-amber-500/20 hover:border-amber-500/40 active:scale-[0.98] transition-all">
                   <div>
                     <p className="text-[11px] font-black text-amber-400">Complete Morning Stack</p>
-                    <p className="text-[10px] text-[#555] mt-0.5">Today page → finish the protocol</p>
+                    <p className="text-[10px] text-muted mt-0.5">Today page → finish the protocol</p>
                   </div>
                   <span className="text-amber-400 font-black">→</span>
                 </div>
               </Link>
             )}
             {hour >= 17 && telemetry.doordash_earned === 0 && (
-              <div className="card !p-4 flex items-center justify-between border-[#222] active:scale-[0.98] transition-all">
+              <div className="card !p-4 flex items-center justify-between border-[var(--border)] active:scale-[0.98] transition-all">
                 <div>
                   <p className="text-[11px] font-black text-white">Log DoorDash</p>
-                  <p className="text-[10px] text-[#555] mt-0.5">No shift logged today</p>
+                  <p className="text-[10px] text-muted mt-0.5">No shift logged today</p>
                 </div>
                 <button
                   onClick={() => setInfraOpen(true)}
@@ -1071,41 +1073,6 @@ export default function KillPage() {
             )}
           </div>
         )}
-
-        {/* ── DoorDash Quick-Add ── */}
-        <div className="mb-5">
-          <div className="flex justify-between items-center mb-2 px-1">
-            <h3 className="text-[9px] font-black tracking-[0.2em] uppercase" style={{ color: "rgba(255,255,255,0.25)" }}>Log DoorDash Shift</h3>
-            {ddStatus && (
-              <span className={`text-[10px] font-black tracking-widest ${ddStatus.includes("✓") ? "text-green-500" : ddStatus === "FAILED" ? "text-red-500" : "text-amber-500"}`}>
-                {ddStatus}
-              </span>
-            )}
-          </div>
-          <div className="card flex gap-2 p-2">
-            <input
-              type="number"
-              placeholder="Hrs"
-              className="flex-1 bg-[#111] rounded-lg p-3 text-center text-sm font-black outline-none border border-transparent focus:border-[#333]"
-              value={ddHours}
-              onChange={e => setDdHours(e.target.value)}
-            />
-            <input
-              type="number"
-              placeholder="$ Rev"
-              className="flex-1 bg-[#111] rounded-lg p-3 text-center text-sm font-black outline-none border border-transparent focus:border-[#333]"
-              value={ddRevenue}
-              onChange={e => setDdRevenue(e.target.value)}
-            />
-            <button
-              onClick={submitDoorDash}
-              disabled={!!ddStatus && !ddStatus.includes("✓") && ddStatus !== "FAILED"}
-              className="w-12 flex items-center justify-center rounded-lg bg-amber-500 text-black font-black active:scale-95 transition-all text-xl disabled:opacity-50"
-            >
-              +
-            </button>
-          </div>
-        </div>
 
         {/* ── Recalibrate Oracle ── */}
         <div className="mb-8 text-center">

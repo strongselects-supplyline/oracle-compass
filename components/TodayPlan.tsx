@@ -104,8 +104,8 @@ export default function TodayPlan() {
           <div className="stp-stat-lbl">{data.dropLabel || "Days to Next"}</div>
         </div>
         <div className="stp-stat">
-          <div className="stp-stat-num">Arc {data.arc}</div>
-          <div className="stp-stat-lbl">Active Arc</div>
+          <div className="stp-stat-num" style={{ fontSize: "11px" }}>{data.weekName}</div>
+          <div className="stp-stat-lbl">Week</div>
         </div>
         <div className="stp-stat">
           <div className="stp-stat-num" style={{ fontSize: "14px" }}>{data.phase}</div>
@@ -184,46 +184,6 @@ export default function TodayPlan() {
         <div className="stp-vocal-body" dangerouslySetInnerHTML={{ __html: vocalPrinciple }} />
       </div>
 
-      {/* Kill List cross-link — RED urgency only */}
-      <h3 className="stp-section-title">🔥 Live Kill List — RED</h3>
-      <div className="stp-kill-summary">
-        {killError ? (
-          <div className="stp-kill-empty">
-            Kill List unavailable.{" "}
-            <button
-              onClick={() => refresh()}
-              className="stp-kill-retry"
-              style={{ color: "var(--accent)", textDecoration: "underline", background: "none", border: "none", cursor: "pointer", font: "inherit" }}
-            >
-              Retry
-            </button>
-            {" · "}
-            <Link href="/kill" style={{ color: "var(--accent)" }}>open /kill directly</Link>
-          </div>
-        ) : killStats ? (
-          <p className="stp-kill-meta">
-            {killStats.cleared} cleared / {killStats.total} total · {killStats.redRemaining} RED remaining
-          </p>
-        ) : (
-          <p className="stp-kill-meta">Loading kill list…</p>
-        )}
-        {!killError && redTasks.length === 0 && killStats && (
-          <p className="stp-kill-empty">No RED tasks. You&apos;re ahead.</p>
-        )}
-        {redTasks.length > 0 && (
-          <ul className="stp-kill-list">
-            {redTasks.map((t) => (
-              <li key={t.id} className="stp-kill-item">
-                <strong className="stp-kill-title">{t.title}</strong>
-                <span className="stp-kill-sub">{t.subtitle}</span>
-              </li>
-            ))}
-          </ul>
-        )}
-        <Link href="/kill" className="stp-kill-link">
-          Open full Kill List →
-        </Link>
-      </div>
     </section>
   );
 }

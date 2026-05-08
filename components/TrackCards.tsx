@@ -73,8 +73,8 @@ function getLifecyclePhase(d: ContentDeliverables): LifecyclePhase {
   };
 }
 
-// Tracks that should show cards (EP tracks only, not aggregate)
-const EP_TRACK_TITLES = ["East Side Love", "Green Light", "Sweet Frustration", "WANT U 2", "SEE ME"];
+// Tracks that should show cards: ep_track + waterfall_single, excluding the EP aggregate + vault singles + loosies
+// Derived dynamically so adding new ep_tracks to releases.ts auto-surfaces them here.
 
 // ── Single Track Card ─────────────────────────────────────────────────
 
@@ -268,7 +268,9 @@ export default function TrackCards() {
     const unreleased = all.filter(
       (r) =>
         r.status !== "live" &&
-        EP_TRACK_TITLES.includes(r.title)
+        r.type !== "ep" &&
+        r.type !== "vault_single" &&
+        r.type !== "loosie"
     );
     setReleases(unreleased);
     setLoaded(true);

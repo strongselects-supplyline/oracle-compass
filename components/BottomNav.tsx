@@ -138,10 +138,10 @@ export default function BottomNav() {
           <span>EXECUTE</span>
         </Link>
 
-        {/* LOG */}
+        {/* BODY */}
         <Link href="/grind" className={`nav-item ${isLog ? "active" : ""}`} style={{ flex: 1 }}>
-          <div className="text-2xl">📓</div>
-          <span>LOG</span>
+          <div className="text-2xl">💪</div>
+          <span>BODY</span>
         </Link>
 
         {/* WAR ROOM */}

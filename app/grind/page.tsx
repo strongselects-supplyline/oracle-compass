@@ -47,14 +47,14 @@ export default function GrindPage() {
         {/* Sobriety streak — large + motivational */}
         <div className="text-center mb-10">
           <div className="scoreboard text-amber-400 mb-2 animate-count-up">{streak}</div>
-          <div className="text-xs font-bold tracking-widest text-[#888] uppercase">
-            Days Sober &middot; since Mar 11, 2026
+          <div className="text-xs font-bold tracking-widest text-muted uppercase">
+            Days Sober &middot; since Apr 2, 2026
           </div>
         </div>
 
         {/* Performance Conditioning */}
         <div className="card mb-6">
-          <span className="block text-xs font-bold tracking-widest text-[#888] mb-3">PERFORMANCE CONDITIONING</span>
+          <span className="block text-xs font-bold tracking-widest text-muted mb-3">PERFORMANCE CONDITIONING</span>
           <div className="grid grid-cols-3 gap-2 mb-3">
             {[
               { value: "zone2", label: "Zone 2" },
@@ -67,7 +67,7 @@ export default function GrindPage() {
                 className={`py-2 px-1 rounded-lg text-[10px] font-black tracking-wider border transition-all ${
                   log.conditioningType === p.value
                     ? "bg-amber-500/20 border-amber-500 text-amber-400"
-                    : "border-[#333] text-[#666] hover:border-[#555]"
+                    : "border-[var(--border)] text-muted hover:border-[var(--border-2)]"
                 }`}
               >
                 {p.label}
@@ -101,7 +101,7 @@ export default function GrindPage() {
                 onChange={e => updateLog({ conditioningMinutes: parseInt(e.target.value) || null })}
                 placeholder="0"
               />
-              <span className="text-xs font-bold text-[#666]">MINUTES</span>
+              <span className="text-xs font-bold text-muted">MINUTES</span>
             </div>
           )}
         </div>
@@ -109,7 +109,7 @@ export default function GrindPage() {
         <button
           onClick={() => handleSync(log, dayType)}
           disabled={!!syncStatus && syncStatus !== "FAILED"}
-          className="w-full mb-8 py-3 rounded-xl bg-[#1a1a1a] border border-[#333] text-sm font-black tracking-widest hover:bg-[#222] active:scale-95 transition-all outline-none"
+          className="w-full mb-8 py-3 rounded-xl bg-surface-2 border border-[var(--border)] text-sm font-black tracking-widest hover:bg-surface-3 active:scale-95 transition-all outline-none"
           style={{ color: syncStatus === "SYNCED" ? "#22c55e" : syncStatus === "FAILED" ? "#ef4444" : "white" }}
         >
           {syncStatus || "SYNC TO CLOUD"}
@@ -117,10 +117,10 @@ export default function GrindPage() {
 
         {/* Recovery Protocol — the "I'm depleted" emergency sequence */}
         <div className="pb-12">
-          <p className="text-[9px] font-black tracking-[0.3em] text-center text-[#555] uppercase mb-2">
+          <p className="text-[9px] font-black tracking-[0.3em] text-center text-muted uppercase mb-2">
             Recovery Protocol
           </p>
-          <p className="text-[10px] text-[#444] text-center mb-5">
+          <p className="text-[10px] text-secondary text-center mb-5">
             When depleted — run this sequence before forcing output.
           </p>
           <div className="card !p-1.5">
