@@ -51,19 +51,8 @@ export const ALL_TRACKS: Track[] = [
   { id: 'al-11', name: 'Reconnect',     phase: 'ALL_LOVE', parked: true },
   { id: 'al-06', name: 'Luxury',        phase: 'ALL_LOVE', parked: true },
 
-  // ── DELUXE — 12 tracks ──
-  { id: 'dl-01', name: 'All My Love (intro flip)', phase: 'DELUXE' },
-  { id: 'dl-02', name: 'ALL MY LOVE 138bpm Emix', phase: 'DELUXE' },
-  { id: 'dl-03', name: 'Natural', phase: 'DELUXE' },
-  { id: 'dl-04', name: 'Take A Chance', phase: 'DELUXE' },
-  { id: 'dl-05', name: 'Coming Down (Night Ride Edition)', phase: 'DELUXE' },
-  { id: 'dl-06', name: 'CANT LET YOU GO', phase: 'DELUXE' },
-  { id: 'dl-07', name: 'Underneath It All', phase: 'DELUXE' },
-  { id: 'dl-08', name: 'DEVASTATED', phase: 'DELUXE' },
-  { id: 'dl-09', name: 'HOLD OF ME', phase: 'DELUXE' },
-  { id: 'dl-10', name: 'VULNERABLE', phase: 'DELUXE' },
-  { id: 'dl-11', name: 'KEEP COMING BACK', phase: 'DELUXE' },
-  { id: 'dl-12', name: 'I-need-ya-mia-', phase: 'DELUXE' },
+  // ── DELUXE — RETIRED May 2026 (tracks preserved as vault material) ──
+  // 12 tracks removed from active marathon. See git history for full list.
 
   // ── CREAM — 10 tracks ──
   { id: 'cr-01', name: 'Milagro (Intro)', phase: 'CREAM' },

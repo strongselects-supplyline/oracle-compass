@@ -41,7 +41,7 @@ async function saveStatuses(statuses: Record<string, TrackStatus>): Promise<void
 // ── Constants ────────────────────────────────────────────────────────────────
 
 const STATUS_CYCLE: TrackStatus[] = ['not_started', 'in_progress', 'done'];
-const PHASES: Phase[] = ['ALL_LOVE', 'DELUXE', 'CREAM', 'FREAKSHOW'];
+const PHASES: Phase[] = ['ALL_LOVE', 'CREAM', 'FREAKSHOW']; // DELUXE retired May 2026
 
 const PHASE_BADGE_STYLE: Record<string, string> = {
   'ALL LOVE':      'bg-[#C8952A] text-black',
