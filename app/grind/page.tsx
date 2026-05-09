@@ -11,22 +11,26 @@
 
 import { useEffect, useState } from "react";
 import { getDailyLog, saveDailyLog, DailyLog } from "@/lib/db";
-import { getSobrietyStreak } from "@/lib/streaks";
 import { getDayType, isStudioDay } from "@/lib/dayType";
+import { loadSovereigntyState, getSobrietyDays } from "@/lib/sovereignty";
 import { useCloudSync } from "@/lib/useCloudSync";
 import CheckItem from "@/components/CheckItem";
 
 export default function GrindPage() {
   const [log, setLog] = useState<DailyLog | null>(null);
   const [streak, setStreak] = useState<number>(0);
+  const [sobrietyStart, setSobrietyStart] = useState<string>("2026-04-02");
   const [dayType, setDayType] = useState<string>("");
   const { syncStatus, sync: handleSync } = useCloudSync();
 
   useEffect(() => {
     const init = async () => {
       setLog(await getDailyLog());
-      setStreak(getSobrietyStreak());
       setDayType(getDayType());
+      // Read sobriety from sovereignty state (same source as Brain page)
+      const sovState = await loadSovereigntyState();
+      setStreak(getSobrietyDays(sovState.sobrietyStart));
+      setSobrietyStart(sovState.sobrietyStart);
     };
     init();
   }, []);
@@ -48,7 +52,7 @@ export default function GrindPage() {
         <div className="text-center mb-10">
           <div className="scoreboard text-amber-400 mb-2 animate-count-up">{streak}</div>
           <div className="text-xs font-bold tracking-widest text-muted uppercase">
-            Days Sober &middot; since Apr 2, 2026
+            Days Sober &middot; since {new Date(sobrietyStart + 'T12:00:00').toLocaleDateString('en-US', { month: 'short', day: 'numeric', year: 'numeric' })}
           </div>
         </div>
 

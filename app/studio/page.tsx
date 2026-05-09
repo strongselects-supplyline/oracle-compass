@@ -42,7 +42,7 @@ function StatusPill({ status }: { status: TrackStatus }) {
 
 function Timeline() {
     const projectColors: Record<string, string> = {
-        "all-love": "#6ee7b7", "all-love-deluxe": "#fbbf24",
+        "all-love": "#6ee7b7",
         "cream": "#f472b6", "freakshow": "#c084fc", "loosies": "#60a5fa",
     };
     // Extended to cover EP release (May 15) through vault waterfall end (Jul 25)

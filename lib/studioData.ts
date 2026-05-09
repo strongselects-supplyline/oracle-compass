@@ -88,11 +88,6 @@ export const PROJECTS: Project[] = [
         ],
     },
     {
-        id: 'all-love-deluxe', name: 'ALL LOVE DELUXE', color: '#fbbf24', emoji: '🎂',
-        role: 'Companion / Disc 2, birthday drop', trackCount: 11, targetDate: '2026-04-28',
-        tracks: placeholderTracks('Deluxe', 11),
-    },
-    {
         id: 'cream', name: 'CREAM', color: '#f472b6', emoji: '🔥',
         role: 'Summer statement', trackCount: 11, targetDate: '2026-07-10',
         tracks: placeholderTracks('CREAM', 11),

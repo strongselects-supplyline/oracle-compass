@@ -38,7 +38,7 @@ export default function BottomNav() {
   // Which nav group is "active" — War Room pages count as War Room active
   const isWarRoomPage = WAR_ROOM_ITEMS.some(n => pathname === n.path);
   const isLog = pathname === "/grind";
-  const isToday = pathname === "/";
+  const isPipeline = pathname === "/pipeline";
   const isExecute = pathname === "/kill";
 
   return (
@@ -112,10 +112,10 @@ export default function BottomNav() {
           }
         `}</style>
 
-        {/* TODAY */}
-        <Link href="/" className={`nav-item ${isToday ? "active" : ""}`} style={{ flex: 1 }}>
-          <div className="text-2xl">🏠</div>
-          <span>TODAY</span>
+        {/* PIPELINE */}
+        <Link href="/pipeline" className={`nav-item ${isPipeline ? "active" : ""}`} style={{ flex: 1 }}>
+          <div className="text-2xl">🔗</div>
+          <span>PIPELINE</span>
         </Link>
 
         {/* EXECUTE */}

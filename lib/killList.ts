@@ -20,6 +20,7 @@ import { CONTENT_PILLARS } from "@/lib/departments/content";
 import { COMMUNITY_TRACE, UNFOLLOW_PROGRAM } from "@/lib/departments/social";
 import { BUDGET_RULES, CAMPAIGN_CALENDAR } from "@/lib/departments/marketing";
 import { SYNC_PIPELINE } from "@/lib/departments/revenue";
+import { getCurrentPhase, getNextStep, markPipelineStep } from "@/lib/pipeline";
 
 // ── Types ────────────────────────────────────────────────────────────
 
@@ -1610,6 +1611,46 @@ export async function deriveKillList(): Promise<KillTask[]> {
           action: async () => { await setStoreValue(syncKey, true); },
         });
       }
+    }
+  }
+
+  // ── PIPELINE-DERIVED TASKS ──────────────────────────────────────────
+  // Surface the next incomplete pipeline step for each active release
+  // as a Kill List task. AMBER by default, RED if release date is within 3 days.
+  {
+    const activeReleases = releases.filter(r =>
+      r.type !== "ep" && r.status !== "live"
+    );
+    for (const release of activeReleases) {
+      const state = release.pipelineState || {};
+      const nextStep = getNextStep(state);
+      if (!nextStep) continue;
+      const currentPhase = getCurrentPhase(state);
+      const daysToRelease = Math.ceil(
+        (new Date(release.releaseDate).getTime() - Date.now()) / (1000 * 60 * 60 * 24)
+      );
+      const pipelineTaskKey = `pipeline_step_clear:${today}:${release.title}:${nextStep.id}`;
+      const alreadyCleared = await getStoreValue<boolean>(pipelineTaskKey);
+      if (alreadyCleared) continue;
+      tasks.push({
+        id: `pipeline-${release.title}-${nextStep.id}`,
+        title: `${release.title} \u2192 ${nextStep.label}`,
+        subtitle: `${currentPhase.icon} ${currentPhase.name} \u00b7 Step ${nextStep.id} \u00b7 ${nextStep.doneWhen}`,
+        howTo: [
+          `Phase: ${currentPhase.name}`,
+          `Step: ${nextStep.id} \u2014 ${nextStep.label}`,
+          `Done when: ${nextStep.doneWhen}`,
+          nextStep.tools ? `Tools: ${nextStep.tools}` : "",
+          "Tap \u2713 when complete. This advances the pipeline.",
+        ].filter(Boolean),
+        urgency: daysToRelease <= 3 ? "RED" : daysToRelease <= 7 ? "AMBER" : "GREEN",
+        pillar: "ops" as const,
+        timeBlock: "any" as const,
+        action: async () => {
+          await markPipelineStep(release.title, nextStep.id, true);
+          await setStoreValue(pipelineTaskKey, true);
+        },
+      });
     }
   }
 

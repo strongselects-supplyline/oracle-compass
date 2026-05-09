@@ -133,13 +133,13 @@ export const SPRINT_WEEKS: SprintWeek[] = [
   },
   {
     wk: 9, dates: 'May 3\u20139', startDate: '2026-05-03', endDate: '2026-05-09',
-    phase: 'DELUXE', phaseBadge: 'DELUXE', target: '3 tracks', total: 10,
-    keyEvents: [],
+    phase: 'ALL_LOVE', phaseBadge: 'ALL LOVE', target: 'EP upload + ESL release day', total: 10,
+    keyEvents: ['East Side Love drops May 9', 'GL + SF + WU2 upload prep'],
   },
   {
     wk: 10, dates: 'May 10\u201316', startDate: '2026-05-10', endDate: '2026-05-16',
-    phase: 'DELUXE', phaseBadge: 'DELUXE / CREAM', target: '3 tracks', total: 13,
-    keyEvents: [],
+    phase: 'ALL_LOVE', phaseBadge: 'ALL LOVE / EP RELEASE', target: 'EP drops May 15 + compound phase', total: 13,
+    keyEvents: ['ALL LOVE EP uploads May 11', 'ALL LOVE EP drops May 15 (ICEMAN day)'],
   },
   {
     wk: 11, dates: 'May 17\u201323', startDate: '2026-05-17', endDate: '2026-05-23',

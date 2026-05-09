@@ -132,6 +132,7 @@ export type Release = {
   projectTarget?: string | null; // if loosie, which project it MIGHT roll into ("EP2", "deluxe", etc.)
   pitchDeadline?: string | null;
   contentDeliverables: ContentDeliverables;
+  pipelineState: Record<string, boolean>; // step ID → done (per lib/pipeline.ts)
 };
 
 // Canonical defaults — source of truth for first seed only
@@ -140,47 +141,70 @@ export type Release = {
 const RELEASE_DEFAULTS: Release[] = [
   {
     title: "SEE ME", uploadDate: "2026-03-09", releaseDate: "2026-03-13", status: "live", type: "ep_track",
-    contentDeliverables: { ...DEFAULT_DELIVERABLES, coreDriveComplete: true, campaignKitGenerated: true, ascap: "pending", mlc: "pending", soundExchange: "complete", songtrust: "pending", notes: "Live Mar 13. EP track 1. Core Drive: 2,713 tracks / 38 playlists. ISRC exists (not recorded — pull from Amuse)." }
+    contentDeliverables: { ...DEFAULT_DELIVERABLES, coreDriveComplete: true, campaignKitGenerated: true, ascap: "pending", mlc: "pending", soundExchange: "complete", songtrust: "pending", notes: "Live Mar 13. EP track 1. Core Drive: 2,713 tracks / 38 playlists. ISRC exists (not recorded — pull from Amuse)." },
+    // Live since Mar 13 — creation + upload + pre-release + release day all complete
+    pipelineState: {
+      "0.1": true, "0.2": true, "0.3": true, "0.4": true, "0.5": true,
+      "0.6": true, "0.7": true, "0.8": true, "0.9": true, "0.10": true,
+      "1.1": true, "1.2": true, "1.3": true, "1.4": true, "1.5": true, "1.6": true,
+      "2.1": true, "2.2": true, "2.3": true, "2.4": true, "2.5": true, "2.6": true, "2.7": true,
+      "3.1": true, "3.2": true, "3.3": true, "3.4": true, "3.5": true, "3.6": true,
+    },
   },
   {
     title: "East Side Love", uploadDate: "2026-04-30", releaseDate: "2026-05-09", status: "upload_pending", type: "waterfall_single",
-    contentDeliverables: { ...DEFAULT_DELIVERABLES, coreDriveComplete: true, campaignKitGenerated: true, soundExchange: "complete", notes: "ADVANCE SINGLE — uploaded Apr 30, releases May 9 (MSTR 2). Also EP track 4. Release Radar trigger #1 (May 9). EP carries it as track 4 on May 15. Cyanite: 104 BPM, C# minor, R&B 0.84, Sexy 0.85. Core Drive: 1,221 tracks / 20 playlists." }
+    contentDeliverables: { ...DEFAULT_DELIVERABLES, coreDriveComplete: true, campaignKitGenerated: true, soundExchange: "complete", notes: "ADVANCE SINGLE — uploaded Apr 30, releases May 9 (MSTR 2). Also EP track 4. Release Radar trigger #1 (May 9). EP carries it as track 4 on May 15. Cyanite: 104 BPM, C# minor, R&B 0.84, Sexy 0.85. Core Drive: 1,221 tracks / 20 playlists." },
+    // Uploaded Apr 30 — creation + upload phases complete, pre-release in progress
+    pipelineState: {
+      "0.1": true, "0.2": true, "0.3": true, "0.4": true, "0.5": true,
+      "0.6": true, "0.7": true, "0.8": true, "0.9": true, "0.10": true,
+      "1.1": true, "1.2": true, "1.3": true, "1.4": true, "1.5": true, "1.6": true,
+    },
   },
   {
     title: "Green Light", uploadDate: "2026-05-11", releaseDate: "2026-05-15", status: "unreleased", type: "ep_track",
-    contentDeliverables: { ...DEFAULT_DELIVERABLES, notes: "EP track 3. NOT a standalone single. Drops as part of EP bomb May 15." }
+    contentDeliverables: { ...DEFAULT_DELIVERABLES, notes: "EP track 3. NOT a standalone single. Drops as part of EP bomb May 15." },
+    pipelineState: {},
   },
   {
     title: "Sweet Frustration", uploadDate: "2026-05-11", releaseDate: "2026-05-15", status: "unreleased", type: "ep_track",
-    contentDeliverables: { ...DEFAULT_DELIVERABLES, coreDriveComplete: true, campaignKitGenerated: true, soundExchange: "complete", notes: "EP track 4. KAYTRANADA lane. NOT a standalone single. Drops as part of EP bomb May 15." }
+    contentDeliverables: { ...DEFAULT_DELIVERABLES, coreDriveComplete: true, campaignKitGenerated: true, soundExchange: "complete", notes: "EP track 4. KAYTRANADA lane. NOT a standalone single. Drops as part of EP bomb May 15." },
+    pipelineState: {},
   },
   {
     title: "WANT U 2", uploadDate: "2026-05-11", releaseDate: "2026-05-15", status: "unreleased", type: "ep_track",
-    contentDeliverables: { ...DEFAULT_DELIVERABLES, notes: "EP track 5. EP-exclusive — never released as single. Gives listeners incentive to play the full EP." }
+    contentDeliverables: { ...DEFAULT_DELIVERABLES, notes: "EP track 5. EP-exclusive — never released as single. Gives listeners incentive to play the full EP." },
+    pipelineState: {},
   },
   {
     title: "ALL LOVE (EP)", uploadDate: "2026-05-11", releaseDate: "2026-05-15", status: "unreleased", type: "ep",
-    contentDeliverables: { ...DEFAULT_DELIVERABLES, notes: "5-track EP: Green Light → Sweet Frustration → SEE ME → East Side Love → WANT U 2. GL/SF open — 2.0 streams/listener means most bail after track 2, new tracks must hit first. ESL advance single May 9 (Release Radar #1). EP May 15 (Release Radar #2 via GL/SF/WU2). Editorial pitch: Sweet Frustration (KAYTRANADA lane, genre outlier). Needs: EP cover art (DONE), UPC, EP-level Spotify pitch." }
+    contentDeliverables: { ...DEFAULT_DELIVERABLES, notes: "5-track EP: Green Light → Sweet Frustration → SEE ME → East Side Love → WANT U 2. GL/SF open — 2.0 streams/listener means most bail after track 2, new tracks must hit first. ESL advance single May 9 (Release Radar #1). EP May 15 (Release Radar #2 via GL/SF/WU2). Editorial pitch: Sweet Frustration (KAYTRANADA lane, genre outlier). Needs: EP cover art (DONE), UPC, EP-level Spotify pitch." },
+    pipelineState: {},
   },
   {
     title: "Like I Did", uploadDate: "2026-05-23", releaseDate: "2026-05-30", status: "unreleased", type: "vault_single",
-    contentDeliverables: { ...DEFAULT_DELIVERABLES, notes: "Vault single #1. 110 BPM, D major. First post-EP release. 2-week cadence begins." }
+    contentDeliverables: { ...DEFAULT_DELIVERABLES, notes: "Vault single #1. 110 BPM, D major. First post-EP release. 2-week cadence begins." },
+    pipelineState: {},
   },
   {
     title: "I Like Girls", uploadDate: "2026-06-06", releaseDate: "2026-06-13", status: "unreleased", type: "vault_single",
-    contentDeliverables: { ...DEFAULT_DELIVERABLES, notes: "Vault single #2. 107 BPM, F# minor, R&B 0.74. High R&B confidence." }
+    contentDeliverables: { ...DEFAULT_DELIVERABLES, notes: "Vault single #2. 107 BPM, F# minor, R&B 0.74. High R&B confidence." },
+    pipelineState: {},
   },
   {
     title: "Worth It", uploadDate: "2026-06-20", releaseDate: "2026-06-27", status: "unreleased", type: "vault_single",
-    contentDeliverables: { ...DEFAULT_DELIVERABLES, notes: "Vault single #3. 97 BPM, F minor, R&B 0.57. Slower tempo = mood shift." }
+    contentDeliverables: { ...DEFAULT_DELIVERABLES, notes: "Vault single #3. 97 BPM, F minor, R&B 0.57. Slower tempo = mood shift." },
+    pipelineState: {},
   },
   {
     title: "Just Say So", uploadDate: "2026-07-04", releaseDate: "2026-07-11", status: "unreleased", type: "vault_single",
-    contentDeliverables: { ...DEFAULT_DELIVERABLES, notes: "Vault single #4. 122 BPM, Bb minor, R&B 0.60. Uptempo. Meme-friendly." }
+    contentDeliverables: { ...DEFAULT_DELIVERABLES, notes: "Vault single #4. 122 BPM, Bb minor, R&B 0.60. Uptempo. Meme-friendly." },
+    pipelineState: {},
   },
   {
     title: "Reconnect", uploadDate: "2026-07-18", releaseDate: "2026-07-25", status: "unreleased", type: "vault_single",
-    contentDeliverables: { ...DEFAULT_DELIVERABLES, notes: "Vault single #5. 82 BPM, D major, R&B 0.56. Warm/intimate. Palette cleanser before CREAM." }
+    contentDeliverables: { ...DEFAULT_DELIVERABLES, notes: "Vault single #5. 82 BPM, D major, R&B 0.56. Warm/intimate. Palette cleanser before CREAM." },
+    pipelineState: {},
   },
   // Loosies are added dynamically by the user — no defaults seeded here.
   // Use addLoosie() to register a new loosie at any time.
@@ -188,7 +212,7 @@ const RELEASE_DEFAULTS: Release[] = [
 
 const RELEASES_KEY = "dynamic_releases";
 const RELEASES_VERSION_KEY = "releases_data_version";
-const RELEASE_DATA_VERSION = 37; // v37: May 6 — DATE SHIFT. ESL advance single May 9, EP upload May 11, EP release May 15. Production sprint extended.
+const RELEASE_DATA_VERSION = 38; // v38: May 9 — pipeline state added to Release type. SEE ME + ESL pre-seeded.
 
 // Read from IndexedDB, seeding defaults on first call or after version bump
 export async function getDynamicReleases(): Promise<Release[]> {
@@ -204,13 +228,14 @@ export async function getDynamicReleases(): Promise<Release[]> {
   }
   const stored = await getStoreValue<Release[]>(RELEASES_KEY);
   if (stored && stored.length > 0) {
-    // Back-fill type + contentDeliverables for any releases that lack them (migration safety)
+    // Back-fill type + contentDeliverables + pipelineState for any releases that lack them (migration safety)
     const patched = stored.map(r => ({
       ...r,
       type: r.type || 'ep_track' as ReleaseType,
       contentDeliverables: r.contentDeliverables
         ? { ...DEFAULT_DELIVERABLES, ...r.contentDeliverables }
         : { ...DEFAULT_DELIVERABLES },
+      pipelineState: r.pipelineState || {},
     }));
     return patched;
   }
@@ -247,6 +272,7 @@ export async function addLoosie({
     type: 'loosie',
     projectTarget,
     contentDeliverables: { ...DEFAULT_DELIVERABLES, notes },
+    pipelineState: {},
   };
   await saveDynamicReleases([...releases, loosie]);
 }
