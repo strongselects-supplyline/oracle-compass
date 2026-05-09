@@ -577,17 +577,23 @@ export default function KillPage() {
   const [ddStatus, setDdStatus] = useState("");
 
   const refresh = useCallback(async () => {
-    const [t, s, tel, summaries] = await Promise.all([
-      deriveKillList(),
-      getKillStats(),
-      getDailyTelemetry(),
-      getTrackHoursSummaries(),
-    ]);
-    setTasks(t);
-    setStats(s);
-    setTelemetry(tel);
-    setTrackSummaries(summaries);
-    setLoading(false);
+    try {
+      const [t, s, tel, summaries] = await Promise.all([
+        deriveKillList(),
+        getKillStats(),
+        getDailyTelemetry(),
+        getTrackHoursSummaries(),
+      ]);
+      setTasks(t);
+      setStats(s);
+      setTelemetry(tel);
+      setTrackSummaries(summaries);
+    } catch (err) {
+      console.error("[Kill List] derivation failed:", err);
+      // Still show the page with empty state rather than hanging forever
+    } finally {
+      setLoading(false);
+    }
   }, []);
 
   useEffect(() => {

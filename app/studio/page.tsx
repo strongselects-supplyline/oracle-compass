@@ -258,10 +258,11 @@ export default function StudioPage() {
 
                 <p className="text-[10px] font-black tracking-[0.2em] text-[#555] uppercase mb-3">EP Cycle Board</p>
                 <div className="card mb-6">
-                    <CycleRow title="SEE ME" storageKey="cycle_see_me" initialStatus="done" />
-                    <CycleRow title="EAST SIDE LOVE" storageKey="cycle_esl" initialStatus="recording" />
+                    <CycleRow title="GREEN LIGHT" storageKey="cycle_gl" initialStatus="recording" />
                     <CycleRow title="SWEET FRUSTRATION" storageKey="cycle_sf" initialStatus="mixing" />
-                    <CycleRow title="LIKE I DID" storageKey="cycle_lid" initialStatus="mixing" />
+                    <CycleRow title="SEE ME" storageKey="cycle_see_me" initialStatus="done" />
+                    <CycleRow title="EAST SIDE LOVE" storageKey="cycle_esl" initialStatus="done" />
+                    <CycleRow title="WANT U 2" storageKey="cycle_wu2" initialStatus="recording" />
                 </div>
 
                 {/* Project grid */}
