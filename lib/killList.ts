@@ -932,7 +932,7 @@ export async function deriveKillList(): Promise<KillTask[]> {
             "PEAK: Ensure master hits analog gear at -18dBFS peak for the sweet spot.",
             "SIDES: Apply +3.5dB shelf/boost on sides @ 120-140Hz for 3D width.",
             "SIGNATURE: Apply 'Depth Cut' (creative saturation/dirt) if the vibe needs it.",
-            "LOUDNESS: Target -14 LUFS (Spotify optimized) — don't over-smash.",
+            "LOUDNESS: Target -9 to -11 LUFS integrated (Intel Ledger verified) — don't over-smash. -14 LUFS is for sync masters only.",
             "Tap ✓ once audio is locked and exported for distribution.",
           ],
           urgency: daysUntil <= 8 ? "RED" : "AMBER",

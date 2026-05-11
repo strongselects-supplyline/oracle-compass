@@ -15,7 +15,7 @@ export const SYNC_PIPELINE = {
   setupDeadline: "2026-06-30",
   checklist: [
     { id: "sync-instrumentals", task: "Render instrumentals for all EP tracks", done: false },
-    { id: "sync-masters", task: "Create -14 LUFS sync masters (streaming = -6 LUFS, sync = -14 LUFS)", done: false },
+    { id: "sync-masters", task: "Create -14 LUFS sync masters (streaming = -9 to -11 LUFS integrated, sync = -14 LUFS)", done: false },
     { id: "sync-stems", task: "Export stems (vocals, drums, bass, melody, fx) per track", done: false },
     { id: "sync-onesheet", task: "Create one-sheet (artist bio, genre, mood tags, notable placements)", done: false },
     { id: "sync-songtradr", task: "Register on Songtradr (free tier)", done: false },

@@ -83,7 +83,7 @@ A single mid-tier TV sync ($2,000) equals 400K–500K streams at indie royalty r
 | Criteria | Your Status |
 |----------|-------------|
 | High production quality | ✅ (Illangelo chain mastering) |
-| Clean masters (no excessive compression, -14 to -16 LUFS for sync) | ⚠️ Your masters are -6 LUFS (loud). Need alt sync masters at -14 LUFS. |
+| Clean masters (no excessive compression, -14 to -16 LUFS for sync) | ⚠️ Your streaming masters are -9 to -11 LUFS integrated. Need alt sync masters at -14 LUFS. |
 | Instrumental versions available | ❌ NEEDED — create instrumental bounces for all tracks |
 | Stems available on request | ⚠️ You have sessions. Need to export labeled stems (vocals, beat, bass, keys). |
 | Mood-tagged and searchable | ❌ NEEDED — create sync one-sheet with mood/tempo/use-case tags |

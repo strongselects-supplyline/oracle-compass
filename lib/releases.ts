@@ -152,7 +152,7 @@ const RELEASE_DEFAULTS: Release[] = [
     },
   },
   {
-    title: "East Side Love", uploadDate: "2026-04-30", releaseDate: "2026-05-09", status: "upload_pending", type: "waterfall_single",
+    title: "East Side Love", uploadDate: "2026-04-30", releaseDate: "2026-05-09", status: "live", type: "waterfall_single",
     contentDeliverables: { ...DEFAULT_DELIVERABLES, coreDriveComplete: true, campaignKitGenerated: true, soundExchange: "complete", notes: "ADVANCE SINGLE — uploaded Apr 30, releases May 9 (MSTR 2). Also EP track 4. Release Radar trigger #1 (May 9). EP carries it as track 4 on May 15. Cyanite: 104 BPM, C# minor, R&B 0.84, Sexy 0.85. Core Drive: 1,221 tracks / 20 playlists." },
     // Uploaded Apr 30 — creation + upload phases complete, pre-release in progress
     pipelineState: {

@@ -34,7 +34,7 @@ export const PIPELINE_PHASES: PipelinePhase[] = [
       { id: "0.7", label: "Cyanite analysis", doneWhen: "Genre/mood scores logged", tools: "Cyanite" },
       { id: "0.8", label: "Second draft", doneWhen: "Adjustments applied or rejected", tools: "FL Studio" },
       { id: "0.9", label: "Final mix / polish", doneWhen: "Mix is final", tools: "FL Studio" },
-      { id: "0.10", label: "Master", doneWhen: "-6 LUFS streaming + -14 LUFS sync exported", tools: "FL Studio (Illangelo chain)" },
+      { id: "0.10", label: "Master", doneWhen: "-9 to -11 LUFS streaming + -14 LUFS sync exported", tools: "FL Studio (Illangelo chain)" },
     ],
   },
   {
