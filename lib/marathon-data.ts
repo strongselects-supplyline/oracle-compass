@@ -121,9 +121,9 @@ export const SPRINT_WEEKS: SprintWeek[] = [
     keyEvents: ['ESL upload to Amuse by May 2', 'Content sprint for ESL single launch', 'Spotify ad campaign prep ($50 ESL push)'],
   },
   {
-    wk: 9, dates: 'May 3\u20139', startDate: '2026-05-03', endDate: '2026-05-09',
+    wk: 9, dates: 'May 3\u20139', startDate: '2026-05-03', endDate: '2026-05-08',
     phase: 'ALL_LOVE', phaseBadge: 'ALL LOVE', target: 'EP upload + ESL release day', total: 10,
-    keyEvents: ['East Side Love drops May 9', 'GL + SF + WU2 upload prep'],
+    keyEvents: ['East Side Love drops May 8', 'GL + SF + WU2 upload prep'],
   },
   {
     wk: 10, dates: 'May 10\u201316', startDate: '2026-05-10', endDate: '2026-05-16',

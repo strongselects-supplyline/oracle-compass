@@ -74,7 +74,7 @@ export const PROJECTS: Project[] = [
         tracks: [
             // ── 5 ACTIVE EP TRACKS (waterfall singles + EP-exclusive) ──
             { title: 'SEE ME', bpm: 120, key: 'B min', rbConf: 0.68, sexy: 0.69, chill: 0.45, romantic: 0.46, happy: 0.50, uplifting: 0.46, energetic: 0.25, isrc: '', status: 'single_live', releaseDate: '2026-03-13', pitchDeadline: '2026-03-06', isLeadSingle: true, leadRank: 1 },
-            { title: 'East Side Love', bpm: 98, key: 'C# min', rbConf: 0.59, sexy: 0.87, chill: 0.63, romantic: 0.62, happy: 0.38, uplifting: 0.05, energetic: 0.10, isrc: '', status: 'unreleased', releaseDate: '2026-05-09', pitchDeadline: '2026-05-02', isLeadSingle: true, leadRank: 2 },
+            { title: 'East Side Love', bpm: 98, key: 'C# min', rbConf: 0.59, sexy: 0.87, chill: 0.63, romantic: 0.62, happy: 0.38, uplifting: 0.05, energetic: 0.10, isrc: '', status: 'unreleased', releaseDate: '2026-05-08', pitchDeadline: '2026-05-02', isLeadSingle: true, leadRank: 2 },
             { title: 'Green Light', bpm: 104, key: '', rbConf: null, sexy: null, chill: null, romantic: null, happy: null, uplifting: null, energetic: null, isrc: '', status: 'unreleased', releaseDate: '2026-05-23', pitchDeadline: '2026-05-16', isLeadSingle: true, leadRank: 3 },
             { title: 'Sweet Frustration', bpm: 124, key: 'Bb min', rbConf: 0.25, sexy: 0.85, chill: 0.36, romantic: 0.37, happy: 0.69, uplifting: 0.58, energetic: 0.48, isrc: '', status: 'unreleased', releaseDate: '2026-06-06', pitchDeadline: '2026-05-30', isLeadSingle: true, leadRank: 4 },
             { title: 'WANT U 2', bpm: 114, key: 'G min', rbConf: 0.52, sexy: 0.56, chill: 0.65, romantic: 0.46, happy: 0.58, uplifting: 0.38, energetic: 0.12, isrc: '', status: 'unreleased', releaseDate: '2026-06-20', pitchDeadline: null, isLeadSingle: false, leadRank: 5 },
@@ -104,7 +104,7 @@ export const PROJECTS: Project[] = [
 ];
 
 export const LOOSIES: Loosie[] = [
-    { title: 'Loosie 1', targetDate: '2026-05-09', notes: 'Palette cleanser', isrc: '', status: 'unreleased' },
+    { title: 'Loosie 1', targetDate: '2026-05-08', notes: 'Palette cleanser', isrc: '', status: 'unreleased' },
     { title: 'Loosie 2', targetDate: '2026-05-23', notes: 'Set up CREAM energy', isrc: '', status: 'unreleased' },
     { title: 'Loosie 3', targetDate: '2026-08-01', notes: 'Keep presence', isrc: '', status: 'unreleased' },
     { title: 'Loosie 4', targetDate: '2026-08-22', notes: 'Transition to FREAKSHOW', isrc: '', status: 'unreleased' },
@@ -115,7 +115,7 @@ export const LOOSIES: Loosie[] = [
 export const TIMELINE_EVENTS: TimelineEvent[] = [
     { date: '2026-03-13', label: 'SEE ME', project: 'all-love', type: 'single' },
     // EP BOMB PIVOT (Apr 29): Full EP drops May 15. Vault singles waterfall starts May 30.
-    { date: '2026-05-09', label: 'East Side Love', project: 'all-love', type: 'single' },
+    { date: '2026-05-08', label: 'East Side Love', project: 'all-love', type: 'single' },
     { date: '2026-05-23', label: 'Green Light', project: 'all-love', type: 'single' },
     { date: '2026-06-06', label: 'Sweet Frustration', project: 'all-love', type: 'single' },
     { date: '2026-06-20', label: 'ALL LOVE EP (5 tracks)', project: 'all-love', type: 'album' },

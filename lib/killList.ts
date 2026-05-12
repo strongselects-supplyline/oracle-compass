@@ -395,7 +395,7 @@ export async function deriveKillList(): Promise<KillTask[]> {
   // ── 2.7 EP BOMB + VAULT CONTENT SPRINT ──────────
   // Fires on EP release day and each vault single release day.
   const contentSprintDates: { date: string; track: string; isEP: boolean }[] = [
-    { date: '2026-05-09', track: 'East Side Love', isEP: false },
+    { date: '2026-05-08', track: 'East Side Love', isEP: false },
     { date: '2026-05-15', track: 'ALL LOVE EP', isEP: true },
     { date: '2026-05-30', track: 'Like I Did', isEP: false },
     { date: '2026-06-13', track: 'I Like Girls', isEP: false },
@@ -1144,7 +1144,7 @@ export async function deriveKillList(): Promise<KillTask[]> {
         '  past.El noir Records',
         '  Hearing In Color 🎨🎶✨',
         '  Milwaukee → everywhere',
-        '  East Side Love — May 9 | ALL LOVE EP — May 15',
+        '  East Side Love — May 8 | ALL LOVE EP — May 15',
         '  [Spotify link or Linktree URL]',
         'The world first, not the job title.',
         'Tap ✓ when saved.',

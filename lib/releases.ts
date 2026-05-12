@@ -152,8 +152,8 @@ const RELEASE_DEFAULTS: Release[] = [
     },
   },
   {
-    title: "East Side Love", uploadDate: "2026-04-30", releaseDate: "2026-05-09", status: "live", type: "waterfall_single",
-    contentDeliverables: { ...DEFAULT_DELIVERABLES, coreDriveComplete: true, campaignKitGenerated: true, soundExchange: "complete", notes: "ADVANCE SINGLE — uploaded Apr 30, releases May 9 (MSTR 2). Also EP track 4. Release Radar trigger #1 (May 9). EP carries it as track 4 on May 15. Cyanite: 104 BPM, C# minor, R&B 0.84, Sexy 0.85. Core Drive: 1,221 tracks / 20 playlists." },
+    title: "East Side Love", uploadDate: "2026-04-30", releaseDate: "2026-05-08", status: "live", type: "waterfall_single",
+    contentDeliverables: { ...DEFAULT_DELIVERABLES, coreDriveComplete: true, campaignKitGenerated: true, soundExchange: "complete", notes: "ADVANCE SINGLE — uploaded Apr 30, releases May 8 (MSTR 2). Also EP track 4. Release Radar trigger #1 (May 8). EP carries it as track 4 on May 15. Cyanite: 104 BPM, C# minor, R&B 0.84, Sexy 0.85. Core Drive: 1,221 tracks / 20 playlists." },
     // Uploaded Apr 30 — creation + upload phases complete, pre-release in progress
     pipelineState: {
       "0.1": true, "0.2": true, "0.3": true, "0.4": true, "0.5": true,
@@ -212,7 +212,7 @@ const RELEASE_DEFAULTS: Release[] = [
 
 const RELEASES_KEY = "dynamic_releases";
 const RELEASES_VERSION_KEY = "releases_data_version";
-const RELEASE_DATA_VERSION = 38; // v38: May 9 — pipeline state added to Release type. SEE ME + ESL pre-seeded.
+const RELEASE_DATA_VERSION = 38; // v38: May 8 — pipeline state added to Release type. SEE ME + ESL pre-seeded.
 
 // Read from IndexedDB, seeding defaults on first call or after version bump
 export async function getDynamicReleases(): Promise<Release[]> {
