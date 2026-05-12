@@ -11,7 +11,7 @@
 //   - Morning logging is now a 4-step progressive flow
 //   - Kill List CTA is auto-computed (red count drives urgency)
 
-import { useEffect, useState, useCallback } from "react";
+import { useEffect, useState, useCallback, useRef } from "react";
 import { getDayType, isSacredDay, isStudioDay, isBizDay } from "@/lib/dayType";
 import { TRAINING_PROGRAM } from "@/lib/departments/health";
 import { getDailyLog, saveDailyLog, DailyLog } from "@/lib/db";
@@ -32,7 +32,7 @@ function getProtocolSteps(dayType: string): { tagline: string; steps: ProtocolSt
   const dow = new Date().getDay();
   const workout = TRAINING_PROGRAM.find(t => t.dayOfWeek.includes(dow));
   // Phase 1 = production sprint (through May 11). No content, no planning.
-  const isPhase1 = new Date() < new Date("2026-05-12T00:00:00");
+  const isPhase1 = new Date() < new Date("2026-05-19T00:00:00");
 
   const base: ProtocolStep[] = [
     { icon: "🚗", action: "6:30 AM → DD Morning Sprint (90 min target)" },
@@ -89,6 +89,66 @@ function HydrationSelector({ value, onChange }: { value: number | null; onChange
           {n}
         </button>
       ))}
+    </div>
+  );
+}
+
+// 90-second exit timer — ADHD protocol: exit signal prevents hyperfocus rabbit holes
+function MorningTimer({ active }: { active: boolean }) {
+  const [seconds, setSeconds] = useState(90);
+  const [started, setStarted] = useState(false);
+  const intervalRef = useRef<ReturnType<typeof setInterval> | null>(null);
+
+  // Reset when step changes
+  useEffect(() => {
+    setSeconds(90);
+    setStarted(false);
+    if (intervalRef.current) clearInterval(intervalRef.current);
+  }, [active]);
+
+  const start = () => {
+    if (started) return;
+    setStarted(true);
+    intervalRef.current = setInterval(() => {
+      setSeconds(s => {
+        if (s <= 1) {
+          clearInterval(intervalRef.current!);
+          return 0;
+        }
+        return s - 1;
+      });
+    }, 1000);
+  };
+
+  useEffect(() => () => { if (intervalRef.current) clearInterval(intervalRef.current); }, []);
+
+  if (!active) return null;
+
+  const pct = Math.round((seconds / 90) * 100);
+  const urgent = seconds <= 15;
+  const done = seconds === 0;
+
+  return (
+    <div
+      className="flex items-center gap-3 mb-3 px-1 cursor-pointer"
+      onClick={start}
+      title={started ? undefined : "Tap to start 90s timer"}
+    >
+      <div className="flex-1 h-1 rounded-full overflow-hidden" style={{ background: 'rgba(255,255,255,0.06)' }}>
+        <div
+          className="h-full rounded-full transition-all duration-1000"
+          style={{
+            width: `${pct}%`,
+            background: done ? '#ef4444' : urgent ? '#f97316' : 'rgba(212,168,83,0.5)',
+          }}
+        />
+      </div>
+      <span
+        className="text-[10px] font-black tracking-widest flex-shrink-0"
+        style={{ color: done ? '#ef4444' : urgent ? '#f97316' : 'rgba(255,255,255,0.2)', minWidth: 32, textAlign: 'right' }}
+      >
+        {done ? 'EXIT' : started ? `${seconds}s` : '90s'}
+      </span>
     </div>
   );
 }
@@ -456,6 +516,7 @@ export default function TodayPage() {
               {/* ── STEP 0: Sovereignty Stack ── */}
               {morningStep === 0 && (
                 <div className="animate-fade-in">
+                  <MorningTimer active={morningStep === 0} />
                   <div className="card !p-1.5 mb-3">
                     <CheckItem
                       label="Sovereignty Stack"
@@ -517,6 +578,7 @@ export default function TodayPage() {
               {/* ── STEP 1: Fuel ── */}
               {morningStep === 1 && (
                 <div className="animate-fade-in">
+                  <MorningTimer active={morningStep === 1} />
                   {fuelLabels.warning && (
                     <div className="mb-3 p-2 bg-red-500/10 border border-red-500/20 rounded-lg text-xs font-bold text-red-500 flex items-center gap-2">
                       <span>⚠️</span> {fuelLabels.warning}
@@ -590,6 +652,7 @@ export default function TodayPage() {
               {/* ── STEP 2: Numbers ── */}
               {morningStep === 2 && (
                 <div className="animate-fade-in">
+                  <MorningTimer active={morningStep === 2} />
                   <div className="flex gap-2 mb-3">
                     <div className="card flex-1 flex items-center justify-between p-3">
                       <span className="text-[10px] font-black tracking-widest text-[#555] uppercase">Sleep (h)</span>
@@ -645,6 +708,7 @@ export default function TodayPage() {
               {/* ── STEP 3: Journal ── */}
               {morningStep === 3 && (
                 <div className="animate-fade-in">
+                  <MorningTimer active={morningStep === 3} />
                   <div className="card p-3 mb-3">
                     <textarea
                       autoFocus
@@ -683,7 +747,28 @@ export default function TodayPage() {
                 </button>
               )}
 
-              </>)}
+              {/* ── ALL CLEAR ── */}
+              {morningStep === 4 && (
+                <div
+                  className="text-center py-8 rounded-2xl mt-2 animate-fade-in"
+                  style={{ background: "rgba(34,197,94,0.06)", border: "1px solid rgba(34,197,94,0.2)" }}
+                  role="status"
+                  aria-live="polite"
+                >
+                  <div className="text-3xl mb-3">✅</div>
+                  <p className="text-xl font-black text-green-400 mb-1 tracking-tight">ALL CLEAR.</p>
+                  <p className="text-sm font-bold text-green-400/70 mb-4">Go make music.</p>
+                  <p className="text-[10px] text-[#555] mb-5">
+                    {[sovereigntyDone, fuelDone, numbersDone, journalDone].filter(Boolean).length}/4 steps logged
+                  </p>
+                  <Link href="/kill">
+                    <div className="inline-flex items-center gap-2 px-6 py-3 rounded-xl font-black text-[11px] tracking-widest uppercase transition-all active:scale-95" style={{ background: "rgba(212,168,83,0.12)", color: "#d4a853", border: "1px solid rgba(212,168,83,0.3)" }}>
+                      EXECUTE →
+                    </div>
+                  </Link>
+                </div>
+              )}
+
             </div>
             )}
 

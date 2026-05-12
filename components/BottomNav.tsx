@@ -6,22 +6,37 @@ import { useEffect, useState } from "react";
 import { useKillList } from "@/components/KillListProvider";
 import { useTheme } from "@/components/ThemeProvider";
 
-// War Room grid items — reference only, no notification dots
+// War Room grid items
 const WAR_ROOM_ITEMS = [
-  { name: "Studio",    path: "/studio",    icon: "🎤", desc: "Waterfall · Cycles · Sessions" },
-  { name: "Label",     path: "/label",     icon: "🏷️", desc: "Release ops" },
+  { name: "Release",   path: "/release",   icon: "🎙️", desc: "Studio · Ops" },
   { name: "Planner",   path: "/planner",   icon: "📋", desc: "Marathon · Lanes · Mirror" },
-  { name: "Brain",     path: "/brain",     icon: "🧠", desc: "Scrolls · Sovereignty" },
   { name: "Analytics", path: "/analytics", icon: "📊", desc: "S4A monthly intake" },
   { name: "Doctrine",  path: "/doctrine",  icon: "📚", desc: "Sovereign Scroll" },
   { name: "Settings",  path: "/settings",  icon: "⚙️", desc: "Theme · Data · Export" },
 ];
+
+// Suggest which War Room page is most relevant right now
+function getSuggestedPath(): string {
+  const hour = new Date().getHours();
+  const dow = new Date().getDay(); // 0=Sun, 6=Sat
+  // Sunday = Doctrine (reflection day)
+  if (dow === 0) return "/doctrine";
+  // Release week check (Mon/Tue) → Release (Ops)
+  if (dow <= 2 && hour >= 9 && hour < 18) return "/release";
+  // Studio hours (Mon/Wed/Thu/Fri 10am-8pm) → Release (Studio)
+  if ([1,3,4,5].includes(dow) && hour >= 10 && hour < 20) return "/release";
+  // Analytics pull day (Saturday)
+  if (dow === 6) return "/analytics";
+  // Default morning → Doctrine
+  return "/doctrine";
+}
 
 export default function BottomNav() {
   const pathname = usePathname();
   const [showWarRoom, setShowWarRoom] = useState(false);
   const { killStats } = useKillList();
   const { mode, resolved, cycle: cycleTheme } = useTheme();
+  const suggestedPath = getSuggestedPath();
 
   // Derived from shared context — no direct IndexedDB call
   const killRed = (killStats?.redRemaining ?? 0) > 0;
@@ -73,21 +88,25 @@ export default function BottomNav() {
 
               {/* Grid */}
               <div className="grid grid-cols-3 gap-px bg-white/5">
-                {WAR_ROOM_ITEMS.map(item => {
-                  const active = pathname === item.path || (item.name === "Studio" && pathname === "/sonic");
+              {WAR_ROOM_ITEMS.map(item => {
+                  const active = pathname === item.path || (item.name === "Release" && pathname === "/sonic");
+                  const isSuggested = item.path === suggestedPath && !active;
                   return (
                     <Link
                       key={item.path}
                       href={item.path}
                       onClick={() => setShowWarRoom(false)}
-                      className={`flex flex-col items-center gap-1.5 py-4 px-2 transition-all active:scale-95 ${
+                      className={`relative flex flex-col items-center gap-1.5 py-4 px-2 transition-all active:scale-95 ${
                         active ? "bg-white/8" : "bg-[#0a0a0a] hover:bg-white/[0.04]"
                       }`}
                     >
+                      {isSuggested && (
+                        <span className="absolute top-2 right-2 w-2 h-2 rounded-full bg-amber-400 animate-pulse" title="Start here" />
+                      )}
                       <span className="text-2xl">{item.icon}</span>
                       <span
                         className="text-[10px] font-black tracking-wider uppercase"
-                        style={{ color: active ? "white" : "rgba(255,255,255,0.5)" }}
+                        style={{ color: active ? "white" : isSuggested ? "rgba(212,168,83,0.9)" : "rgba(255,255,255,0.5)" }}
                       >
                         {item.name}
                       </span>

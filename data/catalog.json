@@ -826,17 +826,19 @@
         "lead_identifier": "Highest Sexy score on EP (89%)"
       },
       "streaming": {
-        "snapshot_date": null,
-        "spotify_12mo": null,
+        "snapshot_date": "2026-05-12",
+        "spotify_12mo": 524,
         "apple_12mo": null,
         "youtube_12mo": null,
         "total_12mo": null,
-        "spotify_alltime": null,
-        "saves": null,
+        "spotify_alltime": 524,
+        "saves": 34,
+        "listeners": 269,
+        "save_rate": 0.126,
         "playlist_count": null,
         "shazams": null,
-        "note": "Released Mar 13. Pull from Amuse Insights + Spotify for Artists for first monthly fill.",
-        "spotify_popularity_date": "2026-04-04"
+        "note": "S4A 12-month screenshot May 12, 2026. Save rate 12.6% — above 10% algorithmic threshold.",
+        "spotify_popularity_date": "2026-05-12"
       },
       "geographic": {
         "top_cities": [],
@@ -888,7 +890,7 @@
     {
       "track_id": "east_side_love",
       "title": "East Side Love",
-      "status": "upload_pending",
+      "status": "live",
       "release_date": "2026-05-01",
       "upload_date": "2026-04-24",
       "pivot_note": "Apr 24 pivot — uploaded as LEAD SINGLE. Drops May 1, then becomes EP track May 8 via Amuse ISRC waterfall.",
@@ -928,15 +930,18 @@
         "lead_identifier": "Highest Romantic score alongside Like I Did (62%) · Second-highest Chill"
       },
       "streaming": {
-        "snapshot_date": null,
-        "spotify_12mo": null,
+        "snapshot_date": "2026-05-12",
+        "spotify_12mo": 108,
         "apple_12mo": null,
         "youtube_12mo": null,
         "total_12mo": null,
-        "spotify_alltime": null,
-        "saves": null,
+        "spotify_alltime": 108,
+        "saves": 16,
+        "listeners": 74,
+        "save_rate": 0.216,
         "playlist_count": null,
-        "shazams": null
+        "shazams": null,
+        "note": "S4A 12-month screenshot May 12, 2026. Save rate 21.6% — exceptional. Strongest algorithmic signal on entire catalog."
       },
       "geographic": {
         "top_cities": [],
@@ -1190,9 +1195,9 @@
       "track_id": "all_love_ep",
       "title": "ALL LOVE (EP)",
       "status": "unreleased",
-      "release_date": "2026-05-08",
-      "upload_date": "2026-04-30",
-      "pivot_note": "Apr 24 pivot — EP release moved to May 8. ESL is lead single May 1, waterfalls into EP track 1.",
+      "release_date": "2026-05-29",
+      "upload_date": "2026-05-19",
+      "pivot_note": "May 12 decision — EP pushed 3 weeks (May 8 → May 29) for quality control. Upload ~May 19. Confirmed this HELPS: ESL gets 28 days of standalone algorithmic training (21.6% save rate) before EP compounds it. Popularity score at 24 (1 point from DW testing) — extra time lets it tick up organically before EP push.",
       "label": "past.El noir Records (Ethan Payton LLC)",
       "project": "ALL_LOVE_EP",
       "entity_type": "ep",

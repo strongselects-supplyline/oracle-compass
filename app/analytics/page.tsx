@@ -6,6 +6,7 @@
 
 import { useEffect, useState } from "react";
 import { setStoreValue } from "@/lib/db";
+import Link from "next/link";
 
 type LiveTrack = {
   track_id: string;
@@ -204,6 +205,11 @@ export default function AnalyticsPage() {
 
         {/* Header */}
         <div style={{ textAlign: "center", marginBottom: 28 }}>
+          <div className="flex items-center justify-center gap-2 mb-3">
+            <Link href="/" className="text-[9px] font-black tracking-[0.2em] text-[#333] uppercase hover:text-[#555] transition-colors">WAR ROOM</Link>
+            <span className="text-[9px] text-[#222]">/</span>
+            <span className="text-[9px] font-black tracking-[0.2em] text-[#555] uppercase">ANALYTICS</span>
+          </div>
           <h1 style={{ fontSize: 18, fontWeight: 900, letterSpacing: "0.2em", textTransform: "uppercase", margin: 0 }}>
             📊 S4A INTAKE
           </h1>

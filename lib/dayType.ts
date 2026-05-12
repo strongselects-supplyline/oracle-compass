@@ -28,14 +28,14 @@
 // DD TARGET: $1,800/mo @ $25/hr net = ~72 hrs/mo
 // Phase 1: morning block only. Phase 2: 2-3 sprints/day.
 
-// EP drops May 15. Phase 2 (VAULT WATERFALL) begins May 30 with Like I Did.
-const EP_SPRINT_END = new Date("2026-05-12T00:00:00");
+// EP drops May 29. Phase 2 (VAULT WATERFALL) begins Jun 13 with Like I Did.
+const EP_UPLOAD_DATE = new Date("2026-05-19T00:00:00");
 
 export type DayType = "STUDIO + SAUNA DAY" | "BIZ DAY" | "\u{1F6D1} SACRED \u2014 no building" | "STUDIO DAY";
 
 export function getDayType(date: Date = new Date()): DayType {
     const dayIndex = date.getDay(); // 0=Sun, 1=Mon ... 6=Sat
-    const isPostEP = date >= EP_SPRINT_END;
+    const isPostEP = date >= EP_UPLOAD_DATE;
 
     if (dayIndex === 0) {
         return "\u{1F6D1} SACRED \u2014 no building";

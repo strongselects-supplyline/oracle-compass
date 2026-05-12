@@ -15,19 +15,19 @@ interface CheckItemProps {
 }
 
 export default function CheckItem({ label, description, checked, onChange, dimmed, warn }: CheckItemProps) {
-  const [popping, setPopping] = useState(false);
+  const [flashing, setFlashing] = useState(false);
 
   const handleTap = () => {
     if (!checked) {
-      setPopping(true);
-      setTimeout(() => setPopping(false), 400);
+      setFlashing(true);
+      setTimeout(() => setFlashing(false), 500);
     }
     onChange(!checked);
   };
 
   return (
     <div
-      className={`flex items-start gap-3 p-3 transition-all cursor-pointer rounded-xl ${dimmed ? "opacity-30 pointer-events-none" : ""}`}
+      className={`flex items-start gap-3 p-3 transition-all cursor-pointer rounded-xl ${dimmed ? "opacity-30 pointer-events-none" : "active:bg-white/[0.02]"}`}
       style={{ background: "transparent" }}
       onClick={handleTap}
       role="checkbox"
@@ -37,9 +37,9 @@ export default function CheckItem({ label, description, checked, onChange, dimme
       onKeyDown={e => e.key === " " && handleTap()}
     >
       <div
-        className={`w-6 h-6 rounded border-2 flex items-center justify-center transition-all flex-shrink-0 mt-0.5 ${
+        className={`w-6 h-6 rounded border-2 flex items-center justify-center flex-shrink-0 mt-0.5 transition-all duration-200 ${
           checked ? (warn ? "bg-red-500 border-red-500" : "bg-amber-500 border-amber-500") : ""
-        } ${popping ? "scale-110" : "scale-100"}`}
+        } ${flashing ? "scale-125 shadow-[0_0_12px_rgba(212,168,83,0.6)]" : "scale-100"}`}
         style={!checked ? { borderColor: "var(--border-2)" } : {}}
       >
         {checked && (
@@ -50,7 +50,7 @@ export default function CheckItem({ label, description, checked, onChange, dimme
       </div>
       <div className="flex-1 flex flex-col justify-center min-h-[24px]">
         <span
-          className={`text-sm font-bold ${checked ? (warn ? "text-red-400" : "line-through") : ""}`}
+          className={`text-sm font-bold transition-all duration-300 ${checked ? (warn ? "text-red-400" : "line-through") : ""}`}
           style={{ color: checked ? (warn ? undefined : "var(--text-muted)") : "var(--text-primary)" }}
         >
           {label}
@@ -67,3 +67,4 @@ export default function CheckItem({ label, description, checked, onChange, dimme
     </div>
   );
 }
+

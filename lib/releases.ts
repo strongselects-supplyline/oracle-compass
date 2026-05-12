@@ -162,23 +162,23 @@ const RELEASE_DEFAULTS: Release[] = [
     },
   },
   {
-    title: "Green Light", uploadDate: "2026-05-11", releaseDate: "2026-05-15", status: "unreleased", type: "ep_track",
-    contentDeliverables: { ...DEFAULT_DELIVERABLES, notes: "EP track 3. NOT a standalone single. Drops as part of EP bomb May 15." },
+    title: "Green Light", uploadDate: "2026-05-19", releaseDate: "2026-05-29", status: "unreleased", type: "ep_track",
+    contentDeliverables: { ...DEFAULT_DELIVERABLES, notes: "EP track 3. NOT a standalone single. Drops as part of EP bomb May 29." },
     pipelineState: {},
   },
   {
-    title: "Sweet Frustration", uploadDate: "2026-05-11", releaseDate: "2026-05-15", status: "unreleased", type: "ep_track",
-    contentDeliverables: { ...DEFAULT_DELIVERABLES, coreDriveComplete: true, campaignKitGenerated: true, soundExchange: "complete", notes: "EP track 4. KAYTRANADA lane. NOT a standalone single. Drops as part of EP bomb May 15." },
+    title: "Sweet Frustration", uploadDate: "2026-05-19", releaseDate: "2026-05-29", status: "unreleased", type: "ep_track",
+    contentDeliverables: { ...DEFAULT_DELIVERABLES, coreDriveComplete: true, campaignKitGenerated: true, soundExchange: "complete", notes: "EP track 4. KAYTRANADA lane. NOT a standalone single. Drops as part of EP bomb May 29." },
     pipelineState: {},
   },
   {
-    title: "WANT U 2", uploadDate: "2026-05-11", releaseDate: "2026-05-15", status: "unreleased", type: "ep_track",
+    title: "WANT U 2", uploadDate: "2026-05-19", releaseDate: "2026-05-29", status: "unreleased", type: "ep_track",
     contentDeliverables: { ...DEFAULT_DELIVERABLES, notes: "EP track 5. EP-exclusive — never released as single. Gives listeners incentive to play the full EP." },
     pipelineState: {},
   },
   {
-    title: "ALL LOVE (EP)", uploadDate: "2026-05-11", releaseDate: "2026-05-15", status: "unreleased", type: "ep",
-    contentDeliverables: { ...DEFAULT_DELIVERABLES, notes: "5-track EP: Green Light → Sweet Frustration → SEE ME → East Side Love → WANT U 2. GL/SF open — 2.0 streams/listener means most bail after track 2, new tracks must hit first. ESL advance single May 9 (Release Radar #1). EP May 15 (Release Radar #2 via GL/SF/WU2). Editorial pitch: Sweet Frustration (KAYTRANADA lane, genre outlier). Needs: EP cover art (DONE), UPC, EP-level Spotify pitch." },
+    title: "ALL LOVE (EP)", uploadDate: "2026-05-19", releaseDate: "2026-05-29", status: "unreleased", type: "ep",
+    contentDeliverables: { ...DEFAULT_DELIVERABLES, notes: "5-track EP: Green Light → Sweet Frustration → SEE ME → East Side Love → WANT U 2. GL/SF open — 2.0 streams/listener means most bail after track 2, new tracks must hit first. ESL advance single May 8 (Release Radar #1). EP May 29 (Release Radar #2 via GL/SF/WU2). Editorial pitch: Sweet Frustration (KAYTRANADA lane, genre outlier). Needs: EP cover art (DONE), UPC, EP-level Spotify pitch." },
     pipelineState: {},
   },
   {
@@ -330,10 +330,11 @@ export async function shiftRelease(title: string, days: number): Promise<void> {
 }
 
 // Static EP date — this is the fixed north star, doesn't shift
-// Apr 29 EP BOMB PIVOT: Full EP drops May 15. Upload May 11. Post-EP vault waterfall starts May 30.
-export const EP_RELEASE_DATE = "2026-05-15";
-export const EP_UPLOAD_DATE = "2026-05-11";
-export const ESL_SINGLE_RELEASE_DATE = "2026-05-09";
+// Apr 29 EP BOMB PIVOT: Full EP drops May 29. Upload May 19. Post-EP vault waterfall starts Jun 13.
+export const EP_RELEASE_DATE = "2026-05-29";
+export const EP_UPLOAD_DATE = "2026-05-19";
+export const ESL_SINGLE_RELEASE_DATE = "2026-05-08";
+
 export const ALBUM_RELEASE_DATE = EP_RELEASE_DATE;
 
 // How many days after EP drop we display "Honeymoon Phase" on the homepage instead of a countdown
