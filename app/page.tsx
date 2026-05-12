@@ -129,6 +129,7 @@ export default function TodayPage() {
   // Morning step — 0=sovereign, 1=fuel, 2=numbers, 3=journal, 4=done
   const [morningStep, setMorningStep] = useState<0 | 1 | 2 | 3 | 4>(0);
   const [lockInStatus, setLockInStatus] = useState<"idle" | "syncing" | "done">("idle");
+  const [morningStackOpen, setMorningStackOpen] = useState(false);
 
   useEffect(() => {
     const init = async () => {
@@ -171,12 +172,19 @@ export default function TodayPage() {
       // Restore morning step from existing log state
       if (todayLog.journalLine) {
         setMorningStep(4);
+        setMorningStackOpen(true);
       } else if (todayLog.sleep || todayLog.pushups) {
         setMorningStep(3);
+        setMorningStackOpen(true);
       } else if (todayLog.fuelPreSession || todayLog.fuelMidSession || todayLog.fuelPostSession) {
         setMorningStep(2);
+        setMorningStackOpen(true);
       } else if (todayLog.sovereigntyStack || todayLog.movement) {
         setMorningStep(1);
+        setMorningStackOpen(true);
+      } else if (new Date().getHours() < 11) {
+        // Auto-open before 11 AM
+        setMorningStackOpen(true);
       }
     };
     init();
@@ -309,18 +317,19 @@ export default function TodayPage() {
           </div>
         ) : (
           <>
-            {/* ── ONE THING — ignition key ── */}
+            {/* ── ONE THING — HERO ── */}
             <section
-              className={`mb-6 card !py-6 text-center transition-all active:scale-[0.98] cursor-pointer ${!log.oneThing ? "border-dashed border-amber-500/30 bg-amber-500/[0.02]" : ""}`}
+              className="mb-8 px-1 cursor-pointer"
               onClick={() => !isEditingOneThing && setIsEditingOneThing(true)}
               aria-label="Set today's one thing"
             >
-              <p className="text-[10px] font-black tracking-[0.2em] text-amber-500 uppercase mb-3">Today's One Thing</p>
+              <p className="text-[10px] font-black tracking-[0.25em] text-amber-500 uppercase mb-3">Today&apos;s One Thing</p>
               {isEditingOneThing ? (
                 <input
                   autoFocus
                   type="text"
-                  className="w-full bg-transparent text-xl font-black text-center text-white outline-none placeholder-muted"
+                  className="w-full bg-transparent text-4xl font-black text-white outline-none placeholder-muted leading-tight"
+                  style={{ letterSpacing: "-0.02em" }}
                   value={oneThingInput}
                   onChange={e => setOneThingInput(e.target.value)}
                   onKeyDown={e => e.key === "Enter" && handleSaveOneThing()}
@@ -328,9 +337,15 @@ export default function TodayPage() {
                   placeholder="The single move..."
                 />
               ) : (
-                <p className={`text-xl font-black leading-tight tracking-tight px-4 ${log.oneThing ? "text-white" : "text-muted opacity-60"}`}>
-                  {log.oneThing || "Tap to define the single move →"}
-                </p>
+                <>
+                  <p className={`text-4xl font-black leading-tight ${log.oneThing ? "text-white" : "text-muted opacity-40"}`}
+                     style={{ letterSpacing: "-0.02em" }}>
+                    {log.oneThing || "Tap → define the move"}
+                  </p>
+                  {log.oneThing && (
+                    <div className="mt-3 h-0.5 w-12 rounded-full bg-amber-500/60" />
+                  )}
+                </>
               )}
             </section>
 
@@ -387,10 +402,29 @@ export default function TodayPage() {
               </div>
             </Link>
 
-            {/* ── MORNING STACK — 4-step progressive flow ── */}
+            {/* ── MORNING STACK — collapsible with progress count ── */}
+            {morningStep === 4 ? (
+              /* ALL CLEAR state */
+              <div className="mb-8 p-4 rounded-2xl text-center" style={{ background: "rgba(34,197,94,0.06)", border: "1px solid rgba(34,197,94,0.25)" }}>
+                <p className="text-base font-black text-green-400">✓ ALL CLEAR</p>
+                <p className="text-[11px] text-muted mt-1">Morning stack complete. Go make music.</p>
+              </div>
+            ) : (
             <div className="mb-8">
-              <h3 className="text-[10px] font-black tracking-[0.2em] text-muted uppercase mb-4 px-1">Morning Stack</h3>
+              <button
+                onClick={() => setMorningStackOpen(v => !v)}
+                className="w-full flex items-center justify-between px-1 mb-4"
+              >
+                <h3 className="text-[10px] font-black tracking-[0.2em] text-muted uppercase">
+                  Morning Stack
+                  <span className="ml-2 font-black" style={{ color: [sovereigntyDone, fuelDone, numbersDone, journalDone].filter(Boolean).length > 0 ? "var(--accent)" : "var(--text-muted)" }}>
+                    ({[sovereigntyDone, fuelDone, numbersDone, journalDone].filter(Boolean).length}/4)
+                  </span>
+                </h3>
+                <span className="text-[10px] text-muted">{morningStackOpen ? "▲" : "▼"}</span>
+              </button>
 
+              {morningStackOpen && (<>
               {/* Step progress row — aria-live so screen readers announce completion */}
               <div className="flex items-center gap-2 mb-5 px-1" aria-live="polite" aria-label="Morning stack progress">
                 {[
@@ -649,26 +683,9 @@ export default function TodayPage() {
                 </button>
               )}
 
-              {/* ── Stack complete ── */}
-              {morningStep === 4 && (
-                <div
-                  className="text-center py-6 rounded-xl mt-2"
-                  style={{ background: "rgba(34,197,94,0.04)", border: "1px solid rgba(34,197,94,0.12)" }}
-                  role="status"
-                  aria-live="polite"
-                >
-                  <p className="text-sm font-black text-green-400 mb-1">Morning stack complete ✓</p>
-                  <p className="text-[10px] text-muted">
-                    {[sovereigntyDone, fuelDone, numbersDone, journalDone].filter(Boolean).length}/4 steps logged
-                  </p>
-                  <Link href="/kill">
-                    <div className="mt-4 inline-flex items-center gap-2 px-5 py-2.5 rounded-xl font-black text-[11px] tracking-widest uppercase transition-all active:scale-95" style={{ background: "rgba(212,168,83,0.1)", color: "#d4a853", border: "1px solid rgba(212,168,83,0.25)" }}>
-                      EXECUTE →
-                    </div>
-                  </Link>
-                </div>
-              )}
+              </>)}
             </div>
+            )}
 
           </>
         )}
