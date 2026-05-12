@@ -315,8 +315,6 @@ export default function StudioBoard() {
                     <div className="text-2xl font-black mb-2">{sessions} / {new Date() <= new Date('2026-04-03') ? 6 : 4}</div>
                     <div className="text-[10px] text-[#555] font-bold">(Auto-counted from session logs)</div>
                 </div>
-
             </div>
-        </div>
     );
 }

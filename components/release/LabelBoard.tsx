@@ -152,7 +152,6 @@ export default function LabelBoard() {
             );
           })}
         </div>
-      </div>
     </div>
   );
 }
