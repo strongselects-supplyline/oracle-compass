@@ -68,27 +68,25 @@ function Bench({ text }: { text: ReactNode }) {
 function RoadmapPage() {
   return (
     <>
-      <Header tag="The Plan · Arc 1→3" title="90-Day Roadmap" sub="April 18 → July 17, 2026. Three releases. One catalog. Compounding data." />
-      <h2 className="scroll-h3">Overview — Three Arcs</h2>
-      <div className="scroll-table-wrap"><table className="scroll-table"><thead><tr><th>Arc</th><th>Dates</th><th>Release</th><th>Pop Target</th><th>Sovereignty</th></tr></thead><tbody>
-        <tr><td><span className="stp-badge badge-gold">Arc 1 — Waterfall</span></td><td>Apr 28 – Jun 20</td><td>ALL LOVE EP (5 trk) · Waterfall singles</td><td>21 → 25</td><td>Production sprint → Release cadence</td></tr>
-        <tr><td><span className="stp-badge badge-blue">Arc 2 — Album</span></td><td>May 18 – Jun 16</td><td>ALL LOVE (11 trk) · May 19-20</td><td>25 → 30</td><td>Emotions Return</td></tr>
-        <tr><td><span className="stp-badge badge-purple">Arc 3 — Deluxe</span></td><td>Jun 17 – Jul 17</td><td>ALL LOVE DELUXE (22 trk) · ~Jul 1</td><td>30 → 35</td><td>Compounding</td></tr>
+      <Header tag="The Plan · Phase 1→3" title="90-Day Roadmap" sub="April 6 → August 7, 2026. One EP. Five vault singles. One album. Compounding data." />
+      <h2 className="scroll-h3">Overview — Three Phases</h2>
+      <div className="scroll-table-wrap"><table className="scroll-table"><thead><tr><th>Phase</th><th>Dates</th><th>Release</th><th>Pop Target</th><th>Mode</th></tr></thead><tbody>
+        <tr><td><span className="stp-badge badge-gold">Phase 1 — EP Sprint</span></td><td>Apr 6 – May 29</td><td>ALL LOVE EP (5 tracks) · May 29</td><td>24 → 28</td><td>Recording → Upload → Drop → Compound</td></tr>
+        <tr><td><span className="stp-badge badge-green">Phase 2 — Vault Waterfall</span></td><td>May 30 – Aug 7</td><td>5 vault singles at 2-week cadence</td><td>28 → 35</td><td>Rhythm IS the system. Each single = Release Radar trigger.</td></tr>
+        <tr><td><span className="stp-badge badge-blue">Phase 3 — CREAM</span></td><td>Aug 8 – Oct 2026</td><td>CREAM album (top 5 data-sorted)</td><td>35 → 45</td><td>Pre-production Aug. Data-driven tracklist locked Jul 24.</td></tr>
       </tbody></table></div>
-      <Callout type="important" icon="⚡"><strong>The meta-pattern:</strong> Each release re-ignites the algorithm. Album uses EP&apos;s ISRCs (data carries over). Deluxe uses album&apos;s ISRCs. One catalog, three events, zero lost data.</Callout>
+      <Callout type="important" icon="⚡"><strong>The meta-pattern:</strong> EP drops as a bomb (5 tracks, 1 Release Radar). Then vault singles waterfall keeps feeding the algorithm every 2 weeks (5 more Release Radars). CREAM uses the best-performing tracks from the full cycle. One catalog, 11 events, compounding data.</Callout>
       <h2 className="scroll-h3">Key Dates</h2>
       <div className="scroll-table-wrap"><table className="scroll-table"><thead><tr><th>Date</th><th>Event</th></tr></thead><tbody>
-        <tr><td>Mon Apr 21</td><td>Amuse upload (EP)</td></tr>
-        <tr><td style={{color:"#e05545",fontWeight:700}}>Thu May 15</td><td><strong>ALL LOVE EP drops</strong> (5 tracks — ICEMAN day)</td></tr>
-        <tr><td>Apr 26 – May 7</td><td>THE FLATLINE (lowest motivation)</td></tr>
-        <tr><td>Tue Apr 28</td><td>Birthday (Flatline day 4 — keep personal)</td></tr>
-        <tr><td>Thu May 7</td><td>Flatline ends (emotions return)</td></tr>
-        <tr><td>Sun May 17</td><td>Album upload deadline</td></tr>
-        <tr><td style={{color:"#4d9de0",fontWeight:700}}>Wed May 20</td><td><strong>ALBUM DROPS</strong></td></tr>
-        <tr><td>Sun Jun 14</td><td>Deluxe upload deadline</td></tr>
-        <tr><td style={{color:"#9b72cf",fontWeight:700}}>Fri Jun 19</td><td><strong>DELUXE DROPS</strong></td></tr>
-        <tr><td>Fri Jul 10</td><td>CREAM decision point</td></tr>
-        <tr><td style={{color:"#d4a843",fontWeight:700}}>Fri Jul 17</td><td><strong>90-DAY REVIEW</strong></td></tr>
+        <tr><td>Mon May 19</td><td>Upload GL + SF + WU2 + EP entity to Amuse</td></tr>
+        <tr><td style={{color:"#d4a843",fontWeight:700}}>Thu May 29</td><td><strong>ALL LOVE EP drops</strong> (5 tracks — global release)</td></tr>
+        <tr><td>May 30 – Jun 11</td><td>EP compound phase (content sustain, sync pitching, meme seeding)</td></tr>
+        <tr><td style={{color:"#3ecf71",fontWeight:700}}>Thu Jun 12</td><td><strong>I Like Girls</strong> (vault single #1)</td></tr>
+        <tr><td style={{color:"#3ecf71",fontWeight:700}}>Thu Jun 26</td><td><strong>Like I Did</strong> (vault single #2)</td></tr>
+        <tr><td style={{color:"#3ecf71",fontWeight:700}}>Thu Jul 10</td><td><strong>Worth It</strong> (vault single #3)</td></tr>
+        <tr><td style={{color:"#4d9de0",fontWeight:700}}>Thu Jul 24</td><td><strong>Just Say So</strong> (vault #4) + <strong>CREAM tracklist lock</strong></td></tr>
+        <tr><td style={{color:"#4d9de0",fontWeight:700}}>Thu Aug 7</td><td><strong>Reconnect</strong> (vault single #5 — waterfall complete)</td></tr>
+        <tr><td style={{color:"#9b72cf",fontWeight:700}}>Aug 8+</td><td>CREAM pre-production begins</td></tr>
       </tbody></table></div>
     </>
   );
@@ -139,15 +137,15 @@ function WartimePage() {
         <tr><td>Instagram</td><td>Primary content engine + funnel</td><td>Pillar 1–4 rotating. Release sprints at max.</td></tr>
         <tr><td>YouTube</td><td>Catalog archive + SEO long tail</td><td>Visualizers, live sets, audio drops. No pressure cadence.</td></tr>
         <tr><td>Twitter/X</td><td>Consolidate or cut</td><td>Minimal. Repurpose IG captions if anything.</td></tr>
-        <tr><td>TikTok</td><td>Phase 3 consideration only</td><td>Not now. IG first.</td></tr>
+        <tr><td>TikTok</td><td>Secondary distribution</td><td>Export IG native → upload TikTok. Not a primary creation platform.</td></tr>
         </tbody>
       </table></div>
 
       <h2 className="scroll-h3">Part V — The 90-Day Arc</h2>
       <div className="scroll-grid-3">
-        <div className="scroll-grid-card" style={{borderTop:"3px solid #e05545"}}><div className="scroll-gc-title" style={{color:"#e05545"}}>Phase 1 · THE SPRINT</div><div className="scroll-gc-desc">Apr 6–May 8 (32 days). 4 actions/day. Hard time limits. Production mastering + waterfall prep.</div></div>
-        <div className="scroll-grid-card" style={{borderTop:"3px solid #3ecf71"}}><div className="scroll-gc-title" style={{color:"#3ecf71"}}>Phase 2 · VAULT WATERFALL</div><div className="scroll-gc-desc">May 30–Jul 25 (57 days). Vault singles biweekly. Content sprint per release. Rhythm IS the system.</div></div>
-        <div className="scroll-grid-card" style={{borderTop:"3px solid #4d9de0"}}><div className="scroll-gc-title" style={{color:"#4d9de0"}}>Phase 3 · THE SUMMER</div><div className="scroll-gc-desc">Jun 1–Jul 5 (35 days). Data-informed launch. CREAM executes what ALL LOVE proved.</div></div>
+        <div className="scroll-grid-card" style={{borderTop:"3px solid #e05545"}}><div className="scroll-gc-title" style={{color:"#e05545"}}>Phase 1 · EP SPRINT</div><div className="scroll-gc-desc">Apr 6 – May 29. Recording sprint May 15-18. Upload May 19. EP drops May 29. Content sprint T-7 through T+7.</div></div>
+        <div className="scroll-grid-card" style={{borderTop:"3px solid #3ecf71"}}><div className="scroll-gc-title" style={{color:"#3ecf71"}}>Phase 2 · VAULT WATERFALL</div><div className="scroll-gc-desc">May 30 – Aug 7. 5 vault singles at 2-week cadence (ILG → LID → WI → JSS → RCN). Each single = Release Radar trigger. Rhythm IS the system.</div></div>
+        <div className="scroll-grid-card" style={{borderTop:"3px solid #4d9de0"}}><div className="scroll-gc-title" style={{color:"#4d9de0"}}>Phase 3 · CREAM</div><div className="scroll-gc-desc">Aug 8+. Pre-production begins. Data-driven tracklist locked Jul 24. Top 5 from full cycle. CREAM executes what ALL LOVE proved.</div></div>
       </div>
 
       <h2 className="scroll-h3">Sobriety Arc (Wired Through All Phases)</h2>
@@ -221,7 +219,7 @@ function WartimePage() {
       <h2 className="scroll-h3">Part VIII — North Star Metrics</h2>
       <p className="scroll-p">Check every Sunday. These are the only numbers that matter.</p>
       <div className="scroll-metrics-grid">
-        <div className="scroll-metric-card"><span className="scroll-metric-val">1,600+</span><div className="scroll-metric-lbl">Spotify Followers · Jun 20</div></div>
+        <div className="scroll-metric-card"><span className="scroll-metric-val">1,600+</span><div className="scroll-metric-lbl">Spotify Followers · Jun 30</div></div>
         <div className="scroll-metric-card"><span className="scroll-metric-val">2,500+</span><div className="scroll-metric-lbl">Spotify Followers · Jul 5</div></div>
         <div className="scroll-metric-card"><span className="scroll-metric-val">3%+</span><div className="scroll-metric-lbl">Save Rate · SF Target</div></div>
         <div className="scroll-metric-card"><span className="scroll-metric-val">4%+</span><div className="scroll-metric-lbl">Save Rate · CREAM Target</div></div>
@@ -245,7 +243,7 @@ function WartimePage() {
           <li className="scroll-p"><strong>Builder-avoidance loops are neurochemical, not laziness.</strong> When the urge to &quot;fix the system&quot; hits, open the DAW instead.</li>
           <li className="scroll-p"><strong>The 90-second exit signal is sacred.</strong> Morning Kill List scan = 90 seconds max, then close it.</li>
           <li className="scroll-p"><strong>Phase 2 rhythm is protected.</strong> May 30 is a hard boundary. EP compound phase (May 15-29) transitions cleanly into vault waterfall.</li>
-          <li className="scroll-p"><strong>ALL LOVE Deluxe is data-dependent.</strong> Decide Apr 27 after reviewing EP first-week numbers.</li>
+          <li className="scroll-p"><strong>Deluxe concept retired.</strong> CREAM is the next project. Tracklist locks Jul 24, data-driven.</li>
           <li className="scroll-p"><strong>Before any collaboration, splits in writing before production begins.</strong></li>
           <li className="scroll-p"><strong>Post what you want to be discovered as.</strong> The portfolio test applies to every post.</li>
           <li className="scroll-p"><strong>Lane discipline on content.</strong> Five pillars. One world. Depth, not width.</li>
@@ -256,7 +254,7 @@ function WartimePage() {
       <h2 className="scroll-h3">Part X — The Horizon</h2>
       <div className="scroll-table-wrap"><table className="scroll-table"><tbody>
         <tr><td>Q3 2026</td><td><strong>DoorDash Exit Timeline.</strong> After 2 full release cycles of streaming data, assess whether streaming + other income is approaching coverage.</td></tr>
-        <tr><td>Oct 23, 2026</td><td><strong>FREAKSHOW.</strong> The fourth album. Architecture begins Jul 6. CREAM first.</td></tr>
+        <tr><td>Oct 2026+</td><td><strong>CREAM.</strong> Data-sorted top 5. Tracklist locked Jul 24. Pre-production August.</td></tr>
         <tr><td>Phase 3+</td><td><strong>Label OS Product Layer.</strong> Stem packs, production tutorials, the &quot;Hearing In Color&quot; framework.</td></tr>
         <tr><td>Home Purchase</td><td><strong>Delegate and respond when needed.</strong> Don&apos;t let it occupy cognitive bandwidth during the sprint.</td></tr>
       </tbody></table></div>
@@ -289,7 +287,7 @@ function WartimePage() {
 
       <h2 className="scroll-h3">Part XII — Active Tools &amp; Systems</h2>
       <div className="scroll-table-wrap"><table className="scroll-table"><thead><tr><th>Tool</th><th>Status</th><th>Role</th></tr></thead><tbody>
-      <tr><td><strong>Oracle Compass</strong></td><td>v24 · Vercel</td><td>Daily OS. Kill List, Oracle decrees, Lane Dashboard, Brain page.</td></tr>
+      <tr><td><strong>Oracle Compass</strong></td><td>Baselined 56ba9d1</td><td>Daily OS. Kill List, Oracle decrees, Pipeline, War Room.</td></tr>
       <tr><td><strong>Gorilla Geo</strong></td><td>346 artists classified</td><td>5-module outreach engine. Manual IG lookup during sprints.</td></tr>
       <tr><td><strong>Core Drive Builder</strong></td><td>Active · Cyanite fallback</td><td>Spotify embed scraper. Artist overlap matrices for targeting.</td></tr>
       <tr><td><strong>Content Factory V4</strong></td><td>Active</td><td>OBS → Whisper → Claude → FFmpeg. --jutsu all-love template.</td></tr>
@@ -309,13 +307,13 @@ function WartimePage() {
 function ProtocolPage() {
   return (
     <>
-      <Header tag="Sovereignty · Initiated Apr 17, 2026" title="The Protocol" sub="The commitment architecture. Designed to compound over 90 days into an identity shift — from musician to full creative director." />
+      <Header tag="Sovereignty · Initiated Apr 2, 2026" title="The Protocol" sub="The commitment architecture. Designed to compound over 90 days into an identity shift — from musician to full creative director." />
       <h2 className="scroll-h3">Phase Timeline</h2>
       <div className="scroll-stack">
-        <div className="scroll-stack-level"><div className="scroll-stack-title"><span>Week 1 (Apr 17–24) · THE HONEYMOON</span><span className="stp-badge badge-green">Now</span></div><div className="scroll-stack-desc">Motivation is high. Lock in the morning routines. Stay structural. You are installing, not performing.</div></div>
-        <div className="scroll-stack-level"><div className="scroll-stack-title"><span>Weeks 2–4 (Apr 25–May 8) · THE FLATLINE</span><span className="stp-badge badge-red">Critical</span></div><div className="scroll-stack-desc">Dopamine recalibration. 80% of protocol failures happen here. <strong>Do not measure results in this window. Just show up.</strong></div></div>
-        <div className="scroll-stack-level"><div className="scroll-stack-title">Weeks 4–6 (May 8–28) · EMOTIONS RETURN</div><div className="scroll-stack-desc">Feelings come back louder. Music gets better. Motivation returns grounded in demonstrated identity.</div></div>
-        <div className="scroll-stack-level sc-highlight"><div className="scroll-stack-title">Weeks 7–12 (Jun – mid Jul) · COMPOUNDING</div><div className="scroll-stack-desc">The identity shift locks in. The new behavior IS you. Creative output accelerates.</div></div>
+        <div className="scroll-stack-level"><div className="scroll-stack-title"><span>Days 1–14 (Apr 2–16) · DETOX</span></div><div className="scroll-stack-desc">Executive function LOW. Ignition structures carry you. Checkboxes are victories. Don&apos;t measure results.</div></div>
+        <div className="scroll-stack-level"><div className="scroll-stack-title"><span>Days 15–28 (Apr 17–30) · THE FLATLINE</span></div><div className="scroll-stack-desc">Dopamine recalibration. 80% of protocol failures happen here. <strong>Do not measure results in this window. Just show up.</strong></div></div>
+        <div className="scroll-stack-level"><div className="scroll-stack-title"><span>Days 29–43 (May 1–15) · EMOTIONS RETURN</span><span className="stp-badge badge-gold">Day 43</span></div><div className="scroll-stack-desc">Feelings come back louder. Music gets better. Motivation returns grounded in demonstrated identity. Recording sprint May 15-18.</div></div>
+        <div className="scroll-stack-level sc-highlight"><div className="scroll-stack-title">Days 44–94 (May 16–Jul 5) · COMPOUNDING</div><div className="scroll-stack-desc">The identity shift locks in. The new behavior IS you. EP drops May 29. Vault waterfall carries the rhythm through stabilization.</div></div>
       </div>
       <h2 className="scroll-h3">Trigger Replacement Architecture</h2>
       <div className="scroll-table-wrap"><table className="scroll-table"><thead><tr><th>Trigger / Old Behavior</th><th>Replacement</th></tr></thead><tbody>
@@ -501,8 +499,8 @@ function RankScrollPage() {
       </tbody></table></div>
       <h2 className="scroll-h3">Jonin → Anbu Benchmarks</h2>
       <div className="scroll-card scroll-card-left">
-        <Bench text={<><strong>ALL LOVE EP Released</strong> — June 20, 2026. Waterfall complete. First-week data collected.</>} />
-        <Bench text={<><strong>Three Waterfall Singles Live on Spotify</strong> — East Side Love, Green Light, Sweet Frustration.</>} />
+        <Bench text={<><strong>ALL LOVE EP Released</strong> — May 29, 2026. First-week data collected.</>} />
+        <Bench text={<><strong>5 Vault Waterfall Singles</strong> — ILG (Jun 12) → LID (Jun 26) → WI (Jul 10) → JSS (Jul 24) → RCN (Aug 7).</>} />
         <Bench text={<><strong>Save Rate 3%+</strong> — Achieved on at least 1 track.</>} />
         <Bench text={<><strong>Gorilla Geo Activated</strong> — DM outreach running 3–5 messages/day.</>} />
         <Bench text={<><strong>Sobriety Day 60</strong> — Clock not reset.</>} />
@@ -777,11 +775,11 @@ function SpotifyAdsPage() {
         <tr><td>Minneapolis</td><td>$15</td><td>#2 organic (323 listeners)</td></tr>
         <tr><td>Dallas</td><td>$15</td><td>#3 organic (241 listeners)</td></tr>
       </tbody></table></div>
-      <h3 className="scroll-h3" style={{fontSize: 16, marginTop: 16}}>Album Launch ($250 total · Expand to 10 cities)</h3>
+      <h3 className="scroll-h3" style={{fontSize: 16, marginTop: 16}}>Vault Waterfall ($250 across 5 singles · Expand to 10 cities)</h3>
       <div className="scroll-table-wrap"><table className="scroll-table"><thead><tr><th>City</th><th>Budget</th></tr></thead><tbody>
         <tr><td>Denver</td><td>$40</td></tr><tr><td>Minneapolis</td><td>$30</td></tr><tr><td>Dallas</td><td>$25</td></tr><tr><td>Chicago</td><td>$25</td></tr><tr><td>Calgary</td><td>$20</td></tr><tr><td>Toronto</td><td>$20</td></tr><tr><td>Charlotte</td><td>$20</td></tr><tr><td>Phoenix</td><td>$20</td></tr><tr><td>NYC</td><td>$25</td></tr><tr><td>LA</td><td>$25</td></tr>
       </tbody></table></div>
-      <p className="scroll-p"><strong>Marquee ($100–150):</strong> Full-screen notification to entire listener base. Album release day. One shot.<br/><strong>Meta Ads ($50–100):</strong> Video ad (15–30 sec) → Spotify link. Brent Faiyaz / SZA / 6LACK / Daniel Caesar fans. Instagram only.</p>
+      <p className="scroll-p"><strong>Marquee ($100–150):</strong> Full-screen notification to entire listener base. EP release day (May 29). One shot.<br/><strong>Meta Ads ($50–100):</strong> Video ad (15–30 sec) → Spotify link. Brent Faiyaz / SZA / 6LACK / Daniel Caesar fans. Instagram only.</p>
 
       <h2 className="scroll-h3">Part 6 — Audio Creative Specs + The Script</h2>
       <div className="scroll-table-wrap"><table className="scroll-table"><thead><tr><th>Spec</th><th>Requirement</th></tr></thead><tbody>

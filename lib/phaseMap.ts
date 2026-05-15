@@ -2,13 +2,11 @@
 // lib/phaseMap.ts — Sovereign Scroll × Oracle Compass
 // Full PHASE_MAP — source of truth for TodayPlan component
 //
-// APR 29 EP BOMB PIVOT:
-//   Phase 1a: Recording Marathon (Apr 30 → May 6)
-//   Phase 1b: EP Upload + Pre-Release (May 11 → May 14)
-//   Phase 1c: EP Release Day + Post-Release (May 15 → May 29)
-//   Phase 2: Vault Singles Waterfall (May 30 → Sep 26)
-//     LID May 30, ILG Jun 13, WI Jun 27, JSS Jul 11, RCN Jul 25
-//   Phase 3: Compound + CREAM Decision (Jul 10)
+// MAY 29 EP + VAULT WATERFALL:
+//   Phase 1: EP Sprint (Apr 6 → May 29) — recording, upload May 19, EP drops May 29
+//   Phase 2: Vault Waterfall (May 30 → Aug 7)
+//     ILG Jun 12, LID Jun 26, WI Jul 10, JSS Jul 24, RCN Aug 7
+//   Phase 3: CREAM (Aug 8+) — tracklist locked Jul 24, pre-production August
 // ═══════════════════════════════════════════════════════════════
 
 export interface PhaseDay {
