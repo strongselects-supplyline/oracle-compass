@@ -12,6 +12,7 @@ const WAR_ROOM_ITEMS = [
   { name: "Planner",   path: "/planner",   icon: "📋", desc: "Marathon · Lanes · Mirror" },
   { name: "Analytics", path: "/analytics", icon: "📊", desc: "S4A monthly intake" },
   { name: "Doctrine",  path: "/doctrine",  icon: "📚", desc: "Sovereign Scroll" },
+  { name: "Practice",  path: "/practice",  icon: "🧘", desc: "Mudras · Breath · Vocal" },
   { name: "Settings",  path: "/settings",  icon: "⚙️", desc: "Theme · Data · Export" },
 ];
 
