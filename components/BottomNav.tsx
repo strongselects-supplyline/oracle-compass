@@ -14,6 +14,7 @@ const WAR_ROOM_ITEMS = [
   { name: "Doctrine",  path: "/doctrine",  icon: "📚", desc: "Sovereign Scroll" },
   { name: "Practice",  path: "/practice",  icon: "🧘", desc: "Mudras · Breath · Vocal" },
   { name: "Settings",  path: "/settings",  icon: "⚙️", desc: "Theme · Data · Export" },
+  { name: "Manual",    path: "/sop",       icon: "📖", desc: "Full A-Z SOP" },
 ];
 
 // Suggest which War Room page is most relevant right now
@@ -88,7 +89,7 @@ export default function BottomNav() {
               </div>
 
               {/* Grid */}
-              <div className="grid grid-cols-3 gap-px bg-white/5">
+              <div className="grid grid-cols-4 gap-px bg-white/5">
               {WAR_ROOM_ITEMS.map(item => {
                   const active = pathname === item.path || (item.name === "Release" && pathname === "/sonic");
                   const isSuggested = item.path === suggestedPath && !active;
