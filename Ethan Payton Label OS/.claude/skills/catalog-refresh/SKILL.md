@@ -49,6 +49,16 @@ The script CANNOT fetch these — they require manual platform exports:
 - Spotify API creds in `scratch/gorilla-geo/.env` (SPOTIFY_CLIENT_ID + SPOTIFY_CLIENT_SECRET)
 - If creds not set: `cp scratch/gorilla-geo/.env.example scratch/gorilla-geo/.env` then edit
 
+## Tools
+
+### Quick freshness check
+Before any data-dependent answer, run:
+```bash
+bash .claude/skills/catalog-refresh/tools/quick-check.sh
+```
+
+If stale (>14 days), run the full refresh before proceeding.
+
 ## Critical Rules
 - **The catalog matrix is the single source of truth.** All analytics should read from and write to this file.
 - **Never fabricate streaming numbers.** If data isn't available, leave fields as `null`.

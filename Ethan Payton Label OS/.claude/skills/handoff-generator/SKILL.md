@@ -56,6 +56,9 @@ Handoffs ensure any AI (Claude, Antigravity/Gemini, or a fresh Claude session) c
 3. Flag any corrections to previous AI hallucinations or errors.
 4. Include standing rules that must persist across sessions.
 5. Save to `brain/handoffs/handoff_[date].md`.
+6. Update `brain/LIVE_STATE.md` with any numbers or dates that changed during the session.
+7. Update `brain/CHANGELOG.md` with an append-only entry for what changed and when.
+8. If any skill was corrected during the session, update that skill's instructions per the Skill Improvement Protocol (Doctrine §11).
 
 ## Critical Rules
 - **Never guess at file changes.** Only document what was actually changed and verified.

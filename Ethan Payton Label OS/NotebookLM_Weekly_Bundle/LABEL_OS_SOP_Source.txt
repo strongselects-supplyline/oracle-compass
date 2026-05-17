@@ -1,0 +1,1006 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+<meta charset="UTF-8">
+<meta name="viewport" content="width=device-width, initial-scale=1.0">
+<title>Label OS — Full A-Z Operations Manual</title>
+<style>
+* { box-sizing: border-box; margin: 0; padding: 0; }
+
+:root {
+  --bg: #121218;
+  --surface: #1a1a22;
+  --surface2: #1f1f2a;
+  --border: #2a2a38;
+  --text: #c8c8cc;
+  --muted: #777;
+  --gold: #B8973E;
+  --emerald: #1B4332;
+  --navy: #1B2A4A;
+  --red: #c0392b;
+  --amber: #d4872a;
+  --green: #27ae60;
+  --purple: #7c3aed;
+  --teal: #0d9488;
+  --pink: #be185d;
+}
+
+/* ─── PROGRESS BAR ───────────────────────────────────── */
+#progress-bar { position: fixed; top: 0; left: 0; height: 2px; background: var(--gold); width: 0%; z-index: 9999; transition: width 0.08s linear; pointer-events: none; border-radius: 0 1px 1px 0; }
+
+html, body { background: var(--bg); color: var(--text); font-family: -apple-system, BlinkMacSystemFont, 'Segoe UI', sans-serif; line-height: 1.6; font-size: 14px; }
+
+/* ─── LAYOUT ─────────────────────────────────────────── */
+.shell { display: flex; min-height: 100vh; }
+
+.sidebar {
+  width: 220px; flex-shrink: 0;
+  background: var(--surface);
+  border-right: 1px solid var(--border);
+  position: sticky; top: 0; height: 100vh;
+  overflow-y: auto; padding: 20px 0;
+}
+
+.sidebar-logo { padding: 0 16px 16px; border-bottom: 1px solid var(--border); margin-bottom: 8px; }
+.sidebar-logo h1 { font-size: 13px; font-weight: 700; letter-spacing: 0.15em; color: var(--gold); }
+.sidebar-logo p { font-size: 10px; color: var(--muted); margin-top: 2px; }
+
+.nav-section { padding: 8px 16px 2px; font-size: 9px; font-weight: 700; letter-spacing: 0.18em; color: var(--muted); text-transform: uppercase; margin-top: 8px; }
+.nav-item { display: block; padding: 7px 16px; font-size: 13px; color: #aaa; text-decoration: none; cursor: pointer; border-left: 2px solid transparent; transition: all 0.1s; }
+.nav-item:hover { color: var(--gold); background: rgba(184,151,62,0.06); border-left-color: var(--gold); }
+.nav-item.active { color: var(--gold); background: rgba(184,151,62,0.18); border-left-color: var(--gold); border-left-width: 3px; font-weight: 600; }
+
+.main { flex: 1; max-width: 860px; padding: 32px 40px; }
+
+@media (max-width: 768px) {
+  .shell { flex-direction: column; }
+  .sidebar { width: 100%; height: auto; position: relative; }
+  .main { padding: 20px; }
+}
+
+/* ─── TYPOGRAPHY ─────────────────────────────────────── */
+.page-header { margin-bottom: 32px; padding-bottom: 20px; border-bottom: 1px solid var(--border); }
+.page-header .label { font-size: 10px; letter-spacing: 0.2em; color: var(--gold); text-transform: uppercase; font-weight: 700; margin-bottom: 8px; }
+.page-header h1 { font-size: 28px; font-weight: 800; color: white; line-height: 1.2; }
+.page-header p { font-size: 14px; color: #888; margin-top: 8px; }
+
+section { margin-bottom: 56px; scroll-margin-top: 24px; }
+section h2 { font-size: 15px; font-weight: 700; letter-spacing: 0.12em; text-transform: uppercase; color: var(--gold); margin-bottom: 16px; padding-bottom: 8px; border-bottom: 1px solid var(--border); display: flex; align-items: center; gap: 10px; }
+section h2 .sec-icon { font-size: 16px; }
+section h3 { font-size: 13px; font-weight: 600; color: #ccc; margin: 16px 0 8px; letter-spacing: 0.05em; }
+
+p { font-size: 14px; color: #999; line-height: 1.7; margin-bottom: 10px; }
+
+/* ─── CALLOUT BOX ─────────────────────────────────────── */
+.callout { border-left: 3px solid var(--gold); background: rgba(184,151,62,0.06); padding: 12px 16px; border-radius: 0 6px 6px 0; margin: 12px 0; font-size: 13px; color: #ccc; }
+.callout.red { border-left-color: var(--red); background: rgba(192,57,43,0.08); }
+.callout.green { border-left-color: var(--green); background: rgba(39,174,96,0.08); }
+.callout.teal { border-left-color: var(--teal); background: rgba(13,148,136,0.08); }
+.callout strong { color: white; }
+
+/* ─── CARDS ──────────────────────────────────────────── */
+.card { background: var(--surface); border: 1px solid var(--border); border-radius: 8px; margin-bottom: 8px; overflow: hidden; box-shadow: 0 1px 6px rgba(0,0,0,0.35); }
+.card-header { display: flex; align-items: center; gap: 12px; padding: 12px 16px; cursor: pointer; user-select: none; transition: background 0.1s; }
+.card-header:hover { background: var(--surface2); }
+.card-num { width: 28px; height: 28px; border-radius: 6px; display: flex; align-items: center; justify-content: center; font-size: 12px; font-weight: 700; color: #fff; flex-shrink: 0; }
+.card-title { font-size: 14px; font-weight: 600; color: white; }
+.card-sub { font-size: 11px; color: var(--muted); margin-top: 2px; }
+.card-chevron { margin-left: auto; font-size: 12px; color: var(--muted); transition: transform 0.2s; flex-shrink: 0; }
+.card.open .card-chevron { transform: rotate(90deg); }
+.card.open { border-color: #333; }
+.card-body { display: none; padding: 4px 16px 14px; border-top: 1px solid var(--border); }
+.card.open .card-body { display: block; }
+
+/* ─── STEPS ──────────────────────────────────────────── */
+.step-group { margin: 10px 0; }
+.step-group-label { font-size: 9px; font-weight: 700; letter-spacing: 0.18em; text-transform: uppercase; color: var(--muted); padding: 8px 0 4px; border-top: 1px solid var(--border); margin-top: 8px; }
+.step-group-label:first-child { border-top: none; margin-top: 0; }
+.step { display: flex; align-items: flex-start; gap: 10px; padding: 8px 0; border-bottom: 1px solid rgba(255,255,255,0.04); }
+.step:last-child { border-bottom: none; }
+.step-action { font-size: 13px; color: #bbb; flex: 1; line-height: 1.6; }
+.step-action strong { color: white; }
+.step-action em { color: #888; font-style: italic; }
+.step-tags { display: flex; flex-direction: column; align-items: flex-end; gap: 3px; flex-shrink: 0; }
+
+/* ─── TAGS ───────────────────────────────────────────── */
+.tag { display: inline-block; padding: 1px 7px; border-radius: 3px; font-size: 9px; font-weight: 600; letter-spacing: 0.04em; white-space: nowrap; }
+.tag-who { padding: 2px 7px; border-radius: 10px; font-size: 9px; font-weight: 700; letter-spacing: 0.06em; }
+.tag.fl { background: #1a3a2a; color: #4ade80; }
+.tag.amuse { background: #2a1a3a; color: #c084fc; }
+.tag.oracle { background: #1a2a3a; color: #60a5fa; }
+.tag.capcut { background: #3a2a1a; color: #fbbf24; }
+.tag.photopea { background: #1a3a3a; color: #2dd4bf; }
+.tag.s4a { background: #2a3a1a; color: #a3e635; }
+.tag.ig { background: #3a1a2a; color: #f472b6; }
+.tag.claude { background: #2a2a1a; color: #fcd34d; }
+.tag.cyanite { background: #1a1a3a; color: #818cf8; }
+.tag.manual { background: #1e1e1e; color: #777; }
+.tag.gorilla { background: #1a3a2a; color: #6ee7b7; }
+.tag.phone { background: #2a1a1a; color: #f87171; }
+
+.who-ethan { background: rgba(184,151,62,0.15); color: var(--gold); }
+.who-claude { background: rgba(96,165,250,0.12); color: #93c5fd; }
+.who-anti { background: rgba(167,139,250,0.12); color: #c4b5fd; }
+.who-auto { background: rgba(52,211,153,0.12); color: #6ee7b7; }
+
+/* ─── TABLES ─────────────────────────────────────────── */
+.tbl { width: 100%; border-collapse: collapse; font-size: 12px; margin: 12px 0; }
+.tbl th { background: var(--surface2); color: var(--muted); font-size: 9px; letter-spacing: 0.12em; text-transform: uppercase; padding: 8px 12px; text-align: left; border-bottom: 1px solid var(--border); }
+.tbl td { padding: 8px 12px; border-bottom: 1px solid rgba(255,255,255,0.04); color: #bbb; vertical-align: top; }
+.tbl tr:last-child td { border-bottom: none; }
+.tbl td strong { color: white; }
+.tbl td .muted { color: var(--muted); font-size: 10px; }
+
+/* ─── LEGEND ─────────────────────────────────────────── */
+.legend { display: flex; flex-wrap: wrap; gap: 6px; margin: 12px 0; }
+
+/* ─── PILLS ──────────────────────────────────────────── */
+.pill-row { display: flex; flex-wrap: wrap; gap: 6px; margin: 8px 0; }
+.pill { background: var(--surface2); border: 1px solid var(--border); border-radius: 4px; padding: 4px 10px; font-size: 11px; color: #aaa; }
+.pill strong { color: white; }
+
+/* ─── SEARCH ─────────────────────────────────────────── */
+.search-wrap { position: sticky; top: 0; z-index: 50; background: var(--bg); padding: 12px 0 8px; margin-bottom: 8px; }
+#search { width: 100%; background: var(--surface); border: 1px solid var(--border); color: var(--text); font-size: 13px; padding: 9px 14px; border-radius: 6px; outline: none; font-family: inherit; }
+#search:focus { border-color: var(--gold); }
+#search::placeholder { color: var(--muted); }
+
+/* ─── PHASE TIMELINE ─────────────────────────────────── */
+.timeline { display: flex; gap: 0; margin: 16px 0; overflow-x: auto; }
+.timeline-item { flex: 1; min-width: 90px; text-align: center; padding: 10px 8px; border-right: 1px solid var(--border); position: relative; }
+.timeline-item:last-child { border-right: none; }
+.tl-num { width: 28px; height: 28px; border-radius: 50%; margin: 0 auto 6px; display: flex; align-items: center; justify-content: center; font-size: 12px; font-weight: 700; color: white; }
+.tl-label { font-size: 9px; font-weight: 700; letter-spacing: 0.08em; color: #aaa; text-transform: uppercase; }
+.tl-time { font-size: 9px; color: var(--muted); margin-top: 2px; }
+
+/* ─── RULE BLOCK ─────────────────────────────────────── */
+.rule-block { background: var(--surface); border: 1px solid var(--border); border-radius: 8px; padding: 14px 16px; margin-bottom: 8px; display: flex; gap: 12px; align-items: flex-start; }
+.rule-num { font-size: 12px; font-weight: 700; color: var(--gold); flex-shrink: 0; width: 22px; }
+.rule-text { font-size: 12px; color: #bbb; line-height: 1.6; }
+.rule-text strong { color: white; }
+
+/* ─── SEARCH HIGHLIGHT ───────────────────────────────── */
+.searchable.hidden { display: none; }
+
+/* ─── QUICK START CARD ───────────────────────────────── */
+.quickstart { background: linear-gradient(135deg, rgba(184,151,62,0.12), rgba(184,151,62,0.04)); border: 1px solid rgba(184,151,62,0.35); border-radius: 10px; padding: 18px 20px; margin-bottom: 28px; display: flex; align-items: flex-start; gap: 16px; }
+.qs-icon { font-size: 28px; flex-shrink: 0; line-height: 1; }
+.qs-body { flex: 1; }
+.qs-label { font-size: 9px; font-weight: 700; letter-spacing: 0.22em; text-transform: uppercase; color: var(--gold); margin-bottom: 6px; }
+.qs-action { font-size: 16px; font-weight: 700; color: white; line-height: 1.3; margin-bottom: 8px; }
+.qs-detail { font-size: 13px; color: #aaa; line-height: 1.5; }
+.qs-detail strong { color: var(--gold); }
+.qs-phase { display: inline-block; background: rgba(184,151,62,0.18); color: var(--gold); font-size: 10px; font-weight: 700; letter-spacing: 0.1em; padding: 3px 10px; border-radius: 4px; margin-top: 8px; text-transform: uppercase; }
+
+/* ─── COLLAPSE TOGGLE ────────────────────────────────── */
+.section-toggle { font-size: 10px; font-weight: 600; letter-spacing: 0.1em; text-transform: uppercase; color: var(--muted); cursor: pointer; margin-left: auto; padding: 2px 6px; border-radius: 3px; background: rgba(255,255,255,0.04); border: 1px solid var(--border); user-select: none; }
+.section-toggle:hover { color: var(--gold); border-color: rgba(184,151,62,0.3); }
+</style>
+</head>
+<body>
+
+<div id="progress-bar"></div>
+<div class="shell">
+
+<!-- ─── SIDEBAR ──────────────────────────────────────── -->
+<nav class="sidebar">
+  <div class="sidebar-logo">
+    <h1>LABEL OS</h1>
+    <p>past.El noir Records · A-Z SOP</p>
+  </div>
+
+  <div class="nav-section" style="color:#B8973E; border-left:2px solid #B8973E; padding-left:14px;">Mission</div>
+  <a class="nav-item" onclick="goto('mission')">Thesis + North Star</a>
+  <a class="nav-item" onclick="goto('roles')">Who Does What</a>
+  <a class="nav-item" onclick="goto('tools')">Tool Stack</a>
+
+  <div class="nav-section" style="color:#6ee7b7; border-left:2px solid #6ee7b7; padding-left:14px;">Daily Ops</div>
+  <a class="nav-item" onclick="goto('daily')">Daily Rhythm</a>
+  <a class="nav-item" onclick="goto('doordash')">DoorDash Protocol</a>
+
+  <div class="nav-section" style="color:#60a5fa; border-left:2px solid #60a5fa; padding-left:14px;">Release Pipeline</div>
+  <a class="nav-item" onclick="goto('p0')">Phase 0 — Creation</a>
+  <a class="nav-item" onclick="goto('p1')">Phase 1 — Pre-Upload</a>
+  <a class="nav-item" onclick="goto('p2')">Phase 2 — Pre-Release</a>
+  <a class="nav-item" onclick="goto('p3')">Phase 3 — Release Day</a>
+  <a class="nav-item" onclick="goto('p4')">Phase 4 — Compound</a>
+  <a class="nav-item" onclick="goto('p5')">Phase 5 — Sync Prep</a>
+  <a class="nav-item" onclick="goto('p6')">Phase 6 — System Update</a>
+
+  <div class="nav-section" style="color:#f472b6; border-left:2px solid #f472b6; padding-left:14px;">Content</div>
+  <a class="nav-item" onclick="goto('content')">Content System</a>
+  <a class="nav-item" onclick="goto('social')">Social Strategy</a>
+
+  <div class="nav-section" style="color:#a78bfa; border-left:2px solid #a78bfa; padding-left:14px;">Audience</div>
+  <a class="nav-item" onclick="goto('outreach')">DM Outreach</a>
+  <a class="nav-item" onclick="goto('geo')">Gorilla Geo</a>
+
+  <div class="nav-section" style="color:#34d399; border-left:2px solid #34d399; padding-left:14px;">Revenue</div>
+  <a class="nav-item" onclick="goto('revenue')">Revenue Stack</a>
+  <a class="nav-item" onclick="goto('compliance')">Compliance</a>
+
+  <div class="nav-section" style="color:#fcd34d; border-left:2px solid #fcd34d; padding-left:14px;">AI & Automation</div>
+  <a class="nav-item" onclick="goto('ai')">AI Delegation</a>
+  <a class="nav-item" onclick="goto('cream')">CREAM Protocol</a>
+
+  <div class="nav-section" style="color:#f87171; border-left:2px solid #f87171; padding-left:14px;">Anti-Drift</div>
+  <a class="nav-item" onclick="goto('rules')">Standing Rules</a>
+</nav>
+
+<!-- ─── MAIN ─────────────────────────────────────────── -->
+<main class="main">
+
+<div class="search-wrap">
+  <input type="search" id="search" placeholder="Search the SOP…" oninput="filterSections()">
+</div>
+
+<!-- PAGE HEADER -->
+<div class="page-header">
+  <div class="label">past.El noir Records · May 2026</div>
+  <h1>Label OS — Full A-Z Operations Manual</h1>
+  <p>Everything that runs this label. From idea to algorithm. From recording to compliance. From DoorDash to CREAM. If you're Ethan, this is your operating system. If you're helping, this is your briefing. No drift. No guessing. Just execute.</p>
+</div>
+
+<!-- ─── QUICK START ───────────────────────────────────── -->
+<div class="quickstart">
+  <div class="qs-icon">⚡</div>
+  <div class="qs-body">
+    <div class="qs-label">Right now — May 16, 2026</div>
+    <div class="qs-action" id="qs-action">Loading current phase…</div>
+    <div class="qs-detail" id="qs-detail"></div>
+    <div class="qs-phase" id="qs-phase"></div>
+  </div>
+</div>
+
+<!-- ─── MISSION ──────────────────────────────────────── -->
+<section id="mission" class="searchable">
+  <h2><span class="sec-icon">🎯</span> THESIS + NORTH STAR</h2>
+
+  <div class="callout">
+    <strong>The single lever across all 90 days:</strong> Save rate → Discover Weekly → algorithm → organic growth. Everything serves that chain.
+  </div>
+
+  <p>You are not a content creator who makes music. You are a <strong style="color:white">recording artist running a machine that compounds</strong>. Label OS is the A&R, marketing, distribution, compliance, and analytics department — all automated or systematized. The mission is to get to 30 with 44 tracks, a tested marketing engine, audience data across 3+ release cycles, and a production system that generates without burning the operator.</p>
+
+  <h3>Current Phase: ALL LOVE EP + Vault Waterfall</h3>
+  <div class="timeline">
+    <div class="timeline-item">
+      <div class="tl-num" style="background:#B8973E">✓</div>
+      <div class="tl-label">ESL Live</div>
+      <div class="tl-time">May 8</div>
+    </div>
+    <div class="timeline-item">
+      <div class="tl-num" style="background:#60a5fa">↑</div>
+      <div class="tl-label">EP Upload</div>
+      <div class="tl-time">May 19</div>
+    </div>
+    <div class="timeline-item">
+      <div class="tl-num" style="background:#f472b6">💥</div>
+      <div class="tl-label">EP Drops</div>
+      <div class="tl-time">May 29</div>
+    </div>
+    <div class="timeline-item">
+      <div class="tl-num" style="background:#4ade80">→</div>
+      <div class="tl-label">ILG</div>
+      <div class="tl-time">Jun 12</div>
+    </div>
+    <div class="timeline-item">
+      <div class="tl-num" style="background:#4ade80">→</div>
+      <div class="tl-label">LID</div>
+      <div class="tl-time">Jun 26</div>
+    </div>
+    <div class="timeline-item">
+      <div class="tl-num" style="background:#4ade80">→</div>
+      <div class="tl-label">WI</div>
+      <div class="tl-time">Jul 10</div>
+    </div>
+    <div class="timeline-item">
+      <div class="tl-num" style="background:#c084fc">🔒</div>
+      <div class="tl-label">CREAM Lock</div>
+      <div class="tl-time">Jul 24</div>
+    </div>
+    <div class="timeline-item">
+      <div class="tl-num" style="background:#4ade80">→</div>
+      <div class="tl-label">RCN</div>
+      <div class="tl-time">Aug 7</div>
+    </div>
+  </div>
+
+  <h3>North Star Metrics (check every Sunday)</h3>
+  <table class="tbl">
+    <tr><th>Metric</th><th>May 29 Target</th><th>Jul 17 Target</th></tr>
+    <tr><td><strong>Save rate</strong></td><td>3%+ avg EP</td><td>4%+ top track</td></tr>
+    <tr><td><strong>Spotify followers</strong></td><td>2,000+</td><td>2,800+</td></tr>
+    <tr><td><strong>Monthly listeners</strong></td><td>30,000+</td><td>40,000+</td></tr>
+    <tr><td><strong>Popularity score</strong></td><td>28+</td><td>35+</td></tr>
+    <tr><td><strong>Release Radar triggers</strong></td><td>2 (ESL + EP)</td><td>6 (all vault)</td></tr>
+    <tr><td><strong>Sobriety streak</strong></td><td>Day 57</td><td>Day 106</td></tr>
+    <tr><td><strong>DoorDash monthly</strong></td><td>$1,800</td><td>$1,800</td></tr>
+  </table>
+</section>
+
+<!-- ─── ROLES ─────────────────────────────────────────── -->
+<section id="roles" class="searchable">
+  <h2><span class="sec-icon">👥</span> WHO DOES WHAT</h2>
+  <p>Every task in this SOP is tagged with a role. Know your lane. Don't bring Opus problems to Haiku and don't bring Ethan problems to automation.</p>
+
+  <table class="tbl">
+    <tr><th>Role</th><th>What They Do</th><th>When to Use</th></tr>
+    <tr>
+      <td><span class="tag-who who-ethan tag">ETHAN</span></td>
+      <td>Records, performs, approves, decides, DMs, posts, runs DoorDash</td>
+      <td>Anything requiring creative judgment, physical presence, or final call</td>
+    </tr>
+    <tr>
+      <td><span class="tag-who who-claude tag">CLAUDE</span></td>
+      <td>Architecture, strategy, audits, cross-verification, spec writing, complex reasoning</td>
+      <td>System decisions, new infrastructure, anything broken, strategic pivots</td>
+    </tr>
+    <tr>
+      <td><span class="tag-who who-anti tag">ANTIGRAVITY</span></td>
+      <td>Filesystem writes, git operations, batch file work, mechanical execution</td>
+      <td>Heavy file writes, git pushes, running scripts, batch transforms</td>
+    </tr>
+    <tr>
+      <td><span class="tag-who who-auto tag">AUTO</span></td>
+      <td>Scheduled tasks, cron jobs, catalog refresh, pipeline scripts</td>
+      <td>Biweekly catalog refresh, automated Oracle updates, content pipeline</td>
+    </tr>
+  </table>
+
+  <div class="callout red">
+    <strong>Rule:</strong> Never burn Opus (Claude) on work Sonnet can handle. Never bring Ethan into execution tasks automation can run. Keep each role in its lane — that's where the system scales.
+  </div>
+</section>
+
+<!-- ─── TOOL STACK ─────────────────────────────────────── -->
+<section id="tools" class="searchable">
+  <h2><span class="sec-icon">🛠️</span> TOOL STACK</h2>
+
+  <table class="tbl">
+    <tr><th>Tool</th><th>Role</th><th>Access</th></tr>
+    <tr><td><span class="tag fl tag">FL Studio</span></td><td>Production, recording, vocal mix, mastering (Illangelo chain)</td><td>Ethan local</td></tr>
+    <tr><td><span class="tag cyanite tag">Cyanite</span></td><td>Audio analysis — genre/mood scores (Sexy, Chill, R&B). QA gate.</td><td>cyanite.ai</td></tr>
+    <tr><td><span class="tag photopea tag">Photopea</span></td><td>Cover art, layer isolation, transparent PNGs, Canvas prep</td><td>photopea.com (free)</td></tr>
+    <tr><td><span class="tag capcut tag">CapCut</span></td><td>Canvas loops, lyric reels, parallax motion, quick edits</td><td>Ethan phone/desktop</td></tr>
+    <tr><td><span class="tag amuse tag">Amuse</span></td><td>Distribution (R&B / Alt-R&B genre. NEVER Pop). ISRC. Royalties. Insights.</td><td>amuse.io — Amuse Pro</td></tr>
+    <tr><td><span class="tag s4a tag">S4A</span></td><td>Editorial pitch, Discovery Mode, weekly data pull (saves, skip, demo)</td><td>artists.spotify.com</td></tr>
+    <tr><td><span class="tag oracle tag">Oracle Compass</span></td><td>Daily OS. Kill List, Pipeline tracker, War Room, Practice, Log</td><td>oracle-compass-ni8g.vercel.app</td></tr>
+    <tr><td><span class="tag gorilla tag">Gorilla Geo</span></td><td>5-module audience geo pipeline. T4 artist targeting. 2,783 exported.</td><td>scratch/gorilla-geo/</td></tr>
+    <tr><td><span class="tag claude tag">Content Pipeline</span></td><td>Batch image/video processing. 4 color looks. Format routing.</td><td>node scratch/content-flood/pipeline.mjs</td></tr>
+    <tr><td><span class="tag claude tag">Catalog Refresh</span></td><td>Spotify popularity auto-update. Music Stax fallback.</td><td>node brain/refresh-catalog.mjs (biweekly)</td></tr>
+    <tr><td><span class="tag ig tag">IG / TikTok</span></td><td>Primary content engine, community trace, DM outreach</td><td>Ethan accounts</td></tr>
+    <tr><td><span class="tag manual tag">ASCAP + MLC + Songtrust + SoundExchange</span></td><td>Rights registration suite. Thursday after each release.</td><td>Manual portals</td></tr>
+  </table>
+</section>
+
+<!-- ─── DAILY RHYTHM ──────────────────────────────────── -->
+<section id="daily" class="searchable">
+  <h2><span class="sec-icon">⏰</span> DAILY RHYTHM <span class="section-toggle" onclick="toggleSection('daily')">expand all</span></h2>
+
+  <div class="callout">
+    <strong>Non-negotiable order:</strong> Body → Ignition → Fuel → Kill List scan → Work. Never open the DAW before these 4 are done.
+  </div>
+
+  <div class="card">
+    <div class="card-header" onclick="toggleCard(this)">
+      <div class="card-num" style="background:#B8973E">S</div>
+      <div><div class="card-title">Full S-Tier Morning</div><div class="card-sub">Non-DoorDash days · or late-start DoorDash days</div></div>
+      <div class="card-chevron">▸</div>
+    </div>
+    <div class="card-body">
+      <div class="step-group">
+        <div class="step-group-label">Sequence (in order, hard time caps)</div>
+        <div class="step"><span class="step-action"><strong>Wake → 32oz water + sea salt immediately.</strong> Rehydration + cortisol.</span><span class="step-tags"><span class="tag-who who-ethan tag">ETHAN</span></span></div>
+        <div class="step"><span class="step-action"><strong>Jnana Mudra + OM, 90 seconds.</strong> Captain's Chair ignition. Replaces doom-scroll. See /practice in Oracle for mudra reference.</span><span class="step-tags"><span class="tag-who who-ethan tag">ETHAN</span></span></div>
+        <div class="step"><span class="step-action"><strong>Nadi Shodhana, 5 min.</strong> ANS balance, serotonin baseline.</span><span class="step-tags"><span class="tag-who who-ethan tag">ETHAN</span></span></div>
+        <div class="step"><span class="step-action"><strong>Exercise: pushups + squats + walk, 30 min.</strong> Phase 2+ only. BDNF + dopamine receptor upregulation.</span><span class="step-tags"><span class="tag-who who-ethan tag">ETHAN</span></span></div>
+        <div class="step"><span class="step-action"><strong>High-protein meal.</strong> Eggs, oats, banana. Tyrosine = dopamine precursor. Non-negotiable during sobriety gap.</span><span class="step-tags"><span class="tag-who who-ethan tag">ETHAN</span></span></div>
+        <div class="step"><span class="step-action"><strong>90-second Kill List scan.</strong> Open Oracle → read RED items → close it. Hard exit at 90 seconds. No rabbit holes.</span><span class="step-tags"><span class="tag oracle tag">Oracle</span></span></div>
+        <div class="step"><span class="step-action"><strong>S3 Check-in (studio days):</strong> "Name your mental state before opening the DAW." Rate 1–10. 30 seconds. Labeling IS the intervention.</span><span class="step-tags"><span class="tag-who who-ethan tag">ETHAN</span></span></div>
+        <div class="step"><span class="step-action"><strong>DAW open. Work begins.</strong></span><span class="step-tags"><span class="tag fl tag">FL Studio</span></span></div>
+      </div>
+    </div>
+  </div>
+
+  <div class="card">
+    <div class="card-header" onclick="toggleCard(this)">
+      <div class="card-num" style="background:#555">C</div>
+      <div><div class="card-title">Compressed Ignition</div><div class="card-sub">DoorDash by 6:30 AM</div></div>
+      <div class="card-chevron">▸</div>
+    </div>
+    <div class="card-body">
+      <div class="step-group">
+        <div class="step">
+          <span class="step-action"><strong>Wake → 32oz water + sea salt.</strong></span>
+          <span class="step-tags"><span class="tag-who who-ethan tag">ETHAN</span></span>
+        </div>
+        <div class="step">
+          <span class="step-action"><strong>Jnana Mudra + OM, 60 seconds.</strong></span>
+          <span class="step-tags"><span class="tag-who who-ethan tag">ETHAN</span></span>
+        </div>
+        <div class="step">
+          <span class="step-action"><strong>Protein meal — Option B:</strong> hardboiled eggs + banana (prepped night before).</span>
+          <span class="step-tags"><span class="tag-who who-ethan tag">ETHAN</span></span>
+        </div>
+        <div class="step">
+          <span class="step-action"><strong>90-second Kill List scan.</strong> Close it.</span>
+          <span class="step-tags"><span class="tag oracle tag">Oracle</span></span>
+        </div>
+        <div class="step">
+          <span class="step-action"><strong>DoorDash.</strong></span>
+          <span class="step-tags"><span class="tag-who who-ethan tag">ETHAN</span></span>
+        </div>
+      </div>
+    </div>
+  </div>
+
+  <h3>Sleep Rules (upstream constraint — non-negotiable)</h3>
+  <div class="pill-row">
+    <div class="pill"><strong>Lights out:</strong> 10:30 PM hard</div>
+    <div class="pill"><strong>Caffeine cutoff:</strong> 1:00 PM hard</div>
+    <div class="pill"><strong>DoorDash wheels down:</strong> 8:30 PM hard</div>
+    <div class="pill"><strong>No screens:</strong> post-9:30 PM</div>
+    <div class="pill"><strong>Evening stack:</strong> mullein tea, no social post-8 PM</div>
+  </div>
+
+  <h3>Sunday Protocol (weekly reset)</h3>
+  <div class="step-group">
+    <div class="step"><span class="step-action"><strong>Grief journaling, 20 min.</strong> Write to your father. What you'd say, what you'd ask, what you're angry about. Controlled exposure.</span><span class="step-tags"><span class="tag-who who-ethan tag">ETHAN</span></span></div>
+    <div class="step"><span class="step-action"><strong>Weekly data pull, 40–60 min.</strong> S4A → all live tracks → save rate, streams, demographics, playlist adds.</span><span class="step-tags"><span class="tag s4a tag">S4A</span></span></div>
+    <div class="step"><span class="step-action"><strong>Meal batch prep, 30–45 min.</strong> Rice, chicken thighs, hardboiled eggs, PB&J. Aldi ~$40. Protects the entire week.</span><span class="step-tags"><span class="tag-who who-ethan tag">ETHAN</span></span></div>
+    <div class="step"><span class="step-action"><strong>Next-week scan.</strong> Oracle Kill List → what's RED? What's the highest leverage action on Monday?</span><span class="step-tags"><span class="tag oracle tag">Oracle</span></span></div>
+    <div class="step"><span class="step-action"><strong>IG unfollow audit, 5 min.</strong> Gradual. Target 3:1–4:1 ratio. No mass unfollows.</span><span class="step-tags"><span class="tag ig tag">IG</span></span></div>
+  </div>
+</section>
+
+<!-- ─── DOORDASH ───────────────────────────────────────── -->
+<section id="doordash" class="searchable">
+  <h2><span class="sec-icon">🚗</span> DOORDASH PROTOCOL</h2>
+
+  <div class="callout green">
+    <strong>Target: $1,800/month.</strong> Once hit — stop. Not a dollar more. Protect studio time.
+  </div>
+
+  <table class="tbl">
+    <tr><th>Block</th><th>Time</th><th>When</th></tr>
+    <tr><td><strong>Primary</strong></td><td>6:30–9:00 AM</td><td>Morning surge pricing. Do this first.</td></tr>
+    <tr><td><strong>Secondary</strong></td><td>5:30–8:30 PM</td><td>Only if monthly target needs it. Wheels down 8:30 hard.</td></tr>
+  </table>
+
+  <div class="callout red"><strong>Stop rule:</strong> Track weekly. Monthly hit = done. Never cram the last weekend. DoorDash is a bridge, not a career.</div>
+</section>
+
+<!-- ─── PHASE 0 ─────────────────────────────────────────── -->
+<section id="p0" class="searchable">
+  <h2><span class="sec-icon">🎵</span> PHASE 0 — CREATION <span class="section-toggle" onclick="toggleSection('p0')">expand all</span></h2>
+  <p>Batch by stage, not by track. Record all vocals across ALL tracks in one session, then mix all, then master all. Interleaving kills momentum.</p>
+
+  <div class="card">
+    <div class="card-header" onclick="toggleCard(this)">
+      <div class="card-num" style="background:#4ade80">0A</div>
+      <div><div class="card-title">Writing + Production</div><div class="card-sub">Idea → beat → arrangement</div></div>
+      <div class="card-chevron">▸</div>
+    </div>
+    <div class="card-body">
+      <div class="step">
+        <span class="step-action"><strong>Idea capture</strong> — voice memo (melody), text note (lyric), chord progression, vibe reference. Don't lose it.</span>
+        <span class="step-tags"><span class="tag phone tag">Phone</span><span class="tag-who who-ethan tag">ETHAN</span></span>
+      </div>
+      <div class="step">
+        <span class="step-action"><strong>Production topline</strong> — beat/arrangement draft in FL Studio. Doesn't need to be perfect.</span>
+        <span class="step-tags"><span class="tag fl tag">FL Studio</span></span>
+      </div>
+      <div class="step">
+        <span class="step-action"><strong>Re-production</strong> — refine arrangement, sound selection, structure locks. Call it done.</span>
+        <span class="step-tags"><span class="tag fl tag">FL Studio</span></span>
+      </div>
+      <div class="step">
+        <span class="step-action"><strong>Writer's block?</strong> — Feed idea to Suno as demo prompt. Sparring partner only — never source material.</span>
+        <span class="step-tags"><span class="tag manual tag">Suno</span></span>
+      </div>
+    </div>
+  </div>
+
+  <div class="card">
+    <div class="card-header" onclick="toggleCard(this)">
+      <div class="card-num" style="background:#60a5fa">0B</div>
+      <div><div class="card-title">Recording</div><div class="card-sub">Batch ALL vocals in one session — performer mode</div></div>
+      <div class="card-chevron">▸</div>
+    </div>
+    <div class="card-body">
+      <div class="step"><span class="step-action"><strong>Body prep first.</strong> /practice route in Oracle → vocal warmup 5 min → body check. No dairy 2 hrs before tracking.</span><span class="step-tags"><span class="tag oracle tag">Oracle</span></span></div>
+      <div class="step"><span class="step-action"><strong>Record ALL takes.</strong> Warm water + honey. Stay hydrated. Performer mode — don't analyze while recording.</span><span class="step-tags"><span class="tag fl tag">FL Studio</span></span></div>
+      <div class="step"><span class="step-action"><strong>Rough vocal comp</strong> — choose best takes per line/section after session, not during.</span><span class="step-tags"><span class="tag fl tag">FL Studio</span></span></div>
+    </div>
+  </div>
+
+  <div class="card">
+    <div class="card-header" onclick="toggleCard(this)">
+      <div class="card-num" style="background:#818cf8">0C</div>
+      <div><div class="card-title">Vocal Mix → Rough Mix</div><div class="card-sub">Comp → tune → levels → test</div></div>
+      <div class="card-chevron">▸</div>
+    </div>
+    <div class="card-body">
+      <div class="step"><span class="step-action"><strong>Comp + de-breath.</strong></span><span class="step-tags"><span class="tag fl tag">FL Studio</span></span></div>
+      <div class="step"><span class="step-action"><strong>Auto-Tune Pro graph-mode tuning.</strong> Surgical, not corrective. Bake when done.</span><span class="step-tags"><span class="tag fl tag">FL + AT Pro</span></span></div>
+      <div class="step"><span class="step-action"><strong>Rough mix</strong> — levels, panning, basic FX chain.</span><span class="step-tags"><span class="tag fl tag">FL Studio</span></span></div>
+      <div class="step"><span class="step-action"><strong>Test on phone + car speakers.</strong> If it sounds good there, it sounds good everywhere.</span><span class="step-tags"><span class="tag-who who-ethan tag">ETHAN</span></span></div>
+    </div>
+  </div>
+
+  <div class="card">
+    <div class="card-header" onclick="toggleCard(this)">
+      <div class="card-num" style="background:#c084fc">0D</div>
+      <div><div class="card-title">Cyanite QA Gate</div><div class="card-sub">Data must match intent before final mix</div></div>
+      <div class="card-chevron">▸</div>
+    </div>
+    <div class="card-body">
+      <div class="step"><span class="step-action"><strong>Upload rough mix to Cyanite.</strong> Log results: genre, mood, Sexy score, Chill score, R&B confidence.</span><span class="step-tags"><span class="tag cyanite tag">Cyanite</span></span></div>
+      <div class="step"><span class="step-action"><strong>Target thresholds:</strong> Sexy ≥ 0.76, R&B ≥ 0.70, Chill ≥ 0.56. Below target = adjust mix before proceeding.</span><span class="step-tags"><span class="tag cyanite tag">Cyanite</span></span></div>
+      <div class="step"><span class="step-action"><strong>Save results to catalog_intelligence_matrix.json.</strong></span><span class="step-tags"><span class="tag-who who-claude tag">CLAUDE</span></span></div>
+      <div class="step"><span class="step-action"><strong>Second draft</strong> — adjust based on Cyanite + ears. Does data match intent?</span><span class="step-tags"><span class="tag fl tag">FL Studio</span></span></div>
+    </div>
+  </div>
+
+  <div class="card">
+    <div class="card-header" onclick="toggleCard(this)">
+      <div class="card-num" style="background:#f59e0b">0E</div>
+      <div><div class="card-title">Final Mix + Master</div><div class="card-sub">Illangelo chain — two master versions</div></div>
+      <div class="card-chevron">▸</div>
+    </div>
+    <div class="card-body">
+      <div class="step"><span class="step-action"><strong>Final mix</strong> — automation, ear candy, transitions. Mix is final. Don't reopen.</span><span class="step-tags"><span class="tag fl tag">FL Studio</span></span></div>
+      <div class="step"><span class="step-action"><strong>Streaming master:</strong> Illangelo chain → -9 to -11 LUFS integrated / -0.3dB True Peak. Encode test before approval.</span><span class="step-tags"><span class="tag fl tag">FL Studio</span></span></div>
+      <div class="step"><span class="step-action"><strong>Sync master:</strong> -14 LUFS broadcast standard. For sync licensing submissions only.</span><span class="step-tags"><span class="tag fl tag">FL Studio</span></span></div>
+    </div>
+  </div>
+</section>
+
+<!-- ─── PHASE 1 ─────────────────────────────────────────── -->
+<section id="p1" class="searchable">
+  <h2><span class="sec-icon">🎨</span> PHASE 1 — PRE-UPLOAD</h2>
+  <p>2–3 days. Art, Canvas, metadata, Amuse upload. Oracle updated.</p>
+
+  <div class="card">
+    <div class="card-header" onclick="toggleCard(this)">
+      <div class="card-num" style="background:#60a5fa">1A</div>
+      <div><div class="card-title">Visual Assets</div><div class="card-sub">Cover art → Canvas loop → lyric reel</div></div>
+      <div class="card-chevron">▸</div>
+    </div>
+    <div class="card-body">
+      <div class="step"><span class="step-action"><strong>Cover art:</strong> design/photograph → Photopea. 3000×3000 min. Match era palette (current: Emerald/Gold/Navy for ALL LOVE).</span><span class="step-tags"><span class="tag photopea tag">Photopea</span><span class="tag-who who-ethan tag">ETHAN</span></span></div>
+      <div class="step"><span class="step-action"><strong>Spotify Canvas:</strong> isolate layers in Photopea → keyframe parallax in CapCut (1080×1920, 6–8s loop) → export MP4.</span><span class="step-tags"><span class="tag capcut tag">CapCut</span></span></div>
+      <div class="step"><span class="step-action"><strong>Lyric reel:</strong> film direct-to-camera + aesthetic background → overlay hook lyrics in CapCut → export for IG/TikTok.</span><span class="step-tags"><span class="tag capcut tag">CapCut</span></span></div>
+    </div>
+  </div>
+
+  <div class="card">
+    <div class="card-header" onclick="toggleCard(this)">
+      <div class="card-num" style="background:#c084fc">1B</div>
+      <div><div class="card-title">Amuse Upload</div><div class="card-sub">Metadata lock → upload → ISRC → Oracle update</div></div>
+      <div class="card-chevron">▸</div>
+    </div>
+    <div class="card-body">
+      <div class="step"><span class="step-action"><strong>Metadata lock:</strong> Title, genre (R&amp;B / Alt-R&amp;B — NEVER Pop), featuring credits, ISRC (carry existing or request new).</span><span class="step-tags"><span class="tag manual tag">Manual</span></span></div>
+      <div class="step"><span class="step-action"><strong>Upload to Amuse:</strong> audio WAV + cover art + metadata. Set release date (7-day minimum window).</span><span class="step-tags"><span class="tag amuse tag">Amuse</span></span></div>
+      <div class="step"><span class="step-action"><strong>Pull ISRC</strong> from Amuse confirmation → save to releases.ts + catalog_intelligence_matrix.json.</span><span class="step-tags"><span class="tag oracle tag">Oracle</span><span class="tag-who who-claude tag">CLAUDE</span></span></div>
+      <div class="step"><span class="step-action"><strong>Update Oracle releases.ts:</strong> status → "upload_pending". Verify phaseMap.ts window is correct.</span><span class="step-tags"><span class="tag oracle tag">Oracle</span><span class="tag-who who-claude tag">CLAUDE</span></span></div>
+    </div>
+  </div>
+</section>
+
+<!-- ─── PHASE 2 ─────────────────────────────────────────── -->
+<section id="p2" class="searchable">
+  <h2><span class="sec-icon">🚀</span> PHASE 2 — PRE-RELEASE SPRINT <span class="section-toggle" onclick="toggleSection('p2')">expand all</span></h2>
+  <p>T-7 to T-0. The 8-day content blitz. All marketing work happens here. No production during this window.</p>
+
+  <div class="callout">The 8-day upload-to-release window is <strong>100% marketing</strong>. Do not record. Do not fix the system. Create content, build DM list, pitch editorial, prep the blitz.</div>
+
+  <div class="card">
+    <div class="card-header" onclick="toggleCard(this)">
+      <div class="card-num" style="background:#fbbf24">2A</div>
+      <div><div class="card-title">Content Creation (T-7 to T-1)</div><div class="card-sub">5-7 pieces batched, scheduled daily</div></div>
+      <div class="card-chevron">▸</div>
+    </div>
+    <div class="card-body">
+      <div class="step"><span class="step-action"><strong>T-7: Batch shoot.</strong> 5–7 setups in one session. BTS, direct-to-camera, world-build, aesthetic clips. Run through content-flood pipeline for format + look.</span><span class="step-tags"><span class="tag phone tag">Phone</span><span class="tag capcut tag">CapCut</span></span></div>
+      <div class="step"><span class="step-action"><strong>T-5: Teaser.</strong> 15s clip — hook or production moment. IG Reel → TikTok → Shorts. Caption: one line, hook in line 1.</span><span class="step-tags"><span class="tag ig tag">IG / TikTok</span></span></div>
+      <div class="step"><span class="step-action"><strong>T-3: World-build.</strong> Aesthetic vibe post. 2 AM drive. Studio late night. Milwaukee. The world the song lives in.</span><span class="step-tags"><span class="tag ig tag">IG / TikTok</span></span></div>
+      <div class="step"><span class="step-action"><strong>T-1: Announce.</strong> Cover art reveal + release date + pre-save CTA. Link in bio updated.</span><span class="step-tags"><span class="tag ig tag">IG / TikTok</span></span></div>
+    </div>
+  </div>
+
+  <div class="card">
+    <div class="card-header" onclick="toggleCard(this)">
+      <div class="card-num" style="background:#f472b6">2B</div>
+      <div><div class="card-title">Marketing + Editorial</div><div class="card-sub">S4A pitch, pre-save, DM list build</div></div>
+      <div class="card-chevron">▸</div>
+    </div>
+    <div class="card-body">
+      <div class="step"><span class="step-action"><strong>T-5: Editorial pitch via S4A.</strong> Genre, mood, instruments, story. Sweet Frustration → KAYTRANADA lane. Pitch at least 5 days before release.</span><span class="step-tags"><span class="tag s4a tag">S4A</span></span></div>
+      <div class="step"><span class="step-action"><strong>T-3: Pre-save link.</strong> Generate via Amuse. Add to IG bio. Post story with swipe-up.</span><span class="step-tags"><span class="tag amuse tag">Amuse</span></span></div>
+      <div class="step"><span class="step-action"><strong>T-1 to T-0: DM list build.</strong> Core 50 (personal relationships) · Warm 100 (recent viewers/engagers) · Cold 50 (T4 artist mutuals). Personalized per tier.</span><span class="step-tags"><span class="tag manual tag">Manual</span></span></div>
+    </div>
+  </div>
+
+  <div class="card">
+    <div class="card-header" onclick="toggleCard(this)">
+      <div class="card-num" style="background:#34d399">2C</div>
+      <div><div class="card-title">Paid — IF triggered (rigid criteria)</div><div class="card-sub">Only run if save rate warrants it</div></div>
+      <div class="card-chevron">▸</div>
+    </div>
+    <div class="card-body">
+      <div class="callout red"><strong>Gate check:</strong> Only spend money if 72-hr save rate ≥ 3%. Below that, content is the fuel — not budget.</div>
+      <div class="step"><span class="step-action"><strong>Meta boost:</strong> Only if sends/reach ≥ 3%. $50 test budget, 3 days. Kill immediately at $0.10/stream.</span><span class="step-tags"><span class="tag manual tag">Meta Ads</span></span></div>
+      <div class="step"><span class="step-action"><strong>Spotify Marquee:</strong> Release week only. $100 minimum. EP + first vault single only — not every track.</span><span class="step-tags"><span class="tag s4a tag">S4A</span></span></div>
+      <div class="step"><span class="step-action"><strong>Discovery Mode:</strong> Activate if 7-day save rate > 3%. Free (30% royalty trade). Feeds Discover Weekly.</span><span class="step-tags"><span class="tag s4a tag">S4A</span></span></div>
+    </div>
+  </div>
+</section>
+
+<!-- ─── PHASE 3 ─────────────────────────────────────────── -->
+<section id="p3" class="searchable">
+  <h2><span class="sec-icon">💥</span> PHASE 3 — RELEASE DAY</h2>
+  <p>Execute everything prepped. DM blitz is the highest leverage action of the day.</p>
+
+  <div class="step-group">
+    <div class="step"><span class="step-action"><strong>Post announcement Reel.</strong> Full artwork reveal + link in bio updated to track/EP. Caption: lead with emotion, CTA in line 3.</span><span class="step-tags"><span class="tag ig tag">IG / TikTok</span><span class="tag-who who-ethan tag">ETHAN</span></span></div>
+    <div class="step"><span class="step-action"><strong>Upload Spotify Canvas.</strong> 6–8s loop MP4 via S4A. Canvas increases saves — do this on release day.</span><span class="step-tags"><span class="tag s4a tag">S4A</span></span></div>
+    <div class="step"><span class="step-action"><strong>Execute DM blitz.</strong> Core 50 → Warm 100 → Cold 50. Track-specific angle. Not copy-paste. 15 min hard cap per tier.</span><span class="step-tags"><span class="tag ig tag">IG</span><span class="tag-who who-ethan tag">ETHAN</span></span></div>
+    <div class="step"><span class="step-action"><strong>Update IG bio.</strong> New track/EP link. Remove old pre-save.</span><span class="step-tags"><span class="tag ig tag">IG</span></span></div>
+    <div class="step"><span class="step-action"><strong>Update Oracle releases.ts.</strong> Status → "live". Dates confirmed.</span><span class="step-tags"><span class="tag oracle tag">Oracle</span><span class="tag-who who-claude tag">CLAUDE</span></span></div>
+  </div>
+</section>
+
+<!-- ─── PHASE 4 ─────────────────────────────────────────── -->
+<section id="p4" class="searchable">
+  <h2><span class="sec-icon">📈</span> PHASE 4 — COMPOUND (T+1 to T+7)</h2>
+  <p>Momentum content + data collection + compliance. This is where the save rate builds. Don't go dark after release day.</p>
+
+  <div class="card">
+    <div class="card-header" onclick="toggleCard(this)">
+      <div class="card-num" style="background:#f472b6">4A</div>
+      <div><div class="card-title">Momentum Content</div><div class="card-sub">T+1, T+3, T+7 — don't go dark</div></div>
+      <div class="card-chevron">▸</div>
+    </div>
+    <div class="card-body">
+      <div class="step"><span class="step-action"><strong>T+1: Second post.</strong> Different angle from release day. BTS, reaction, lyric call-out. Check 24-hr streams.</span><span class="step-tags"><span class="tag ig tag">IG / TikTok</span></span></div>
+      <div class="step"><span class="step-action"><strong>T+1: Community trace.</strong> Reply ALL comments. DM anyone who shared or saved. 15 min HARD CAP — set a timer.</span><span class="step-tags"><span class="tag ig tag">IG</span><span class="tag-who who-ethan tag">ETHAN</span></span></div>
+      <div class="step"><span class="step-action"><strong>T+3: Third post + 72-hr data pull.</strong> Save rate check. If ≥ 3% → trigger Meta boost. If < 2% → more content, no paid.</span><span class="step-tags"><span class="tag ig tag">IG</span><span class="tag s4a tag">S4A</span></span></div>
+      <div class="step"><span class="step-action"><strong>T+7: Week 1 review.</strong> Pull full week data. Log to LIVE_STATE.md. Save rate target 3%+.</span><span class="step-tags"><span class="tag s4a tag">S4A</span><span class="tag-who who-claude tag">CLAUDE</span></span></div>
+    </div>
+  </div>
+
+  <div class="card">
+    <div class="card-header" onclick="toggleCard(this)">
+      <div class="card-num" style="background:#f59e0b">4B</div>
+      <div><div class="card-title">Compliance (Thursday after release)</div><div class="card-sub">Register all rights — in this order, on this day</div></div>
+      <div class="card-chevron">▸</div>
+    </div>
+    <div class="card-body">
+      <div class="callout red"><strong>Rule:</strong> Compliance happens on the Thursday AFTER release. Not before. Not the day of. Thursday.</div>
+      <div class="step"><span class="step-action"><strong>ASCAP:</strong> Song registration (writer's share). ascap.com → My Account → Register Work.</span><span class="step-tags"><span class="tag manual tag">ASCAP</span><span class="tag-who who-ethan tag">ETHAN</span></span></div>
+      <div class="step"><span class="step-action"><strong>MLC:</strong> Mechanical license registration (interactive streaming royalties). themlc.com.</span><span class="step-tags"><span class="tag manual tag">MLC</span><span class="tag-who who-ethan tag">ETHAN</span></span></div>
+      <div class="step"><span class="step-action"><strong>Songtrust:</strong> Global publishing admin. Claim the work. songtrust.com.</span><span class="step-tags"><span class="tag manual tag">Songtrust</span><span class="tag-who who-ethan tag">ETHAN</span></span></div>
+      <div class="step"><span class="step-action"><strong>SoundExchange:</strong> Digital performance royalties (non-interactive streams, satellite, internet radio). soundexchange.com.</span><span class="step-tags"><span class="tag manual tag">SoundExchange</span><span class="tag-who who-ethan tag">ETHAN</span></span></div>
+      <div class="step"><span class="step-action"><strong>Catalog refresh:</strong> <code>node brain/refresh-catalog.mjs</code> — updates popularity scores.</span><span class="step-tags"><span class="tag-who who-auto tag">AUTO</span></span></div>
+    </div>
+  </div>
+</section>
+
+<!-- ─── PHASE 5 ─────────────────────────────────────────── -->
+<section id="p5" class="searchable">
+  <h2><span class="sec-icon">🎬</span> PHASE 5 — SYNC PREP</h2>
+  <p>Parallel to everything else. Highest leverage per-hour revenue play. One placement ($500–$5K) = 100K–1M stream equivalent.</p>
+
+  <div class="step-group">
+    <div class="step-group-label">Asset Creation (after mastering)</div>
+    <div class="step"><span class="step-action"><strong>Stems export:</strong> vocals, drums, bass, melodic, FX — each separate, full-length, -14 LUFS sync master.</span><span class="step-tags"><span class="tag fl tag">FL Studio</span></span></div>
+    <div class="step"><span class="step-action"><strong>Instrumental render:</strong> full instrumental, mastered at -14 LUFS.</span><span class="step-tags"><span class="tag fl tag">FL Studio</span></span></div>
+    <div class="step"><span class="step-action"><strong>One-sheet:</strong> title, BPM, key, mood tags, genre, duration, PRO info (ASCAP), contact email, Spotify link.</span><span class="step-tags"><span class="tag photopea tag">Photopea</span><span class="tag-who who-claude tag">CLAUDE</span></span></div>
+    <div class="step-group-label">Platform Submission</div>
+    <div class="step"><span class="step-action"><strong>Songtradr</strong> — upload with metadata + stems. License tier: premium sync.</span><span class="step-tags"><span class="tag manual tag">Songtradr</span></span></div>
+    <div class="step"><span class="step-action"><strong>Musicbed</strong> — upload with metadata + stems. Creator licensing marketplace.</span><span class="step-tags"><span class="tag manual tag">Musicbed</span></span></div>
+    <div class="step"><span class="step-action"><strong>Artlist</strong> — upload with metadata + stems. High-volume creator platform.</span><span class="step-tags"><span class="tag manual tag">Artlist</span></span></div>
+  </div>
+</section>
+
+<!-- ─── PHASE 6 ─────────────────────────────────────────── -->
+<section id="p6" class="searchable">
+  <h2><span class="sec-icon">🔄</span> PHASE 6 — SYSTEM UPDATE</h2>
+  <p>After every release. Data → brain → next cycle. This is what makes the machine compound.</p>
+
+  <div class="step-group">
+    <div class="step"><span class="step-action"><strong>releases.ts:</strong> status → live. ISRC confirmed. Dates locked.</span><span class="step-tags"><span class="tag oracle tag">Oracle</span><span class="tag-who who-claude tag">CLAUDE</span></span></div>
+    <div class="step"><span class="step-action"><strong>phaseMap.ts:</strong> PHASE_MAP entries for new release window.</span><span class="step-tags"><span class="tag oracle tag">Oracle</span><span class="tag-who who-claude tag">CLAUDE</span></span></div>
+    <div class="step"><span class="step-action"><strong>catalog_intelligence_matrix.json:</strong> ISRC, pop score, Cyanite final scores, streaming data.</span><span class="step-tags"><span class="tag-who who-claude tag">CLAUDE</span></span></div>
+    <div class="step"><span class="step-action"><strong>LIVE_STATE.md:</strong> Update catalog snapshot, release table, pipeline status, key dates.</span><span class="step-tags"><span class="tag-who who-claude tag">CLAUDE</span></span></div>
+    <div class="step"><span class="step-action"><strong>CHANGELOG.md:</strong> Append-only audit entry. What changed, when, verified by whom.</span><span class="step-tags"><span class="tag-who who-claude tag">CLAUDE</span></span></div>
+    <div class="step"><span class="step-action"><strong>Version bump:</strong> increment RELEASE_DATA_VERSION in Oracle to force IndexedDB re-seed.</span><span class="step-tags"><span class="tag oracle tag">Oracle</span><span class="tag-who who-claude tag">CLAUDE</span></span></div>
+  </div>
+
+  <div class="callout teal">
+    <strong>The revolving cycle:</strong> By T+7 of the current track, the next track should already be uploaded and entering Phase 2. The pipeline never stops — it overlaps. Current cadence: 14-day vault waterfall running Jun 12 → Aug 7.
+  </div>
+</section>
+
+<!-- ─── CONTENT SYSTEM ─────────────────────────────────── -->
+<section id="content" class="searchable">
+  <h2><span class="sec-icon">📸</span> CONTENT SYSTEM</h2>
+  <p>Target: 4–7 posts/week minimum. Batch capture → process → queue → post. Volume over perfection.</p>
+
+  <div class="card">
+    <div class="card-header" onclick="toggleCard(this)">
+      <div class="card-num" style="background:#B8973E">C1</div>
+      <div><div class="card-title">Batch Capture Session (3 hours)</div><div class="card-sub">20–30 raw assets → 10–15 processed, ready to post</div></div>
+      <div class="card-chevron">▸</div>
+    </div>
+    <div class="card-body">
+      <div class="step"><span class="step-action"><strong>Block 1 — Mine (45 min):</strong> Go through ALL existing photos/videos. Screenshot raw elements. Isolate textures, expressions, locations. Save to content-flood/raw-elements/.</span><span class="step-tags"><span class="tag-who who-ethan tag">ETHAN</span></span></div>
+      <div class="step"><span class="step-action"><strong>Block 2 — Shoot (60 min):</strong> New content. Phone + ring light minimum. 5–7 distinct setups: BTS, direct-to-camera, world-build, studio, movement.</span><span class="step-tags"><span class="tag phone tag">Phone</span><span class="tag-who who-ethan tag">ETHAN</span></span></div>
+      <div class="step"><span class="step-action"><strong>Block 3 — Isolate (30 min):</strong> Photopea — separate layers, remove backgrounds, create transparent PNGs of key elements (face, hands, silhouette). Save to content-flood/isolated/.</span><span class="step-tags"><span class="tag photopea tag">Photopea</span></span></div>
+      <div class="step"><span class="step-action"><strong>Block 4 — Process (45 min):</strong> Run pipeline. Generate all output variants. Queue for posting.</span><span class="step-tags"><span class="tag-who who-auto tag">AUTO</span></span></div>
+      <div class="callout" style="margin-top:10px">
+        <strong>ADHD rule:</strong> Timer on each block. When it hits — MOVE. Output &gt; perfection. 80% quality at volume beats 100% at 1 post/week.
+      </div>
+    </div>
+  </div>
+
+  <div class="card">
+    <div class="card-header" onclick="toggleCard(this)">
+      <div class="card-num" style="background:#0d9488">C2</div>
+      <div><div class="card-title">Processing Pipeline</div><div class="card-sub">node content-flood/pipeline.mjs</div></div>
+      <div class="card-chevron">▸</div>
+    </div>
+    <div class="card-body">
+      <div class="step-group-label">Common commands</div>
+      <div class="step"><span class="step-action"><code>node pipeline.mjs --input raw-elements/ --look moody-rnb --format ig-feed</code><br><em>Batch process all raw elements → IG feed format, moody-rnb look</em></span></div>
+      <div class="step"><span class="step-action"><code>node pipeline.mjs --input shoots/2026-05-29/ --look all-love --format reel</code><br><em>EP drop day shoot → reel format, All Love palette (Emerald/Gold/Navy)</em></span></div>
+      <div class="step"><span class="step-action"><code>node pipeline.mjs --mode ai-gen --seed character-seed/</code><br><em>Print AI generation prompt scaffold for Gemini/Midjourney</em></span></div>
+      <div class="step-group-label">Looks</div>
+      <div class="step"><span class="step-action"><strong>moody-rnb</strong> — Primary look. Dark, saturated, cinematic. Use for 80% of posts.</span></div>
+      <div class="step"><span class="step-action"><strong>warm-analog</strong> — Contrast mode. Golden hour, studio morning. Use for soft editorial content.</span></div>
+      <div class="step"><span class="step-action"><strong>all-love</strong> — EP era look. Emerald/Gold/Navy + grain. Use for ALL LOVE campaign posts.</span></div>
+      <div class="step"><span class="step-action"><strong>punchy</strong> — High contrast, vivid. Statement posts only.</span></div>
+      <div class="step"><span class="step-action"><strong>gritty-lofi</strong> — Crushed blacks, desaturated. Raw energy posts.</span></div>
+    </div>
+  </div>
+
+  <div class="card">
+    <div class="card-header" onclick="toggleCard(this)">
+      <div class="card-num" style="background:#7c3aed">C3</div>
+      <div><div class="card-title">AI Character System</div><div class="card-sub">Content between shoots — not a deepfake, a stylized presence</div></div>
+      <div class="card-chevron">▸</div>
+    </div>
+    <div class="card-body">
+      <div class="step"><span class="step-action"><strong>Seed document:</strong> content-flood/character-seed/character-sheet.yaml — physical specs, 3 aesthetic modes, 5 environments, pose library, AI prompt scaffolds.</span></div>
+      <div class="step"><span class="step-action"><strong>Still generation:</strong> Feed character-sheet.yaml + 3–5 reference photos into Gemini Pro (Imagen 3) or Midjourney. Use prompt scaffolds from YAML.</span><span class="step-tags"><span class="tag claude tag">Gemini Pro</span></span></div>
+      <div class="step"><span class="step-action"><strong>Motion generation:</strong> Still image → Higgsfield → 3–5s subtle motion video. Use for reels, Canvas, story loops.</span><span class="step-tags"><span class="tag manual tag">Higgsfield</span></span></div>
+      <div class="step"><span class="step-action"><strong>After each batch session:</strong> Add 3–5 new reference photos to character-seed/. Monthly: regenerate character sheet.</span><span class="step-tags"><span class="tag-who who-ethan tag">ETHAN</span></span></div>
+    </div>
+  </div>
+</section>
+
+<!-- ─── SOCIAL STRATEGY ────────────────────────────────── -->
+<section id="social" class="searchable">
+  <h2><span class="sec-icon">📱</span> SOCIAL STRATEGY</h2>
+
+  <h3>The Five Pillars (all content is one of these)</h3>
+  <table class="tbl">
+    <tr><th>#</th><th>Pillar</th><th>What it is</th><th>Example</th></tr>
+    <tr><td><strong>1</strong></td><td>The Release</td><td>The music itself. Announcement, Canvas, snippets.</td><td>Cover art drop, 15s hook clip, lyric reel</td></tr>
+    <tr><td><strong>2</strong></td><td>Talk to 'Em</td><td>Face. Direct address. Emotional truth behind the record.</td><td>"I wrote this at 2 AM after…" — direct cam, raw</td></tr>
+    <tr><td><strong>3</strong></td><td>World-Building</td><td>Milwaukee. East side. 3 AM. The geography + emotional weather.</td><td>Dashboard at night, lakefront, empty street</td></tr>
+    <tr><td><strong>4</strong></td><td>Cinematic Visual</td><td>Canvas loops, B-roll. Deep emerald, gold, noir shadow, 35mm grain.</td><td>Parallax edit, color-graded ambient clip</td></tr>
+    <tr><td><strong>5</strong></td><td>Community Trace</td><td>Comments on T4 artist pages. Gorilla Geo DMs. Reaction clips.</td><td>Reply to a comment on Faiyaz's page</td></tr>
+  </table>
+
+  <div class="callout"><strong>Portfolio Test:</strong> Before every post — "Would this attract the collaborators, curators, and listeners I want in Year 2?" If no, don't post it.</div>
+
+  <h3>Platform Roles</h3>
+  <table class="tbl">
+    <tr><th>Platform</th><th>Job</th><th>Cadence</th></tr>
+    <tr><td><strong>Instagram</strong></td><td>Primary engine. All 5 pillars. This is the portfolio.</td><td>4–7x/week</td></tr>
+    <tr><td><strong>YouTube</strong></td><td>Catalog archive, SEO long tail. Visualizers, live sets.</td><td>No pressure cadence</td></tr>
+    <tr><td><strong>TikTok</strong></td><td>Phase 3 consideration only. Not now.</td><td>—</td></tr>
+    <tr><td><strong>Twitter/X</strong></td><td>Consolidate or cut. Repurpose IG captions if anything.</td><td>Minimal</td></tr>
+  </table>
+
+  <h3>Caption Doctrine</h3>
+  <div class="pill-row">
+    <div class="pill"><strong>Line 1</strong> must stop the scroll before "more" fold</div>
+    <div class="pill">Sell who they <strong>become</strong> after hearing this</div>
+    <div class="pill">Deep philosophy lives in lines 2+</div>
+    <div class="pill">Selective revelation: edit what you share</div>
+  </div>
+</section>
+
+<!-- ─── DM OUTREACH ───────────────────────────────────── -->
+<section id="outreach" class="searchable">
+  <h2><span class="sec-icon">📨</span> DM OUTREACH</h2>
+  <p>Two-lane strategy. Lane 1 must precede Lane 2 — people check engagement trace before responding to DMs.</p>
+
+  <table class="tbl">
+    <tr><th>Lane</th><th>What</th><th>When</th><th>Volume</th></tr>
+    <tr><td><strong>Lane 1</strong></td><td>Community Presence — comments/likes on T4 artist pages. Leave engagement trace.</td><td>Always. Ongoing.</td><td>15–20 min/day</td></tr>
+    <tr><td><strong>Lane 2</strong></td><td>Peer Fan DMs — personalized outreach. Track-specific angle. Via AIE sprint terminal.</td><td>After Lane 1 traces built</td><td>3–5/day max</td></tr>
+  </table>
+
+  <h3>DM Blitz (release week)</h3>
+  <div class="step-group">
+    <div class="step"><span class="step-action"><strong>Core 50 (personal relationships):</strong> Friends, family, past collaborators, people who know you. Personal message, no template.</span></div>
+    <div class="step"><span class="step-action"><strong>Warm 100 (recent viewers/engagers):</strong> Anyone who watched your content in the past 30 days. Track-specific angle: "This one sounds like [their vibe]."</span></div>
+    <div class="step"><span class="step-action"><strong>Cold 50 (T4 mutual fans):</strong> Fans of artists in your lane who've engaged with similar artists. Via Gorilla Geo list.</span></div>
+  </div>
+
+  <div class="callout red"><strong>Rule:</strong> Never send the same message twice. Never mass-blast. Personalization is the whole point. Verified badge + engagement trace = credibility before the DM lands.</div>
+</section>
+
+<!-- ─── GORILLA GEO ─────────────────────────────────── -->
+<section id="geo" class="searchable">
+  <h2><span class="sec-icon">🦍</span> GORILLA GEO</h2>
+  <p>5-module pipeline. 2,783 artists exported. T4 artist geo-targeting — find fans of similar artists in your city and beyond.</p>
+
+  <table class="tbl">
+    <tr><th>Module</th><th>What it does</th><th>Status</th></tr>
+    <tr><td><strong>Module 1</strong></td><td>Pull followers of T4 artists → classify by tier → tier-classified.json</td><td>✓ Creds work, produces ~1.4MB output</td></tr>
+    <tr><td><strong>Module 2</strong></td><td>IG handle lookup (heuristic derivation — HIGH/MEDIUM/LOW/REVIEW)</td><td>2b-ig-autofill.js — REVIEW outputs need manual check</td></tr>
+    <tr><td><strong>Module 3–5</strong></td><td>DM generation, send queue, tracking</td><td>Triggering architecture gap — app code works</td></tr>
+  </table>
+
+  <div class="callout">The gap is <strong>triggering architecture</strong>, not the app code. Modules 3–5 need an orchestration layer. Not a Phase 1 problem — use Module 1+2 output manually until post-EP waterfall.</div>
+</section>
+
+<!-- ─── REVENUE ────────────────────────────────────────── -->
+<section id="revenue" class="searchable">
+  <h2><span class="sec-icon">💰</span> REVENUE STACK</h2>
+
+  <table class="tbl">
+    <tr><th>Stream</th><th>How</th><th>Target</th></tr>
+    <tr><td><strong>DoorDash</strong></td><td>6:30–9 AM primary. $1,800/month. Stop once hit.</td><td>$1,800/mo bridge income</td></tr>
+    <tr><td><strong>Streaming</strong></td><td>Amuse Pro → all platforms. Save rate drives Discover Weekly → organic growth.</td><td>Growing. Compound via algorithm.</td></tr>
+    <tr><td><strong>Sync licensing</strong></td><td>Stems + one-sheet → Songtradr, Musicbed, Artlist. Highest per-placement value.</td><td>$500–$5K per placement</td></tr>
+    <tr><td><strong>Publishing</strong></td><td>ASCAP (writer) + Songtrust (global admin) + MLC (mechanicals) + SoundExchange (performance).</td><td>Passive. Registered per track.</td></tr>
+    <tr><td><strong>Live (Phase 3)</strong></td><td>Milwaukee + Lake Geneva + McHenry area. Post-CREAM launch window.</td><td>Revenue + audience data</td></tr>
+  </table>
+
+  <h3>Rights Infrastructure (DONE — do not re-flag as a gap)</h3>
+  <div class="pill-row">
+    <div class="pill"><strong>Distance Over Time</strong> pub co ✓</div>
+    <div class="pill"><strong>ASCAP</strong> writer ✓</div>
+    <div class="pill"><strong>Songtrust</strong> global admin ✓</div>
+    <div class="pill"><strong>SoundExchange</strong> ✓</div>
+    <div class="pill"><strong>IP lawyer</strong> on file ✓</div>
+  </div>
+</section>
+
+<!-- ─── COMPLIANCE ─────────────────────────────────────── -->
+<section id="compliance" class="searchable">
+  <h2><span class="sec-icon">📋</span> COMPLIANCE CALENDAR</h2>
+  <div class="callout red"><strong>Rule: Thursday after release. Not before. Not day-of. Thursday.</strong></div>
+
+  <table class="tbl">
+    <tr><th>Release</th><th>Release Date</th><th>Compliance Thursday</th></tr>
+    <tr><td>ALL LOVE EP</td><td>May 29</td><td>Jun 5</td></tr>
+    <tr><td>I Like Girls</td><td>Jun 12</td><td>Jun 19</td></tr>
+    <tr><td>Like I Did</td><td>Jun 26</td><td>Jul 3</td></tr>
+    <tr><td>Worth It</td><td>Jul 10</td><td>Jul 17</td></tr>
+    <tr><td>Just Say So</td><td>Jul 24</td><td>Jul 31</td></tr>
+    <tr><td>Reconnect</td><td>Aug 7</td><td>Aug 14</td></tr>
+  </table>
+</section>
+
+<!-- ─── AI DELEGATION ──────────────────────────────────── -->
+<section id="ai" class="searchable">
+  <h2><span class="sec-icon">🤖</span> AI DELEGATION PROTOCOL</h2>
+
+  <table class="tbl">
+    <tr><th>Task Type</th><th>Model / Tool</th><th>Why</th></tr>
+    <tr><td>Architecture, strategy, system design, debugging, audits</td><td><strong>Claude Opus (this)</strong></td><td>Deep reasoning. Use when something is broken or a system is being designed.</td></tr>
+    <tr><td>File writes, mechanical refactors, spec execution, pipeline builds</td><td><strong>Claude Sonnet</strong></td><td>Faster, cheaper. Apply pattern to N files, execute spec.</td></tr>
+    <tr><td>Caption gen, hashtags, Oracle decree, quick content, API calls</td><td><strong>Claude Haiku</strong></td><td>High volume, low complexity. Don't burn Opus on this.</td></tr>
+    <tr><td>Heavy filesystem writes, git pushes, batch file transforms</td><td><strong>Antigravity (Gemini)</strong></td><td>Filesystem-heavy, no reasoning needed. Let it run.</td></tr>
+    <tr><td>Still image generation from character sheet</td><td><strong>Gemini Pro / Imagen 3</strong></td><td>Free tier first. Use character-sheet.yaml as seed.</td></tr>
+    <tr><td>Image → video (subtle motion)</td><td><strong>Higgsfield</strong></td><td>Free tier limited — batch requests.</td></tr>
+    <tr><td>Batch content processing</td><td><strong>content-flood/pipeline.mjs</strong></td><td>Automated. ffmpeg-static + sharp. Just run it.</td></tr>
+    <tr><td>Catalog data refresh</td><td><strong>brain/refresh-catalog.mjs</strong></td><td>Biweekly Mon + Wed 10 AM. Scheduled.</td></tr>
+  </table>
+
+  <div class="callout red"><strong>Zero Opus burn rule:</strong> Content pipeline implementation, character sheet iteration, mechanical file edits = Sonnet or Antigravity. Only bring Opus in for architecture decisions or when something breaks.</div>
+</section>
+
+<!-- ─── CREAM ──────────────────────────────────────────── -->
+<section id="cream" class="searchable">
+  <h2><span class="sec-icon">🏆</span> CREAM PROTOCOL</h2>
+
+  <div class="callout green"><strong>CREAM is CONFIRMED.</strong> The question is not "if" — it's "which 5 tracks." Jul 24 is tracklist lock based on data from the vault waterfall.</div>
+
+  <h3>CREAM Tracklist Lock: July 24, 2026</h3>
+  <p>Decision criteria: pop score delta + save rate + live traction. Data-sorted top 5 as of May 14:</p>
+  <table class="tbl">
+    <tr><th>Rank</th><th>Track</th><th>Why</th></tr>
+    <tr><td>1</td><td>Coming Down</td><td>Top pop score delta</td></tr>
+    <tr><td>2</td><td>Same Time</td><td>Strong save rate signal</td></tr>
+    <tr><td>3</td><td>Keep Coming Back</td><td>Consistent performance</td></tr>
+    <tr><td>4</td><td>Can't Let You Go</td><td>Audience retention</td></tr>
+    <tr><td>5</td><td>Underneath It All</td><td>Depth pick</td></tr>
+    <tr><td>Wild Card</td><td>Only Natural</td><td>R&B 0.94, Sexy 0.87 — vault high. Needs minor key darkening.</td></tr>
+  </table>
+
+  <h3>Pre-Production Timeline</h3>
+  <div class="step-group">
+    <div class="step"><span class="step-action"><strong>Jul 24:</strong> Tracklist locked. No changes after this date.</span></div>
+    <div class="step"><span class="step-action"><strong>Aug 15+:</strong> CREAM pre-production begins (100-day mark = APG activation threshold).</span></div>
+    <div class="step"><span class="step-action"><strong>Studio locations:</strong> Milwaukee (home base) + Lake Geneva (DoorDash territory) + McHenry IL (GF's area).</span></div>
+    <div class="step"><span class="step-action"><strong>Song Structure Study starts May 16:</strong> One 20-min format study per Tuesday studio session. 8 weeks = structural intuition for CREAM.</span></div>
+  </div>
+</section>
+
+<!-- ─── RULES ──────────────────────────────────────────── -->
+<section id="rules" class="searchable">
+  <h2><span class="sec-icon">⚔️</span> STANDING RULES — ANTI-DRIFT</h2>
+  <p>These never change without explicit instruction from Ethan. If you see drift on any of these — revert and flag.</p>
+
+  <div class="rule-block"><div class="rule-num">1</div><div class="rule-text"><strong>Distributor is Amuse Pro.</strong> Not DistroKid. Never. Antigravity has hallucinated this before — any DistroKid reference gets reverted immediately.</div></div>
+  <div class="rule-block"><div class="rule-num">2</div><div class="rule-text"><strong>Genre tagging on Amuse = R&amp;B / Alt-R&amp;B.</strong> NEVER Pop. This affects algorithmic pool selection. Every upload check.</div></div>
+  <div class="rule-block"><div class="rule-num">3</div><div class="rule-text"><strong>Never trust Antigravity's claimed file writes</strong> — verify against live filesystem. Check timestamps. Treat all claims as unverified until confirmed.</div></div>
+  <div class="rule-block"><div class="rule-num">4</div><div class="rule-text"><strong>Software work is OPEN as needed.</strong> No speculative builds. Fix what blocks active work. No new infrastructure for infrastructure's sake.</div></div>
+  <div class="rule-block"><div class="rule-num">5</div><div class="rule-text"><strong>Kill List is the single source of truth for daily priorities.</strong> Oracle → /kill. RED tasks before anything else.</div></div>
+  <div class="rule-block"><div class="rule-num">6</div><div class="rule-text"><strong>Compliance happens Thursday AFTER release.</strong> Not before. Not the day of. Thursday. See compliance calendar above.</div></div>
+  <div class="rule-block"><div class="rule-num">7</div><div class="rule-text"><strong>The 8-day sprint window is ALL marketing.</strong> No production. No system fixes. Create content, pitch, DM, post.</div></div>
+  <div class="rule-block"><div class="rule-num">8</div><div class="rule-text"><strong>Before any collaboration: splits agreed in writing before the session opens.</strong> Not after. Not "we'll figure it out." Text confirmation with percentages is binding enough to start.</div></div>
+  <div class="rule-block"><div class="rule-num">9</div><div class="rule-text"><strong>The 90-second Kill List exit signal is sacred.</strong> Scan RED tasks → close it → work. No rabbit holes. Timer if needed.</div></div>
+  <div class="rule-block"><div class="rule-num">10</div><div class="rule-text"><strong>Post what you want to be discovered as.</strong> The Portfolio Test on every content decision. If it doesn't represent the artist becoming — it doesn't go up.</div></div>
+  <div class="rule-block"><div class="rule-num">11</div><div class="rule-text"><strong>Oracle main is canonical.</strong> v2 is dead. Baselined at 56ba9d1 (May 12, 2026). Never treat v2 as authoritative.</div></div>
+  <div class="rule-block"><div class="rule-num">12</div><div class="rule-text"><strong>LIVE_STATE.md is the anti-compaction shield.</strong> Read it first every session. Trust it over conversation memory. Update it when verified numbers change.</div></div>
+  <div class="rule-block"><div class="rule-num">13</div><div class="rule-text"><strong>Manager exists (APG).</strong> Dormant — activates at 100-day mark (Aug 15) if targets hit. Do NOT describe Ethan as having "no manager."</div></div>
+  <div class="rule-block"><div class="rule-num">14</div><div class="rule-text"><strong>Website exists</strong> — ethanpayton.com on Wix. Dormant, not missing. Retrofit = 30-min job, not a redesign.</div></div>
+
+  <div style="margin-top:32px; padding-top:24px; border-top:1px solid var(--border); text-align:center;">
+    <p style="font-size:11px; letter-spacing:0.14em; color:var(--muted); text-transform:uppercase;">past.El noir Records · Label OS · May 2026</p>
+    <p style="font-size:11px; color:var(--muted); margin-top:4px;">Create till 30. No breaks. The system makes that sustainable.</p>
+  </div>
+</section>
+
+</main>
+</div>
+
+<script>
+// ─── CARD TOGGLE ──────────────────────────────────────────
+function toggleCard(header) {
+  const card = header.parentElement;
+  card.classList.toggle('open');
+}
+
+// ─── SIDEBAR GOTO ─────────────────────────────────────────
+function goto(id) {
+  const el = document.getElementById(id);
+  if (el) el.scrollIntoView({ behavior: 'smooth', block: 'start' });
+  document.querySelectorAll('.nav-item').forEach(n => n.classList.remove('active'));
+}
+
+// ─── ACTIVE NAV ON SCROLL ─────────────────────────────────
+const sections = document.querySelectorAll('section[id]');
+window.addEventListener('scroll', () => {
+  let current = '';
+  sections.forEach(s => {
+    if (window.scrollY >= s.offsetTop - 80) current = s.id;
+  });
+  document.querySelectorAll('.nav-item').forEach(n => {
+    n.classList.toggle('active', n.getAttribute('onclick')?.includes(`'${current}'`));
+  });
+}, { passive: true });
+
+// ─── SEARCH ───────────────────────────────────────────────
+function filterSections() {
+  const q = document.getElementById('search').value.toLowerCase().trim();
+  document.querySelectorAll('section.searchable').forEach(section => {
+    if (!q) { section.classList.remove('hidden'); return; }
+    const text = section.textContent.toLowerCase();
+    section.classList.toggle('hidden', !text.includes(q));
+  });
+}
+</script>
+</body>
+</html>

@@ -57,13 +57,23 @@ Upload: [Date] → Release: [Date] ([X] days remaining)
 - [ ] Share presave → streaming link swap
 - [ ] Monitor first-hour engagement
 
-## REGISTRATION MONDAY (3 days post-release)
+## COMPLIANCE THURSDAY (Thursday after release)
 - [ ] Pull ISRC from Amuse
 - [ ] ASCAP registration
 - [ ] MLC registration
 - [ ] Songtrust registration
 - [ ] Musixmatch lyrics submission
 ```
+
+## Tools
+
+### Sprint calendar reference
+Read `.claude/skills/content-sprint/tools/SPRINT_CALENDAR.md` for canonical dates, content ratio rules, and post-type mapping. Never guess dates — they change; this file is the reference.
+
+### Jutsu template check
+Before generating any visual content spec, verify the active jutsu template:
+- ALL LOVE: `--jutsu all-love` (Deep Emerald / Gold / Navy, film grain, Georgia)
+- Post-EP singles may get different templates — check with Ethan before assuming
 
 ## Customization Rules
 - **Sweet Frustration** is a genre outlier (House-R&B / KAYTRANADA pocket). Use DIFFERENT curator set than TrapSoul tracks. Flag this explicitly.

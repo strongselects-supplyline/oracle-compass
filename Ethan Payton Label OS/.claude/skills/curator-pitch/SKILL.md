@@ -76,6 +76,19 @@ Story: [1-2 sentences — artist context + track positioning]
 Target playlists: [Editorial targets from catalog matrix]
 ```
 
+## Tools
+
+### Auto-extract pitch data
+Before writing any pitch, run:
+```bash
+bash .claude/skills/curator-pitch/tools/pitch-data.sh <track-slug>
+```
+
+This pulls BPM, key, mood scores, comparable artists, and lane assignment from the catalog matrix. Use these numbers directly — never guess or approximate.
+
+### Curator target reference
+Read `.claude/skills/curator-pitch/tools/CURATOR_TARGETS.md` for playlist targets by lane and platform-specific submission notes.
+
 ## Critical Rules
 - **Sweet Frustration is a GENRE OUTLIER.** It targets Dance & R&B, Electronic Rising, Mood Booster — NOT the same curators as the TrapSoul tracks. Flag this explicitly.
 - **Never claim stream counts you can't verify.** Use "growing catalog" or reference Hollywood Fever's 3.4M+ if needed.

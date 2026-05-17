@@ -1,0 +1,556 @@
+
+LABEL OS
+past.El noir Records · A-Z SOP
+MISSION
+Thesis + North Star
+Who Does What
+Tool Stack
+DAILY OPS
+Daily Rhythm
+DoorDash Protocol
+RELEASE PIPELINE
+Phase 0 — Creation
+Phase 1 — Pre-Upload
+Phase 2 — Pre-Release
+Phase 3 — Release Day
+Phase 4 — Compound
+Phase 5 — Sync Prep
+Phase 6 — System Update
+CONTENT
+Content System
+Social Strategy
+AUDIENCE
+DM Outreach
+Gorilla Geo
+REVENUE
+Revenue Stack
+Compliance
+AI & AUTOMATION
+AI Delegation
+CREAM Protocol
+ANTI-DRIFT
+Standing Rules
+
+PAST.EL NOIR RECORDS · MAY 2026
+Label OS — Full A-Z Operations Manual
+Everything that runs this label. From idea to algorithm. From recording to compliance. From DoorDash to CREAM. If you're Ethan, this is your operating system. If you're helping, this is your briefing. No drift. No guessing. Just execute.
+⚡
+RIGHT NOW — MAY 16, 2026
+Loading current phase…
+
+🎯
+THESIS + NORTH STAR
+The single lever across all 90 days: Save rate → Discover Weekly → algorithm → organic growth. Everything serves that chain.
+You are not a content creator who makes music. You are a recording artist running a machine that compounds. Label OS is the A&R, marketing, distribution, compliance, and analytics department — all automated or systematized. The mission is to get to 30 with 44 tracks, a tested marketing engine, audience data across 3+ release cycles, and a production system that generates without burning the operator.
+Current Phase: ALL LOVE EP + Vault Waterfall
+✓
+ESL LIVE
+May 8
+↑
+EP UPLOAD
+May 19
+💥
+EP DROPS
+May 29
+→
+ILG
+Jun 12
+→
+LID
+Jun 26
+→
+WI
+Jul 10
+🔒
+CREAM LOCK
+Jul 24
+→
+RCN
+Aug 7
+North Star Metrics (check every Sunday)
+METRIC
+MAY 29 TARGET
+JUL 17 TARGET
+Save rate
+3%+ avg EP
+4%+ top track
+Spotify followers
+2,000+
+2,800+
+Monthly listeners
+30,000+
+40,000+
+Popularity score
+28+
+35+
+Release Radar triggers
+2 (ESL + EP)
+6 (all vault)
+Sobriety streak
+Day 57
+Day 106
+DoorDash monthly
+$1,800
+$1,800
+👥
+WHO DOES WHAT
+Every task in this SOP is tagged with a role. Know your lane. Don't bring Opus problems to Haiku and don't bring Ethan problems to automation.
+ROLE
+WHAT THEY DO
+WHEN TO USE
+ETHAN
+Records, performs, approves, decides, DMs, posts, runs DoorDash
+Anything requiring creative judgment, physical presence, or final call
+CLAUDE
+Architecture, strategy, audits, cross-verification, spec writing, complex reasoning
+System decisions, new infrastructure, anything broken, strategic pivots
+ANTIGRAVITY
+Filesystem writes, git operations, batch file work, mechanical execution
+Heavy file writes, git pushes, running scripts, batch transforms
+AUTO
+Scheduled tasks, cron jobs, catalog refresh, pipeline scripts
+Biweekly catalog refresh, automated Oracle updates, content pipeline
+Rule: Never burn Opus (Claude) on work Sonnet can handle. Never bring Ethan into execution tasks automation can run. Keep each role in its lane — that's where the system scales.
+🛠️
+TOOL STACK
+TOOL
+ROLE
+ACCESS
+FL Studio
+Production, recording, vocal mix, mastering (Illangelo chain)
+Ethan local
+Cyanite
+Audio analysis — genre/mood scores (Sexy, Chill, R&B). QA gate.
+cyanite.ai
+Photopea
+Cover art, layer isolation, transparent PNGs, Canvas prep
+photopea.com (free)
+CapCut
+Canvas loops, lyric reels, parallax motion, quick edits
+Ethan phone/desktop
+Amuse
+Distribution (R&B / Alt-R&B genre. NEVER Pop). ISRC. Royalties. Insights.
+amuse.io — Amuse Pro
+S4A
+Editorial pitch, Discovery Mode, weekly data pull (saves, skip, demo)
+artists.spotify.com
+Oracle Compass
+Daily OS. Kill List, Pipeline tracker, War Room, Practice, Log
+oracle-compass-ni8g.vercel.app
+Gorilla Geo
+5-module audience geo pipeline. T4 artist targeting. 2,783 exported.
+scratch/gorilla-geo/
+Content Pipeline
+Batch image/video processing. 4 color looks. Format routing.
+node scratch/content-flood/pipeline.mjs
+Catalog Refresh
+Spotify popularity auto-update. Music Stax fallback.
+node brain/refresh-catalog.mjs (biweekly)
+IG / TikTok
+Primary content engine, community trace, DM outreach
+Ethan accounts
+ASCAP + MLC + Songtrust + SoundExchange
+Rights registration suite. Thursday after each release.
+Manual portals
+⏰
+DAILY RHYTHM
+EXPAND ALL
+Non-negotiable order: Body → Ignition → Fuel → Kill List scan → Work. Never open the DAW before these 4 are done.
+S
+Full S-Tier Morning
+Non-DoorDash days · or late-start DoorDash days
+▸
+C
+Compressed Ignition
+DoorDash by 6:30 AM
+▸
+Sleep Rules (upstream constraint — non-negotiable)
+Lights out: 10:30 PM hard
+Caffeine cutoff: 1:00 PM hard
+DoorDash wheels down: 8:30 PM hard
+No screens: post-9:30 PM
+Evening stack: mullein tea, no social post-8 PM
+Sunday Protocol (weekly reset)
+Grief journaling, 20 min. Write to your father. What you'd say, what you'd ask, what you're angry about. Controlled exposure.
+ETHAN
+Weekly data pull, 40–60 min. S4A → all live tracks → save rate, streams, demographics, playlist adds.
+S4A
+Meal batch prep, 30–45 min. Rice, chicken thighs, hardboiled eggs, PB&J. Aldi ~$40. Protects the entire week.
+ETHAN
+Next-week scan. Oracle Kill List → what's RED? What's the highest leverage action on Monday?
+Oracle
+IG unfollow audit, 5 min. Gradual. Target 3:1–4:1 ratio. No mass unfollows.
+IG
+🚗
+DOORDASH PROTOCOL
+Target: $1,800/month. Once hit — stop. Not a dollar more. Protect studio time.
+BLOCK
+TIME
+WHEN
+Primary
+6:30–9:00 AM
+Morning surge pricing. Do this first.
+Secondary
+5:30–8:30 PM
+Only if monthly target needs it. Wheels down 8:30 hard.
+Stop rule: Track weekly. Monthly hit = done. Never cram the last weekend. DoorDash is a bridge, not a career.
+🎵
+PHASE 0 — CREATION
+EXPAND ALL
+Batch by stage, not by track. Record all vocals across ALL tracks in one session, then mix all, then master all. Interleaving kills momentum.
+0A
+Writing + Production
+Idea → beat → arrangement
+▸
+0B
+Recording
+Batch ALL vocals in one session — performer mode
+▸
+0C
+Vocal Mix → Rough Mix
+Comp → tune → levels → test
+▸
+0D
+Cyanite QA Gate
+Data must match intent before final mix
+▸
+0E
+Final Mix + Master
+Illangelo chain — two master versions
+▸
+🎨
+PHASE 1 — PRE-UPLOAD
+2–3 days. Art, Canvas, metadata, Amuse upload. Oracle updated.
+1A
+Visual Assets
+Cover art → Canvas loop → lyric reel
+▸
+1B
+Amuse Upload
+Metadata lock → upload → ISRC → Oracle update
+▸
+🚀
+PHASE 2 — PRE-RELEASE SPRINT
+EXPAND ALL
+T-7 to T-0. The 8-day content blitz. All marketing work happens here. No production during this window.
+The 8-day upload-to-release window is 100% marketing. Do not record. Do not fix the system. Create content, build DM list, pitch editorial, prep the blitz.
+2A
+Content Creation (T-7 to T-1)
+5-7 pieces batched, scheduled daily
+▸
+2B
+Marketing + Editorial
+S4A pitch, pre-save, DM list build
+▸
+2C
+Paid — IF triggered (rigid criteria)
+Only run if save rate warrants it
+▸
+💥
+PHASE 3 — RELEASE DAY
+Execute everything prepped. DM blitz is the highest leverage action of the day.
+Post announcement Reel. Full artwork reveal + link in bio updated to track/EP. Caption: lead with emotion, CTA in line 3.
+IG / TikTok
+ETHAN
+Upload Spotify Canvas. 6–8s loop MP4 via S4A. Canvas increases saves — do this on release day.
+S4A
+Execute DM blitz. Core 50 → Warm 100 → Cold 50. Track-specific angle. Not copy-paste. 15 min hard cap per tier.
+IG
+ETHAN
+Update IG bio. New track/EP link. Remove old pre-save.
+IG
+Update Oracle releases.ts. Status → "live". Dates confirmed.
+Oracle
+CLAUDE
+📈
+PHASE 4 — COMPOUND (T+1 TO T+7)
+Momentum content + data collection + compliance. This is where the save rate builds. Don't go dark after release day.
+4A
+Momentum Content
+T+1, T+3, T+7 — don't go dark
+▸
+4B
+Compliance (Thursday after release)
+Register all rights — in this order, on this day
+▸
+🎬
+PHASE 5 — SYNC PREP
+Parallel to everything else. Highest leverage per-hour revenue play. One placement ($500–$5K) = 100K–1M stream equivalent.
+ASSET CREATION (AFTER MASTERING)
+Stems export: vocals, drums, bass, melodic, FX — each separate, full-length, -14 LUFS sync master.
+FL Studio
+Instrumental render: full instrumental, mastered at -14 LUFS.
+FL Studio
+One-sheet: title, BPM, key, mood tags, genre, duration, PRO info (ASCAP), contact email, Spotify link.
+Photopea
+CLAUDE
+PLATFORM SUBMISSION
+Songtradr — upload with metadata + stems. License tier: premium sync.
+Songtradr
+Musicbed — upload with metadata + stems. Creator licensing marketplace.
+Musicbed
+Artlist — upload with metadata + stems. High-volume creator platform.
+Artlist
+🔄
+PHASE 6 — SYSTEM UPDATE
+After every release. Data → brain → next cycle. This is what makes the machine compound.
+releases.ts: status → live. ISRC confirmed. Dates locked.
+Oracle
+CLAUDE
+phaseMap.ts: PHASE_MAP entries for new release window.
+Oracle
+CLAUDE
+catalog_intelligence_matrix.json: ISRC, pop score, Cyanite final scores, streaming data.
+CLAUDE
+LIVE_STATE.md: Update catalog snapshot, release table, pipeline status, key dates.
+CLAUDE
+CHANGELOG.md: Append-only audit entry. What changed, when, verified by whom.
+CLAUDE
+Version bump: increment RELEASE_DATA_VERSION in Oracle to force IndexedDB re-seed.
+Oracle
+CLAUDE
+The revolving cycle: By T+7 of the current track, the next track should already be uploaded and entering Phase 2. The pipeline never stops — it overlaps. Current cadence: 14-day vault waterfall running Jun 12 → Aug 7.
+📸
+CONTENT SYSTEM
+Target: 4–7 posts/week minimum. Batch capture → process → queue → post. Volume over perfection.
+C1
+Batch Capture Session (3 hours)
+20–30 raw assets → 10–15 processed, ready to post
+▸
+C2
+Processing Pipeline
+node content-flood/pipeline.mjs
+▸
+C3
+AI Character System
+Content between shoots — not a deepfake, a stylized presence
+▸
+📱
+SOCIAL STRATEGY
+The Five Pillars (all content is one of these)
+#
+PILLAR
+WHAT IT IS
+EXAMPLE
+1
+The Release
+The music itself. Announcement, Canvas, snippets.
+Cover art drop, 15s hook clip, lyric reel
+2
+Talk to 'Em
+Face. Direct address. Emotional truth behind the record.
+"I wrote this at 2 AM after…" — direct cam, raw
+3
+World-Building
+Milwaukee. East side. 3 AM. The geography + emotional weather.
+Dashboard at night, lakefront, empty street
+4
+Cinematic Visual
+Canvas loops, B-roll. Deep emerald, gold, noir shadow, 35mm grain.
+Parallax edit, color-graded ambient clip
+5
+Community Trace
+Comments on T4 artist pages. Gorilla Geo DMs. Reaction clips.
+Reply to a comment on Faiyaz's page
+Portfolio Test: Before every post — "Would this attract the collaborators, curators, and listeners I want in Year 2?" If no, don't post it.
+Platform Roles
+PLATFORM
+JOB
+CADENCE
+Instagram
+Primary engine. All 5 pillars. This is the portfolio.
+4–7x/week
+YouTube
+Catalog archive, SEO long tail. Visualizers, live sets.
+No pressure cadence
+TikTok
+Phase 3 consideration only. Not now.
+—
+Twitter/X
+Consolidate or cut. Repurpose IG captions if anything.
+Minimal
+Caption Doctrine
+Line 1 must stop the scroll before "more" fold
+Sell who they become after hearing this
+Deep philosophy lives in lines 2+
+Selective revelation: edit what you share
+📨
+DM OUTREACH
+Two-lane strategy. Lane 1 must precede Lane 2 — people check engagement trace before responding to DMs.
+LANE
+WHAT
+WHEN
+VOLUME
+Lane 1
+Community Presence — comments/likes on T4 artist pages. Leave engagement trace.
+Always. Ongoing.
+15–20 min/day
+Lane 2
+Peer Fan DMs — personalized outreach. Track-specific angle. Via AIE sprint terminal.
+After Lane 1 traces built
+3–5/day max
+DM Blitz (release week)
+Core 50 (personal relationships): Friends, family, past collaborators, people who know you. Personal message, no template.
+Warm 100 (recent viewers/engagers): Anyone who watched your content in the past 30 days. Track-specific angle: "This one sounds like [their vibe]."
+Cold 50 (T4 mutual fans): Fans of artists in your lane who've engaged with similar artists. Via Gorilla Geo list.
+Rule: Never send the same message twice. Never mass-blast. Personalization is the whole point. Verified badge + engagement trace = credibility before the DM lands.
+🦍
+GORILLA GEO
+5-module pipeline. 2,783 artists exported. T4 artist geo-targeting — find fans of similar artists in your city and beyond.
+MODULE
+WHAT IT DOES
+STATUS
+Module 1
+Pull followers of T4 artists → classify by tier → tier-classified.json
+✓ Creds work, produces ~1.4MB output
+Module 2
+IG handle lookup (heuristic derivation — HIGH/MEDIUM/LOW/REVIEW)
+2b-ig-autofill.js — REVIEW outputs need manual check
+Module 3–5
+DM generation, send queue, tracking
+Triggering architecture gap — app code works
+The gap is triggering architecture, not the app code. Modules 3–5 need an orchestration layer. Not a Phase 1 problem — use Module 1+2 output manually until post-EP waterfall.
+💰
+REVENUE STACK
+STREAM
+HOW
+TARGET
+DoorDash
+6:30–9 AM primary. $1,800/month. Stop once hit.
+$1,800/mo bridge income
+Streaming
+Amuse Pro → all platforms. Save rate drives Discover Weekly → organic growth.
+Growing. Compound via algorithm.
+Sync licensing
+Stems + one-sheet → Songtradr, Musicbed, Artlist. Highest per-placement value.
+$500–$5K per placement
+Publishing
+ASCAP (writer) + Songtrust (global admin) + MLC (mechanicals) + SoundExchange (performance).
+Passive. Registered per track.
+Live (Phase 3)
+Milwaukee + Lake Geneva + McHenry area. Post-CREAM launch window.
+Revenue + audience data
+Rights Infrastructure (DONE — do not re-flag as a gap)
+Distance Over Time pub co ✓
+ASCAP writer ✓
+Songtrust global admin ✓
+SoundExchange ✓
+IP lawyer on file ✓
+📋
+COMPLIANCE CALENDAR
+Rule: Thursday after release. Not before. Not day-of. Thursday.
+RELEASE
+RELEASE DATE
+COMPLIANCE THURSDAY
+ALL LOVE EP
+May 29
+Jun 5
+I Like Girls
+Jun 12
+Jun 19
+Like I Did
+Jun 26
+Jul 3
+Worth It
+Jul 10
+Jul 17
+Just Say So
+Jul 24
+Jul 31
+Reconnect
+Aug 7
+Aug 14
+🤖
+AI DELEGATION PROTOCOL
+TASK TYPE
+MODEL / TOOL
+WHY
+Architecture, strategy, system design, debugging, audits
+Claude Opus (this)
+Deep reasoning. Use when something is broken or a system is being designed.
+File writes, mechanical refactors, spec execution, pipeline builds
+Claude Sonnet
+Faster, cheaper. Apply pattern to N files, execute spec.
+Caption gen, hashtags, Oracle decree, quick content, API calls
+Claude Haiku
+High volume, low complexity. Don't burn Opus on this.
+Heavy filesystem writes, git pushes, batch file transforms
+Antigravity (Gemini)
+Filesystem-heavy, no reasoning needed. Let it run.
+Still image generation from character sheet
+Gemini Pro / Imagen 3
+Free tier first. Use character-sheet.yaml as seed.
+Image → video (subtle motion)
+Higgsfield
+Free tier limited — batch requests.
+Batch content processing
+content-flood/pipeline.mjs
+Automated. ffmpeg-static + sharp. Just run it.
+Catalog data refresh
+brain/refresh-catalog.mjs
+Biweekly Mon + Wed 10 AM. Scheduled.
+Zero Opus burn rule: Content pipeline implementation, character sheet iteration, mechanical file edits = Sonnet or Antigravity. Only bring Opus in for architecture decisions or when something breaks.
+🏆
+CREAM PROTOCOL
+CREAM is CONFIRMED. The question is not "if" — it's "which 5 tracks." Jul 24 is tracklist lock based on data from the vault waterfall.
+CREAM Tracklist Lock: July 24, 2026
+Decision criteria: pop score delta + save rate + live traction. Data-sorted top 5 as of May 14:
+RANK
+TRACK
+WHY
+1
+Coming Down
+Top pop score delta
+2
+Same Time
+Strong save rate signal
+3
+Keep Coming Back
+Consistent performance
+4
+Can't Let You Go
+Audience retention
+5
+Underneath It All
+Depth pick
+Wild Card
+Only Natural
+R&B 0.94, Sexy 0.87 — vault high. Needs minor key darkening.
+Pre-Production Timeline
+Jul 24: Tracklist locked. No changes after this date.
+Aug 15+: CREAM pre-production begins (100-day mark = APG activation threshold).
+Studio locations: Milwaukee (home base) + Lake Geneva (DoorDash territory) + McHenry IL (GF's area).
+Song Structure Study starts May 16: One 20-min format study per Tuesday studio session. 8 weeks = structural intuition for CREAM.
+⚔️
+STANDING RULES — ANTI-DRIFT
+These never change without explicit instruction from Ethan. If you see drift on any of these — revert and flag.
+1
+Distributor is Amuse Pro. Not DistroKid. Never. Antigravity has hallucinated this before — any DistroKid reference gets reverted immediately.
+2
+Genre tagging on Amuse = R&B / Alt-R&B. NEVER Pop. This affects algorithmic pool selection. Every upload check.
+3
+Never trust Antigravity's claimed file writes — verify against live filesystem. Check timestamps. Treat all claims as unverified until confirmed.
+4
+Software work is OPEN as needed. No speculative builds. Fix what blocks active work. No new infrastructure for infrastructure's sake.
+5
+Kill List is the single source of truth for daily priorities. Oracle → /kill. RED tasks before anything else.
+6
+Compliance happens Thursday AFTER release. Not before. Not the day of. Thursday. See compliance calendar above.
+7
+The 8-day sprint window is ALL marketing. No production. No system fixes. Create content, pitch, DM, post.
+8
+Before any collaboration: splits agreed in writing before the session opens. Not after. Not "we'll figure it out." Text confirmation with percentages is binding enough to start.
+9
+The 90-second Kill List exit signal is sacred. Scan RED tasks → close it → work. No rabbit holes. Timer if needed.
+10
+Post what you want to be discovered as. The Portfolio Test on every content decision. If it doesn't represent the artist becoming — it doesn't go up.
+11
+Oracle main is canonical. v2 is dead. Baselined at 56ba9d1 (May 12, 2026). Never treat v2 as authoritative.
+12
+LIVE_STATE.md is the anti-compaction shield. Read it first every session. Trust it over conversation memory. Update it when verified numbers change.
+13
+Manager exists (APG). Dormant — activates at 100-day mark (Aug 15) if targets hit. Do NOT describe Ethan as having "no manager."
+14
+Website exists — ethanpayton.com on Wix. Dormant, not missing. Retrofit = 30-min job, not a redesign.
+PAST.EL NOIR RECORDS · LABEL OS · MAY 2026
+Create till 30. No breaks. The system makes that sustainable.

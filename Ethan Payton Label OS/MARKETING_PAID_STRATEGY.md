@@ -136,14 +136,22 @@ Spotify's native promotion tools. Three weapons:
 - NOT on tracks with low save rates (amplifying a track people don't save = wasted royalties)
 - Ideal combo: Discovery Mode + Marquee on same track = 2x monthly active listener growth
 
-**Standing Discovery Mode decisions:**
+**Standing Discovery Mode decisions (confirmed against live S4A, May 12):**
 
-| Track | Activate? | Reasoning |
-|-------|-----------|-----------|
-| Hollywood Fever | YES | Already your algorithmic engine. 84% programmed. Feed it. |
-| SEE ME | MAYBE | 6.55% save rate = excellent conversion. Test for 30 days. |
-| EP Focus Track (best performer) | YES (after Day 14 data) | Only the winner gets Discovery Mode. |
-| Vault singles | Per-track decision | Activate on any that hit 3%+ save rate in first 7 days |
+| Track | Eligible? | Activate? | Reasoning |
+|-------|-----------|-----------|-----------|
+| Hollywood Fever | ✅ YES | **ACTIVATE** | Your algorithmic engine. 84% programmed. 30+ days old, DM-context streams confirmed. |
+| On The Move | ✅ YES | **ACTIVATE** | Second highest catalog pop score (26%). Same criteria met. |
+| SEE ME | ❌ NOT ELIGIBLE | — | Likely insufficient Radio/Autoplay streams in last 28d (needs 20+ in DM contexts). Revisit in 30 days. |
+| East Side Love | ❌ NOT ELIGIBLE | — | Released May 1 — under the 30-day release age minimum. Eligible earliest Jun 1. |
+| EP Focus Track | ❌ NOT ELIGIBLE (at launch) | — | Won't meet 30-day age requirement until ~Jun 29. Revisit then. |
+| Vault singles | ❌ NOT ELIGIBLE (initially) | — | Same 30-day rule. Each becomes eligible ≈ 30 days post-release. |
+
+**Verified eligibility criteria (2026):**
+- Artist: Active S4A, 25K+ MAL benchmark (Ethan at 24K — edge case, clearly eligible given HF/OTM access)
+- Track: Released 30+ days ago AND 20+ streams in Radio/Autoplay contexts in last 28 days AND monetization-eligible
+
+**What this means for paid strategy:** Discovery Mode is a catalog-tier lever only right now — and specifically for HF + OTM. The primary paid lever for new releases is **Spotify Ads (Auction, Streams delivery goal)** — no minimums, seeds the algorithm from day one.
 
 ### Channel 3: TikTok Promote (minimal, test only)
 

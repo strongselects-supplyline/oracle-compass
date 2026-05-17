@@ -37,7 +37,7 @@ This is how Ethan works. All tooling serves this rhythm:
 - [ ] Curator pitches drafted
 - [ ] Everything scheduled and ready to publish
 
-### Phase 3: Release Day (Friday)
+### Phase 3: Release Day (Thursday)
 - [ ] Hit publish on all pre-made content
 - [ ] Song live on all platforms — verify each DSP
 - [ ] Presave link swapped to streaming link
@@ -46,7 +46,7 @@ This is how Ethan works. All tooling serves this rhythm:
 - [ ] Comment narrative deployed (positive sentiment)
 - [ ] Monitor first-hour metrics
 
-### Phase 4: Registration Monday (3 days post-release)
+### Phase 4: Compliance Thursday (Thursday after release)
 - [ ] Pull ISRC from live Amuse distribution
 - [ ] ASCAP work registration
 - [ ] MLC registration (mechanical licensing)
@@ -60,6 +60,11 @@ This is how Ethan works. All tooling serves this rhythm:
 2. Check `catalog_intelligence_matrix.json` for current status and compliance state.
 3. Generate the checklist with completed items marked `[x]` based on known status.
 4. Flag any blocking items or upcoming deadlines prominently.
+
+## Tools
+
+### Compliance reference
+Read `.claude/skills/release-checklist/tools/COMPLIANCE_CHECKLIST.md` for the exact registration order, required data per platform, and timing rules. Compliance is THURSDAY after release — never before.
 
 ## Critical Rules
 - **Distributor is always Amuse.** Never reference DistroKid.
