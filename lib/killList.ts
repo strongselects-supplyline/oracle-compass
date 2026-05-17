@@ -396,12 +396,12 @@ export async function deriveKillList(): Promise<KillTask[]> {
   // Fires on EP release day and each vault single release day.
   const contentSprintDates: { date: string; track: string; isEP: boolean }[] = [
     { date: '2026-05-08', track: 'East Side Love', isEP: false },
-    { date: '2026-05-15', track: 'ALL LOVE EP', isEP: true },
-    { date: '2026-05-30', track: 'Like I Did', isEP: false },
-    { date: '2026-06-13', track: 'I Like Girls', isEP: false },
-    { date: '2026-06-27', track: 'Worth It', isEP: false },
-    { date: '2026-07-11', track: 'Just Say So', isEP: false },
-    { date: '2026-07-25', track: 'Reconnect', isEP: false },
+    { date: '2026-05-29', track: 'ALL LOVE EP', isEP: true },
+    { date: '2026-06-26', track: 'Like I Did', isEP: false },
+    { date: '2026-06-12', track: 'I Like Girls', isEP: false },
+    { date: '2026-07-10', track: 'Worth It', isEP: false },
+    { date: '2026-07-24', track: 'Just Say So', isEP: false },
+    { date: '2026-08-07', track: 'Reconnect', isEP: false },
   ];
   const todayWaterfall = contentSprintDates.find(w => w.date === today);
   if (todayWaterfall) {
@@ -1360,9 +1360,7 @@ export async function deriveKillList(): Promise<KillTask[]> {
   if (ddRemaining > 0 && !isSunday) {
     const ddUrgency = ddDailyTarget > 120 ? "RED" : ddDailyTarget > 80 ? "AMBER" : "GREEN";
 
-    // Phase 1 (through EP drop May 15): Morning block ONLY. Protect studio time.
-    // Phase 2 (May 15+): Multi-block DD schedule returns.
-    const isPhase1 = now < new Date("2026-05-15T00:00:00");
+
 
     // Morning sprint: 6:30-9 AM (~$50, 2.5hrs)
     const ddMornKey = `dd_morning:${today}`;
@@ -1370,14 +1368,9 @@ export async function deriveKillList(): Promise<KillTask[]> {
     if (!ddMornDone && hour >= 5 && hour < 10) {
       tasks.push({
         id: "dd-morning",
-        title: isPhase1 ? `DD Morning Sprint — 6:30-9 AM (only block today)` : `DD Morning Sprint — 6:30-9 AM`,
-        subtitle: `$${telemetry.doordash_earned}/$${DD_MONTHLY_TARGET} (${ddPct}%) · ~$${Math.round(ddDailyTarget * (isPhase1 ? 1.0 : 0.2))} target · ${ddWorkingDaysLeft}d left`,
-        howTo: isPhase1 ? [
-          "2.5-hour morning surge. ~$50 net.",
-          "This is your ONLY DD block during the production sprint.",
-          "Stop at 9 AM. Home. Refuel. Studio by 9:30.",
-          "Tap ✓ when this sprint is done.",
-        ] : [
+        title: `DD Morning Sprint — 6:30-9 AM`,
+        subtitle: `$${telemetry.doordash_earned}/$${DD_MONTHLY_TARGET} (${ddPct}%) · ~$${Math.round(ddDailyTarget * 0.2)} target · ${ddWorkingDaysLeft}d left`,
+        howTo: [
           "Quick 1-hour burst before your stack. ~$25 net.",
           "Breakfast rush = high tips. Stay in a tight radius.",
           "You only need 2 of 3 sprints to hit daily pace.",
@@ -1390,31 +1383,29 @@ export async function deriveKillList(): Promise<KillTask[]> {
       });
     }
 
-    // Midday sprint: 12-2 PM (~$35, 2hrs) — Phase 2 only
-    if (!isPhase1) {
-      const ddMidKey = `dd_midday:${today}`;
-      const ddMidDone = await getStoreValue(ddMidKey);
-      if (!ddMidDone && hour >= 11 && hour < 15) {
-        tasks.push({
-          id: "dd-midday",
-          title: `DD Midday Sprint — 12-2 PM`,
-          subtitle: `$${telemetry.doordash_earned}/$${DD_MONTHLY_TARGET} (${ddPct}%) · ~$${Math.round(ddDailyTarget * 0.35)} target · ${ddWorkingDaysLeft}d left`,
-          howTo: [
-            "2-hour window between studio blocks. ~$50 net.",
-            "Lunch rush = consistent volume.",
-            "Stay efficient — decline orders under $6.",
-            "Back to Studio Block 2 at 2 PM.",
-          ],
-          urgency: ddUrgency,
-          pillar: "business",
-          timeBlock: "any",
-          action: async () => { await setStoreValue(ddMidKey, true); },
-        });
-      }
+    // Midday sprint: 12-2 PM (~$35, 2hrs)
+    const ddMidKey = `dd_midday:${today}`;
+    const ddMidDone = await getStoreValue(ddMidKey);
+    if (!ddMidDone && hour >= 11 && hour < 15) {
+      tasks.push({
+        id: "dd-midday",
+        title: `DD Midday Sprint — 12-2 PM`,
+        subtitle: `$${telemetry.doordash_earned}/$${DD_MONTHLY_TARGET} (${ddPct}%) · ~$${Math.round(ddDailyTarget * 0.35)} target · ${ddWorkingDaysLeft}d left`,
+        howTo: [
+          "2-hour window between studio blocks. ~$50 net.",
+          "Lunch rush = consistent volume.",
+          "Stay efficient — decline orders under $6.",
+          "Back to Studio Block 2 at 2 PM.",
+        ],
+        urgency: ddUrgency,
+        pillar: "business",
+        timeBlock: "any",
+        action: async () => { await setStoreValue(ddMidKey, true); },
+      });
     }
 
-    // Evening sprint: 5:30-8:30+ PM (~$50, 2-3hrs) — Phase 2 only
-    if (!isPhase1) {
+    // Evening sprint: 5:30-8:30+ PM (~$50, 2-3hrs)
+    {
       const ddEveKey = `dd_evening:${today}`;
       const ddEveDone = await getStoreValue(ddEveKey);
       if (!ddEveDone && hour >= 17) {

@@ -31,8 +31,7 @@ type ProtocolStep = { icon: string; action: string; tab?: string };
 function getProtocolSteps(dayType: string): { tagline: string; steps: ProtocolStep[] } {
   const dow = new Date().getDay();
   const workout = TRAINING_PROGRAM.find(t => t.dayOfWeek.includes(dow));
-  // Phase 1 = production sprint (through May 11). No content, no planning.
-  const isPhase1 = new Date() < new Date("2026-05-19T00:00:00");
+
 
   const base: ProtocolStep[] = [
     { icon: "🚗", action: "6:30 AM → DD Morning Sprint (90 min target)" },
@@ -51,7 +50,7 @@ function getProtocolSteps(dayType: string): { tagline: string; steps: ProtocolSt
       ...base,
       { icon: "🎹", action: "10 AM → Studio Block 1 (mix/vocals)" },
       { icon: "🔥", action: "4 PM → Sauna (thermal reset)" },
-      ...(!isPhase1 ? [{ icon: "📱", action: "Post content from STUDIO queue", tab: "studio" }] : []),
+      { icon: "📱", action: "Post content from STUDIO queue", tab: "studio" },
     ],
   };
   if (isStudioDay(dayType as any)) return {
@@ -60,7 +59,7 @@ function getProtocolSteps(dayType: string): { tagline: string; steps: ProtocolSt
       ...base,
       { icon: "🎹", action: "10 AM → Studio Block 1 (mix/vocals)" },
       { icon: "🎤", action: "2 PM → Studio Block 2" },
-      ...(!isPhase1 ? [{ icon: "📱", action: "Post content from STUDIO queue", tab: "studio" }] : []),
+      { icon: "📱", action: "Post content from STUDIO queue", tab: "studio" },
     ],
   };
   if (isBizDay(dayType as any)) return {
@@ -465,23 +464,9 @@ export default function TodayPage() {
             {/* ── MORNING STACK — collapsible with progress count ── */}
             {morningStep === 4 ? (
               /* ALL CLEAR state */
-              <div
-                className="text-center py-8 rounded-2xl mt-2 mb-8 animate-fade-in"
-                style={{ background: "rgba(34,197,94,0.06)", border: "1px solid rgba(34,197,94,0.2)" }}
-                role="status"
-                aria-live="polite"
-              >
-                <div className="text-3xl mb-3">✅</div>
-                <p className="text-xl font-black text-green-400 mb-1 tracking-tight">ALL CLEAR.</p>
-                <p className="text-sm font-bold text-green-400/70 mb-4">Go make music.</p>
-                <p className="text-[10px] text-[#555] mb-5">
-                  {[sovereigntyDone, fuelDone, numbersDone, journalDone].filter(Boolean).length}/4 steps logged
-                </p>
-                <Link href="/kill">
-                  <div className="inline-flex items-center gap-2 px-6 py-3 rounded-xl font-black text-[11px] tracking-widest uppercase transition-all active:scale-95" style={{ background: "rgba(212,168,83,0.12)", color: "#d4a853", border: "1px solid rgba(212,168,83,0.3)" }}>
-                    EXECUTE →
-                  </div>
-                </Link>
+              <div className="mb-8 p-4 rounded-2xl text-center" style={{ background: "rgba(34,197,94,0.06)", border: "1px solid rgba(34,197,94,0.25)" }}>
+                <p className="text-base font-black text-green-400">✓ ALL CLEAR</p>
+                <p className="text-[11px] text-muted mt-1">Morning stack complete. Go make music.</p>
               </div>
             ) : (
             <div className="mb-8">
@@ -761,7 +746,28 @@ export default function TodayPage() {
                 </button>
               )}
 
-              </>)}
+              {/* ── ALL CLEAR ── */}
+              {morningStep === 4 && (
+                <div
+                  className="text-center py-8 rounded-2xl mt-2 animate-fade-in"
+                  style={{ background: "rgba(34,197,94,0.06)", border: "1px solid rgba(34,197,94,0.2)" }}
+                  role="status"
+                  aria-live="polite"
+                >
+                  <div className="text-3xl mb-3">✅</div>
+                  <p className="text-xl font-black text-green-400 mb-1 tracking-tight">ALL CLEAR.</p>
+                  <p className="text-sm font-bold text-green-400/70 mb-4">Go make music.</p>
+                  <p className="text-[10px] text-[#555] mb-5">
+                    {[sovereigntyDone, fuelDone, numbersDone, journalDone].filter(Boolean).length}/4 steps logged
+                  </p>
+                  <Link href="/kill">
+                    <div className="inline-flex items-center gap-2 px-6 py-3 rounded-xl font-black text-[11px] tracking-widest uppercase transition-all active:scale-95" style={{ background: "rgba(212,168,83,0.12)", color: "#d4a853", border: "1px solid rgba(212,168,83,0.3)" }}>
+                      EXECUTE →
+                    </div>
+                  </Link>
+                </div>
+              )}
+
             </div>
             )}
 
