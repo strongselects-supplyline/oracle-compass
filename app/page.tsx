@@ -13,7 +13,7 @@
 
 import { useEffect, useState, useCallback, useRef } from "react";
 import { getDayType, isSacredDay, isStudioDay, isBizDay } from "@/lib/dayType";
-import { TRAINING_PROGRAM } from "@/lib/departments/health";
+import { TRAINING_PROGRAM, MORNING_STACK } from "@/lib/departments/health";
 import { getDailyLog, saveDailyLog, DailyLog } from "@/lib/db";
 import { getDynamicReleases, Release, EP_RELEASE_DATE, EP_HONEYMOON_DAYS } from "@/lib/releases";
 import { useCloudSync } from "@/lib/useCloudSync";
@@ -26,22 +26,21 @@ import CheckItem from "@/components/CheckItem";
 import TodayPlan from "@/components/TodayPlan";
 import Link from "next/link";
 
-type ProtocolStep = { icon: string; action: string; tab?: string };
+type ProtocolStep = { icon: string; action: string; tab?: string; howTo?: string[] };
 
 function getProtocolSteps(dayType: string): { tagline: string; steps: ProtocolStep[] } {
   const dow = new Date().getDay();
   const workout = TRAINING_PROGRAM.find(t => t.dayOfWeek.includes(dow));
 
-
   const base: ProtocolStep[] = [
     { icon: "🚗", action: "6:30 AM → DD Morning Sprint (90 min target)" },
-    { icon: "💧", action: "Wake: 16oz water + electrolytes" },
-    { icon: "☀️", action: "2-10 min morning sunlight (no sunglasses)" },
-    { icon: "🫁", action: "Breathwork: Nadi Shodhana or Box (5 min)" },
+    { icon: "💧", action: "Wake: 16oz water + electrolytes", howTo: MORNING_STACK[0]?.howTo },
+    { icon: "☀️", action: "2-10 min morning sunlight (no sunglasses)", howTo: MORNING_STACK[1]?.howTo },
+    { icon: "🫁", action: "Breathwork: Nadi Shodhana or Box (5 min)", howTo: MORNING_STACK[2]?.howTo },
   ];
 
   if (workout) {
-    base.push({ icon: "🏋️", action: `${workout.title} (${workout.duration})` });
+    base.push({ icon: "🏋️", action: `${workout.title} (${workout.duration})`, howTo: workout.howTo });
   }
 
   if (dayType === "STUDIO + SAUNA DAY") return {
@@ -189,6 +188,7 @@ export default function TodayPage() {
   const [morningStep, setMorningStep] = useState<0 | 1 | 2 | 3 | 4>(0);
   const [lockInStatus, setLockInStatus] = useState<"idle" | "syncing" | "done">("idle");
   const [morningStackOpen, setMorningStackOpen] = useState(false);
+  const [expandedStep, setExpandedStep] = useState<number | null>(null);
 
   useEffect(() => {
     const init = async () => {
@@ -376,38 +376,6 @@ export default function TodayPage() {
           </div>
         ) : (
           <>
-            {/* ── ONE THING — HERO ── */}
-            <section
-              className="mb-8 px-1 cursor-pointer"
-              onClick={() => !isEditingOneThing && setIsEditingOneThing(true)}
-              aria-label="Set today's one thing"
-            >
-              <p className="text-[10px] font-black tracking-[0.25em] text-amber-500 uppercase mb-3">Today&apos;s One Thing</p>
-              {isEditingOneThing ? (
-                <input
-                  autoFocus
-                  type="text"
-                  className="w-full bg-transparent text-4xl font-black text-white outline-none placeholder-muted leading-tight"
-                  style={{ letterSpacing: "-0.02em" }}
-                  value={oneThingInput}
-                  onChange={e => setOneThingInput(e.target.value)}
-                  onKeyDown={e => e.key === "Enter" && handleSaveOneThing()}
-                  onBlur={handleSaveOneThing}
-                  placeholder="The single move..."
-                />
-              ) : (
-                <>
-                  <p className={`text-4xl font-black leading-tight ${log.oneThing ? "text-white" : "text-muted opacity-40"}`}
-                     style={{ letterSpacing: "-0.02em" }}>
-                    {log.oneThing || "Tap → define the move"}
-                  </p>
-                  {log.oneThing && (
-                    <div className="mt-3 h-0.5 w-12 rounded-full bg-amber-500/60" />
-                  )}
-                </>
-              )}
-            </section>
-
             {/* ── PROTOCOL — auto-expanded before 11 AM ── */}
             {protocol.steps.length > 0 && (
               <div className="mb-6">
@@ -418,13 +386,30 @@ export default function TodayPage() {
                 {showProtocolExpanded && (
                   <div className="card !p-0 overflow-hidden divide-y divide-[var(--border)] animate-fade-in">
                     {protocol.steps.map((step, i) => (
-                      <div key={i} className="flex items-center gap-3 px-4 py-3.5">
-                        <span className="text-lg">{step.icon}</span>
-                        <span className="text-[12px] font-bold text-secondary leading-snug flex-1">{step.action}</span>
-                        {step.tab && (
-                          <span className="text-[8px] font-black tracking-widest text-amber-500/70 uppercase bg-amber-500/10 px-1.5 py-0.5 rounded">
-                            {step.tab}
-                          </span>
+                      <div key={i}>
+                        <div 
+                          className={`flex items-center gap-3 px-4 py-3.5 ${step.howTo ? 'cursor-pointer' : ''}`}
+                          onClick={() => step.howTo && setExpandedStep(expandedStep === i ? null : i)}
+                        >
+                          <span className="text-lg">{step.icon}</span>
+                          <span className="text-[12px] font-bold text-secondary leading-snug flex-1">{step.action}</span>
+                          {step.tab && (
+                            <span className="text-[8px] font-black tracking-widest text-amber-500/70 uppercase bg-amber-500/10 px-1.5 py-0.5 rounded mr-2">
+                              {step.tab}
+                            </span>
+                          )}
+                          {step.howTo && (
+                            <span className="text-[10px] text-muted">{expandedStep === i ? "▲" : "▼"}</span>
+                          )}
+                        </div>
+                        {expandedStep === i && step.howTo && (
+                          <div className="px-4 pb-3 pt-0 animate-fade-in">
+                            <div className="pl-8 border-l-2 border-amber-500/30 space-y-1.5">
+                              {step.howTo.map((line, j) => (
+                                <p key={j} className="text-[11px] text-muted leading-relaxed">{line}</p>
+                              ))}
+                            </div>
+                          </div>
                         )}
                       </div>
                     ))}
@@ -460,6 +445,38 @@ export default function TodayPage() {
                 )}
               </div>
             </Link>
+
+            {/* ── ONE THING — HERO ── */}
+            <section
+              className="mb-8 px-1 cursor-pointer"
+              onClick={() => !isEditingOneThing && setIsEditingOneThing(true)}
+              aria-label="Set today's one thing"
+            >
+              <p className="text-[10px] font-black tracking-[0.25em] text-amber-500 uppercase mb-3">Today&apos;s One Thing</p>
+              {isEditingOneThing ? (
+                <input
+                  autoFocus
+                  type="text"
+                  className="w-full bg-transparent text-4xl font-black text-white outline-none placeholder-muted leading-tight"
+                  style={{ letterSpacing: "-0.02em" }}
+                  value={oneThingInput}
+                  onChange={e => setOneThingInput(e.target.value)}
+                  onKeyDown={e => e.key === "Enter" && handleSaveOneThing()}
+                  onBlur={handleSaveOneThing}
+                  placeholder="The single move..."
+                />
+              ) : (
+                <>
+                  <p className={`text-4xl font-black leading-tight ${log.oneThing ? "text-white" : "text-muted opacity-40"}`}
+                     style={{ letterSpacing: "-0.02em" }}>
+                    {log.oneThing || "Tap → define the move"}
+                  </p>
+                  {log.oneThing && (
+                    <div className="mt-3 h-0.5 w-12 rounded-full bg-amber-500/60" />
+                  )}
+                </>
+              )}
+            </section>
 
             {/* ── MORNING STACK — collapsible with progress count ── */}
             {morningStep === 4 ? (
