@@ -150,8 +150,10 @@
 <body>
 
     <h1>LABEL OS — THE OPERATING SYSTEM</h1>
-    <p class="meta">past.El noir Records | Single Document | May 17, 2026 — Skills Wired<br>
-    <em>17 AI skills + 2 agents mapped to every phase. Replaces all previous routing guides and SOPs.</em></p>
+    <p class="meta">Ethan Payton LLC. | Single Document | May 17, 2026 — Skills Wired<br>
+    <em>17 AI skills + 2 agents mapped to every phase. Replaces all previous routing guides and SOPs.</em><br>
+    Last updated: <span id="lastmod"></span>
+    <script>document.getElementById('lastmod').textContent = new Date().toLocaleDateString('en-US', {year:'numeric',month:'long',day:'numeric'});</script></p>
 
     <div class="skill-index">
         <h3>⚡ 17 Skills — Quick Reference</h3>
@@ -196,7 +198,7 @@
 
     <h2>SESSION OPENER (Paste This First, Every Time)</h2>
     <div class="session-opener">
-You are an AI operations partner for Ethan Payton (past.El / past.El noir Records),<br>
+You are an AI operations partner for Ethan Payton (Ethan Payton LLC.),<br>
 an independent R&B artist running a one-person label out of Milwaukee.<br><br>
 
 RULES:<br>
@@ -209,13 +211,15 @@ RULES:<br>
 
 CURRENT STATE: Read LIVE_STATE.md first.<br>
 DISTRIBUTOR: Amuse Pro (NEVER DistroKid).<br>
+LABEL: Ethan Payton LLC.<br>
+PUBLISHER: Distance Over Time Publishing (ASCAP).<br>
 GENRE: R&B / Alt-R&B (NEVER Pop).<br>
 PHASE: Execution mode. Ship what exists.
     </div>
 
     <h2>THE FULL PIPELINE</h2>
 
-    <h3>PHASE 0: CREATION (100% You)</h3>
+    <h3 style="page-break-before: always;">PHASE 0: CREATION (100% You)</h3>
     <table>
         <tr><th>Step</th><th>Tool</th><th>Notes</th></tr>
         <tr><td>Idea capture</td><td>Phone/FL</td><td>Voice memo, melody, chord prog</td></tr>
@@ -228,10 +232,21 @@ PHASE: Execution mode. Ship what exists.
         <tr><td>Master</td><td>FL Studio (Illangelo)</td><td>Low cut → M/S EQ → G-Clip → multiband → limiters → TP</td></tr>
         <tr><td>Target</td><td>Mastering Specs</td><td>Streaming: -9 to -11 LUFS, -0.3 TP | Sync: -14 LUFS</td></tr>
         <tr><td>Export</td><td>FL Studio (OPEN)</td><td>Master WAV, sync WAV, instrumental, acapella, stems</td></tr>
+        <tr><td>Pro session shot</td><td>Phone/camera</td><td>Capture at least 1 clean photo of you at the board/mic. Content fuel for release week.</td></tr>
     </table>
     <p><strong>Batch rule:</strong> Record everything → mix everything → master everything. Don't interleave.</p>
-    <p><strong>AI role in creation:</strong> ZERO during. After masters bounce: Cyanite upload for verification, encode QC simulation via <code>mastering_qc.py</code>.</p>
-    <p><strong>Caption writing:</strong> AI drafts hook + body + CTA per post. You approve or edit. 30 min for all 8 days.<br><span class="skill-pill">caption-writer</span></p>
+    <p><strong>AI role in creation:</strong> ZERO during recording/mixing/mastering. After masters bounce: upload master WAV to <a href="https://cyanite.ai">Cyanite</a> for mood/genre/BPM verification against catalog data. Codec QC happens in Ozone during mastering (codec preview), not via a separate script.</p>
+    <p><strong>Caption writing:</strong> AI drafts hook + body + CTA for these post types during the 8-day content sprint:</p>
+<ul style="margin-top:4px;margin-bottom:8px;">
+  <li><strong>Countdown posts</strong> (T-7 through T-1)</li>
+  <li><strong>Release announcement</strong> (T-0)</li>
+  <li><strong>Behind-the-scenes / studio posts</strong></li>
+  <li><strong>Lyric highlight posts</strong></li>
+  <li><strong>Fan reaction / reshare posts</strong></li>
+</ul>
+<p style="margin-top:0;">You approve or edit every caption before posting. Budget 30 min for all 8 days.<br>
+<span class="skill-pill">caption-writer</span></p>
+<p><strong>NOT AI-captioned:</strong> Personal moments, relationship posts, grief journaling, candid Stories. Those stay in your voice, unscripted.</p>
     <p><strong>Hashtag sets:</strong> 🟢 AI generates per-track sets. You paste.</p>
 
     <div class="how-section">
@@ -269,13 +284,13 @@ PHASE: Execution mode. Ship what exists.
       <div class="note">Vocal disappears on phone → boost mid-range. Bass wrong in car → adjust low-end balance. Harsh on AirPods → tame 2–5 kHz.</div>
     </div>
 
-    <h3>PHASE 1: PRE-UPLOAD (2-3 days before upload)</h3>
+    <h3 style="page-break-before: always;">PHASE 1: PRE-UPLOAD (2-3 days before upload)</h3>
     <table>
         <tr><th>Step</th><th>Lane</th><th>What happens</th></tr>
         <tr><td>Cover art (3000px)</td><td><span class="lane-badge red-lane">🔴 You</span></td><td>Photopea or commissioned</td></tr>
         <tr><td>Spotify Canvas</td><td><span class="lane-badge red-lane">🔴 You</span></td><td>Photopea layers → CapCut parallax → MP4</td></tr>
         <tr><td>Metadata prep</td><td><span class="lane-badge yellow-lane">🟡 Hybrid</span></td><td>AI preps: title, ISRC handling, genre, date. You verify.</td></tr>
-        <tr><td>Smart Link</td><td><span class="lane-badge red-lane">🔴 You</span></td><td>Linkfire or Amuse built-in. Goes in bio.</td></tr>
+        <tr><td>Smart Link</td><td><span class="lane-badge red-lane">🔴 You</span></td><td><strong>Yes, Amuse pre-save link counts.</strong> Use it as your default. Linkfire only if you need a multi-platform landing page (Apple Music + Spotify + YouTube). For now, Amuse pre-save → bio link is enough.</td></tr>
     </table>
 
     <div class="how-section">
@@ -308,7 +323,7 @@ PHASE: Execution mode. Ship what exists.
       </ol>
     </div>
 
-    <h3>PHASE 2: UPLOAD + PITCH</h3>
+    <h3 style="page-break-before: always;">PHASE 2: UPLOAD + PITCH</h3>
     <table>
         <tr><th>Step</th><th>Lane</th><th>What happens</th></tr>
         <tr><td>Amuse upload</td><td><span class="lane-badge red-lane">🔴 You</span></td><td>Upload WAV + art + metadata. Genre: R&B. Date: 7+ days out.<br><span class="skill-pill">release-checklist</span></td></tr>
@@ -354,12 +369,21 @@ listeners and a [X]% save rate on recent releases."</span>
       </ul>
     </div>
 
-    <h3>PHASE 3: 8-DAY CONTENT SPRINT (T-7 to T-0)</h3>
+    <h3 style="page-break-before: always;">PHASE 3: 8-DAY CONTENT SPRINT (T-7 to T-0)</h3>
     <p><strong>Sprint Orchestration:</strong> Run <code style="color:var(--accent-blue);">content-sprint</code> to generate the 8-day calendar.</p>
     <table>
         <tr><th>Day</th><th>Action</th><th>Lane</th></tr>
         <tr><td>T-7</td><td>Batch content shoot (5-7 setups, 3hr block)</td><td><span class="lane-badge red-lane">🔴 You + GF</span></td></tr>
-        <tr><td>T-6</td><td>AI processes footage — you review selects</td><td><span class="lane-badge yellow-lane">🟡 Hybrid</span></td></tr>
+        <tr><td>T-6</td><td>AI processes your raw footage into clips. <strong>HOW:</strong>
+<ol style="margin:8px 0;">
+  <li>You shoot raw video during sessions / content day</li>
+  <li>Drop files into Content Factory folder (<code>scratch/content-factory-v4/</code>)</li>
+  <li>Whisper transcribes audio → Claude reads transcript + you flag your top 3-5 moments (timestamp or description) → Claude picks the cuts</li>
+  <li>FFmpeg renders: captions + branding (Deep Emerald / Gold / Navy, film grain, Georgia font)</li>
+  <li>Output: ready-to-post clips in <code>output/</code></li>
+</ol>
+<strong>Your input matters at step 3.</strong> Don't rely on Whisper + Claude alone to pick moments — the transcript misses vibe, facial expressions, energy. You scrub the footage and flag the best moments. Claude handles the mechanical cut/caption/brand work.<br>
+<em>If Content Factory isn't set up yet:</em> manually scrub footage in CapCut, pull 3-5 best moments, add captions yourself. 45 min.</td><td><span class="lane-badge yellow-lane">🟡 Hybrid</span></td></tr>
         <tr><td>T-5</td><td>Teaser post (mystery, no title yet) + S4A editorial pitch submission</td><td><span class="lane-badge red-lane">🔴 You</span></td></tr>
         <tr><td>T-3</td><td>World-build post (2AM drive, Milwaukee, studio aesthetic) + pre-save link in bio</td><td><span class="lane-badge red-lane">🔴 You</span></td></tr>
         <tr><td>T-1</td><td>Announce post (cover art + date + pre-save link)</td><td><span class="lane-badge red-lane">🔴 You</span></td></tr>
@@ -391,6 +415,8 @@ listeners and a [X]% save rate on recent releases."</span>
         <li>2 AM drive footage (phone mounted on dash, city lights passing)</li>
         <li>Milwaukee landmarks — YOUR Milwaukee, not tourist Milwaukee</li>
         <li>Studio details: mic close-up, monitor glow, coffee cup, dim lighting</li>
+        <li><strong>Cover wall boundary entrance</strong> — framed in a doorway or against a textured wall, editorial style</li>
+        <li><strong>Bumble book open</strong> — casual reading pose, vulnerability angle, dating-app energy</li>
       </ul>
 
       <p style="font-size:0.88em; font-weight:700; color:#475569; text-transform:uppercase; letter-spacing:0.04em; margin-bottom:4px;">Setup 4 — Performance/Vibe</p>
@@ -420,6 +446,8 @@ listeners and a [X]% save rate on recent releases."</span>
 
       <div class="note">Creation order: shoot native on IG → export clean → upload TikTok → upload Shorts. Never reverse. DM shares (sends/reach) are weighted 3–5× over likes. Optimize for the share.</div>
 
+      <div class="note">Social proof posts (fan reactions, DM screenshots, playlist adds) should feel <strong>organic, not marketable</strong>. No polished graphics. Screenshot → crop → post. The rawness IS the proof.</div>
+
       <h4>DM Blitz — T-1 Prep, T-0 Send</h4>
       <p style="font-size:0.88em; font-weight:700; color:#475569; text-transform:uppercase; letter-spacing:0.04em; margin-bottom:4px;">Core 50 — Your Actual People (saved 3+ posts, DM'd you, commented consistently)</p>
       <span class="code-block">hey [name] — new one drops tomorrow. you've been riding with me through [specific 
@@ -439,7 +467,7 @@ your alley: [link]. no pressure either way.</span>
       <div class="note">Professional, warm, zero desperation. One shot — make it count, then move on.</div>
     </div>
 
-    <h3>PHASE 4: RELEASE DAY (T-0)</h3>
+    <h3 style="page-break-before: always;">PHASE 4: RELEASE DAY (T-0)</h3>
     <table>
         <tr><th>Time</th><th>Action</th><th>Lane</th></tr>
         <tr><td>9:15 AM</td><td>IG Post #1 — release announcement</td><td><span class="lane-badge red-lane">🔴 You</span></td></tr>
@@ -467,9 +495,10 @@ your alley: [link]. no pressure either way.</span>
         <li>Write a 2-sentence pitch (casual, curator-to-curator tone — different from S4A pitch)<br><span class="skill-pill">curator-pitch</span></li>
         <li>Track all submissions: curator name | date sent | result (added/passed/no response)</li>
       </ol>
+      <div class="note"><strong>These are NOT payola.</strong> SubmitHub charges for guaranteed <em>listens</em> from real curators — not guaranteed placement. You pay $1 for a human to actually hear your track and respond yes/no within 48 hrs. Groover is the same model (€2/submission). Neither guarantees adds. Both guarantee ears. If a curator says no, you get written feedback. Budget: $15–25 per release max. This is the cheapest A&amp;R feedback you'll ever get.</div>
     </div>
 
-    <h3>PHASE 5: COMPOUND (T+1 to T+7)</h3>
+    <h3 style="page-break-before: always;">PHASE 5: COMPOUND (T+1 to T+7)</h3>
     <table>
         <tr><th>Day</th><th>Action</th><th>Lane</th></tr>
         <tr><td>T+1</td><td>Reply to ALL comments. DM sharers/savers. Post #3.</td><td><span class="lane-badge red-lane">🔴 You</span></td></tr>
@@ -501,6 +530,7 @@ your alley: [link]. no pressure either way.</span>
         <li><strong>Only activate on tracks with PROVEN save rate (&gt;3% sustained 7+ days). Never on launch day.</strong></li>
       </ol>
       <h4>Post-Release Content Ideas (keep the algorithm fed)</h4>
+      <div class="note"><strong>This is all social content (Reels/TikTok/Stories), not physical media.</strong> No CDs. These are the post-release content ideas to keep the algorithm fed after drop day: lyric breakdowns, BTS studio footage, fan reaction compilations, acoustic/stripped versions, meme account seeding. All digital, all short-form video or static posts.</div>
       <ul>
         <li>Lyric breakdown / meaning behind the track (Talk to 'Em format)</li>
         <li>Studio BTS of a specific production decision ("why I used that sound")</li>
@@ -508,10 +538,25 @@ your alley: [link]. no pressure either way.</span>
         <li>Acoustic or stripped snippet — shows versatility</li>
         <li>Meme account seeding (unconnected account, trending meme format + track as background audio)</li>
       </ul>
-      <div class="note">Spotify Marquee: release week only. $100 minimum. "Previously Engaged" audience. EP + first vault single only. Hard cap: $250/month total across all paid channels.</div>
+      <div class="note"><strong>Marquee status:</strong> Not activated yet. Requires Spotify for Artists access + $100 minimum + release week timing. Eligible: EP (May 29) + first vault single only. Decision happens AFTER organic data proves traction. No spend without trigger-evaluator green light.</div>
     </div>
 
-    <h3>PHASE 6: COMPLIANCE (Thursday AFTER release)</h3>
+    <div class="how-section">
+      <h4>Meta Ads vs Spotify Ads — When to Use Which</h4>
+      <table>
+        <tr><th></th><th>Meta Ads (Instagram/Facebook)</th><th>Spotify Ads (Marquee)</th></tr>
+        <tr><td><strong>What it does</strong></td><td>Drives new listeners TO Spotify via video/image ads on IG Reels</td><td>Full-screen pop-up INSIDE Spotify for users who already follow you or listened before</td></tr>
+        <tr><td><strong>Best for</strong></td><td>Cold audience growth, visual artists, when you have good video content</td><td>Re-engaging existing listeners, release week boost, high save-rate tracks</td></tr>
+        <tr><td><strong>Trigger</strong></td><td>sends/reach ≥ 3% → organic content is resonating → amplify with paid</td><td>Stream velocity 100+/day AND save rate ≥ 3% → algorithm is already working → pour fuel</td></tr>
+        <tr><td><strong>Budget</strong></td><td>$50 test → kill at $0.10/stream after 48 hrs</td><td>$100 minimum, release week only, EP + first vault single only</td></tr>
+        <tr><td><strong>Use FIRST</strong></td><td>✅ Meta Ads first (cheaper, broader reach, content doubles as organic)</td><td>Marquee second (only after organic proves the track works)</td></tr>
+      </table>
+      <p><strong>Default order:</strong> Organic content sprint → triggers hit → Meta Ads $50 test → if cost-per-stream &lt; $0.10 after 48 hrs, scale to $150 → if save rate ≥ 3% sustained 7+ days, activate Marquee.</p>
+      <div class="note"><strong>Total annual ad budget (realistic):</strong> $600–$1,200/year. That's ~$50–100 per release × 12 releases. DoorDash income covers it. No ad spend until triggers confirm organic traction. If a track doesn't hit 3% sends/reach organically, you spend $0 on it — the content wasn't resonating and paid won't fix that.</div>
+      <div class="note"><strong>Geo targeting is per-track.</strong> The cities listed (Chicago, Denver, Minneapolis, New York, Phoenix, Dallas) are your current top listener cities from S4A. Each track's ad set should target YOUR top cities at the time of that release — check S4A → Audience tab before each campaign. Cities shift as your audience grows.</div>
+    </div>
+
+    <h3 style="page-break-before: always;">PHASE 6: COMPLIANCE (DONE THE THURSDAY AFTER RELEASE — NOT BEFORE)</h3>
     <table>
         <tr><th>Registration</th><th>Lane</th><th>Notes</th></tr>
         <tr><td>ASCAP</td><td><span class="lane-badge yellow-lane">🟡 Hybrid</span></td><td>AI preps metadata packet. You fill form.</td></tr>
@@ -543,7 +588,7 @@ Duration: [MM:SS]</span>
       <div class="note">Do NOT register before release day. All 5 sites require the track to be live on Spotify first.</div>
     </div>
 
-    <h3>PHASE 7: DATA (Weekly)</h3>
+    <h3 style="page-break-before: always;">PHASE 7: DATA (Weekly)</h3>
     <table>
         <tr><th>Task</th><th>Lane</th><th>Frequency</th></tr>
         <tr><td>S4A screenshots (Overview, Audience, Song)</td><td><span class="lane-badge red-lane">🔴 You</span></td><td>Sunday</td></tr>
@@ -571,12 +616,29 @@ Duration: [MM:SS]</span>
       </ul>
     </div>
 
-    <h3>PHASE 8: SYNC (Ongoing, post-EP)</h3>
+    <div class="how-section">
+      <h4>SUNDAY DATA PULL — A to Z Checklist (~25 min)</h4>
+      <p><em>Do this every Sunday at 12:00 PM. Same order, every time. Don't skip steps.</em></p>
+      <ol>
+        <li><strong>Open S4A → Overview tab.</strong> Screenshot the full page (monthly listeners, followers, streams). Save to <code>Desktop/s4a-screenshots/</code>.</li>
+        <li><strong>S4A → Audience tab.</strong> Screenshot: age/gender breakdown, top cities, top countries, listener source (programmed vs organic vs other). Save.</li>
+        <li><strong>S4A → Music tab → per track.</strong> For each ACTIVE release (anything in compound phase): click track → screenshot streams, listeners, saves, save rate, skip rate. Save each.</li>
+        <li><strong>Open Oracle Compass → Kill List.</strong> Note the top 3 RED items. Write them down (phone notes or paper).</li>
+        <li><strong>Run <code>weekly-data-synthesis</code>.</strong> Paste or drop your screenshots into the AI session. It reads them, extracts numbers, appends to <code>catalog_snapshot_log.json</code>, and gives you a plain-English summary: what's up, what's down, what needs attention.</li>
+        <li><strong>Read the synthesis output.</strong> 2 minutes. Look for: any track with save rate dropping below 1.5%, any track with stream velocity spiking (potential trigger), follower growth rate.</li>
+        <li><strong>Run <code>trigger-evaluator</code></strong> (if any track is in compound phase). It reads the latest data and tells you: go/no-go on paid channels. Green light = run <code>meta-ads-builder</code>. Red light = keep riding organic.</li>
+        <li><strong>Meal prep at 2:00 PM.</strong> Data's done. Close the laptop. Cook.</li>
+        <li><strong>3:00 PM — News-week scan.</strong> Open Oracle Compass Kill List again. Identify the 3 most important items for the coming week. Close the browser.</li>
+      </ol>
+      <div class="note"><strong>Yes, this compounds.</strong> Every Sunday pull appends to <code>catalog_snapshot_log.json</code> as a time-series. After 4+ weeks: trend lines, not just snapshots. The <code>weekly-data-synthesis</code> skill reads ALL history, not just this week. More data = better decisions = smarter trigger calls = less wasted ad money.</div>
+    </div>
+
+    <h3 style="page-break-before: always;">PHASE 8: SYNC (Ongoing, post-EP)</h3>
     <table>
         <tr><th>Task</th><th>Lane</th><th>Notes</th></tr>
         <tr><td>One-sheet creation</td><td><span class="lane-badge yellow-lane">🟡 Hybrid</span></td><td>AI generates per-track. You verify.<br><span class="skill-pill">sync-one-sheet</span></td></tr>
         <tr><td>Sync master (-14 LUFS)</td><td><span class="lane-badge red-lane">🔴 You</span></td><td>Already exported in Phase 0</td></tr>
-        <tr><td>Platform submission</td><td><span class="lane-badge red-lane">🔴 You</span></td><td>Songtradr/Musicbed/Artlist</td></tr>
+        <tr><td>Platform submission</td><td><span class="lane-badge red-lane">🔴 You</span></td><td><strong>Songtradr</strong> (largest sync marketplace, free tier), <strong>Musicbed</strong> (curated, application required — higher payouts), <strong>Artlist</strong> (subscription model, less per-track payout). <strong>Start with Songtradr</strong> — free to upload, broadest reach. Add Musicbed after 5+ tracks with sync masters ready. Artlist is optional/last.</td></tr>
         <tr><td>Supervisor research</td><td><span class="lane-badge yellow-lane">🟡 Hybrid</span></td><td>AI finds targets + writes 4-sentence pitches</td></tr>
         <tr><td>Pitch emails</td><td><span class="lane-badge red-lane">🔴 You</span></td><td>Send from your actual email</td></tr>
         <tr><td>APG relationship</td><td><span class="lane-badge red-lane">🔴 You</span></td><td>Monthly check-in, prove output with data package<br><span class="skill-pill">apg-data-package</span></td></tr>
@@ -586,7 +648,7 @@ Duration: [MM:SS]</span>
       <h4>One-Sheet Template</h4>
       <span class="code-block">━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━
 [TRACK TITLE]
-Ethan Payton | past.El noir Records
+Ethan Payton | Ethan Payton LLC.
 ━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━
 GENRE: Contemporary R&B / Alternative R&B
 BPM: [X] | KEY: [X] | DURATION: [M:SS]
@@ -679,7 +741,7 @@ Ethan Payton</span>
             <li>Community trace = <strong>15 min hard cap</strong>. Set timer. Do not spiral.</li>
             <li>No new infrastructure. <strong>Use what exists.</strong></li>
             <li>Sunday data pull is non-negotiable. <strong>Numbers drive decisions.</strong></li>
-            <li>Oracle main baselined at <strong>56ba9d1</strong>. v2 is dead.</li>
+            <li>Oracle Compass app: only the <code>main</code> branch matters. There was an experimental <code>v2</code> branch — it's abandoned. If AI references v2, ignore it. The live app at oracle-compass-ni8g.vercel.app runs from main, last verified working at commit 56ba9d1 (May 12).</li>
             <li><strong>Verify before trusting.</strong> Never trust AI's claimed file writes — check the filesystem.</li>
             <li><strong>Builder-avoidance is neurochemical.</strong> When the urge to "fix the system" hits during studio windows, open the DAW instead.</li>
         </ol>
