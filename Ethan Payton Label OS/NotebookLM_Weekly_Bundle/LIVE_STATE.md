@@ -18,9 +18,9 @@
 -->
 
 ## LAST UPDATED
-- **Date:** 2026-05-14
-- **By:** Claude (Opus, Lead Architect)
-- **Source:** Cyanite vault audit (36 tracks), Ethan direct (chat), filesystem verification
+- **Date:** 2026-05-20
+- **By:** Antigravity (Gemini) → Sonnet (Claude) propagation
+- **Source:** Ethan direct (Antigravity turnaround session May 20). SOBRIETY RESET — Day 0 (May 20, slip-up). Recording sprint (May 15-18) DID NOT HAPPEN. $25 cash. Car out until Thu May 22. Single-first pivot: GL standalone, EP postponed. Spotify screenshots + Musicstax ingested.
 
 ---
 
@@ -29,8 +29,8 @@
 | Metric | Value | Last Verified |
 |--------|-------|---------------|
 | Spotify followers | 1,406 | 2026-05-10 (Music Stax screenshot 7:02 PM) |
-| Monthly listeners | 24,000 | 2026-05-10 (Ethan direct) |
-| Monthly active listeners | 8,757 | 2026-05-10 (Ethan direct) |
+| Monthly listeners | 22,640 | 2026-05-20 (S4A screenshot) |
+| Monthly active listeners | 8,695 | 2026-05-20 (S4A screenshot) |
 | Monthly active % of total audience | 4% | 2026-05-10 (Ethan direct) |
 | Active listener stream share | 50% of last 28d | 2026-05-10 (Ethan direct) |
 | Popularity score | 24 | 2026-05-10 (Music Stax 7:02 PM — was 21 on May 6) |
@@ -51,6 +51,11 @@
 | Cyanite vault coverage | 36/~51 tracks (70%) | 2026-05-14 (vault audit) |
 | Cluster A confirmation rate | 75% (27/36) | 2026-05-14 (vault audit) |
 | Avg Sexy score (all tracks) | 0.70 | 2026-05-14 (vault audit) |
+| ESL save rate | 10.2% (21 saves / 206 streams) | 2026-05-20 (S4A screenshot) |
+| ESL playlist count | 9 (incl. Release Radar: 108 streams) | 2026-05-20 (S4A screenshot) |
+| Super listeners | 147 (+63.3% 28d) | 2026-05-20 (S4A screenshot) |
+| New active listeners | 1,293 (-26.3% 28d) | 2026-05-20 (S4A screenshot) |
+| Cash on hand | $25 | 2026-05-20 (Ethan direct) |
 | Vault vocal BPM range | 103-118 | 2026-05-14 (vault audit) |
 
 ---
@@ -61,10 +66,10 @@
 |-------|------|-------------|-------------|--------|
 | SEE ME | ep_track | 2026-03-09 | 2026-03-13 | LIVE |
 | East Side Love | waterfall_single | 2026-04-30 | 2026-05-08 | LIVE (dropped May 8) |
-| Green Light | ep_track | 2026-05-19 | 2026-05-29 | unreleased — upload May 19 |
-| Sweet Frustration | ep_track | 2026-05-19 | 2026-05-29 | unreleased — upload May 19 |
-| WANT U 2 | ep_track | 2026-05-19 | 2026-05-29 | unreleased — upload May 19 |
-| ALL LOVE (EP) | ep | 2026-05-19 | 2026-05-29 | unreleased — upload May 19 |
+| Green Light | single | TBD (after recording) | TBD | NOT RECORDED. Single-first pivot May 20. |
+| Sweet Frustration | ep_track | TBD | TBD | NOT RECORDED. EP postponed. |
+| WANT U 2 | ep_track | TBD | TBD | NOT RECORDED. EP postponed. |
+| ALL LOVE (EP) | ep | TBD | TBD | POSTPONED — next release cycle after GL single. |
 
 ### EP Tracklist (confirmed order)
 1. Green Light (opens EP, new track)
@@ -92,10 +97,10 @@
 |---------|---------------|-------|
 | SEE ME | RELEASE (phases 0-3 complete) | All creation + upload + pre-release + release done |
 | East Side Love | RELEASE (phases 0-3 complete) | Dropped May 8. LIVE. |
-| Green Light | CREATION | Finishing masters. Upload May 19 |
-| Sweet Frustration | CREATION | Finishing masters. Upload May 19 |
-| WANT U 2 | CREATION | Finishing masters. Upload May 19 |
-| ALL LOVE EP | CREATION | Cover art DONE. Upload May 19 |
+| Green Light | CREATION | NOT RECORDED. Beat exists. Cyanite done (Sexy 0.70, R&B 0.82). Single-first target. |
+| Sweet Frustration | CREATION | NOT RECORDED. Beat exists. Cyanite done (Sexy 0.85, KAYTRANADA lane). EP track. |
+| WANT U 2 | CREATION | NOT RECORDED. Beat exists. No Cyanite (needs recording first). EP track. |
+| ALL LOVE EP | CREATION | Cover art DONE. 3/5 tracks NOT RECORDED. EP postponed to next cycle. |
 
 ---
 
@@ -113,10 +118,10 @@
 3. McHenry, IL (GF's area — flexible with weeks away)
 
 ## FL STUDIO STATUS
-- **Status:** DOWN (beta bug, drivers/audio settings correct but no playback)
-- **Expected fix:** Monday May 18 (new beta build or Logic Pro fallback)
-- **Impact:** No recording May 14-18. Non-recording work fills dead zone.
-- **Last verified:** 2026-05-14
+- **Status:** FIXED (May 15 — FL beta update resolved playback)
+- **Recording sprint (May 15-18):** DID NOT HAPPEN despite FL being fixed. Drift + sobriety slip.
+- **Current blocker:** Day 0 sobriety reset (May 20). Executive function degraded. No forced sessions today.
+- **Last verified:** 2026-05-20
 
 ---
 
@@ -137,16 +142,19 @@
 
 | Date | Event |
 |------|-------|
-| 2026-05-08 | East Side Love dropped (LIVE) |
-| 2026-05-19 | Upload GL + SF + WU2 + EP entity to Amuse |
-| 2026-05-29 | ALL LOVE EP drops (Release Radar #2) |
-| 2026-06-12 | I Like Girls vault single #1 (leads post-EP waterfall) |
-| 2026-06-26 | Like I Did vault single #2 |
-| 2026-07-05 | 90-day plan end (WARTIME RHYTHM) |
-| 2026-07-10 | Worth It vault single #3 |
-| 2026-07-17 | 90-day review |
-| 2026-07-24 | Just Say So vault single #4 / CREAM tracklist lock |
-| 2026-08-07 | Reconnect vault single #5 |
+| 2026-05-08 | East Side Love dropped (LIVE) ✅ |
+| 2026-05-15 | ICEMAN dropped. Piggyback strategy dead. |
+| 2026-05-20 | Sobriety RESET — Day 0. Turnaround session. Single-first pivot. |
+| 2026-05-21 | Record Green Light (FL Studio working) |
+| 2026-05-22 | Car back. DoorDash AM. Mix/master GL PM. |
+| 2026-05-22 | Upload GL to Amuse (evening) |
+| 2026-05-29 | Green Light release target (7 days from upload) |
+| 2026-06-02+ | Record SF + WU2. Prepare EP upload. |
+| 2026-06-12+ | ALL LOVE EP release (revised target, TBD) |
+| 2026-06-19+ | I Like Girls vault single #1 |
+| 2026-07-03+ | Like I Did vault single #2 |
+| 2026-07-17+ | Worth It vault single #3 |
+| 2026-07-24 | CREAM tracklist lock (unchanged) |
 | 2026-08-15 | 100-day mark — APG activation threshold |
 
 ---
@@ -175,5 +183,5 @@
 5. Genre tagging = **R&B / Alt-R&B** on Amuse. Never Pop.
 6. Oracle main is canonical. v2 is dead.
 7. Software phase is **OPEN as needed**. Not closed.
-8. Sobriety restart **Apr 2, 2026**.
+8. Sobriety restart **May 20, 2026** (Day 0). Previous streak: Apr 2 – May 19 (48 days).
 9. Fresh Finds **alumni** — previously featured, not a hypothetical target.

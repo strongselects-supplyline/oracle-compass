@@ -1,3 +1,7 @@
+> ⚠️ **THIS SPRINT DID NOT HAPPEN.** FL Studio was fixed May 15 but recording never started. Sobriety slip-up + drift. Green Light, Sweet Frustration, and Want U 2 remain UNRECORDED as of May 20. Single-first pivot activated: GL as standalone single, EP postponed. — Antigravity, May 20 2026
+
+---
+
 # RECORDING SPRINT: May 15-18 → Upload May 19
 
 **FL Studio:** FIXED ✅

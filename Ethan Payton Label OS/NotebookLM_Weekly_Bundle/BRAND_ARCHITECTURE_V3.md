@@ -218,7 +218,7 @@ Evidence: Ride With Me (R&B 0.85, 69% active, save rate 2.83%) and SEE ME (save 
 
 **ESL drops May 8** as advance single. First test of Release Radar with new material since SEE ME (Mar 13). The metric to watch is **ESL's 7-day save rate**. If it holds above 3%, the new material converts. If it regresses to 1-2%, the HF-era pattern persists.
 
-**EP drops May 29** (Green Light, Sweet Frustration, SEE ME, ESL, Want U 2). Piggybacks ICEMAN release day. Goal: move streams-per-listener above 4.0 (currently 2.6). Secondary goal: shift 28-day stream share so HF drops below 60%.
+**EP postponed** (was May 29). GL drops as standalone single first. EP rescheduled to next cycle (~Jun 12+). (ICEMAN dropped May 15 — piggyback strategy DEAD. Post-ICEMAN single-first pivot active.) Goal: move streams-per-listener above 4.0 (currently 2.6). Secondary goal: shift 28-day stream share so HF drops below 60%.
 
 **Sweet Frustration is the calculated swing.** R&B confidence 0.25, house-R&B lane. It will attract a different curator set and potentially a different audience segment. Do NOT pitch SF to the same curators as ESL/SEE ME. It's a separate editorial pitch targeting house/electronic-R&B playlists (KAYTRANADA lane). If it works, it opens a second algorithmic channel. If it doesn't, it's one track out of five.
 

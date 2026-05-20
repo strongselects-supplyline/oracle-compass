@@ -26,6 +26,7 @@ export type DailyLog = {
     sauna: boolean; // only relevant Mon/Wed/Fri
     sleep: number | null;
     pushups: number | null;
+    squats: number | null;
     oneThing: string;
     journalLine: string;
     completedAt: string | null;
@@ -41,6 +42,8 @@ export type DailyLog = {
     // Session intelligence
     sessionQuality: number | null; // 1-5 (1=struggled, 3=solid, 5=flow state)
     sessionType: string; // 'recording' | 'mixing' | 'mastering' | 'writing' | ''
+    mudraSystem: boolean | null; // true if practiced
+    vocalTraining: boolean | null; // true if conditioned
     // Life balance
     personalTime: boolean; // did you take real personal/social/recovery time today?
     personalTimeQuality: number | null; // 1-3: 1=passive scroll, 2=light activity, 3=restorative (walk/GF/nature)
@@ -179,6 +182,7 @@ function getDefaultLog(date: string): DailyLog {
         sauna: false,
         sleep: null,
         pushups: null,
+        squats: null,
         oneThing: '',
         journalLine: '',
         completedAt: null,
@@ -192,6 +196,8 @@ function getDefaultLog(date: string): DailyLog {
         proteinAtMeals: false,
         sessionQuality: null,
         sessionType: '',
+        mudraSystem: null,
+        vocalTraining: null,
         personalTime: false,
         personalTimeQuality: null,
         batchPrepDone: false,

@@ -210,10 +210,10 @@ export default function TodayPage() {
         setIsPostRelease(true);
         setHoneymoonDaysIn(daysSinceEP);
       } else {
-        // Pre-release — prefer ALL LOVE (EP) entity for the banner
+        // Pre-release — find the NEXT actionable release (exclude postponed/not_recorded/live)
         const epRelease = releases.find(r => r.title === "ALL LOVE (EP)") || null;
-        const fallback = releases.find(r => new Date(r.releaseDate) >= now && r.status !== "live") || releases[releases.length - 1];
-        const next = epRelease?.status !== "live" ? epRelease : fallback;
+        const fallback = releases.find(r => new Date(r.releaseDate) >= now && r.status !== "live" && r.status !== "postponed" && r.status !== "not_recorded") || releases[releases.length - 1];
+        const next = (epRelease?.status !== "live" && epRelease?.status !== "postponed" && epRelease?.status !== "not_recorded") ? epRelease : fallback;
         setNextRelease(next ?? null);
         if (next) setDaysUntilRelease(Math.max(Math.ceil((new Date(next.releaseDate).getTime() - now.getTime()) / 86400000), 0));
       }
@@ -294,7 +294,7 @@ export default function TodayPage() {
   // Step completion checks
   const sovereigntyDone = !!(log.sovereigntyStack && log.movement);
   const fuelDone = !!(log.fuelPreSession && log.fuelMidSession && log.fuelPostSession);
-  const numbersDone = !!(log.sleep && log.pushups);
+  const numbersDone = !!(log.sleep && log.pushups && log.squats);
   const journalDone = !!(log.journalLine && log.journalLine.trim().length > 0);
 
   // Auto-advance logic
@@ -678,7 +678,7 @@ export default function TodayPage() {
                         value={log.sleep || ""}
                         onChange={async e => {
                           await updateLog({ sleep: parseFloat(e.target.value) || null });
-                          if (e.target.value && log.pushups) autoAdvance(true, 3, 2);
+                          if (e.target.value && log.pushups && log.squats) autoAdvance(true, 3, 2);
                         }}
                         placeholder="0"
                       />
@@ -691,7 +691,20 @@ export default function TodayPage() {
                         value={log.pushups || ""}
                         onChange={async e => {
                           await updateLog({ pushups: parseInt(e.target.value) || null });
-                          if (e.target.value && log.sleep) autoAdvance(true, 3, 2);
+                          if (e.target.value && log.sleep && log.squats) autoAdvance(true, 3, 2);
+                        }}
+                        placeholder="0"
+                      />
+                    </div>
+                    <div className="card flex-1 flex items-center justify-between p-3">
+                      <span className="text-[10px] font-black tracking-widest text-[#555] uppercase">Squats</span>
+                      <input
+                        type="number"
+                        className="w-14 bg-transparent text-right font-black text-lg outline-none"
+                        value={log.squats || ""}
+                        onChange={async e => {
+                          await updateLog({ squats: parseInt(e.target.value) || null });
+                          if (e.target.value && log.sleep && log.pushups) autoAdvance(true, 3, 2);
                         }}
                         placeholder="0"
                       />
@@ -716,7 +729,7 @@ export default function TodayPage() {
                 >
                   <StepCheck done={numbersDone} />
                   <span className="text-[11px] font-bold" style={{ color: numbersDone ? "#22c55e" : "rgba(255,255,255,0.4)" }}>
-                    Numbers {numbersDone ? `— ${log.sleep}h sleep · ${log.pushups} pushups ✓` : "— tap to complete"}
+                    Numbers {numbersDone ? `— ${log.sleep}h sleep · ${log.pushups} pushups · ${log.squats} squats ✓` : "— tap to complete"}
                   </span>
                 </button>
               )}

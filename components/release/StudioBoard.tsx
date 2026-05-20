@@ -291,10 +291,12 @@ export default function StudioBoard() {
                                     {s.status === "live" && <span className="badge badge-green">LIVE</span>}
                                     {s.status === "upload_pending" && <span className="badge badge-amber">PENDING</span>}
                                     {s.status === "unreleased" && <span className="badge badge-muted">LOCKED</span>}
+                                    {s.status === "not_recorded" && <span className="badge" style={{ background: "#f59e0b22", color: "#f59e0b", border: "1px solid #f59e0b44" }}>NOT RECORDED</span>}
+                                    {s.status === "postponed" && <span className="badge" style={{ background: "#a78bfa22", color: "#a78bfa", border: "1px solid #a78bfa44" }}>POSTPONED</span>}
                                 </div>
                             </div>
                             <div className="waterfall-bar">
-                                <div className={`waterfall-fill ${s.status === "live" ? "bg-green-500 w-full" : s.status === "upload_pending" ? "bg-amber-500 w-1/2" : "bg-[#2a2a2a] w-0"}`} />
+                                <div className={`waterfall-fill ${s.status === "live" ? "bg-green-500 w-full" : s.status === "upload_pending" ? "bg-amber-500 w-1/2" : s.status === "not_recorded" ? "bg-amber-500/30 w-[10%]" : s.status === "postponed" ? "bg-violet-400/30 w-[5%]" : "bg-[#2a2a2a] w-0"}`} />
                             </div>
                         </div>
                     ))}

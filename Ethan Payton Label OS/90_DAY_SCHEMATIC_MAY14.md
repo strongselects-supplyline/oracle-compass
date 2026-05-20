@@ -1,3 +1,7 @@
+> ⚠️ **MAY 20 UPDATE:** This schematic is partially stale. Recording sprint (May 15-18) DID NOT HAPPEN. Sobriety RESET to Day 0 (May 20). $25 financial emergency. Single-first pivot: GL standalone single, EP postponed. Forward timeline managed in Antigravity artifacts. — Antigravity, May 20 2026
+
+---
+
 # 90-DAY SCHEMATIC — May 14 → Aug 12, 2026
 ## past.El noir Records | Ethan Payton
 ## Codename: PARETO COMPOUND

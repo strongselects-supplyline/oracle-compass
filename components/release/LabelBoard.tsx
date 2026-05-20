@@ -36,6 +36,8 @@ function getSmartDefaultTab(release: Release | undefined): Tab {
   if (!release) return "content";
   if (release.status === "upload_pending") return "subs";
   if (release.status === "live") return "content";
+  if (release.status === "not_recorded") return "creative";
+  if (release.status === "postponed") return "rollout";
   return "content";
 }
 
@@ -49,7 +51,7 @@ export default function LabelBoard() {
     getDynamicReleases().then(releases => {
       setReleases(releases);
       // Auto-expand the most urgent release
-      const urgent = releases.find(r => r.status === "upload_pending") || releases[0];
+      const urgent = releases.find(r => r.status === "upload_pending") || releases.find(r => r.status === "unreleased") || releases[0];
       if (urgent) {
         setExpandedRelease(urgent.title);
         setActiveTab(getSmartDefaultTab(urgent));
@@ -97,6 +99,8 @@ export default function LabelBoard() {
                       </span>
                     )}
                     {s.status === "unreleased" && <span className="badge badge-muted">LOCKED</span>}
+                    {s.status === "not_recorded" && <span className="badge" style={{ background: "#f59e0b22", color: "#f59e0b", border: "1px solid #f59e0b44" }}>NOT RECORDED</span>}
+                    {s.status === "postponed" && <span className="badge" style={{ background: "#a78bfa22", color: "#a78bfa", border: "1px solid #a78bfa44" }}>POSTPONED</span>}
                     <span className={`text-[#555] transition-transform duration-200 ${isExpanded ? "rotate-90" : ""}`}>›</span>
                   </div>
                 </button>

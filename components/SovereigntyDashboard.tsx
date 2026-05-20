@@ -9,6 +9,9 @@
 // Renders on Body (/grind) — not Brain. Brain gets a single link card.
 
 import { useEffect, useState, useCallback } from "react";
+import dynamic from "next/dynamic";
+
+const DataCenterModal = dynamic(() => import("@/components/DataCenterModal"), { ssr: false });
 import {
   RANKS, type SovereigntyState, type WeeklyData,
   loadSovereigntyState, saveSovereigntyState,
@@ -74,6 +77,7 @@ export function SovereigntyDashboard() {
   const [weeklyData, setWeeklyData] = useState<WeeklyData>({ spotify: "", saves: "", doordash: "", geo: "" });
   const [activeTab, setActiveTab] = useState<"sobriety" | "benchmarks" | "grief" | "data">("sobriety");
   const [saved, setSaved] = useState(false);
+  const [dataCenterOpen, setDataCenterOpen] = useState(false);
   const [resetConfirm, setResetConfirm] = useState(false);
 
   if (!state) return (
@@ -147,6 +151,7 @@ export function SovereigntyDashboard() {
   ];
 
   return (
+    <>
     <div className="card mb-10" style={{ borderColor: "var(--border)" }}>
       <div className="flex items-center justify-between mb-3">
         <p className="text-[10px] font-black tracking-[0.18em] uppercase" style={{ color: "var(--accent)" }}>⚔️ Sovereignty Dashboard</p>
@@ -295,52 +300,48 @@ export function SovereigntyDashboard() {
         </div>
       )}
 
-      {/* ── WEEKLY DATA TAB ── */}
+      {/* ── DATA TAB — Data Center Portal ── */}
       {activeTab === "data" && (
         <div>
-          <p className="text-[10px] font-medium mb-3" style={{ color: "var(--text-muted)" }}>
-            Pull every Sunday. The data is the judge. {state.weeklyDataLog.length} pulls logged.
+          <p className="text-[10px] font-medium mb-4" style={{ color: "var(--text-muted)" }}>
+            One entry point. Zero drift. All data lives here.
           </p>
-          <div className="space-y-2">
-            {([
-              { key: "spotify" as const, label: "Spotify Followers", placeholder: "e.g. 1,247" },
-              { key: "saves" as const, label: "Best Save Rate %", placeholder: "e.g. 4.2%" },
-              { key: "doordash" as const, label: "DoorDash Revenue (mo)", placeholder: "e.g. $1,840" },
-              { key: "geo" as const, label: "Gorilla Geo God-Tier Responses", placeholder: "e.g. 3 this week" },
-            ]).map(f => (
-              <div key={f.key}>
-                <label className="text-[9px] font-black uppercase tracking-wider block mb-1" style={{ color: "var(--text-muted)" }}>{f.label}</label>
-                <input
-                  value={weeklyData[f.key]}
-                  onChange={e => setWeeklyData(prev => ({ ...prev, [f.key]: e.target.value }))}
-                  placeholder={f.placeholder}
-                  className="w-full text-[12px] px-3 py-2 rounded-xl border outline-none"
-                  style={{ background: "var(--surface-2)", borderColor: "var(--border)", color: "var(--text-primary)" }}
-                />
-              </div>
-            ))}
-          </div>
-          <button onClick={submitData} className="mt-3 w-full py-2.5 rounded-xl text-[11px] font-black tracking-wider uppercase transition-all active:scale-[0.98]" style={{ background: "var(--accent)", color: "#0a0a0a" }}>
-            {saved ? "✓ LOGGED" : "LOG NUMBERS"}
+
+          {/* LAUNCH button */}
+          <button
+            onClick={() => setDataCenterOpen(true)}
+            className="w-full py-4 rounded-2xl font-black tracking-[0.2em] uppercase text-[12px] transition-all active:scale-[0.98] mb-5"
+            style={{
+              background: "linear-gradient(135deg, rgba(212,168,83,0.12) 0%, rgba(212,168,83,0.06) 100%)",
+              border: "1px solid rgba(212,168,83,0.35)",
+              color: "#d4a853",
+              boxShadow: "0 0 24px rgba(212,168,83,0.08)",
+            }}
+          >
+            ⚡ LAUNCH DATA CENTER
           </button>
+
+          {/* Last logged snapshot */}
           {state.weeklyDataLog.length > 0 && (
-            <div className="mt-4 space-y-2">
-              <p className="text-[9px] font-black uppercase tracking-widest" style={{ color: "var(--text-muted)" }}>History</p>
-              {state.weeklyDataLog.slice(0, 6).map((e, i) => (
-                <div key={i} className="p-3 rounded-xl" style={{ background: "var(--surface-2)" }}>
-                  <p className="text-[9px] font-black mb-1" style={{ color: "var(--accent)" }}>{e.date}</p>
-                  <div className="grid grid-cols-2 gap-x-4 gap-y-0.5">
-                    {e.data.spotify && <p className="text-[10px]" style={{ color: "var(--text-secondary)" }}>Followers: <span style={{ color: "var(--text-primary)" }}>{e.data.spotify}</span></p>}
-                    {e.data.saves && <p className="text-[10px]" style={{ color: "var(--text-secondary)" }}>Save Rate: <span style={{ color: "var(--text-primary)" }}>{e.data.saves}</span></p>}
-                    {e.data.doordash && <p className="text-[10px]" style={{ color: "var(--text-secondary)" }}>DoorDash: <span style={{ color: "var(--text-primary)" }}>{e.data.doordash}</span></p>}
-                    {e.data.geo && <p className="text-[10px]" style={{ color: "var(--text-secondary)" }}>Geo Hits: <span style={{ color: "var(--text-primary)" }}>{e.data.geo}</span></p>}
-                  </div>
+            <div>
+              <p className="text-[9px] font-black uppercase tracking-widest mb-2" style={{ color: "var(--text-muted)" }}>Last Pull</p>
+              <div className="p-3 rounded-xl" style={{ background: "var(--surface-2)" }}>
+                <p className="text-[9px] font-black mb-1" style={{ color: "var(--accent)" }}>{state.weeklyDataLog[0].date}</p>
+                <div className="grid grid-cols-2 gap-x-4 gap-y-0.5">
+                  {state.weeklyDataLog[0].data.spotify && <p className="text-[10px]" style={{ color: "var(--text-secondary)" }}>Followers: <span style={{ color: "var(--text-primary)" }}>{state.weeklyDataLog[0].data.spotify}</span></p>}
+                  {state.weeklyDataLog[0].data.saves && <p className="text-[10px]" style={{ color: "var(--text-secondary)" }}>Save Rate: <span style={{ color: "var(--text-primary)" }}>{state.weeklyDataLog[0].data.saves}</span></p>}
+                  {state.weeklyDataLog[0].data.doordash && <p className="text-[10px]" style={{ color: "var(--text-secondary)" }}>DoorDash: <span style={{ color: "var(--text-primary)" }}>{state.weeklyDataLog[0].data.doordash}</span></p>}
+                  {state.weeklyDataLog[0].data.geo && <p className="text-[10px]" style={{ color: "var(--text-secondary)" }}>Geo Hits: <span style={{ color: "var(--text-primary)" }}>{state.weeklyDataLog[0].data.geo}</span></p>}
                 </div>
-              ))}
+              </div>
             </div>
           )}
         </div>
       )}
     </div>
+
+    {/* ── Data Center Modal ── */}
+    {dataCenterOpen && <DataCenterModal onClose={() => setDataCenterOpen(false)} />}
+    </>
   );
 }
