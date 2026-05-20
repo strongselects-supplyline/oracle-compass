@@ -282,7 +282,7 @@ export default function TodayPage() {
   const studioDay = isStudioDay(dayType as any);
   const hour = new Date().getHours();
   const protocol = getProtocolSteps(dayType);
-  const showProtocolExpanded = hour < 11;
+  const showProtocolExpanded = true; // Always show — schedule should be visible any time you open the app
 
   const fuelLabels = decree?.dietary_alignment ? decree.dietary_alignment : {
     pre: { label: "Pre-Session Fuel", desc: "Breakfast protocol not set by Oracle." },
