@@ -13,7 +13,7 @@
 | Trigger | Metric | Threshold | Action |
 |---------|--------|-----------|--------|
 | Strong release start | Day 3 stream velocity | 100+ streams/day | Marquee $100 (Previously Engaged) |
-| Save rate confirms quality | 7-day save rate | ≥ 3% | Discovery Mode on that track |
+| Save rate confirms quality | 7-day save rate | ≥ 3% sustained 7+ days AND sufficient stream velocity | Discovery Mode on that track — requires BOTH conditions. Save rate alone does not qualify. |
 | Weekly stream increase | WoW streams | +50% | Showcase $100 |
 | Playlist add | Playlist followers | 1K+ follower playlist | Discovery Mode immediately |
 | Combined signal | Save ≥ 3% AND velocity 100+ | Both simultaneously | Marquee + Discovery Mode |
